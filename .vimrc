@@ -13,7 +13,7 @@
 " }}}1
 
 
-" Key mappings {{{1
+" Key Mappings {{{1
 
     let mapleader=","
 
@@ -228,7 +228,7 @@
         nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
     " }}}2
 
-" Key mappings }}}1
+" Key Mappings }}}1
 
 
 " Load Plugins {{{1
@@ -742,7 +742,7 @@
 " Plugin Settings }}}1
 
 
-" FileType settings {{{1
+" FileType Settings {{{1
 
     " All files. {{{2
         " Return cursor to last position.
