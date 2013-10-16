@@ -1,0 +1,32 @@
+snippet req "Require" w!
+${1/^'?(\w+)'?$/\L$1\E/} = require('${1:module}')
+endsnippet
+
+snippet log "Log" w!
+console.log ${1:"${2:Awe yea.}"}
+endsnippet
+
+snippet f "Function" w!
+->
+	${0:# ...}
+endsnippet
+
+snippet fun "Function" ws!
+${0:${1:name} = }(${2:args}) ->
+	${3:# ...}
+endsnippet
+
+snippet afun "Function" ws!
+${0:(${1:args}) }-> $2
+	${3:# ...}
+endsnippet
+
+snippet rfun "Node http 'request' event callback." w!
+(req, res) ->
+	# ...
+endsnippet
+
+snippet dofun "Function" w!
+(do ${1:(${2:args}) }-> ${0:return null})
+endsnippet
+
