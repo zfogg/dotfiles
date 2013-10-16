@@ -62,6 +62,8 @@ setopt RC_EXPAND_PARAM
 setopt RM_STAR_WAIT
 
 setopt TRANSIENT_RPROMPT
+
+setopt VI
 # }}}
 
 
@@ -102,6 +104,7 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # Key bindings. {{{
 bindkey -M viins 'jj' vi-cmd-mode  # Escape `vi-ins-mode` with `jj`.
+bindkey -M viins ' ' magic-space
 
 bindkey '^[[2J' kill-word          # But you should use <a-d>.
 bindkey '^H'    backward-kill-word # <c-bs>.
