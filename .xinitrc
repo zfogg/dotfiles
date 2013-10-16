@@ -6,7 +6,7 @@ export DE=openbox
 
 case $1 in
 openbox|*)
-  exec ck-launch-session dbus-launch openbox-session
+  exec openbox-session
   ;;
 esac
 
