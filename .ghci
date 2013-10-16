@@ -1,0 +1,1 @@
+:set prompt "\ESC[32m%s> \ESC[m"
