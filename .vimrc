@@ -96,91 +96,91 @@
     " Plugin bindings. {{{2
 
         " NERDTree. {{{3
-        nmap <Leader>Nn :NERDTreeToggle<CR>
+            nmap <Leader>Nn :NERDTreeToggle<CR>
         " }}}3
 
         " Fugitive. {{{3
-        nmap <Leader>gc :Gcommit<CR>
-        nmap <Leader>gd :Gdiff<CR>
-        nmap <Leader>gl :Glog<CR>
-        nmap <Leader>gs :Gstatus<CR>
-        nmap <Leader>gR :Gread<CR>
-        nmap <Leader>gW :Gwrite<CR>
+            nmap <Leader>gc :Gcommit<CR>
+            nmap <Leader>gd :Gdiff<CR>
+            nmap <Leader>gl :Glog<CR>
+            nmap <Leader>gs :Gstatus<CR>
+            nmap <Leader>gR :Gread<CR>
+            nmap <Leader>gW :Gwrite<CR>
         " }}}3
 
         " Java. {{{3
-        nnoremap <Leader>J   :Java<CR>
-        nnoremap <Leader>Jc  :JavaCorrect<CR>
-        nnoremap <Leader>Ji  :JavaImport<CR>
-        nnoremap <Leader>JI  :JavaImpl<CR>
-        nnoremap <Leader>Jgs :JavaGetSet<CR>
+            nnoremap <Leader>J   :Java<CR>
+            nnoremap <Leader>Jc  :JavaCorrect<CR>
+            nnoremap <Leader>Ji  :JavaImport<CR>
+            nnoremap <Leader>JI  :JavaImpl<CR>
+            nnoremap <Leader>Jgs :JavaGetSet<CR>
         " }}}3
 
         " Clojure. {{{3
-        nnoremap <Leader>Cr :Require!<CR>
+            nnoremap <Leader>Cr :Require!<CR>
         "}}}3
 
         " Rainbow Parentheses. {{{3
-        nnoremap <Leader>RPt :RainbowParenthesesToggleAll<CR>
+            nnoremap <Leader>RPt :RainbowParenthesesToggleAll<CR>
         "}}}3
 
         " Slime. {{{3
-        vnoremap <Leader>ss :SlimeSend<CR>
+            vnoremap <Leader>ss :SlimeSend<CR>
         "}}}3
 
         " CtrlP. {{{3
-        nnoremap <C-F> :CtrlPLine<CR>
+            nnoremap <C-F> :CtrlPLine<CR>
 
-        " On Windows use "dir" as fallback command.
-        if has('win32') || has('win64')
-            let g:ctrlp_user_command = {
-                        \ 'types': {
-                        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                        \ },
-                        \ 'fallback': 'dir %s /-n /b /s /a-d'
-                        \ }
-        else
-            let g:ctrlp_user_command = {
-                        \ 'types': {
-                        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                        \ },
-                        \ 'fallback': 'find %s -type f'
-                        \ }
-        endif
+            " On Windows use "dir" as fallback command.
+            if has('win32') || has('win64')
+                let g:ctrlp_user_command = {
+                            \ 'types': {
+                            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                            \ },
+                            \ 'fallback': 'dir %s /-n /b /s /a-d'
+                            \ }
+            else
+                let g:ctrlp_user_command = {
+                            \ 'types': {
+                            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                            \ },
+                            \ 'fallback': 'find %s -type f'
+                            \ }
+            endif
         " }}}3
 
         " Sessions. {{{3
-        nmap <Leader>So :OpenSession<CR>
-        nmap <Leader>Ss :SaveSession<CR>
-        nmap <Leader>Sq :SaveSession<CR>:CloseSession<CR>
-        nmap <Leader>SQ <Leader>Sq:q<CR>
+            nmap <Leader>So :OpenSession<CR>
+            nmap <Leader>Ss :SaveSession<CR>
+            nmap <Leader>Sq :SaveSession<CR>:CloseSession<CR>
+            nmap <Leader>SQ <Leader>Sq:q<CR>
         " }}}3
 
         " ghc-mod. {{{3
-        nnoremap <Leader>Gc :GhcModCheckAndLintAsync<CR>
-        nnoremap <Leader>Gt :GhcModType<CR>
-        nnoremap <Leader>GT :GhcModTypeClear<CR>
-        nnoremap <Leader>Ge :GhcModExpand<CR>
+            nnoremap <Leader>Gc :GhcModCheckAndLintAsync<CR>
+            nnoremap <Leader>Gt :GhcModType<CR>
+            nnoremap <Leader>GT :GhcModTypeClear<CR>
+            nnoremap <Leader>Ge :GhcModExpand<CR>
         " }}}3
 
         " hdevtools. {{{3
-        nnoremap <Leader>Hi :HdevtoolsInfo<CR>
-        nnoremap <Leader>Ht :HdevtoolsType<CR>
-        nnoremap <Leader>Hc :HdevtoolsClear<CR>
+            nnoremap <Leader>Hi :HdevtoolsInfo<CR>
+            nnoremap <Leader>Ht :HdevtoolsType<CR>
+            nnoremap <Leader>Hc :HdevtoolsClear<CR>
         " }}}3
 
         " Tagbar. {{{3
-        nnoremap <Leader>Tt :TagbarToggle<CR>
-        let g:tagbar_type_markdown = {
-                    \ 'ctagstype' : 'markdown',
-                    \ 'kinds' : [
-                    \ 'h:Heading_L1',
-                    \ 'i:Heading_L2',
-                    \ 'k:Heading_L3'
-                    \ ]
-                    \ }
+            nnoremap <Leader>Tt :TagbarToggle<CR>
+            let g:tagbar_type_markdown = {
+                        \ 'ctagstype' : 'markdown',
+                        \ 'kinds' : [
+                        \ 'h:Heading_L1',
+                        \ 'i:Heading_L2',
+                        \ 'k:Heading_L3'
+                        \ ]
+                        \ }
         " }}}3
 
     " }}}2
@@ -437,9 +437,7 @@
 " Basic Settings }}}1
 
 
-" ==========================================================
 " Plugin Settings {{{1
-    " ==========================================================
 
     " Eclim {{{2
         let g:EclimCompletionMethod = 'omnifunc'
@@ -744,9 +742,7 @@
 " Plugin Settings }}}1
 
 
-" ============================================================
 " FileType settings {{{1
-    " ============================================================
 
     " All files. {{{2
         " Return cursor to last position.
