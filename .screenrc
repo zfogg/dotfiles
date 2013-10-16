@@ -11,7 +11,7 @@ version                 # echo version on startup, 'cause it's nice to know
 
 
 # Misc ########################################################################
-escape ^za              # Change the modifier key.
+#escape ^za              # Change the modifier key.
 autodetach on           # A.K.A. the "save your bacon" option
 altscreen on            # full-screen programs (less, Vim) should be cleared once quit
 vbell off               # visual bells are hard to do right. screen's isn't good
