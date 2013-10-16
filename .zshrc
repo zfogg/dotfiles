@@ -106,11 +106,17 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 bindkey -M viins 'jj' vi-cmd-mode  # Escape `vi-ins-mode` with `jj`.
 bindkey -M viins ' ' magic-space
 
+# Ctrl-backspace and ctrl-delete.
 bindkey '^[[2J' kill-word          # But you should use <a-d>.
 bindkey '^H'    backward-kill-word # <c-bs>.
 
+# Up and down.
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+# Home and end.
+bindkey '\e[1~' beginning-of-line
+bindkey '\e[4~' end-of-line
 # }}}
 
 
