@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+ssh $1 -t 'tmux a || tmux || screen -dRR || /bin/bash'
