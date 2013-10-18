@@ -103,8 +103,11 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 
 
 # Key bindings. {{{
-bindkey -M viins 'jj' vi-cmd-mode  # Escape `vi-ins-mode` with `jj`.
+# vi-mode.
 bindkey -M viins ' ' magic-space
+bindkey -M viins 'jj' vi-cmd-mode  # Escape `vi-ins-mode` with `jj`.
+bindkey -M viins 'HH' beginning-of-line
+bindkey -M viins 'LL' end-of-line
 
 # Ctrl-backspace and ctrl-delete.
 bindkey '^[[2J' kill-word          # But you should use <a-d>.
