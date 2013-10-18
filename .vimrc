@@ -64,14 +64,19 @@
         nnoremap k gk
 
         " Scroll through items in the locations list.
-        map <up>   :lprev<CR>
-        map <down> :lnext<CR>
+        nnoremap <up>   :lprev<CR>
+        nnoremap <down> :lnext<CR>
 
         " A 'scrolling' effect.
-        nmap <a-j> <c-e>j
-        nmap <a-k> <c-y>k
-        nmap <a-l> zll
-        nmap <a-h> zhh
+        " FIXME: doesn't really work with in my term+tmux setup.
+        nnoremap <a-j> <c-e>j
+        nnoremap <a-k> <c-y>k
+        nnoremap <a-l> zll
+        nnoremap <a-h> zhh
+
+        " Leaving insert mode is too much sometimes.
+        inoremap HH <c-o>^
+        inoremap LL <c-o>$
     " }}}2
 
     " Folds. {{{2
@@ -292,6 +297,7 @@
     " Colorschemes. {{{2
         Bundle 'EasyColour'
         Bundle 'git://github.com/zfogg/vim-eddie.git'
+        Bundle 'junegunn/seoul256.vim'
         Bundle 'altercation/vim-colors-solarized'
     " }}}2
 
@@ -301,7 +307,6 @@
         Bundle 'kien/rainbow_parentheses.vim'
         Bundle 'AnsiEsc.vim'
     " }}}3
-
 
     " Direct text manipulation. {{{2
         Bundle 'junegunn/vim-easy-align'
@@ -350,10 +355,6 @@
 
     " Ignore these files when completing.
     set wildignore+=*.o,*.obj,.git,*.pyc
-
-    " Disable the colorcolumn when switching modes.
-    " Make sure this is the first autocmd!
-    autocmd FileType * setlocal colorcolumn=0
 
     " Don't sound the system bell or blink the screen on error.
     set noerrorbells visualbell t_vb=
@@ -460,8 +461,11 @@
         let g:indent_guides_guide_size            = 1
         let g:indent_guides_enable_on_vim_startup = 1
         let g:indent_guides_auto_colors           = 0
-        autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=grey
-        autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=darkgrey
+        augroup IndentGuides
+            autocmd!
+            autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=grey
+            autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=darkgrey
+        augroup END
     " }}}2
 
     " Rainbow Parentheses {{{2
@@ -744,7 +748,8 @@
 
 " FileType Settings {{{1
 
-    " All files. {{{2
+    augroup AllFiles
+        autocmd!
         " Return cursor to last position.
         au BufReadPost *
             \ if ! exists("g:leave_my_cursor_position_alone")   |
@@ -752,55 +757,65 @@
             \     exe "normal g'\""                             |
             \   endif                                           |
             \ endif
-    " }}}2
+    augroup END
 
-    " VimL {{{2
-        au FileType vim setl fdm=marker ts=4 sts=4 sw=4
+    augroup VimL
+        au!
+        au FileType vim setl ts=4 sts=4 sw=4
         au FileType vim setl fdm=marker
         au FileType vim setl omnifunc=
-    " }}}2
+    augroup END
 
-    " C, C++ {{{2
+    augroup C_Cpp
+        au!
         au FileType c,c++ setl sw=4 ts=4 sts=4
         au FileType c,c++ setl fdm=marker fmr={,}
-    " }}}2
+    augroup END
 
-    " JavaScript {{{2
-        au FileType javascript  setl expandtab sw=4 ts=4 sts=4
-    " }}}2
+    augroup JavaScript
+        au!
+        au FileType javascript setl sw=4 ts=4 sts=4
+        au FileType javascript setl fdm=marker fmr={,}
+    augroup END
 
-    " Java {{{2
+    augroup Java
+        au!
         au FileType java setl sw=4 ts=4 sts=4 fdm=marker fmr={,} fdl=1
-    " }}}2
+    augroup END
 
-    " CoffeeScript {{{2
+    augroup CoffeeScript
+        au!
         au FileType coffee setl expandtab sw=2 ts=2 sts=2 fdm=indent nofoldenable
         au BufWritePost *.coffee CoffeeLint! | cwindow | redraw!
-    " }}}2
+    augroup END
 
-    " HTML {{{2
+    augroup HTML
+        au!
         au FileType html,xhtml,xml,css setl expandtab sw=4 ts=4 sts=4
         " Templating languages.
         au FileType mustache,handlebars setl expandtab sw=4 ts=4 sts=4
-    " }}}2
+    augroup END
 
-    " Python {{{2
+    augroup Python
+        au!
         au FileType python setl expandtab sw=4 sts=4 cinwords=if,elif,else,for,while,try,except,finally,def,class,with
         au FileType python set omnifunc=pythoncomplete#Complete
         au FileType python set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
-    " }}}2
+    augroup END
 
-    " Clojure {{{2
+    augroup Clojure
+        au!
         let g:clojure_foldwords = "def,ns"
         au FileType clojure setl sw=2
         au FileType clojure setl foldmethod=indent foldminlines=2 foldnestmax=2
-    " }}}2
+    augroup END
 
-    " Haskell {{{2
+    augroup Haskell
+        au!
         au FileType haskell setl sw=4 ts=4 sts=4 si
         au BufRead *.hs compiler ghc
         au BufWritePost *.hs,*.hsc silent !fast-tags %
-    " }}}2
+    augroup END
 
 " Filetype Settings }}}1
 
