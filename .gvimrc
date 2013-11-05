@@ -11,7 +11,7 @@
 " Settings {{{1
 " ==========================================================
 
-colorscheme evil-eddie
+colorscheme luna
 
 " Don't popup a menu on any <a-{x}>.
 set winaltkeys=no
@@ -48,7 +48,7 @@ endif
 " Keybindings {{{1
 " ==========================================================
 
-" For embedded Gvim in Eclipse.
+" For embedded GVim in Eclipse.
 inoremap <C-C> <Esc>
 
 " }}}1

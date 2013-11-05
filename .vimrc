@@ -92,16 +92,17 @@
     " }}}2
 
     " :make. {{{2
-        nnoremap <Leader>M  :silent make<CR>:redraw!<CR>
-        nnoremap <Leader>Mc :silent make clean<CR>:redraw!<CR>
-        nnoremap <Leader>Mt :silent make test \| copen<CR>:AnsiEsc<CR>G:redraw!<CR>
-        nmap     <Leader>Mm :silent make clean all<CR>:redraw!<CR>
+        nnoremap <Leader>M  :silent! make<CR>:redraw!<CR>
+        nnoremap <Leader>Mc :silent! make clean<CR>:redraw!<CR>
+        nnoremap <Leader>Mm :silent! make clean all<CR>:redraw!<CR>
+        nnoremap <Leader>Mt :cclose \| silent! make test           \| copen<CR>:AnsiEsc<CR>G:redraw!<CR>
+        nnoremap <Leader>MT :cclose \| silent! make clean all test \| copen<CR>:AnsiEsc<CR>G:redraw!<CR>
     " }}}
 
     " Plugin bindings. {{{2
 
         " NERDTree. {{{3
-            nmap <Leader>Nn :NERDTreeToggle<CR>
+            nmap <Leader>n<Space> :NERDTreeToggle<CR>
         " }}}3
 
         " Fugitive. {{{3
@@ -177,14 +178,14 @@
         " }}}3
 
         " Tagbar. {{{3
-            nnoremap <Leader>Tt :TagbarToggle<CR>
+            nnoremap <Leader>t<Space> :TagbarToggle<CR>
             let g:tagbar_type_markdown = {
                         \ 'ctagstype' : 'markdown',
                         \ 'kinds' : [
-                        \ 'h:Heading_L1',
-                        \ 'i:Heading_L2',
-                        \ 'k:Heading_L3'
-                        \ ]
+                        \   'h:Heading_L1',
+                        \   'i:Heading_L2',
+                        \   'k:Heading_L3'
+                        \   ]
                         \ }
         " }}}3
 
@@ -297,6 +298,7 @@
     " Colorschemes. {{{2
         Bundle 'EasyColour'
         Bundle 'git://github.com/zfogg/vim-eddie.git'
+        Bundle 'Pychimp/vim-luna'
         Bundle 'junegunn/seoul256.vim'
         Bundle 'altercation/vim-colors-solarized'
     " }}}2
@@ -354,7 +356,7 @@
     endtry
 
     " Ignore these files when completing.
-    set wildignore+=*.o,*.obj,.git,*.pyc
+    set wildignore+=*.o,*.obj,.git,*.pyc,*.class,*~
 
     " Don't sound the system bell or blink the screen on error.
     set noerrorbells visualbell t_vb=
@@ -366,7 +368,7 @@
 
     " Don't litter swapfiles all over.
     set directory=$HOME/.vim/.swap//,.//,/var/tmp//,/tmp//
-    set history=200
+    set history=1024
 
     " Moving around and editing." {{{2
         set cursorline              " A horizontal line for the cursor location.
@@ -375,6 +377,7 @@
         set virtualedit=all         " Let cursor move past $ in command mode.
         set backspace=2             " Allow backspacing over autoindent, EOL, and BOL.
         set autoindent              " Always set autoindenting on.
+        set lazyredraw              " For better macro performance.
     "}}}2
 
     " Tiny aesthetic tweaks." {{{2
@@ -815,6 +818,16 @@
         au FileType haskell setl sw=4 ts=4 sts=4 si
         au BufRead *.hs compiler ghc
         au BufWritePost *.hs,*.hsc silent !fast-tags %
+    augroup END
+
+    augroup Jade
+        au!
+        au FileType jade setl sw=2 ts=2 sts=2 si
+    augroup END
+
+    augroup Stylus
+        au!
+        au BufRead *.styl setl sw=2 ts=2 sts=2 si
     augroup END
 
 " Filetype Settings }}}1
