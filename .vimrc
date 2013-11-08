@@ -217,7 +217,7 @@
         imap <C-W> <C-O><C-W>
 
         " Delete trailing whitespace.
-        nnoremap <Leader>S :%s/\s\+$//<cr>:let @/=''<CR>
+        nnoremap <Leader>S :%s/\s\+$//<cr>:let @/=''<CR><c-o>
 
         " Fixes for display glitches.
         nnoremap <Leader><Space> :nohlsearch<CR>
