@@ -161,6 +161,8 @@ alias spp='sudo powerpill'
 alias less=$PAGER
 
 alias zless=$PAGER
+
+alias packer='packer-color'
 # }}}
 
 
