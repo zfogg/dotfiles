@@ -146,6 +146,10 @@ export PAGER=vimpager
 export LESS='-R'
 
 eval $(dircolors -b) # Generate and set `$LS_COLORS`.
+
+# Enable video acceleration.
+export LIBVA_DRIVER_NAME=vdpau
+export VDPAU_DRIVER=r600
 # }}}
 
 
