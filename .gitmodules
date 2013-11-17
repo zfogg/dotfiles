@@ -4,3 +4,6 @@
 [submodule ".vim/bundle/vundle"]
 	path = .vim/bundle/vundle
 	url = https://github.com/gmarik/vundle
+[submodule ".tmux/powerline"]
+	path = .tmux/powerline
+	url = https://github.com/Lokaltog/powerline
