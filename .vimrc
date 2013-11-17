@@ -26,6 +26,7 @@
 
         " Open this configuration file.
         nmap <Leader>v :tabnew ~/.vimrc<CR>
+        nmap <Leader>gv :tabnew ~/.gvimrc<CR>
 
         " Quit window.
         nnoremap <Leader>q :q<CR>
@@ -308,7 +309,7 @@
         Bundle 'itchyny/lightline.vim'
         Bundle 'kien/rainbow_parentheses.vim'
         Bundle 'AnsiEsc.vim'
-    " }}}3
+    " }}}2
 
     " Direct text manipulation. {{{2
         Bundle 'junegunn/vim-easy-align'

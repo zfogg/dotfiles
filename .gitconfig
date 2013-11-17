@@ -9,6 +9,7 @@
 	editor = vim
 	pager = vimpager
 	excludesfile = /home/zach/.gitignore_global
+    eol = lf
 
 [diff]
 	tool = vimdiff
