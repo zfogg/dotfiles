@@ -158,14 +158,27 @@ alias ls='ls --color=auto'
 alias sudo='nocorrect sudo'
 
 alias vi=vim
+alias v=vim
 
+alias sp='sudo pacman'
 alias spp='sudo powerpill'
 
 alias less=$PAGER
-
 alias zless=$PAGER
 
 alias packer='packer-color'
+
+alias c='pygmentize -O style=monokai -f console256 -g'
+
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
+alias localip="ipconfig getifaddr en1"
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias whois="whois -h whois-servers.net"
+alias flush="dscacheutil -flushcache"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+
+alias fs="du -ShL"
 # }}}
 
 
