@@ -297,7 +297,7 @@
         Bundle 'groenewege/vim-less'
         Bundle 'juvenn/mustache'
         Bundle 'wavded/vim-stylus'
-        Bundle 'marijnh/tern_for_vim'
+        "Bundle 'marijnh/tern_for_vim'
     " }}}2
 
     " Colorschemes. {{{2
@@ -305,6 +305,7 @@
         Bundle 'git://github.com/zfogg/vim-eddie.git'
         Bundle 'Pychimp/vim-luna'
         Bundle 'junegunn/seoul256.vim'
+        Bundle 'chriskempson/tomorrow-theme'
         Bundle 'altercation/vim-colors-solarized'
     " }}}2
 
