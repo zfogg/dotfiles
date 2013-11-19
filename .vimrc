@@ -233,6 +233,10 @@
 
         " Set the background to transparent.
         nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
+
+        " Change to the directory of the current buffer's file.
+        nnoremap <Leader>lcd :lcd %:p:h<CR>
+        nnoremap <Leader>cd  :cd  %:p:h<CR>
     " }}}2
 
 " Key Mappings }}}1
@@ -528,8 +532,7 @@
     " }}}2
 
     " UltiSnips {{{2
-        let g:UltiSnipsExpandTrigger="<tab>"
-        let g:UltiSnipsJumpForwardTrigger="<tab>"
+        let g:UltiSnipsDontReverseSearchPath="1"
         function! g:UltiSnips_Complete()
             call UltiSnips_ExpandSnippet()
             if g:ulti_expand_res == 0
@@ -538,13 +541,16 @@
                 else
                     call UltiSnips_JumpForwards()
                     if g:ulti_jump_forwards_res == 0
-                        return "\<TAB>"
+                    return "\<TAB>"
                     endif
                 endif
             endif
             return ""
         endfunction
+
         au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+        let g:UltiSnipsJumpForwardTrigger="<tab>"
+        let g:UltiSnipsExpandTrigger="<c-e>"
     " }}}2
 
     " CtrlP {{{2
