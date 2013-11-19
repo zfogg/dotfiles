@@ -3,7 +3,7 @@
 
 
 # oh-my-zsh {{{
-ZSH=/usr/share/oh-my-zsh/
+ZSH=~/.oh-my-zsh
 
 ZSH_THEME=junkfood
 
@@ -30,7 +30,6 @@ source $ZSH/oh-my-zsh.sh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root)
 ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' 'fg=white,bold,bg=red')
 ZSH_HIGHLIGHT_PATTERNS+=('sudo *'   'fg=white,bold,bg=blue')
-ZSH_HIGHLIGHT_STYLES[root]='standout,bold,underline'
 
 # }}}
 
@@ -165,6 +164,8 @@ alias spp='sudo powerpill'
 alias less=$PAGER
 
 alias zless=$PAGER
+
+alias packer='packer-color'
 # }}}
 
 
