@@ -305,7 +305,7 @@
         Bundle 'git://github.com/zfogg/vim-eddie.git'
         Bundle 'Pychimp/vim-luna'
         Bundle 'junegunn/seoul256.vim'
-        Bundle 'chriskempson/tomorrow-theme'
+        Bundle 'chriskempson/vim-tomorrow-theme'
         Bundle 'altercation/vim-colors-solarized'
     " }}}2
 
@@ -356,7 +356,7 @@
     syntax on                     " Smart syntax highlighing.
     set t_Co=256                  " To enable 256bit colors in the console.
     try                           " Set my colorscheme, if it exists.
-        colorscheme evil-eddie
+        colorscheme Tomorrow-Night-Bright
     catch /^Vim\%((\a\+)\)\=:E185/
         colorscheme jellybeans
     endtry
@@ -458,6 +458,7 @@
             \ '.class$',
             \ '.pyc$',
             \ '^node_modules$',
+            \ '.o$'
         \ ]
     " }}}2
 
