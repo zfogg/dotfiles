@@ -10,6 +10,7 @@
 	pager = vimpager
 	excludesfile = /home/zach/.gitignore_global
     eol = lf
+	autocrlf = input
 
 [diff]
 	tool = vimdiff

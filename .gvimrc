@@ -11,7 +11,11 @@
 " Settings {{{1
 " ==========================================================
 
-colorscheme luna
+try
+    colorscheme Tomorrow-Night-Bright
+catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme jellybeans
+endtry
 
 " Don't popup a menu on any <a-{x}>.
 set winaltkeys=no
