@@ -172,7 +172,7 @@ alias packer='packer-color'
 
 alias c='pygmentize -O style=monokai -f console256 -g'
 
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias ipaddr="dig +short myip.opendns.com @resolver1.opendns.com"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias localip="ipconfig getifaddr en1"
 alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
