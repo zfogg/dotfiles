@@ -59,23 +59,6 @@ setopt VI
 
 
 # Prompt. {{{
-vim_ins_mode='[INS]'
-vim_cmd_mode='[CMD]'
-
-vim_mode=$vim_ins_mode
-
-function zle-keymap-select {
-  vim_mode="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
-  zle reset-prompt
-}
-function zle-line-finish {
-  vim_mode=$vim_ins_mode
-}
-
-zle -N zle-keymap-select
-zle -N zle-line-finish
-
-RPROMPT='${vim_mode}'
 # }}}
 
 
@@ -132,8 +115,15 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # Key bindings. {{{
 # vi-mode.
+function _last-cmd-and-vi-cmd-mode {
+    vi-cmd-mode
+    history-substring-search-up
+}
+zle -N last-cmd-and-vi-cmd-mode _last-cmd-and-vi-cmd-mode
+
 bindkey -M viins ' ' magic-space
-bindkey -M viins 'jj' vi-cmd-mode  # Escape `vi-ins-mode` with `jj`.
+bindkey -M viins 'jj' vi-cmd-mode
+bindkey -M viins 'kk' last-cmd-and-vi-cmd-mode
 bindkey -M viins 'HH' beginning-of-line
 bindkey -M viins 'LL' end-of-line
 
@@ -210,6 +200,10 @@ alias flush="dscacheutil -flushcache"
 alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
 
 alias fs="du -ShL"
+
+alias m="make"
+alias mc="make clean"
+alias M="make clean all"
 # }}}
 
 
