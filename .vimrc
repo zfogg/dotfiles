@@ -113,6 +113,7 @@
             nmap <Leader>gs :Gstatus<CR>
             nmap <Leader>gR :Gread<CR>
             nmap <Leader>gW :Gwrite<CR>
+            nmap <Leader>gp :Git push<CR>
         " }}}3
 
         " Java. {{{3
@@ -301,7 +302,6 @@
     " }}}2
 
     " Colorschemes. {{{2
-        Bundle 'EasyColour'
         Bundle 'git://github.com/zfogg/vim-eddie.git'
         Bundle 'Pychimp/vim-luna'
         Bundle 'junegunn/seoul256.vim'
@@ -356,7 +356,7 @@
     syntax on                     " Smart syntax highlighing.
     set t_Co=256                  " To enable 256bit colors in the console.
     try                           " Set my colorscheme, if it exists.
-        colorscheme Tomorrow-Night-Bright
+        colorscheme evil-eddie
     catch /^Vim\%((\a\+)\)\=:E185/
         colorscheme jellybeans
     endtry
