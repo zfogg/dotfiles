@@ -1,0 +1,57 @@
+{
+    "default_module": "powerline.segments.common",
+    "segment_data": {
+        "date": {
+            "before": "◎ ",
+            "args": {
+                "format": "%H:%M",
+                "istime": true
+            }
+        },
+        "email_imap_alert": {
+            "before": "✉ ",
+            "args": {
+                "username": "zach.fogg",
+                "password": "hiaunxnsousqlpwa"
+            }
+        },
+        "external_ip": {
+            "before": "ⓦ ",
+            "args": {
+                "interface": "wlp3s0"
+            }
+        },
+        "system_load": {
+            "args": {
+                "format": "{avg:.1f}"
+            }
+        }
+    },
+    "segments": {
+        "right": [
+        {
+            "name": "external_ip"
+        },
+        {
+            "name": "system_load"
+        },
+        {
+            "name": "network_load"
+        },
+        {
+            "name": "battery"
+        },
+        {
+            "name": "date"
+        }
+        ],
+        "left": [
+        {
+            "name": "weather"
+        },
+        {
+            "name": "email_imap_alert"
+        }
+        ]
+    }
+}
