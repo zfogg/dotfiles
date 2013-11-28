@@ -255,7 +255,7 @@
     " Integrate with other programs. {{{2
         Bundle 'tpope/vim-fireplace'
         Bundle 'tpope/vim-fugitive'
-        Bundle 'airblade/vim-gitgutter'
+        Bundle 'luxflux/vim-git-inline-diff'
         Bundle 'fs111/pydoc.vim'
         Bundle 'git://github.com/zfogg/vim-slime.git'
         Bundle 'Shougo/vimproc.vim'
@@ -755,13 +755,19 @@
         let g:easytags_events        = ['BufReadPost', 'BufWritePost']
     " }}}2
 
+    " git-inline-diff {{{2
+        let g:git_diff_added_symbol='⇒'
+        let g:git_diff_removed_symbol='⇐'
+        let g:git_diff_changed_symbol='⇔'
+    " }}}2
+
 " Plugin Settings }}}1
 
 
 " FileType Settings {{{1
 
     augroup AllFiles
-        autocmd!
+        au!
         " Return cursor to last position.
         au BufReadPost *
             \ if ! exists("g:leave_my_cursor_position_alone")   |
@@ -769,6 +775,8 @@
             \     exe "normal g'\""                             |
             \   endif                                           |
             \ endif
+        " git-inline-diff on read,write
+        au BufReadPost,BufWritePost * exe "normal " . mapleader . "d"
     augroup END
 
     augroup VimL
