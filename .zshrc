@@ -203,7 +203,9 @@ alias fs="du -ShL"
 
 alias m="make"
 alias mc="make clean"
+alias mt="make test"
 alias M="make clean all"
+alias MM="make clean test"
 # }}}
 
 
