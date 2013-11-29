@@ -25,6 +25,8 @@
             "args": {
                 "format": "{avg:.1f}"
             }
+        },
+        "weather": {
         }
     },
     "segments": {
@@ -47,7 +49,11 @@
         ],
         "left": [
         {
-            "name": "weather"
+            "name": "weather",
+            "args": {
+                "unit": "f",
+                "location_query": "new york, ny"
+            }
         },
         {
             "name": "email_imap_alert"
