@@ -173,6 +173,8 @@ eval $(dircolors -b) # Generate and set `$LS_COLORS`.
 export LIBVA_DRIVER_NAME=vdpau
 export VDPAU_DRIVER=r600
 
+export PYTHON=`which python2`
+
 export GEM_HOME=~/.gem/ruby/2.0.0
 # }}}
 
@@ -182,8 +184,10 @@ alias ls='ls --color=auto'
 
 alias sudo='nocorrect sudo'
 
-alias vi=vim
-alias v=vim
+alias vi='vim'
+alias v='vim'
+
+alias python=$PYTHON
 
 alias sp='sudo pacman'
 alias spp='sudo powerpill'
@@ -193,25 +197,27 @@ alias zless=$PAGER
 
 alias packer='packer-color'
 
+# pip2 install pygments
 alias cat='pygmentize -O style=monokai -f console256 -g'
 
-alias ipaddr="dig +short myip.opendns.com @resolver1.opendns.com"
+alias lsd='ls -l | grep    "^d"'
+alias lsf='ls -l | grep -v "\."'
+
+alias ipaddr='dig +short myip.opendns.com @resolver1.opendns.com'
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-alias localip="ipconfig getifaddr en1"
+alias localip='ipconfig getifaddr en1'
 alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias whois="whois -h whois-servers.net"
-alias flush="dscacheutil -flushcache"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+alias whois='whois -h whois-servers.net'
+alias flush='dscacheutil -flushcache'
+alias httpdump='sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
 
-alias fs="du -ShL"
+alias fs='du -ShL'
 
-alias m="make"
-alias mc="make clean"
-alias mt="make test"
-alias M="make clean all"
-alias MM="make clean test"
-
-alias server="python2 -m SimpleHTTPServer"
+alias m='make'
+alias mc='make clean'
+alias mt='make test'
+alias M='make clean all'
+alias MM='make clean test'
 # }}}
 
 
