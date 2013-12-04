@@ -25,13 +25,11 @@
             "args": {
                 "format": "{avg:.1f}"
             }
-        },
-        "weather": {
         }
     },
     "segments": {
         "right": [
-        {
+            {
             "name": "external_ip"
         },
         {
@@ -48,12 +46,8 @@
         }
         ],
         "left": [
-        {
-            "name": "weather",
-            "args": {
-                "unit": "f",
-                "location_query": "new york, ny"
-            }
+            {
+            "name": "weather"
         },
         {
             "name": "email_imap_alert"

@@ -296,6 +296,7 @@
         Bundle 'pangloss/vim-javascript'
         Bundle 'jelera/vim-javascript-syntax'
         Bundle 'groenewege/vim-less'
+        Bundle 'plasticboy/vim-markdown'
         Bundle 'juvenn/mustache'
         Bundle 'wavded/vim-stylus'
         "Bundle 'marijnh/tern_for_vim'
@@ -390,7 +391,8 @@
         set scrolloff=3             " Keep n context lines above and below the cursor.
         set linebreak               " Don't wrap textin the middle of a word.
         set nowrap                  " Don't wrap text.
-        set textwidth=78            " Lines break on this if you `:set linebreak`.
+        set textwidth=0             " Don't break lines.
+        set wrapmargin=0            " Seriously, don't break lines.
         set showmatch               " Briefly jump to a paren once it's balanced.
     "}}}2
 
@@ -443,6 +445,10 @@
     " Sessions
     " The 'Session' plugin does this on save.
     set sessionoptions-=options
+
+    " Per-project .vimrc.
+    set exrc
+    set secure
 
 " Basic Settings }}}1
 
@@ -833,7 +839,7 @@
     augroup Haskell
         au!
         au FileType haskell setl sw=4 ts=4 sts=4 si
-        au BufRead *.hs compiler ghc
+        au BufRead,BufNewFile *.hs compiler ghc
         au BufWritePost *.hs,*.hsc silent !fast-tags %
     augroup END
 
@@ -842,9 +848,14 @@
         au FileType jade setl sw=2 ts=2 sts=2 si
     augroup END
 
+    augroup Markdown
+        au!
+        au BufRead,BufNewFile *.md setl ft=markdown
+    augroup END
+
     augroup Stylus
         au!
-        au BufRead *.styl setl sw=2 ts=2 sts=2 si
+        au BufRead,BufNewFile *.styl setl sw=2 ts=2 sts=2 si
     augroup END
 
 " Filetype Settings }}}1

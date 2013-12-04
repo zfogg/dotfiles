@@ -21,8 +21,13 @@ plugins=(archlinux bower battery cabal cake coffee colored-man colorize cp
          systemd tmux themes urltools vi-mode web-search
          zsh-syntax-highlighting)
 
-source $ZSH/oh-my-zsh.sh
+. $ZSH/oh-my-zsh.sh
 
+# }}}
+
+
+# z.sh {{{
+. /usr/lib/z.sh
 # }}}
 
 
@@ -189,7 +194,7 @@ alias zless=$PAGER
 
 alias packer='packer-color'
 
-alias c='pygmentize -O style=monokai -f console256 -g'
+alias cat='pygmentize -O style=monokai -f console256 -g'
 
 alias ipaddr="dig +short myip.opendns.com @resolver1.opendns.com"
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
@@ -206,6 +211,8 @@ alias mc="make clean"
 alias mt="make test"
 alias M="make clean all"
 alias MM="make clean test"
+
+alias server="python2 -m SimpleHTTPServer"
 # }}}
 
 
