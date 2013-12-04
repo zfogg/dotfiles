@@ -16,9 +16,9 @@ DISABLE_CORRECTION=true
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
 plugins=(archlinux bower battery cabal cake coffee colored-man colorize cp
-         django extract gem gitfast git-extras git-flow go heroku
-         history-substring-search lein node npm pip python redis-cli svn
-         systemd tmux themes urltools vi-mode web-search
+         custom-aliases django extract gem gitfast git-extras git-flow go
+         heroku history-substring-search lein node npm pip python redis-cli
+         svn systemd tmux themes urltools vi-mode web-search
          zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
