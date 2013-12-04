@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+
+${PIP:=pip2}
+
+$PIP freeze --local |
+grep -v '^\-e'      |
+cut -d = -f 1       |
+xargs $PIP install -U
