@@ -179,12 +179,14 @@ export GEM_HOME=~/.gem/ruby/2.0.0
 
 
 # Aliases. {{{
+alias zshrc="$EDITOR ~/.zshrc"
+
 alias ls='ls --color=auto'
 
 alias sudo='nocorrect sudo'
 
-alias vi=vim
-alias v=vim
+alias vi='vim'
+alias v='vim'
 
 alias sp='sudo pacman'
 alias spp='sudo powerpill'
