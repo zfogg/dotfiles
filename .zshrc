@@ -22,7 +22,6 @@ plugins=(archlinux bower battery cabal cake coffee colored-man colorize cp
          zsh-syntax-highlighting)
 
 . $ZSH/oh-my-zsh.sh
-
 # }}}
 
 
