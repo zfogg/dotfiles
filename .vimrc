@@ -318,8 +318,9 @@
     " }}}2
 
     " Direct text manipulation. {{{2
-        Bundle 'junegunn/vim-easy-align'
         Bundle 'b4winckler/vim-angry'
+        Bundle 'junegunn/vim-easy-align'
+        Bundle 'tommcdo/vim-exchange'
         Bundle 'Raimondi/delimitMate'
         Bundle 'tsaleh/vim-matchit'
         Bundle 'scrooloose/nerdcommenter'
