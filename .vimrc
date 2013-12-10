@@ -304,6 +304,7 @@
 
     " Colorschemes. {{{2
         Bundle 'git://github.com/zfogg/vim-eddie.git'
+        Bundle 'google_prettify.vim'
         Bundle 'Pychimp/vim-luna'
         Bundle 'junegunn/seoul256.vim'
         Bundle 'chriskempson/vim-tomorrow-theme'
@@ -318,8 +319,9 @@
     " }}}2
 
     " Direct text manipulation. {{{2
-        Bundle 'junegunn/vim-easy-align'
         Bundle 'b4winckler/vim-angry'
+        Bundle 'junegunn/vim-easy-align'
+        Bundle 'tommcdo/vim-exchange'
         Bundle 'Raimondi/delimitMate'
         Bundle 'tsaleh/vim-matchit'
         Bundle 'scrooloose/nerdcommenter'
