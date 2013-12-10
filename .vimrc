@@ -304,6 +304,7 @@
 
     " Colorschemes. {{{2
         Bundle 'git://github.com/zfogg/vim-eddie.git'
+        Bundle 'google_prettify.vim'
         Bundle 'Pychimp/vim-luna'
         Bundle 'junegunn/seoul256.vim'
         Bundle 'chriskempson/vim-tomorrow-theme'
