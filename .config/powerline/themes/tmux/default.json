@@ -16,7 +16,7 @@
             }
         },
         "external_ip": {
-            "before": "ⓦ ",
+            "before": "✪ ",
             "args": {
                 "interface": "wlp3s0"
             }
@@ -30,10 +30,10 @@
     "segments": {
         "right": [
             {
+                "name": "system_load"
+            },
+            {
             "name": "external_ip"
-        },
-        {
-            "name": "system_load"
         },
         {
             "name": "network_load"
@@ -42,16 +42,13 @@
             "name": "battery"
         },
         {
-            "name": "date"
-        }
-        ],
-        "left": [
-            {
             "name": "weather"
         },
         {
             "name": "email_imap_alert"
-        }
-        ]
+        },
+        {
+            "name": "date"
+        } ]
     }
 }

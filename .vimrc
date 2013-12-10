@@ -255,7 +255,7 @@
     " Integrate with other programs. {{{2
         Bundle 'tpope/vim-fireplace'
         Bundle 'tpope/vim-fugitive'
-        Bundle 'luxflux/vim-git-inline-diff'
+        Bundle 'airblade/vim-gitgutter'
         Bundle 'fs111/pydoc.vim'
         Bundle 'git://github.com/zfogg/vim-slime.git'
         Bundle 'Shougo/vimproc.vim'
@@ -378,8 +378,6 @@
     set history=1024
 
     " Moving around and editing." {{{2
-        set cursorline              " A horizontal line for the cursor location.
-        set ruler                   " Show the cursor position all the time.
         set nostartofline           " Avoid moving cursor to BOL when jumping around.
         set virtualedit=all         " Let cursor move past $ in command mode.
         set backspace=2             " Allow backspacing over autoindent, EOL, and BOL.
@@ -388,12 +386,12 @@
     "}}}2
 
     " Tiny aesthetic tweaks." {{{2
+        set cursorline              " A horizontal line for the cursor location.
+        set ruler                   " Show the cursor position all the time.
         set scrolloff=3             " Keep n context lines above and below the cursor.
-        set linebreak               " Don't wrap textin the middle of a word.
-        set nowrap                  " Don't wrap text.
-        set textwidth=0             " Don't break lines.
-        set wrapmargin=0            " Seriously, don't break lines.
         set showmatch               " Briefly jump to a paren once it's balanced.
+        set list                    " Visually display tabs and trailing whitespace.
+        set listchars=tab:>-,trail:-,precedes:<,extends:>
     "}}}2
 
     " Whitespace." {{{2
@@ -402,8 +400,10 @@
         set tabstop=4               " <Tab> inserts n spaces.
         set softtabstop=4           " <BS> over an autoindent deletes both spaces.
         set shiftround              " Rounds indent to a multiple of shiftwidth.
-        set list                    " Visually display tabs and trailing whitespace.
-        set listchars=tab:>-,trail:-,precedes:<,extends:>
+        set linebreak               " Don't wrap textin the middle of a word.
+        set nowrap                  " Don't wrap text.
+        set textwidth=0             " Don't break lines.
+        set wrapmargin=0            " Seriously, don't break lines.
     "}}}2
 
     " Folding. {{{2
@@ -525,13 +525,15 @@
         let g:ycm_extra_conf_globlist                      = ['~/code/*', '!~/*']
 
         let g:ycm_semantic_triggers =  {
-            \ 'c'                          : ['->', '.'],
-            \ 'objc'                       : ['->', '.'],
-            \ 'ocaml'                      : ['.',  '#'],
-            \ 'cpp,objcpp'                 : ['->', '.', '::'],
-            \ 'php'                        : ['-,', '::'],
-            \ 'haskell'                    : ['.'],
-            \ 'java,javascript,vim,python' : ['.'],
+            \ 'c,objc'                  : ['->', '.'],
+            \ 'cpp,objcpp'              : ['->', '.', '::'],
+            \ 'haskell'                 : ['.'],
+            \ 'java'                    : ['.'],
+            \ 'javascript,coffeescript' : ['.'],
+            \ 'ocaml'                   : ['.',  '#'],
+            \ 'php'                     : ['-,', '::'],
+            \ 'python'                  : ['.'],
+            \ 'vim'                     : ['.']
         \ }
     " }}}2
 
@@ -761,10 +763,10 @@
         let g:easytags_events        = ['BufReadPost', 'BufWritePost']
     " }}}2
 
-    " git-inline-diff {{{2
-        let g:git_diff_added_symbol='⇒'
-        let g:git_diff_removed_symbol='⇐'
-        let g:git_diff_changed_symbol='⇔'
+    " gitgutter {{{2
+        let g:gitgutter_diff_args = '-w'
+        let g:gitgutter_realtime  = 0
+        let g:gitgutter_eager     = 0
     " }}}2
 
 " Plugin Settings }}}1
