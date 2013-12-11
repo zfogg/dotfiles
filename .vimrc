@@ -531,7 +531,7 @@
             \ 'cpp,objcpp'              : ['->', '.', '::'],
             \ 'haskell'                 : ['.'],
             \ 'java'                    : ['.'],
-            \ 'javascript,coffeescript' : ['.'],
+            \ 'javascript,coffee'       : ['.'],
             \ 'ocaml'                   : ['.',  '#'],
             \ 'php'                     : ['-,', '::'],
             \ 'python'                  : ['.'],
