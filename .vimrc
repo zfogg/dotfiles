@@ -361,7 +361,11 @@
     try                           " Set my colorscheme, if it exists.
         colorscheme evil-eddie
     catch /^Vim\%((\a\+)\)\=:E185/
-        colorscheme jellybeans
+        try
+            colorscheme jellybeans
+        catch /^Vim\%((\a\+)\)\=:E185/
+            colorscheme desert
+        endtry
     endtry
 
     " Ignore these files when completing.
