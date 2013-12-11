@@ -26,7 +26,7 @@ plugins=(archlinux bower battery cabal cake coffee colored-man colorize cp
 
 
 # z.sh {{{
-. /usr/lib/z.sh
+. ~/.z.sh/z.sh
 # }}}
 
 
