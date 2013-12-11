@@ -150,6 +150,8 @@ typeset -U path
 
 path=(~/bin "$path[@]")
 
+path=(~/sbin "$path[@]")
+
 path=(~/.cabal/bin "$path[@]")
 
 path=(~/.gem/ruby/2.0.0/bin "$path[@]")
