@@ -2,10 +2,6 @@
 	path = .vim/bundle/vundle
 	url = https://github.com/gmarik/vundle
 	ignore = dirty
-[submodule ".tmux/powerline"]
-	path = .tmux/powerline
-	url = https://github.com/Lokaltog/powerline
-	ignore = dirty
 [submodule ".oh-my-zsh"]
 	path = .oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh
