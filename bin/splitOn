@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+[[ $# -eq 1 ]] && sed "s/$1/\n/g"
+
+[[ $# -ge 2 ]] && for ((i = 2; i <= $#; i++)); do
+    f=`eval "echo \\\$$((i))"`
+    cat $f | sed "s/$1/\n/g"
+done
