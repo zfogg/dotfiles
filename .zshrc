@@ -181,6 +181,7 @@ export GEM_HOME=~/.gem/ruby/2.0.0
 
 # Aliases. {{{
 alias zshrc="$EDITOR ~/.zshrc"
+alias vimrc="$EDITOR ~/.vimrc"
 
 alias ls='ls --color=auto'
 
