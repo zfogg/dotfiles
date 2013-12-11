@@ -148,11 +148,11 @@ bindkey '\e[4~' end-of-line
 # $PATH directories. {{{
 typeset -U path
 
-path+=~/bin
+path=(~/bin "$path[@]")
 
-path+=~/.cabal/bin
+path=(~/.cabal/bin "$path[@]")
 
-path+=~/.gem/ruby/2.0.0/bin
+path=(~/.gem/ruby/2.0.0/bin "$path[@]")
 
 path=($^path(N))
 # }}}
