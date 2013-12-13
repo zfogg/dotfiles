@@ -182,49 +182,7 @@ export GEM_HOME=~/.gem/ruby/2.0.0
 
 
 # Aliases. {{{
-alias zshrc="$EDITOR ~/.zshrc"
-alias vimrc="$EDITOR ~/.vimrc"
-
-alias ls='ls --color=auto'
-
-alias sudo='nocorrect sudo'
-
-alias vi='vim'
-alias v='vim'
-
-alias python=$PYTHON
-
-alias sp='sudo pacman'
-alias spp='sudo powerpill'
-
-alias less=$PAGER
-alias zless=$PAGER
-
-alias packer='packer-color'
-
-alias htop="htop - $USER"
-
-# pip2 install pygments
-alias cat='pygmentize -O style=monokai -f console256 -g'
-
-alias lsd='ls -l | grep    "^d"'
-alias lsf='ls -l | grep -v "\."'
-
-alias ipaddr='dig +short myip.opendns.com @resolver1.opendns.com'
-alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-alias localip='ipconfig getifaddr en1'
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias whois='whois -h whois-servers.net'
-alias flush='dscacheutil -flushcache'
-alias httpdump='sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
-
-alias fs='du -ShL'
-
-alias m='make'
-alias mc='make clean'
-alias mt='make test'
-alias M='make clean all'
-alias MM='make clean test'
+. ~/.aliases
 # }}}
 
 
