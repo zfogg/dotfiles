@@ -1,0 +1,7 @@
+#!/bin/zsh
+# Print the actual value of an alias.
+
+
+. ~/.aliases
+
+alias $1 | sed -re "s/.*='(.*)'/\1/"
