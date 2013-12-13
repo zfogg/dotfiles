@@ -8,6 +8,8 @@ alias ls='ls --color=auto'
 
 alias sudo='nocorrect sudo'
 
+alias s='sudo'
+
 alias vi='vim'
 alias v='vim'
 
