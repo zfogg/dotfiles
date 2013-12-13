@@ -21,7 +21,7 @@ alias zless=$PAGER
 
 alias packer='packer-color'
 
-alias htop="htop -u \$USER"
+alias htop='htop -u $USER'
 
 alias gh="g gh"
 
