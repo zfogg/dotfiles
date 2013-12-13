@@ -23,6 +23,8 @@ alias packer='packer-color'
 
 alias htop="htop -u \$USER"
 
+alias gh="g gh"
+
 # pip2 install pygments
 alias cat='pygmentize -O style=monokai -f console256 -g'
 
