@@ -202,6 +202,8 @@ alias zless=$PAGER
 
 alias packer='packer-color'
 
+alias htop="htop - $USER"
+
 # pip2 install pygments
 alias cat='pygmentize -O style=monokai -f console256 -g'
 
