@@ -4,4 +4,4 @@
 
 . ~/.aliases
 
-alias $1 | sed -re "s/.*='(.*)'/\1/"
+alias $1 | sed -re "s/.*='?(.*)'?/\1/"
