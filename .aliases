@@ -25,7 +25,7 @@ alias packer='packer-color'
 
 alias htop='htop -u $USER'
 
-alias gh="g gh"
+alias gh="git gh"
 
 # pip2 install pygments
 alias cat='pygmentize -O style=monokai -f console256 -g'
@@ -36,10 +36,10 @@ alias lsd='ls -d *(/)'
 alias ipaddr='dig +short myip.opendns.com @resolver1.opendns.com'
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
 alias localip='ipconfig getifaddr en1'
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias sniff="ngrep -d 'ens5' -t '^(GET|POST) ' 'tcp and port 80'"
 alias whois='whois -h whois-servers.net'
 alias flush='dscacheutil -flushcache'
-alias httpdump='sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
+alias httpdump='tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
 
 alias fs='du -ShL'
 
