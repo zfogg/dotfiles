@@ -156,6 +156,8 @@ path=(~/.cabal/bin "$path[@]")
 
 path=(~/.gem/ruby/2.0.0/bin "$path[@]")
 
+path=(/usr/lib/colorgcc/bin "$path[@]")
+
 path=($^path(N))
 # }}}
 
