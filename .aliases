@@ -8,6 +8,8 @@ alias ls='ls --color=auto'
 
 alias sudo='nocorrect sudo'
 
+alias s='sudo'
+
 alias vi='vim'
 alias v='vim'
 
@@ -21,7 +23,9 @@ alias zless=$PAGER
 
 alias packer='packer-color'
 
-alias htop="htop -u \$USER"
+alias htop='htop -u $USER'
+
+alias gh="g gh"
 
 # pip2 install pygments
 alias cat='pygmentize -O style=monokai -f console256 -g'
@@ -43,4 +47,4 @@ alias m='make'
 alias mc='make clean'
 alias mt='make test'
 alias M='make clean all'
-alias MM='make clean test' 
+alias MM='make clean test'
