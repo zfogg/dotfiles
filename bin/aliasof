@@ -2,6 +2,6 @@
 # Print the actual value of an alias.
 
 
-. ~/.aliases
+. ~/.zshrc
 
-alias $1 | sed -re "s/.*='?(.*)'?/\1/"
+alias $1 | sed -r "s|$1=(.*)|\1|" | sed -r "s|'||g"
