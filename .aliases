@@ -14,16 +14,14 @@ alias vi='vim'
 alias v='vim'
 
 alias p='pacman'
+alias pp='powerpill'
+alias packer='packer-color'
+alias pa='packer'
 
 alias python=$PYTHON
 
-alias sp='sudo pacman'
-alias spp='sudo powerpill'
-
 alias less=$PAGER
 alias zless=$PAGER
-
-alias packer='packer-color'
 
 alias htop='htop -u $USER'
 
