@@ -253,6 +253,7 @@
     Bundle 'gmarik/vundle'
 
     " Integrate with other programs. {{{2
+        Bundle 'rking/ag.vim'
         Bundle 'tpope/vim-fireplace'
         Bundle 'tpope/vim-fugitive'
         Bundle 'airblade/vim-gitgutter'
