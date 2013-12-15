@@ -138,25 +138,6 @@
 
         " CtrlP. {{{3
             nnoremap <C-F> :CtrlPLine<CR>
-
-            " On Windows use "dir" as fallback command.
-            if has('win32') || has('win64')
-                let g:ctrlp_user_command = {
-                            \ 'types': {
-                            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                            \ },
-                            \ 'fallback': 'dir %s /-n /b /s /a-d'
-                            \ }
-            else
-                let g:ctrlp_user_command = {
-                            \ 'types': {
-                            \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                            \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                            \ },
-                            \ 'fallback': 'find %s -type f'
-                            \ }
-            endif
         " }}}3
 
         " Sessions. {{{3
@@ -571,12 +552,13 @@
     " }}}2
 
     " CtrlP {{{2
-        let g:ctrlp_map = '<c-p>'
-        let g:ctrlp_cmd = 'CtrlP'
-        set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+        let g:ctrlp_map               = '<c-p>'
+        let g:ctrlp_cmd               = 'CtrlP'
+        let g:ctrlp_user_command      = 'ag %s -l --nocolor --hidden -g ""'
         let g:ctrlp_working_path_mode = 'ra'
-        let g:ctrlp_custom_ignore = 'node_modules\|bower_components\|git'
-        let g:ctrlp_extensions = ['mixed', 'tag', 'line', 'dir', 'commandline']
+        let g:ctrlp_custom_ignore     = 'node_modules\|bower_components\|git'
+        let g:ctrlp_extensions        = ['mixed', 'tag', 'line', 'dir', 'commandline']
+        set wildignore+=*/tmp/*,*.so,*.swp,*.zip
     " }}}2
 
     " EasyMotion {{{2
