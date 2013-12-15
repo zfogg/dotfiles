@@ -25,7 +25,9 @@ alias zless=$PAGER
 
 alias htop='htop -u $USER'
 
-alias gh="git gh"
+alias gh='git gh'
+
+alias ag='ag --hidden'
 
 # pip2 install pygments
 alias cat='pygmentize -O style=monokai -f console256 -g'
