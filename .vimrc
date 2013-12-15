@@ -428,7 +428,11 @@
         set incsearch               " Incrementally search while typing a /regex.
     "}}}2
 
-    set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
+    if executable("ag")
+        set grepprg=ag\ --nogroup\ --nocolor
+    else
+        set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
+    endif
 
     " Sessions
     " The 'Session' plugin does this on save.
