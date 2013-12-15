@@ -505,16 +505,15 @@
     " }}}2
 
     " YouCompleteMe {{{2
-        let g:ycm_filepath_completion_use_working_dir      = 1
-        let g:ycm_autoclose_preview_window_after_insertion = 1
-        let g:ycm_register_as_syntastic_checker            = 1
-        let g:ycm_complete_in_comments                     = 1
+        let g:ycm_autoclose_preview_window_after_completion = 1
+        let g:ycm_autoclose_preview_window_after_insertion  = 1
+        let g:ycm_register_as_syntastic_checker             = 1
+        let g:ycm_complete_in_comments                      = 1
 
-        let g:ycm_seed_identifiers_with_syntax             = 1
-        let g:ycm_collect_identifiers_from_tags_files      = 1
+        let g:ycm_seed_identifiers_with_syntax              = 1
+        let g:ycm_collect_identifiers_from_tags_files       = 1
 
-        let g:ycm_global_ycm_extra_conf                    = ''
-        let g:ycm_extra_conf_globlist                      = ['~/code/*', '!~/*']
+        let g:ycm_extra_conf_globlist                       = ['~/code/*']
 
         let g:ycm_semantic_triggers =  {
             \ 'c,objc'                  : ['->', '.'],
