@@ -118,6 +118,7 @@
 
         " Java. {{{3
             nnoremap <Leader>J   :Java<CR>
+            nnoremap <Leader>Jj  :silent! Java<CR>:redraw!<CR>
             nnoremap <Leader>Jc  :JavaCorrect<CR>
             nnoremap <Leader>Ji  :JavaImport<CR>
             nnoremap <Leader>JI  :JavaImpl<CR>
