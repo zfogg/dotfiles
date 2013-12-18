@@ -233,7 +233,7 @@ filetype off " Unload plugins.
 " Key Mappings }}}1
 
 
-" Load Plugins {{{1
+" Define Plugins {{{1
 
     set rtp+=~/.vim/bundle/vundle/
     call vundle#rc()
@@ -292,9 +292,10 @@ filetype off " Unload plugins.
     " }}}2
 
     " Colorschemes. {{{2
+        Bundle 'chriskempson/base16-shell'
         Bundle 'git://github.com/zfogg/vim-eddie.git'
-        Bundle 'google_prettify.vim'
         Bundle 'Pychimp/vim-luna'
+        Bundle 'google_prettify.vim'
         Bundle 'junegunn/seoul256.vim'
         Bundle 'chriskempson/vim-tomorrow-theme'
         Bundle 'altercation/vim-colors-solarized'
