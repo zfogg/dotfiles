@@ -89,7 +89,7 @@ filetype off " Unload plugins.
         nnoremap <a-h> zhh
 
         " It should be very easy to leave `Insert-mode`.
-        inoremap jj <Esc><CR>
+        inoremap jj <Esc>
         inoremap kk <Esc>:w<CR>
 
         " Leaving `Insert-mode` is too much sometimes.
