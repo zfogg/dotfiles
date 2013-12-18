@@ -7,3 +7,6 @@
 [submodule ".z.sh"]
 	path = .z.sh
 	url = gh:rupa/z
+[submodule ".config/base16-shell"]
+	path = .config/base16-shell
+	url = git@github.com:chriskempson/base16-shell.git
