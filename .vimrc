@@ -204,10 +204,10 @@ filetype off " Unload plugins.
         " }}}3
 
         " gitgutter {{{3
-            nnoremap ggs :GitGutterToggle
-            nnoremap ggl :GitGutterLineHighlightsToggle
-            nnoremap +   :GitGutterNextHunk<CR>
-            nnoremap +   :GitGutterPrevHunk<CR>
+            nnoremap <Leader>ggs :GitGutterToggle<CR>
+            nnoremap <Leader>ggl :GitGutterLineHighlightsToggle<CR>
+            nnoremap +           :GitGutterNextHunk<CR>
+            nnoremap -           :GitGutterPrevHunk<CR>
         " }}}3
 
     " }}}2
