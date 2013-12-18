@@ -13,6 +13,13 @@
 " }}}1
 
 
+" Uninitialize Vim {{{1
+
+filetype off " Unload plugins.
+
+" Uninitialize Vim }}}1
+
+
 " Key Mappings {{{1
 
     let mapleader=","
@@ -228,8 +235,6 @@
 
 " Load Plugins {{{1
 
-    filetype off
-
     set rtp+=~/.vim/bundle/vundle/
     call vundle#rc()
 
@@ -323,8 +328,6 @@
         Bundle 'tpope/vim-speeddating'
     " }}}2
 
-    filetype plugin indent on
-
 " Plugins }}}1
 
 
@@ -342,15 +345,6 @@
     " Pretty colors.
     syntax on                     " Smart syntax highlighing.
     set t_Co=256                  " To enable 256bit colors in the console.
-    try                           " Set my colorscheme, if it exists.
-        colorscheme evil-eddie
-    catch /^Vim\%((\a\+)\)\=:E185/
-        try
-            colorscheme jellybeans
-        catch /^Vim\%((\a\+)\)\=:E185/
-            colorscheme desert
-        endtry
-    endtry
 
     " Ignore these files when completing.
     set wildignore+=*.o,*.obj,.git,*.pyc,*.class,*~
@@ -359,6 +353,7 @@
     set noerrorbells visualbell t_vb=
     autocmd GUIEnter * set visualbell t_vb=
 
+    " Save change history so you can <Undo> after you closed vim or reboot.
     if has('persistent_undo')
         set undofile undodir=$HOME/.vim/.undo,.,/var/tmp,/tmp
     endif
@@ -868,4 +863,21 @@
     augroup END
 
 " Filetype Settings }}}1
+
+
+" Initialize Vim {{{1
+
+    filetype plugin indent on           " Load plugins.
+
+    try                                 " Fall back to preferred colorschemes.
+        colorscheme evil-eddie
+    catch /^Vim\%((\a\+)\)\=:E185/
+        try
+            colorscheme jellybeans
+        catch /^Vim\%((\a\+)\)\=:E185/
+            colorscheme desert256
+        endtry
+    endtry
+
+" Initialize Vim }}}1
 
