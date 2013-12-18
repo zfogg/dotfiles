@@ -13,6 +13,8 @@ alias s='sudo'
 alias vi='vim'
 alias v='vim'
 
+alias t='tmux'
+
 alias p='pacman'
 alias pp='powerpill'
 alias packer='packer-color'
