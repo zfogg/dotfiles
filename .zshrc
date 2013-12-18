@@ -30,6 +30,13 @@ plugins=(archlinux bower battery cabal cake coffee colored-man colorize cp
 # }}}
 
 
+# base16-shell {{{
+BASE16_SCHEME="default"
+BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
+[[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
+# }}}
+
+
 # Options. {{{
 setopt COMPLETE_ALIASES
 

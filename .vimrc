@@ -881,10 +881,10 @@ filetype off " Unload plugins.
 
 " Initialize Vim {{{1
 
-    filetype plugin indent on           " Load plugins.
-
     try                                 " Fall back to preferred colorschemes.
-        colorscheme evil-eddie
+        set background=dark
+        let base16colorspace=256        " Access colors present in 256 colorspace
+        colorscheme base16-default
     catch /^Vim\%((\a\+)\)\=:E185/
         try
             colorscheme jellybeans
@@ -892,6 +892,8 @@ filetype off " Unload plugins.
             colorscheme desert256
         endtry
     endtry
+
+    filetype plugin indent on           " Load plugins.
 
 " Initialize Vim }}}1
 
