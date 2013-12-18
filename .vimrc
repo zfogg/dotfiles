@@ -203,9 +203,11 @@ filetype off " Unload plugins.
                         \ }
         " }}}3
 
-        " gitgutter {{{2
-        " }}}2
-        
+        " gitgutter {{{3
+            nnoremap + :GitGutterNextHunk<CR>
+            nnoremap + :GitGutterPrevHunk<CR>
+        " }}}3
+
     " }}}2
 
     " Et cetera. {{{2
