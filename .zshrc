@@ -5,7 +5,7 @@
 # oh-my-zsh {{{
 ZSH=~/.oh-my-zsh
 
-ZSH_THEME=junkfood
+ZSH_THEME=sporty_256
 
 DISABLE_AUTO_UPDATE=true
 
