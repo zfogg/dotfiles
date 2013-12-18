@@ -1,25 +1,27 @@
 [user]
-	email = zach.fogg@gmail.com
-	name = Zach Fogg
+    email = zach.fogg@gmail.com
+    name = Zach Fogg
 
 [alias]
     gh = !sh -c 'git clone git@github.com:$1' -
+    submclean = !git submodule foreach "git reset --hard"
+    submsync = !git submodule foreach "git checkout master && git pull origin master"
 
 [push]
-	default = upstream
+    default = upstream
 
 [core]
-	editor = vim
-	pager = vimpager
-	excludesfile = ~/.gitignore_global
+    editor = vim
+    pager = vimpager
+    excludesfile = ~/.gitignore_global
     eol = lf
-	autocrlf = input
+    autocrlf = input
 
 [diff]
-	tool = vimdiff
+    tool = vimdiff
 
 [merge]
-	tool = vimdiff
+    tool = vimdiff
 
 [color]
-	ui = true
+    ui = true
