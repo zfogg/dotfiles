@@ -292,7 +292,7 @@ filetype off " Unload plugins.
     " }}}2
 
     " Colorschemes. {{{2
-        Bundle 'chriskempson/base16-shell'
+        Bundle 'chriskempson/base16-vim'
         Bundle 'git://github.com/zfogg/vim-eddie.git'
         Bundle 'Pychimp/vim-luna'
         Bundle 'google_prettify.vim'
