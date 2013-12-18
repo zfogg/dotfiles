@@ -20,6 +20,7 @@
     " Opening, reading, writing, and closing. {{{2
         " Write from normal mode.
         map <Leader>w :w<CR>
+        map <Leader>W :silent! w<CR>
 
         " Write with sudo.
         cmap w! w !sudo tee % >/dev/null
@@ -461,7 +462,9 @@
     " }}}2
 
     " Slime {{{2
-        let g:slime_config = {"sessionname": "repl", "windowname": "1"}
+        "let g:slime_config    = {"sessionname": "repl", "windowname": "1"}
+        let g:slime_target     = "tmux"
+        let g:slime_paste_file = tempname()
     " }}}2
 
     " Indent-Guides {{{2
@@ -526,6 +529,16 @@
             \ 'python'                  : ['.'],
             \ 'vim'                     : ['.'],
         \ }
+
+        let g:ycm_filetype_blacklist = {
+            \ 'tagbar':   1,
+            \ 'qf':       1,
+            \ 'notes':    1,
+            \ 'markdown': 1,
+            \ 'unite':    1,
+            \ 'text':     1,
+            \ 'vimwiki':  1,
+        \}
     " }}}2
 
     " Syntastic {{{2
@@ -835,6 +848,7 @@
         au FileType haskell setl sw=4 ts=4 sts=4 si
         au BufRead,BufNewFile *.hs compiler ghc
         au BufWritePost *.hs,*.hsc silent !fast-tags %
+        au BufWritePost *.hs,*.hsc SlimeSend1 :r
     augroup END
 
     augroup Jade
