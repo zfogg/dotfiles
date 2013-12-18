@@ -170,6 +170,10 @@ path=($^path(N))
 
 
 # Environment variables. {{{
+if [ "$TERM" != "st-256color" ]; then
+    export TERM=xterm-256color
+fi
+
 export EDITOR=vim
 
 export VISUAL=vim
