@@ -55,10 +55,15 @@ filetype off " Unload plugins.
     " Yanking and pasting. {{{2
         " Copy to system clipboard.
         map <Leader>y "+y
+
         " Paste from system clipboard.
         map <Leader>p "+p
+
         " Easily yank from cursor to EOL.
         nnoremap Y y$
+
+        " Retain " register after pasting.
+        xnoremap <expr> p v:register=='"'?'pgvy':'p'
     " }}}2
 
     " Cursor motion. {{{2
@@ -83,9 +88,16 @@ filetype off " Unload plugins.
         nnoremap <a-l> zll
         nnoremap <a-h> zhh
 
-        " Leaving insert mode is too much sometimes.
+        " It should be very easy to leave `Insert-mode`.
+        inoremap jj <Esc><CR>
+        inoremap kk <Esc>:w<CR>
+
+        " Leaving `Insert-mode` is too much sometimes.
         inoremap HH <c-o>^
         inoremap LL <c-o>$
+
+        " Jump to matching pairs easily with tab.
+        vnoremap <Tab> %
     " }}}2
 
     " Folds. {{{2
@@ -93,11 +105,21 @@ filetype off " Unload plugins.
         vnoremap <Space> za
     " }}}2
 
-    " Tabs. {{{2
-        nmap <Leader>t :tabnew<CR>
-        nmap <Leader>x :tabclose<CR>
-        nmap <Leader>j :tabprevious<CR>
-        nmap <Leader>k :tabnext<CR>
+    " Tabs and splits. {{{2
+        nnoremap <Leader>t :tabnew<CR>
+        nnoremap <Leader>x :tabclose<CR>
+        nnoremap <Leader>j :tabprevious<CR>
+        nnoremap <Leader>k :tabnext<CR>
+
+        " Resize splits.
+        nnoremap <S-Up>    5<C-W>+
+        nnoremap <S-Down>  5<C-W>-
+        nnoremap <S-Right> 5<C-W>>
+        nnoremap <S-Left>  5<C-W><
+        nnoremap   <Up>     <C-W>+
+        nnoremap   <Down>   <C-W>-
+        nnoremap   <Right>  <C-W>>
+        nnoremap   <Left>   <C-W><
     " }}}2
 
     " :make. {{{2
@@ -181,6 +203,9 @@ filetype off " Unload plugins.
                         \ }
         " }}}3
 
+        " gitgutter {{{2
+        " }}}2
+        
     " }}}2
 
     " Et cetera. {{{2
@@ -188,25 +213,16 @@ filetype off " Unload plugins.
         nnoremap <silent><Leader>V  :source ~/.vimrc<CR>:filetype detect<CR>:echo 'vimrc reloaded'<CR>
         nnoremap <silent><Leader>Gv :source ~/.gvimrc<CR>:filetype detect<CR>:echo 'gvimrc reloaded'<CR>
 
-        " Leave insert mode.
-        inoremap jj <Esc>:w<CR>
-
-        " Jump to matching pairs easily with tab.
-        vnoremap <Tab> %
+        " Previous matching command or search.
+        cnoremap kk <Up>
 
         " Enter Replace mode from Visual mode.
         vnoremap R r<Space>R
 
-        " Cursor isn't moved from a . command.
+        " Don't let `single-repeat` disturb the cursor's location.
         nnoremap . .`[
 
-        " Retain " register after pasting.
-        xnoremap <expr> p v:register=='"'?'pgvy':'p'
-
-        " Jump forward, since autocomplete plugins clobber <Tab>.
-        nnoremap <Tab> <c-i>
-
-        " From insert mode, a command will work like in command mode.
+        " One less keypress to do use `Command-mode` from `Insert-mode`.
         imap <C-W> <C-O><C-W>
 
         " Delete trailing whitespace.
@@ -214,14 +230,7 @@ filetype off " Unload plugins.
 
         " Fixes for display glitches.
         nnoremap <Leader><Space> :nohlsearch<CR>
-        nnoremap <Leader>rd :redraw!<CR>
-
-        " Resize windows.
-        nmap <S-Up>    <C-W>+
-        nmap <S-Down>  <C-W>-
-        nmap <S-Right> <C-W>>
-        nmap <S-Left>  <C-W><
-
+        nnoremap <Leader>rd      :redraw!<CR>
         " Set the background to transparent.
         nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
 
