@@ -47,6 +47,8 @@ alias httpdump='tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*
 
 alias fs='du -ShL'
 
+alias make='colormake-short'
+
 alias m='make'
 alias mc='make clean'
 alias mt='make test'
