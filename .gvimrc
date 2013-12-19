@@ -12,7 +12,7 @@
 " ==========================================================
 
 try
-    colorscheme Tomorrow-Night-Bright
+    colorscheme base16-default
 catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme jellybeans
 endtry
