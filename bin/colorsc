@@ -1,0 +1,43 @@
+#!/bin/zsh
+
+
+function _colorsc() {
+    . ~/.config/base16-shell/base16-$1.dark.sh
+}
+
+function _usage() {
+    echo "usage: colorsc [-h|--help] [option]"
+    echo ""
+    echo "    options:"
+    echo "        pop"
+    echo "        shell"
+    echo "        chalk"
+    echo "        mocha"
+    echo "        ocean"
+    echo "        bright"
+    echo "        default"
+    echo "        monokai"
+    echo "        eighties"
+    echo "        tomorrow"
+    echo "        solarized"
+    echo "        railscasts"
+    echo "        greenscreen"
+    echo ""
+}
+
+if [[ "$1" == "" ]]; then
+    _usage
+    exit
+fi
+
+case "$1" in
+    --help)
+        ;&
+    -h)
+        _usage
+        exit
+        ;&
+    *)
+        _colorsc $1
+        ;&
+esac
