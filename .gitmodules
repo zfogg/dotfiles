@@ -1,12 +1,16 @@
 [submodule ".vim/bundle/vundle"]
+    ignore = dirty
 	path = .vim/bundle/vundle
 	url = https://github.com/gmarik/vundle
 [submodule ".oh-my-zsh"]
+    ignore = dirty
 	path = .oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh
 [submodule ".z.sh"]
+    ignore = dirty
 	path = .z.sh
 	url = gh:rupa/z
 [submodule ".config/base16-shell"]
+    ignore = dirty
 	path = .config/base16-shell
 	url = git@github.com:chriskempson/base16-shell.git
