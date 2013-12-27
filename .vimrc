@@ -119,6 +119,7 @@
         " Java. {{{3
             nnoremap <Leader>J   :Java<CR>
             nnoremap <Leader>Jj  :silent! Java<CR>:redraw!<CR>
+            nnoremap <Leader>Ju  :silent! JUnit<CR>:redraw!<CR>
             nnoremap <Leader>Jc  :JavaCorrect<CR>
             nnoremap <Leader>Ji  :JavaImport<CR>
             nnoremap <Leader>JI  :JavaImpl<CR>
@@ -449,7 +450,9 @@
 " Plugin Settings {{{1
 
     " Eclim {{{2
-        let g:EclimCompletionMethod = 'omnifunc'
+        let g:EclimCompletionMethod        = 'omnifunc'
+        let g:EclimMavenPomClasspathUpdate = 1
+
     " }}}2
 
     " NERDTree {{{2
