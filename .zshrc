@@ -2,31 +2,15 @@
 # vim: set fdm=marker:
 
 
-# oh-my-zsh {{{
-ZSH=~/.oh-my-zsh
-
-ZSH_THEME=junkfood
-
-DISABLE_AUTO_UPDATE=true
-
-COMPLETION_WAITING_DOTS=true
-
-DISABLE_CORRECTION=true
-
-DISABLE_UNTRACKED_FILES_DIRTY=true
-
-plugins=(archlinux bower battery cabal cake coffee colored-man colorize cp
-         custom-aliases django extract gem gitfast git-extras git-flow go
-         heroku history-substring-search lein node npm pip python redis-cli
-         svn systemd tmux themes urltools vi-mode web-search
-         zsh-syntax-highlighting)
-
-. $ZSH/oh-my-zsh.sh
+# z.sh {{{
+. ~/.z.sh/z.sh
 # }}}
 
 
-# z.sh {{{
-. ~/.z.sh/z.sh
+# base16-shell {{{
+BASE16_SCHEME="default"
+BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
+[[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
 # }}}
 
 
@@ -63,43 +47,6 @@ setopt VI
 
 
 # Prompt. {{{
-# }}}
-
-
-# Syntax highlighting. {{{
-if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
-    # aur/zsh-syntax-highlighting
-    #   # Remember to make a symlink:
-    #   $ ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting \
-    #           ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
-
-    ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root)
-
-    ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' fg=white,bold,bg=red)
-    ZSH_HIGHLIGHT_PATTERNS+=('sudo *'   fg=white,bold,bg=blue)
-
-    ZSH_HIGHLIGHT_STYLES[default]=none
-    ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
-    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=009,standout
-    ZSH_HIGHLIGHT_STYLES[alias]=fg=white,bold
-    ZSH_HIGHLIGHT_STYLES[builtin]=fg=white,bold
-    ZSH_HIGHLIGHT_STYLES[function]=fg=white,bold
-    ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
-    ZSH_HIGHLIGHT_STYLES[precommand]=fg=white,underline
-    ZSH_HIGHLIGHT_STYLES[commandseparator]=none
-    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=009
-    ZSH_HIGHLIGHT_STYLES[path]=fg=214,underline
-    ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
-    ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=white,underline
-    ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=none
-    ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=none
-    ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
-    ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=063
-    ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=063
-    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=009
-    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
-    #ZSH_HIGHLIGHT_STYLES[assign]=none
-fi
 # }}}
 
 
@@ -152,6 +99,10 @@ path=(~/bin "$path[@]")
 
 path=(~/sbin "$path[@]")
 
+path=(~/usr/bin "$path[@]")
+
+path=(~/usr/sbin "$path[@]")
+
 path=(~/.cabal/bin "$path[@]")
 
 path=(~/.gem/ruby/2.0.0/bin "$path[@]")
@@ -163,6 +114,10 @@ path=($^path(N))
 
 
 # Environment variables. {{{
+if [ "$TERM" != "st-256color" ]; then
+    export TERM=xterm-256color
+fi
+
 export EDITOR=vim
 
 export VISUAL=vim
@@ -180,6 +135,8 @@ export VDPAU_DRIVER=r600
 export PYTHON=`which python2`
 
 export GEM_HOME=~/.gem/ruby/2.0.0
+
+export CHROME_BIN=`which chromium`
 # }}}
 
 
@@ -192,3 +149,64 @@ export GEM_HOME=~/.gem/ruby/2.0.0
 # Load aur/command-not-found.
 [ -r /etc/profile.d/cnf.sh ] && . /etc/profile.d/cnf.sh
 # }}}
+
+
+# oh-my-zsh {{{
+ZSH=~/.oh-my-zsh
+
+ZSH_THEME=sporty_256
+
+DISABLE_AUTO_UPDATE=true
+
+COMPLETION_WAITING_DOTS=true
+
+DISABLE_CORRECTION=true
+
+DISABLE_UNTRACKED_FILES_DIRTY=true
+
+plugins=(archlinux bower battery cabal cake coffee colored-man colorize cp
+         custom-aliases django extract gem gitfast git-extras git-flow go
+         heroku history-substring-search lein node npm pip python redis-cli
+         svn systemd tmux themes urltools vi-mode web-search
+         zsh-syntax-highlighting)
+
+. $ZSH/oh-my-zsh.sh
+# }}}
+
+
+# Syntax highlighting. {{{
+if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
+    # aur/zsh-syntax-highlighting
+    #   # Remember to make a symlink:
+    #   $ ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting \
+    #           ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
+
+    ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root)
+
+    ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' fg=black,bold,bg=red)
+    ZSH_HIGHLIGHT_PATTERNS+=('sudo *'   fg=white,bold,bg=red)
+
+    ZSH_HIGHLIGHT_STYLES[default]=none
+    ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
+    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=009,standout
+    ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
+    ZSH_HIGHLIGHT_STYLES[builtin]=fg=white,bold,bg=yellow
+    ZSH_HIGHLIGHT_STYLES[function]=fg=white,bold,bg=cyan
+    ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
+    ZSH_HIGHLIGHT_STYLES[precommand]=fg=white,underline
+    ZSH_HIGHLIGHT_STYLES[commandseparator]=none
+    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=009
+    ZSH_HIGHLIGHT_STYLES[path]=fg=214,underline
+    ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
+    ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=white,underline
+    ZSH_HIGHLIGHT_STYLES[single-hyphen-option]=none
+    ZSH_HIGHLIGHT_STYLES[double-hyphen-option]=none
+    ZSH_HIGHLIGHT_STYLES[back-quoted-argument]=none
+    ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=063
+    ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=063
+    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=009
+    ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
+    #ZSH_HIGHLIGHT_STYLES[assign]=none
+fi
+# }}}
+

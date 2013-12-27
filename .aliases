@@ -13,6 +13,8 @@ alias s='sudo'
 alias vi='vim'
 alias v='vim'
 
+alias t='tmux'
+
 alias p='pacman'
 alias pp='powerpill'
 alias packer='packer-color'
@@ -45,6 +47,8 @@ alias httpdump='tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*
 
 alias fs='du -ShL'
 
+alias make='colormake-short'
+
 alias m='make'
 alias mc='make clean'
 alias mt='make test'
@@ -52,3 +56,4 @@ alias M='make clean all'
 alias MM='make clean test'
 
 alias mvn='mvn-color'
+alias idea='vim ~/Dropbox/ideas.md'

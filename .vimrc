@@ -13,6 +13,13 @@
 " }}}1
 
 
+" Uninitialize Vim {{{1
+
+filetype off " Unload plugins.
+
+" Uninitialize Vim }}}1
+
+
 " Key Mappings {{{1
 
     let mapleader=","
@@ -20,6 +27,7 @@
     " Opening, reading, writing, and closing. {{{2
         " Write from normal mode.
         map <Leader>w :w<CR>
+        map <Leader>W :silent! w<CR>
 
         " Write with sudo.
         cmap w! w !sudo tee % >/dev/null
@@ -47,10 +55,15 @@
     " Yanking and pasting. {{{2
         " Copy to system clipboard.
         map <Leader>y "+y
+
         " Paste from system clipboard.
         map <Leader>p "+p
+
         " Easily yank from cursor to EOL.
         nnoremap Y y$
+
+        " Retain " register after pasting.
+        xnoremap <expr> p v:register=='"'?'pgvy':'p'
     " }}}2
 
     " Cursor motion. {{{2
@@ -75,9 +88,16 @@
         nnoremap <a-l> zll
         nnoremap <a-h> zhh
 
-        " Leaving insert mode is too much sometimes.
+        " It should be very easy to leave `Insert-mode`.
+        inoremap jj <Esc>
+        inoremap kk <Esc>:w<CR>
+
+        " Leaving `Insert-mode` is too much sometimes.
         inoremap HH <c-o>^
         inoremap LL <c-o>$
+
+        " Jump to matching pairs easily with tab.
+        vnoremap <Tab> %
     " }}}2
 
     " Folds. {{{2
@@ -85,11 +105,21 @@
         vnoremap <Space> za
     " }}}2
 
-    " Tabs. {{{2
-        nmap <Leader>t :tabnew<CR>
-        nmap <Leader>x :tabclose<CR>
-        nmap <Leader>j :tabprevious<CR>
-        nmap <Leader>k :tabnext<CR>
+    " Tabs and splits. {{{2
+        nnoremap <Leader>t :tabnew<CR>
+        nnoremap <Leader>x :tabclose<CR>
+        nnoremap <Leader>j :tabprevious<CR>
+        nnoremap <Leader>k :tabnext<CR>
+
+        " Resize splits.
+        nnoremap <S-Up>    5<C-W>+
+        nnoremap <S-Down>  5<C-W>-
+        nnoremap <S-Right> 5<C-W>>
+        nnoremap <S-Left>  5<C-W><
+        nnoremap   <Up>     <C-W>+
+        nnoremap   <Down>   <C-W>-
+        nnoremap   <Right>  <C-W>>
+        nnoremap   <Left>   <C-W><
     " }}}2
 
     " :make. {{{2
@@ -174,6 +204,13 @@
                         \ }
         " }}}3
 
+        " gitgutter {{{3
+            nnoremap <Leader>ggs :GitGutterToggle<CR>
+            nnoremap <Leader>ggl :GitGutterLineHighlightsToggle<CR>
+            nnoremap +           :GitGutterNextHunk<CR>
+            nnoremap -           :GitGutterPrevHunk<CR>
+        " }}}3
+
     " }}}2
 
     " Et cetera. {{{2
@@ -181,25 +218,16 @@
         nnoremap <silent><Leader>V  :source ~/.vimrc<CR>:filetype detect<CR>:echo 'vimrc reloaded'<CR>
         nnoremap <silent><Leader>Gv :source ~/.gvimrc<CR>:filetype detect<CR>:echo 'gvimrc reloaded'<CR>
 
-        " Leave insert mode.
-        inoremap jj <Esc>:w<CR>
-
-        " Jump to matching pairs easily with tab.
-        vnoremap <Tab> %
+        " Previous matching command or search.
+        cnoremap kk <Up>
 
         " Enter Replace mode from Visual mode.
         vnoremap R r<Space>R
 
-        " Cursor isn't moved from a . command.
+        " Don't let `single-repeat` disturb the cursor's location.
         nnoremap . .`[
 
-        " Retain " register after pasting.
-        xnoremap <expr> p v:register=='"'?'pgvy':'p'
-
-        " Jump forward, since autocomplete plugins clobber <Tab>.
-        nnoremap <Tab> <c-i>
-
-        " From insert mode, a command will work like in command mode.
+        " One less keypress to do use `Command-mode` from `Insert-mode`.
         imap <C-W> <C-O><C-W>
 
         " Delete trailing whitespace.
@@ -207,14 +235,7 @@
 
         " Fixes for display glitches.
         nnoremap <Leader><Space> :nohlsearch<CR>
-        nnoremap <Leader>rd :redraw!<CR>
-
-        " Resize windows.
-        nmap <S-Up>    <C-W>+
-        nmap <S-Down>  <C-W>-
-        nmap <S-Right> <C-W>>
-        nmap <S-Left>  <C-W><
-
+        nnoremap <Leader>rd      :redraw!<CR>
         " Set the background to transparent.
         nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
 
@@ -226,9 +247,7 @@
 " Key Mappings }}}1
 
 
-" Load Plugins {{{1
-
-    filetype off
+" Define Plugins {{{1
 
     set rtp+=~/.vim/bundle/vundle/
     call vundle#rc()
@@ -287,9 +306,10 @@
     " }}}2
 
     " Colorschemes. {{{2
+        Bundle 'chriskempson/base16-vim'
         Bundle 'git://github.com/zfogg/vim-eddie.git'
-        Bundle 'google_prettify.vim'
         Bundle 'Pychimp/vim-luna'
+        Bundle 'google_prettify.vim'
         Bundle 'junegunn/seoul256.vim'
         Bundle 'chriskempson/vim-tomorrow-theme'
         Bundle 'altercation/vim-colors-solarized'
@@ -323,8 +343,6 @@
         Bundle 'tpope/vim-speeddating'
     " }}}2
 
-    filetype plugin indent on
-
 " Plugins }}}1
 
 
@@ -342,15 +360,6 @@
     " Pretty colors.
     syntax on                     " Smart syntax highlighing.
     set t_Co=256                  " To enable 256bit colors in the console.
-    try                           " Set my colorscheme, if it exists.
-        colorscheme evil-eddie
-    catch /^Vim\%((\a\+)\)\=:E185/
-        try
-            colorscheme jellybeans
-        catch /^Vim\%((\a\+)\)\=:E185/
-            colorscheme desert
-        endtry
-    endtry
 
     " Ignore these files when completing.
     set wildignore+=*.o,*.obj,.git,*.pyc,*.class,*~
@@ -359,6 +368,7 @@
     set noerrorbells visualbell t_vb=
     autocmd GUIEnter * set visualbell t_vb=
 
+    " Save change history so you can <Undo> after you closed vim or reboot.
     if has('persistent_undo')
         set undofile undodir=$HOME/.vim/.undo,.,/var/tmp,/tmp
     endif
@@ -465,7 +475,9 @@
     " }}}2
 
     " Slime {{{2
-        let g:slime_config = {"sessionname": "repl", "windowname": "1"}
+        "let g:slime_config    = {"sessionname": "repl", "windowname": "1"}
+        let g:slime_target     = "tmux"
+        let g:slime_paste_file = tempname()
     " }}}2
 
     " Indent-Guides {{{2
@@ -530,6 +542,16 @@
             \ 'python'                  : ['.'],
             \ 'vim'                     : ['.'],
         \ }
+
+        let g:ycm_filetype_blacklist = {
+            \ 'tagbar':   1,
+            \ 'qf':       1,
+            \ 'notes':    1,
+            \ 'markdown': 1,
+            \ 'unite':    1,
+            \ 'text':     1,
+            \ 'vimwiki':  1,
+        \}
     " }}}2
 
     " Syntastic {{{2
@@ -839,6 +861,7 @@
         au FileType haskell setl sw=4 ts=4 sts=4 si
         au BufRead,BufNewFile *.hs compiler ghc
         au BufWritePost *.hs,*.hsc silent !fast-tags %
+        au BufWritePost *.hs,*.hsc SlimeSend1 :r
     augroup END
 
     augroup Jade
@@ -857,4 +880,23 @@
     augroup END
 
 " Filetype Settings }}}1
+
+
+" Initialize Vim {{{1
+
+    try                                 " Fall back to preferred colorschemes.
+        set background=dark
+        let base16colorspace=256        " Access colors present in 256 colorspace
+        colorscheme base16-default
+    catch /^Vim\%((\a\+)\)\=:E185/
+        try
+            colorscheme jellybeans
+        catch /^Vim\%((\a\+)\)\=:E185/
+            colorscheme desert256
+        endtry
+    endtry
+
+    filetype plugin indent on           " Load plugins.
+
+" Initialize Vim }}}1
 
