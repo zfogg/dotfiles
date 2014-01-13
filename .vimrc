@@ -142,7 +142,7 @@ filetype off " Unload plugins.
             nmap <Leader>gl :Glog<CR>
             nmap <Leader>gs :Gstatus<CR>
             nmap <Leader>gR :Gread<CR>
-            nmap <Leader>gW :Gwrite<CR>
+            nmap <Leader>gW :Gwrite<CR>:e<CR>
             nmap <Leader>gp :Git push<CR>
         " }}}3
 
