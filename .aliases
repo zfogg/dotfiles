@@ -55,4 +55,5 @@ alias mt='make test'
 alias M='make clean all'
 alias MM='make clean test'
 
+alias mvn='mvn-color'
 alias idea='vim ~/Dropbox/ideas.md'
