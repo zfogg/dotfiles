@@ -105,9 +105,11 @@ path=(~/usr/sbin "$path[@]")
 
 path=(~/.cabal/bin "$path[@]")
 
-path=(~/.gem/ruby/2.0.0/bin "$path[@]")
+path=(~/.gem/ruby/2.1.0/bin "$path[@]")
 
 path=(/usr/lib/colorgcc/bin "$path[@]")
+
+path=(~/pebble/bin "$path[@]")
 
 path=($^path(N))
 # }}}
@@ -134,7 +136,7 @@ export VDPAU_DRIVER=r600
 
 export PYTHON=`which python2`
 
-export GEM_HOME=~/.gem/ruby/2.0.0
+export GEM_HOME=~/.gem/ruby/2.1.0
 
 export CHROME_BIN=`which chromium`
 # }}}
@@ -210,3 +212,5 @@ if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
 fi
 # }}}
 
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
