@@ -54,10 +54,10 @@ filetype off " Unload plugins.
 
     " Yanking and pasting. {{{2
         " Copy to system clipboard.
-        map <Leader>y "+y
+        noremap <Leader>y "+y
 
         " Paste from system clipboard.
-        map <Leader>p "+p
+        noremap <Leader>p "+p
 
         " Easily yank from cursor to EOL.
         nnoremap Y y$
@@ -329,8 +329,8 @@ filetype off " Unload plugins.
         Bundle 'Raimondi/delimitMate'
         Bundle 'tsaleh/vim-matchit'
         Bundle 'scrooloose/nerdcommenter'
+        Bundle 'wellle/targets.vim'
         Bundle 'tpope/vim-surround'
-        Bundle 'lucapette/vim-textobj-underscore'
         Bundle 'kana/vim-textobj-indent'
         Bundle 'tpope/vim-unimpaired'
     " }}}2
