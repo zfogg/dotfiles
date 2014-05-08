@@ -1,7 +1,7 @@
 #!/bin/sh
 
-export BROWSER=chromium
-export DE=openbox
+export BROWSER="chromium"
+export DE="gnome"
 
 
 # Map capslock to left-control.

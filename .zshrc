@@ -111,6 +111,12 @@ path=(/usr/lib/colorgcc/bin "$path[@]")
 
 path=(~/pebble/bin "$path[@]")
 
+path=(~/android-sdk/platform-tools "$path[@]")
+
+path=(~/android-sdk/build-tools "$path[@]")
+
+path=(~/go/bin "$path[@]")
+
 path=($^path(N))
 # }}}
 
@@ -139,6 +145,8 @@ export PYTHON=`which python2`
 export GEM_HOME=~/.gem/ruby/2.1.0
 
 export CHROME_BIN=`which chromium`
+
+export GOPATH=~/go
 # }}}
 
 

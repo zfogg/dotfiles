@@ -242,6 +242,10 @@ filetype off " Unload plugins.
         " Change to the directory of the current buffer's file.
         nnoremap <Leader>lcd :lcd %:p:h<CR>
         nnoremap <Leader>cd  :cd  %:p:h<CR>
+
+        " omnicomplete
+        imap </            <C-_>
+        nnoremap <Leader>/ <C-_>
     " }}}2
 
 " Key Mappings }}}1
@@ -291,6 +295,7 @@ filetype off " Unload plugins.
         Bundle 'guns/vim-clojure-static'
         Bundle 'kchmck/vim-coffee-script'
         Bundle 'ap/vim-css-color'
+        Bundle 'closetag.vim'
         Bundle 'mattn/emmet-vim'
         Bundle 'eagletmt/ghcmod-vim'
         Bundle 'lukerandall/haskellmode-vim'
@@ -300,9 +305,10 @@ filetype off " Unload plugins.
         Bundle 'jelera/vim-javascript-syntax'
         Bundle 'groenewege/vim-less'
         Bundle 'plasticboy/vim-markdown'
-        Bundle 'juvenn/mustache'
+        Bundle 'mustache/vim-mustache-handlebars'
         Bundle 'wavded/vim-stylus'
         "Bundle 'marijnh/tern_for_vim'
+        Bundle 'xmledit'
     " }}}2
 
     " Colorschemes. {{{2
@@ -327,7 +333,7 @@ filetype off " Unload plugins.
         Bundle 'junegunn/vim-easy-align'
         Bundle 'tommcdo/vim-exchange'
         Bundle 'Raimondi/delimitMate'
-        Bundle 'tsaleh/vim-matchit'
+        Bundle 'tmhedberg/matchit'
         Bundle 'scrooloose/nerdcommenter'
         Bundle 'wellle/targets.vim'
         Bundle 'tpope/vim-surround'
@@ -839,7 +845,9 @@ filetype off " Unload plugins.
         au!
         au FileType html,xhtml,xml,css setl expandtab sw=4 ts=4 sts=4
         " Templating languages.
-        au FileType mustache,handlebars setl expandtab sw=4 ts=4 sts=4
+        au FileType mustache,handlebars,hbs setl expandtab sw=4 ts=4 sts=4
+        au FileType mustache,handlebars,hbs let b:closetag_html_style=1
+        au BufReadPost *.html,*.xhtml,*.xml,*.hbs,*.erb source ~/.vim/bundle/closetag.vim/plugin/closetag.vim
     augroup END
 
     augroup Python
