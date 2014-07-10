@@ -95,6 +95,8 @@ bindkey '\e[4~' end-of-line
 # $PATH directories. {{{
 typeset -U path
 
+path=(/usr/local/bin "$path[@]")
+
 path=(~/bin "$path[@]")
 
 path=(~/sbin "$path[@]")
@@ -122,6 +124,9 @@ path=($^path(N))
 
 
 # Environment variables. {{{
+
+export OSX=`[ $(uname) = "Darwin" ]; echo $?`
+
 if [ "$TERM" != "st-256color" ]; then
     export TERM=xterm-256color
 fi
@@ -134,13 +139,17 @@ export PAGER=vimpager
 
 export LESS='-R'
 
-eval $(dircolors -b) # Generate and set `$LS_COLORS`.
+if [ "$OSX" ]; then
+    export VIM_APP_DIR="/Applications/MacVim"
+    export PYTHON=`which python`
+else
+    eval $(dircolors -b) # Generate and set `$LS_COLORS`.
+    export PYTHON=`which python2`
+fi
 
 # Enable video acceleration.
 export LIBVA_DRIVER_NAME=vdpau
 export VDPAU_DRIVER=r600
-
-export PYTHON=`which python2`
 
 export GEM_HOME=~/.gem/ruby/2.1.0
 
@@ -174,11 +183,17 @@ DISABLE_CORRECTION=true
 
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
-plugins=(archlinux bower battery cabal cake coffee colored-man colorize cp
-         custom-aliases django extract gem gitfast git-extras git-flow go
-         heroku history-substring-search lein node npm pip python redis-cli
-         svn systemd tmux themes urltools vi-mode web-search
-         zsh-syntax-highlighting)
+if [ "$OSX" ]; then
+    plugins=(bower battery brew bundler cabal cake coffee colorize cp gem git-extras git-flow-avh
+             git github gnu-utils golang history-substring-search macports mvn node npm osx pip postgres
+             python rails rake ruby rvm sudo tmux vi-mode xcode z)
+else
+    plugins=(archlinux bower battery bundler cabal cake coffee colored-man colorize cp
+            custom-aliases django extract gem gitfast git-extras git-flow go
+            heroku history-substring-search lein node npm pip python redis-cli
+            svn systemd tmux themes urltools vi-mode web-search
+            zsh-syntax-highlighting)
+fi
 
 . $ZSH/oh-my-zsh.sh
 # }}}
