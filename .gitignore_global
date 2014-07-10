@@ -5,6 +5,8 @@
 *.class
 tags
 
+.DS_Store
+
 node_modules/*
 
 bower_components/*

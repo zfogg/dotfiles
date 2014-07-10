@@ -78,8 +78,8 @@ filetype off " Unload plugins.
         nnoremap k gk
 
         " Scroll through items in the locations list.
-        nnoremap <up>   :lprev<CR>
-        nnoremap <down> :lnext<CR>
+        nmap <Leader>< <Plug>LocationPrevious
+        nmap <Leader>> <Plug>LocationNext
 
         " A 'scrolling' effect.
         " FIXME: doesn't really work with in my term+tmux setup.
@@ -147,13 +147,13 @@ filetype off " Unload plugins.
         " }}}3
 
         " Java. {{{3
-            nnoremap <Leader>J   :Java<CR>
-            nnoremap <Leader>Jj  :silent! Java<CR>:redraw!<CR>
-            nnoremap <Leader>Ju  :silent! JUnit<CR>:redraw!<CR>
-            nnoremap <Leader>Jc  :JavaCorrect<CR>
-            nnoremap <Leader>Ji  :JavaImport<CR>
-            nnoremap <Leader>JI  :JavaImpl<CR>
-            nnoremap <Leader>Jgs :JavaGetSet<CR>
+            "nnoremap <Leader>J   :Java<CR>
+            "nnoremap <Leader>Jj  :silent! Java<CR>:redraw!<CR>
+            "nnoremap <Leader>Ju  :silent! JUnit<CR>:redraw!<CR>
+            "nnoremap <Leader>Jc  :JavaCorrect<CR>
+            "nnoremap <Leader>Ji  :JavaImport<CR>
+            "nnoremap <Leader>JI  :JavaImpl<CR>
+            "nnoremap <Leader>Jgs :JavaGetSet<CR>
         " }}}3
 
         " Clojure. {{{3
@@ -562,6 +562,24 @@ filetype off " Unload plugins.
 
     " Syntastic {{{2
         let g:syntastic_always_populate_loc_list = 1
+        function! <SID>LocationPrevious()
+            try
+                lprev
+            catch /^Vim\%((\a\+)\)\=:E553/
+                llast
+            endtry
+        endfunction
+
+        function! <SID>LocationNext()
+            try
+                lnext
+            catch /^Vim\%((\a\+)\)\=:E553/
+                lfirst
+            endtry
+        endfunction
+
+        nnoremap <silent> <Plug>LocationPrevious    :<C-u>exe 'call <SID>LocationPrevious()'<CR>
+        nnoremap <silent> <Plug>LocationNext        :<C-u>exe 'call <SID>LocationNext()'<CR>
     " }}}2
 
     " UltiSnips {{{2
