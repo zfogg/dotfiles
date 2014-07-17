@@ -277,6 +277,8 @@ filetype off " Unload plugins.
         Bundle 'scrooloose/syntastic'
         Bundle 'SirVer/ultisnips'
         Bundle 'Valloric/YouCompleteMe'
+        Bundle 'localvimrc'
+        Bundle 'editorconfig-vim'
     " }}}2
 
     " Tags. {{{2
@@ -535,7 +537,7 @@ filetype off " Unload plugins.
         let g:ycm_seed_identifiers_with_syntax              = 1
         let g:ycm_collect_identifiers_from_tags_files       = 1
 
-        let g:ycm_extra_conf_globlist                       = ['~/code/*']
+        let g:ycm_extra_conf_globlist                       = ['~/src/*']
 
         let g:ycm_semantic_triggers =  {
             \ 'c,objc'                  : ['->', '.'],
@@ -558,6 +560,10 @@ filetype off " Unload plugins.
             \ 'text':     1,
             \ 'vimwiki':  1,
         \}
+
+        let g:syntastic_html_tidy_ignore_errors = [
+            \ " proprietary attribute \"ng-",
+        \]
     " }}}2
 
     " Syntastic {{{2
@@ -811,6 +817,14 @@ filetype off " Unload plugins.
         let g:gitgutter_eager     = 0
     " }}}2
 
+    " editorconfig-vim {{{2
+        let g:EditorConfig_exec_path = '/usr/local/bin/editorconfig'
+    " }}}2
+
+    " localvimrc {{{2
+        let g:localvimrc_ask = 0
+    " }}}2
+
 " Plugin Settings }}}1
 
 
@@ -903,6 +917,11 @@ filetype off " Unload plugins.
     augroup Stylus
         au!
         au BufRead,BufNewFile *.styl setl sw=2 ts=2 sts=2 si
+    augroup END
+
+    augroup JSON
+        au!
+        au BufRead,BufNewFile *.json set filetype=json
     augroup END
 
 " Filetype Settings }}}1

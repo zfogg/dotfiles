@@ -64,34 +64,6 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 # }}}
 
 
-# Key bindings. {{{
-# vi-mode.
-function _last-cmd-and-vi-cmd-mode {
-    vi-cmd-mode
-    history-substring-search-up
-}
-zle -N last-cmd-and-vi-cmd-mode _last-cmd-and-vi-cmd-mode
-
-bindkey -M viins ' ' magic-space
-bindkey -M viins 'jj' vi-cmd-mode
-bindkey -M viins 'kk' last-cmd-and-vi-cmd-mode
-bindkey -M viins 'HH' beginning-of-line
-bindkey -M viins 'LL' end-of-line
-
-# Ctrl-backspace and ctrl-delete.
-bindkey '^[[2J' kill-word          # But you should use <a-d>.
-bindkey '^H'    backward-kill-word # <c-bs>.
-
-# Up and down.
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-# Home and end.
-bindkey '\e[1~' beginning-of-line
-bindkey '\e[4~' end-of-line
-# }}}
-
-
 # $PATH directories. {{{
 typeset -U path
 
@@ -125,11 +97,9 @@ path=($^path(N))
 
 # Environment variables. {{{
 
-export OSX=`[ $(uname) = "Darwin" ]; echo $?`
+export OSX=`[ $(uname) = "Darwin" ] && echo $?`
 
-if [ "$TERM" != "st-256color" ]; then
-    export TERM=xterm-256color
-fi
+[ "$TERM" != "st-256color" ] && export TERM="screen-256color"
 
 export EDITOR=vim
 
@@ -142,6 +112,8 @@ export LESS='-R'
 if [ "$OSX" ]; then
     export VIM_APP_DIR="/Applications/MacVim"
     export PYTHON=`which python`
+    export LC_ALL=en_US.UTF-8
+    export LANG=en_US.UTF-8
 else
     eval $(dircolors -b) # Generate and set `$LS_COLORS`.
     export PYTHON=`which python2`
@@ -156,6 +128,39 @@ export GEM_HOME=~/.gem/ruby/2.1.0
 export CHROME_BIN=`which chromium`
 
 export GOPATH=~/go
+# }}}
+
+
+# Key bindings. {{{
+# vi-mode.
+function _last-cmd-and-vi-cmd-mode {
+    vi-cmd-mode
+    history-substring-search-up
+}
+zle -N last-cmd-and-vi-cmd-mode _last-cmd-and-vi-cmd-mode
+
+bindkey -M viins ' ' magic-space
+bindkey -M viins 'jj' vi-cmd-mode
+bindkey -M viins 'kk' last-cmd-and-vi-cmd-mode
+bindkey -M viins 'HH' beginning-of-line
+bindkey -M viins 'LL' end-of-line
+
+# Ctrl-backspace and ctrl-delete.
+bindkey '^[[2J' kill-word          # But you should use <a-d>.
+bindkey '^H'    backward-kill-word # <c-bs>.
+
+# Up and down.
+if [ "$OSX" ]; then
+    bindkey '^[OA' history-substring-search-up
+    bindkey '^[OB' history-substring-search-down
+else
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+fi
+
+# Home and end.
+bindkey '\e[1~' beginning-of-line
+bindkey '\e[4~' end-of-line
 # }}}
 
 

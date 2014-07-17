@@ -33,7 +33,7 @@ set guioptions=ac
 if has("win32")
   set guifont=Consolas:h11
 elseif has("unix")
-  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 16
 endif
 
 " Borders match colorscheme when fullscreen.
