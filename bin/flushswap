@@ -1,5 +1,0 @@
-#!/bin/zsh
-
-
-swapoff -a
-swapon  -a

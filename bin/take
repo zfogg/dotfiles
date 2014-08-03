@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-head -n+$1

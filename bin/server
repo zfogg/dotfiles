@@ -1,9 +1,0 @@
-#!/bin/zsh
-
-
-
-local port="${1:-8000}"
-local py="${PYTHON:-python2}"
-
-chromium --new-tab "http://localhost:${port}/"
-$py -m SimpleHTTPServer "$port"
