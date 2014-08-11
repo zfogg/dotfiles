@@ -109,6 +109,8 @@ export PAGER=vimpager
 
 export LESS='-R'
 
+export SSL_CERT_FILE='/opt/local/share/curl/curl-ca-bundle.crt'
+
 if [ "$OSX" ]; then
     export VIM_APP_DIR="/Applications/MacVim"
     export PYTHON=`which python`

@@ -294,6 +294,7 @@ filetype off " Unload plugins.
     " }}}2
 
     " Language support. {{{2
+        Bundle 'mtscout6/vim-cjsx'
         Bundle 'guns/vim-clojure-static'
         Bundle 'kchmck/vim-coffee-script'
         Bundle 'ap/vim-css-color'
@@ -305,6 +306,7 @@ filetype off " Unload plugins.
         Bundle 'digitaltoad/vim-jade'
         Bundle 'pangloss/vim-javascript'
         Bundle 'jelera/vim-javascript-syntax'
+        Bundle 'mxw/vim-jsx'
         Bundle 'groenewege/vim-less'
         Bundle 'plasticboy/vim-markdown'
         Bundle 'mustache/vim-mustache-handlebars'
@@ -560,13 +562,15 @@ filetype off " Unload plugins.
             \ 'text':     1,
             \ 'vimwiki':  1,
         \}
-
-        let g:syntastic_html_tidy_ignore_errors = [
-            \ " proprietary attribute \"ng-",
-        \]
     " }}}2
 
     " Syntastic {{{2
+        let g:syntastic_html_tidy_ignore_errors = [
+            \ " proprietary attribute \"ng-",
+        \]
+
+        let g:syntastic_auto_loc_list = 0
+
         let g:syntastic_always_populate_loc_list = 1
         function! <SID>LocationPrevious()
             try
@@ -870,7 +874,7 @@ filetype off " Unload plugins.
     augroup CoffeeScript
         au!
         au FileType coffee setl expandtab sw=2 ts=2 sts=2 fdm=indent nofoldenable
-        au BufWritePost *.coffee CoffeeLint! | cwindow | redraw!
+        "au BufWritePost *.coffee CoffeeLint! | cwindow | redraw!
     augroup END
 
     augroup HTML
@@ -906,7 +910,7 @@ filetype off " Unload plugins.
 
     augroup Jade
         au!
-        au FileType jade setl sw=2 ts=2 sts=2 si
+        au FileType jade setl expandtab sw=2 ts=2 sts=2 si fdm=indent nofoldenable
     augroup END
 
     augroup Markdown
