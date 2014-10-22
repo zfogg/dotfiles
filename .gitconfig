@@ -13,7 +13,6 @@
 [core]
     editor = vim
     pager = vimpager
-    excludesfile = ~/.gitignore_global
     eol = lf
     autocrlf = input
 
@@ -26,3 +25,8 @@
 
 [color]
     ui = true
+
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+
