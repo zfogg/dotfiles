@@ -64,37 +64,6 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 # }}}
 
 
-# $PATH directories. {{{
-typeset -U path
-
-path=(/usr/local/bin "$path[@]")
-
-path=(~/bin "$path[@]")
-
-path=(~/sbin "$path[@]")
-
-path=(~/usr/bin "$path[@]")
-
-path=(~/usr/sbin "$path[@]")
-
-path=(~/.cabal/bin "$path[@]")
-
-path=(~/.gem/ruby/2.1.0/bin "$path[@]")
-
-path=(/usr/lib/colorgcc/bin "$path[@]")
-
-path=(~/pebble/bin "$path[@]")
-
-path=(~/android-sdk/platform-tools "$path[@]")
-
-path=(~/android-sdk/build-tools "$path[@]")
-
-path=(~/go/bin "$path[@]")
-
-path=($^path(N))
-# }}}
-
-
 # Environment variables. {{{
 
 export OSX=`[ $(uname) = "Darwin" ] && echo $?`
@@ -116,6 +85,7 @@ if [ "$OSX" ]; then
     export PYTHON=`which python`
     export LC_ALL=en_US.UTF-8
     export LANG=en_US.UTF-8
+    export ARCHFLAGS="-arch x86_64"
 else
     eval $(dircolors -b) # Generate and set `$LS_COLORS`.
     export PYTHON=`which python2`
@@ -129,7 +99,9 @@ export GEM_HOME=~/.gem/ruby/2.1.0
 
 export CHROME_BIN=`which chromium`
 
-export GOPATH=~/go
+export GOPATH="$HOME/go"
+
+export GOROOT=`go env GOROOT`
 # }}}
 
 
@@ -172,9 +144,6 @@ bindkey '\e[4~' end-of-line
 
 
 # Et cetera. {{{
-# Load aur/command-not-found.
-[ -r /etc/profile.d/cnf.sh ] && . /etc/profile.d/cnf.sh
-# }}}
 
 
 # oh-my-zsh {{{
@@ -190,23 +159,120 @@ DISABLE_CORRECTION=true
 
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
+plugins=(
+    adb
+    bower
+    bundler
+    cabal
+    cake
+    capistrano
+    coffee
+    colored-man
+    colorize
+    cp
+    custom-aliases
+    django
+    docker
+    encode64
+    extract
+    fasd
+    gem
+    git
+    git-extras
+    git-flow
+    git-flow-avh
+    gitfast
+    github
+    gnu-utils
+    go
+    golang
+    heroku
+    history-substring-search
+    lein
+    mvn
+    meteor
+    mvn
+    node
+    npm
+    pip
+    postgres
+    python
+    rails
+    rake
+    redis-cli
+    ruby
+    rvm
+    sudo
+    supervisor
+    themes
+    tmux
+    urltools
+    vi-mode
+    web-search
+    z
+    zsh-syntax-highlighting
+)
+
 if [ "$OSX" ]; then
-    plugins=(bower battery brew bundler cabal cake coffee colorize cp gem git-extras git-flow-avh
-             git github gnu-utils golang history-substring-search macports mvn node npm osx pip postgres
-             python rails rake ruby rvm sudo tmux vi-mode xcode z)
-else
-    plugins=(archlinux bower battery bundler cabal cake coffee colored-man colorize cp
-            custom-aliases django extract gem gitfast git-extras git-flow go
-            heroku history-substring-search lein node npm pip python redis-cli
-            svn systemd tmux themes urltools vi-mode web-search
-            zsh-syntax-highlighting)
+    plugins+=(
+        brew
+        macports
+        osx
+        xcode
+    )
+else # Linux
+    plugins+=(
+        archlinux
+        command-not-found
+        systemd
+    )
 fi
 
 . $ZSH/oh-my-zsh.sh
 # }}}
 
 
+# $PATH directories. {{{
+typeset -U path
+
+path=(/usr/local/bin "$path[@]")
+
+path=(~/bin "$path[@]")
+
+path=(~/sbin "$path[@]")
+
+path=(~/usr/bin "$path[@]")
+
+path=(~/usr/sbin "$path[@]")
+
+path=(~/.cabal/bin "$path[@]")
+
+path=(~/.gem/ruby/2.1.0/bin "$path[@]")
+
+path=(/usr/lib/colorgcc/bin "$path[@]")
+
+path=(~/pebble/bin "$path[@]")
+
+path=(~/android-sdk/platform-tools "$path[@]")
+
+path=(~/android-sdk/build-tools "$path[@]")
+
+path=(~/go/bin "$path[@]")
+
+path=("$GOROOT/bin" "$path[@]")
+
+if [ "$OSX" ]; then
+    export PATH=/usr/local/bin:$PATH
+fi
+
+path=($^path(N))
+# }}}
+
+
 # Syntax highlighting. {{{
+if [ "$OSX" ]; then
+    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
     # aur/zsh-syntax-highlighting
     #   # Remember to make a symlink:
@@ -242,5 +308,3 @@ if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
 fi
 # }}}
 
-
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
