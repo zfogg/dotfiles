@@ -66,6 +66,8 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # Environment variables. {{{
 
+export WI_HOME=~/src/wi
+
 export OSX=`[ $(uname) = "Darwin" ] && echo $?`
 
 [ "$TERM" != "st-256color" ] && export TERM="screen-256color"
@@ -77,8 +79,6 @@ export VISUAL=vim
 export PAGER=vimpager
 
 export LESS='-R'
-
-export SSL_CERT_FILE='/opt/local/share/curl/curl-ca-bundle.crt'
 
 if [ "$OSX" ]; then
     export VIM_APP_DIR="/Applications/MacVim"
@@ -96,6 +96,8 @@ export LIBVA_DRIVER_NAME=vdpau
 export VDPAU_DRIVER=r600
 
 export GEM_HOME=~/.gem/ruby/2.1.0
+
+export RAILS_ENV=development
 
 export CHROME_BIN=`which chromium`
 
@@ -140,6 +142,15 @@ bindkey '\e[4~' end-of-line
 
 # Aliases. {{{
 . ~/.aliases
+
+function aliasof {
+    if [ "$OSX" ]; then
+        sed_flags='-E'
+    else
+        sed_flags='-r'
+    fi
+    alias $1 | sed $sed_flags "s|$1=(.*)|\1|" | sed $sed_flags "s|'||g"
+}
 # }}}
 
 
@@ -261,6 +272,8 @@ path=(~/go/bin "$path[@]")
 
 path=("$GOROOT/bin" "$path[@]")
 
+path=(~/.rvm/bin "$path[@]")
+
 if [ "$OSX" ]; then
     export PATH=/usr/local/bin:$PATH
 fi
@@ -306,5 +319,11 @@ if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
     ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]=fg=009
     #ZSH_HIGHLIGHT_STYLES[assign]=none
 fi
+# }}}
+
+
+# Extra init scripts. {{{
+source ~/.autoenv/activate.sh
+source /usr/local/bin/virtualenvwrapper.sh
 # }}}
 
