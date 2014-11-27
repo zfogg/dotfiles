@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+SELFIE=~/Pictures/selfie.jpg
+
+imagesnap -w 3 "$SELFIE"
+open "$SELFIE"

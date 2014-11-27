@@ -1,5 +1,0 @@
-#!/bin/zsh
-# Print the actual value of an alias.
-
-
-alias $1 | sed -r "s|$1=(.*)|\1|" | sed -r "s|'||g"

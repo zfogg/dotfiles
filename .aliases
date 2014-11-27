@@ -20,7 +20,7 @@ alias pp='powerpill'
 alias packer='packer-color'
 alias pa='packer'
 
-alias python=$PYTHON
+#alias python=$PYTHON
 
 alias less=$PAGER
 alias zless=$PAGER

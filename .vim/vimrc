@@ -33,7 +33,7 @@ filetype off " Unload plugins.
         cmap w! w !sudo tee % >/dev/null
 
         " Open this configuration file.
-        nmap <Leader>v :tabnew ~/.vimrc<CR>
+        nmap <Leader>v :tabnew ~/.vim/vimrc<CR>
         nmap <Leader>gv :tabnew ~/.gvimrc<CR>
 
         " Quit window.
@@ -210,8 +210,8 @@ filetype off " Unload plugins.
 
     " Et cetera. {{{2
         " Reload vim settings.
-        nnoremap <silent><Leader>V  :source ~/.vimrc<CR>:filetype detect<CR>:echo 'vimrc reloaded'<CR>
-        nnoremap <silent><Leader>Gv :source ~/.gvimrc<CR>:filetype detect<CR>:echo 'gvimrc reloaded'<CR>
+        nnoremap <silent><Leader>V  :source ~/.vim/vimrc<CR>:filetype detect<CR>:echo 'vimrc reloaded'<CR>
+        nnoremap <silent><Leader>Gv :source ~/.vim/gvimrc<CR>:filetype detect<CR>:echo 'gvimrc reloaded'<CR>
 
         " Previous matching command or search.
         cnoremap kk <Up>
@@ -296,6 +296,7 @@ filetype off " Unload plugins.
         Bundle 'kchmck/vim-coffee-script'
         Bundle 'ap/vim-css-color'
         Bundle 'closetag.vim'
+        Bundle 'ekalinin/Dockerfile.vim'
         Bundle 'mattn/emmet-vim'
         Bundle 'eagletmt/ghcmod-vim'
         Bundle 'tikhomirov/vim-glsl'
@@ -309,6 +310,7 @@ filetype off " Unload plugins.
         Bundle 'groenewege/vim-less'
         Bundle 'plasticboy/vim-markdown'
         Bundle 'mustache/vim-mustache-handlebars'
+        Bundle 'nginx.vim'
         Bundle 'vim-ruby/vim-ruby'
         Bundle 'wavded/vim-stylus'
         "Bundle 'marijnh/tern_for_vim'
