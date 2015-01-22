@@ -275,7 +275,7 @@ filetype off " Unload plugins.
         Bundle 'Valloric/YouCompleteMe'
         Bundle 'localvimrc'
         Bundle 'editorconfig-vim'
-        Bundle 'tpope/vim-rails'
+        "Bundle 'tpope/vim-rails'
     " }}}2
 
     " Tags. {{{2
@@ -291,6 +291,7 @@ filetype off " Unload plugins.
     " }}}2
 
     " Language support. {{{2
+        Bundle 'applescript.vim'
         Bundle 'mtscout6/vim-cjsx'
         Bundle 'guns/vim-clojure-static'
         Bundle 'kchmck/vim-coffee-script'
@@ -951,6 +952,11 @@ filetype off " Unload plugins.
     augroup YAML
         au!
         au BufRead,BufNewFile *.yml set sw=2
+    augroup END
+
+    augroup AppleScript
+        au!
+        au BufRead,BufNewFile *.AppleScript set ft=applescript
     augroup END
 
 " Filetype Settings }}}1
