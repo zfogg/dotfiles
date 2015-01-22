@@ -272,8 +272,6 @@ path=(~/go/bin "$path[@]")
 
 path=("$GOROOT/bin" "$path[@]")
 
-path=(~/.rvm/bin "$path[@]")
-
 if [ "$OSX" ]; then
     export PATH=/usr/local/bin:$PATH
 fi
@@ -325,5 +323,13 @@ fi
 # Extra init scripts. {{{
 source ~/.autoenv/activate.sh
 source /usr/local/bin/virtualenvwrapper.sh
+source ~/.profile
 # }}}
 
+
+docker-enter() {
+    boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
+    boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
+}
+
+# }}}
