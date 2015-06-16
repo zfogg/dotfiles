@@ -1,3 +1,6 @@
 /.vim/tags
 /.ssh/*
-.vim/bundle
+/.vim/bundle
+/.config/configstore
+/.config/cortex
+
