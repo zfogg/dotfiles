@@ -2,11 +2,6 @@
 # vim: set fdm=marker:
 
 
-# z.sh {{{
-. ~/.z.sh/z.sh
-# }}}
-
-
 # base16-shell {{{
 BASE16_SCHEME="default"
 BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
@@ -82,7 +77,7 @@ export LESS='-R'
 
 if [ "$OSX" ]; then
     export VIM_APP_DIR="/Applications/MacVim"
-    export PYTHON=`which python`
+    export PYTHON=/usr/local/bin/python
     export LC_ALL=en_US.UTF-8
     export LANG=en_US.UTF-8
     export ARCHFLAGS="-arch x86_64"
@@ -101,9 +96,14 @@ export RAILS_ENV=development
 
 export CHROME_BIN=`which chromium`
 
-export GOPATH="$HOME/go"
-
+export GOPATH="$HOME/src/go"
 export GOROOT=`go env GOROOT`
+
+export AWS_DEFAULT_PROFILE=zfogg-zfogg
+export EC2_HOME=/usr/local/Cellar/ec2-api-tools/1.7.3.0
+
+export JAVA_HOME=`/usr/libexec/java_home`
+
 # }}}
 
 
@@ -160,7 +160,8 @@ function aliasof {
 # oh-my-zsh {{{
 ZSH=~/.oh-my-zsh
 
-ZSH_THEME=sporty_256
+ZSH_THEME=muse
+DEFAULT_USER=zfogg
 
 DISABLE_AUTO_UPDATE=true
 
@@ -172,17 +173,16 @@ DISABLE_UNTRACKED_FILES_DIRTY=true
 
 plugins=(
     adb
+    aws
     bower
     bundler
     cabal
     cake
-    capistrano
     coffee
     colored-man
     colorize
     cp
     custom-aliases
-    django
     docker
     encode64
     extract
@@ -191,8 +191,6 @@ plugins=(
     git
     git-extras
     git-flow
-    git-flow-avh
-    gitfast
     github
     gnu-utils
     go
@@ -201,7 +199,6 @@ plugins=(
     history-substring-search
     lein
     mvn
-    meteor
     mvn
     node
     npm
@@ -212,12 +209,12 @@ plugins=(
     rake
     redis-cli
     ruby
-    rvm
     sudo
     supervisor
     themes
     tmux
     urltools
+    vagrant
     vi-mode
     web-search
     z
@@ -227,7 +224,6 @@ plugins=(
 if [ "$OSX" ]; then
     plugins+=(
         brew
-        macports
         osx
         xcode
     )
@@ -246,8 +242,6 @@ fi
 # $PATH directories. {{{
 typeset -U path
 
-path=(/usr/local/bin "$path[@]")
-
 path=(~/bin "$path[@]")
 
 path=(~/sbin "$path[@]")
@@ -259,6 +253,8 @@ path=(~/usr/sbin "$path[@]")
 path=(~/.cabal/bin "$path[@]")
 
 path=(~/.gem/ruby/2.1.0/bin "$path[@]")
+
+path=(~/Library/Python/2.7/bin "$path[@]")
 
 path=(/usr/lib/colorgcc/bin "$path[@]")
 
@@ -272,9 +268,13 @@ path=(~/go/bin "$path[@]")
 
 path=("$GOROOT/bin" "$path[@]")
 
+path=(/usr/local/opt/make/bin "$path[@]")
+
 if [ "$OSX" ]; then
     export PATH=/usr/local/bin:$PATH
 fi
+
+path=(/usr/local/bin "$path[@]")
 
 path=($^path(N))
 # }}}
@@ -321,15 +321,17 @@ fi
 
 
 # Extra init scripts. {{{
-source ~/.autoenv/activate.sh
-source /usr/local/bin/virtualenvwrapper.sh
+#source ~/.autoenv/activate.sh
+#source /usr/local/bin/virtualenvwrapper.sh
 source ~/.profile
+export NVM_DIR=~/.nvm
+#source $(brew --prefix nvm)/nvm.sh
 # }}}
 
 
-docker-enter() {
-    boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
-    boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
-}
-
 # }}}
+
+
+# For neovim.
+tic ~/$TERM.ti
+

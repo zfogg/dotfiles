@@ -68,10 +68,19 @@ filetype off " Unload plugins.
 
     " Cursor motion. {{{2
         " Splits
+        nnoremap <C-H> <C-W>h
         nnoremap <C-J> <C-W>j
         nnoremap <C-K> <C-W>k
         nnoremap <C-L> <C-W>l
-        nnoremap <C-H> <C-W>h
+
+        if has("nvim")
+            :tnoremap JJ    <C-\><C-N>{}k$
+
+            :tnoremap <C-H> <C-\><C-N><C-W>h
+            :tnoremap <C-J> <C-\><C-N><C-W>j
+            :tnoremap <C-K> <C-\><C-N><C-W>k
+            :tnoremap <C-L> <C-\><C-N><C-W>l
+        end
 
         " j and k just work on long wrapped lines.
         nnoremap j gj
@@ -241,6 +250,9 @@ filetype off " Unload plugins.
         " omnicomplete
         imap </            <C-_>
         nnoremap <Leader>/ <C-_>
+
+        " ctags
+        nnoremap <Leader>T :silent !/usr/local/bin/ctags -R<CR>:redraw!<CR>
     " }}}2
 
 " Key Mappings }}}1
@@ -255,11 +267,11 @@ filetype off " Unload plugins.
 
     " Integrate with other programs. {{{2
         Bundle 'rking/ag.vim'
-        Bundle 'tpope/vim-fireplace'
+        "Bundle 'tpope/vim-fireplace'
         Bundle 'tpope/vim-fugitive'
         Bundle 'airblade/vim-gitgutter'
-        Bundle 'fs111/pydoc.vim'
-        Bundle 'jpalardy/vim-slime'
+        "Bundle 'fs111/pydoc.vim'
+        "Bundle 'jpalardy/vim-slime'
         Bundle 'Shougo/vimproc.vim'
     " }}}2
 
@@ -270,19 +282,19 @@ filetype off " Unload plugins.
         Bundle 'xolox/vim-session'
         Bundle 'ervandew/supertab'
         Bundle 'scrooloose/syntastic'
-        Bundle 'SirVer/ultisnips'
-        Bundle 'honza/vim-snippets'
+        "Bundle 'SirVer/ultisnips'
+        "Bundle 'honza/vim-snippets'
         Bundle 'Valloric/YouCompleteMe'
-        Bundle 'localvimrc'
+        Bundle 'embear/vim-localvimrc'
         Bundle 'editorconfig-vim'
         "Bundle 'tpope/vim-rails'
     " }}}2
 
     " Tags. {{{2
-        Bundle 'Tagbar'
-        Bundle 'lukaszkorecki/CoffeeTags'
-        Bundle 'xolox/vim-easytags'
-        Bundle 'bitc/lushtags'
+        "Bundle 'Tagbar'
+        "Bundle 'lukaszkorecki/CoffeeTags'
+        "Bundle 'xolox/vim-easytags'
+        "Bundle 'bitc/lushtags'
     " }}}2
 
     " Plugin plugins. {{{2
@@ -292,40 +304,48 @@ filetype off " Unload plugins.
 
     " Language support. {{{2
         Bundle 'applescript.vim'
-        Bundle 'mtscout6/vim-cjsx'
-        Bundle 'guns/vim-clojure-static'
+        "Bundle 'mtscout6/vim-cjsx'
+        "Bundle 'guns/vim-clojure-static'
+        "Bundle 'jalcine/cmake.vim'
         Bundle 'kchmck/vim-coffee-script'
         Bundle 'ap/vim-css-color'
         Bundle 'closetag.vim'
         Bundle 'ekalinin/Dockerfile.vim'
         Bundle 'mattn/emmet-vim'
-        Bundle 'eagletmt/ghcmod-vim'
+        "Bundle 'eagletmt/ghcmod-vim'
         Bundle 'tikhomirov/vim-glsl'
         Bundle 'fatih/vim-go'
-        Bundle 'lukerandall/haskellmode-vim'
+        "Bundle 'lukerandall/haskellmode-vim'
         Bundle 'bitc/vim-hdevtools'
         Bundle 'digitaltoad/vim-jade'
-        Bundle 'pangloss/vim-javascript'
+
+        "Bundle 'pangloss/vim-javascript'
         Bundle 'jelera/vim-javascript-syntax'
+        Bundle 'JavaScript-Indent'
+        Bundle 'othree/javascript-libraries-syntax.vim'
         Bundle 'mxw/vim-jsx'
+
+        Bundle 'lepture/vim-jinja'
         Bundle 'groenewege/vim-less'
+        "Bundle "gilligan/vim-lldb"
         Bundle 'plasticboy/vim-markdown'
-        Bundle 'mustache/vim-mustache-handlebars'
+        "Bundle 'mustache/vim-mustache-handlebars'
         Bundle 'nginx.vim'
         Bundle 'vim-ruby/vim-ruby'
-        Bundle 'wavded/vim-stylus'
-        "Bundle 'marijnh/tern_for_vim'
-        Bundle 'xmledit'
+        Bundle 'saltstack/salt-vim'
+        "Bundle 'wavded/vim-stylus'
+        Bundle 'marijnh/tern_for_vim'
+        "Bundle 'xmledit'
     " }}}2
 
     " Colorschemes. {{{2
         Bundle 'chriskempson/base16-vim'
-        Bundle 'git://github.com/zfogg/vim-eddie.git'
-        Bundle 'Pychimp/vim-luna'
+        "Bundle 'git://github.com/zfogg/vim-eddie.git'
+        "Bundle 'Pychimp/vim-luna'
         Bundle 'google_prettify.vim'
         Bundle 'junegunn/seoul256.vim'
-        Bundle 'chriskempson/vim-tomorrow-theme'
-        Bundle 'altercation/vim-colors-solarized'
+        "Bundle 'chriskempson/vim-tomorrow-theme'
+        "Bundle 'altercation/vim-colors-solarized'
     " }}}2
 
     " Beautify Vim. {{{2
@@ -340,12 +360,12 @@ filetype off " Unload plugins.
         Bundle 'junegunn/vim-easy-align'
         Bundle 'tommcdo/vim-exchange'
         Bundle 'Raimondi/delimitMate'
-        Bundle 'tmhedberg/matchit'
+        "Bundle 'tmhedberg/matchit'
         Bundle 'scrooloose/nerdcommenter'
         Bundle 'wellle/targets.vim'
         Bundle 'tpope/vim-surround'
         Bundle 'kana/vim-textobj-indent'
-        Bundle 'tpope/vim-unimpaired'
+        "Bundle 'tpope/vim-unimpaired'
     " }}}2
 
     " Silent enhancements. {{{2
@@ -353,8 +373,8 @@ filetype off " Unload plugins.
         Bundle 'kana/vim-niceblock'
         Bundle 'sickill/vim-pasta'
         Bundle 'tpope/vim-repeat'
-        Bundle 'tpope/vim-speeddating'
-        Bundle 'matthewsimo/angular-vim-snippets'
+        "Bundle 'tpope/vim-speeddating'
+        "Bundle 'matthewsimo/angular-vim-snippets'
     " }}}2
 
 " Plugins }}}1
@@ -472,6 +492,37 @@ filetype off " Unload plugins.
     " Faster CursorHold aucmd
     set updatetime=250 " milliseconds
 
+    " For Vim within a tmux session.
+    " http://stackoverflow.com/a/15471820
+    if &term =~ '^screen' && exists('$TMUX')
+        set mouse+=a
+        " tmux knows the extended mouse mode
+        set ttymouse=xterm2
+        " tmux will send xterm-style keys when xterm-keys is on
+        execute "set <xUp>=\e[1;*A"
+        execute "set <xDown>=\e[1;*B"
+        execute "set <xRight>=\e[1;*C"
+        execute "set <xLeft>=\e[1;*D"
+        execute "set <xHome>=\e[1;*H"
+        execute "set <xEnd>=\e[1;*F"
+        execute "set <Insert>=\e[2;*~"
+        execute "set <Delete>=\e[3;*~"
+        execute "set <PageUp>=\e[5;*~"
+        execute "set <PageDown>=\e[6;*~"
+        execute "set <xF1>=\e[1;*P"
+        execute "set <xF2>=\e[1;*Q"
+        execute "set <xF3>=\e[1;*R"
+        execute "set <xF4>=\e[1;*S"
+        execute "set <F5>=\e[15;*~"
+        execute "set <F6>=\e[17;*~"
+        execute "set <F7>=\e[18;*~"
+        execute "set <F8>=\e[19;*~"
+        execute "set <F9>=\e[20;*~"
+        execute "set <F10>=\e[21;*~"
+        execute "set <F11>=\e[23;*~"
+        execute "set <F12>=\e[24;*~"
+    endif
+
 " Basic Settings }}}1
 
 
@@ -540,8 +591,6 @@ filetype off " Unload plugins.
     " }}}2
 
     " YouCompleteMe {{{2
-        let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-
         let g:ycm_autoclose_preview_window_after_completion = 1
         let g:ycm_autoclose_preview_window_after_insertion  = 1
         let g:ycm_register_as_syntastic_checker             = 1
@@ -584,9 +633,17 @@ filetype off " Unload plugins.
             \ " proprietary attribute \"ng-",
         \]
 
-        let g:syntastic_auto_loc_list = 0
+        set statusline+=%#warningmsg#
+        set statusline+=%{SyntasticStatuslineFlag()}
+        set statusline+=%*
+
+        let g:syntastic_javascript_checkers      = ['eslint']
 
         let g:syntastic_always_populate_loc_list = 1
+        let g:syntastic_auto_loc_list            = 1
+        let g:syntastic_check_on_open            = 1
+        let g:syntastic_check_on_wq              = 0
+
         function! <SID>LocationPrevious()
             try
                 lprev
@@ -605,6 +662,7 @@ filetype off " Unload plugins.
 
         nnoremap <silent> <Plug>LocationPrevious    :<C-u>exe 'call <SID>LocationPrevious()'<CR>
         nnoremap <silent> <Plug>LocationNext        :<C-u>exe 'call <SID>LocationNext()'<CR>
+
     " }}}2
 
     " UltiSnips {{{2
@@ -785,7 +843,7 @@ filetype off " Unload plugins.
     " haskellmode {{{2
         let g:haddock_browser = '/usr/bin/chromium'
         let g:haddock_docdir = '/usr/share/doc/ghc/html/'
-        autocmd VimEnter * set cmdheight=1
+        "autocmd VimEnter * set cmdheight=1
     " }}}2
 
     " easy-align {{{2
@@ -795,16 +853,21 @@ filetype off " Unload plugins.
     " coffeetags {{{2
         let g:CoffeeAutoTagDisabled = 1
         if executable('coffeetags')
-            let g:CoffeeAutoTagDisabled    = 0          " Disables autotaging on save (Default: 0 [false])
-            let g:CoffeeAutoTagFile        = './tags'   " Name of the generated tag file (Default: ./tags)
+            let g:CoffeeAutoTagDisabled    = 1          " Disables autotaging on save (Default: 0 [false])
+            "let g:CoffeeAutoTagFile        = './tags'   " Name of the generated tag file (Default: ./tags)
             let g:CoffeeAutoTagIncludeVars = 1          " Includes variables (Default: 0 [false])
             let g:CoffeeAutoTagTagRelative = 1          " Sets file names to the relative path from the tag file location to the tag file location (Default: 1 [true])
         endif
     " }}}2
 
     " easytags {{{2
-        let g:easytags_dynamic_files = 1
-        let g:easytags_events        = ['BufReadPost', 'BufWritePost']
+        let g:easytags_dynamic_files  = 1
+        let g:easytags_events         = ['BufReadPost', 'BufWritePost']
+        "let g:easytags_file           = './tags'
+        let g:easytags_async          = 1
+        let g:easytags_on_cursorhold  = 0
+        let g:easytags_updatetime_min = 4000
+        let g:easytags_auto_highlight = 0
     " }}}2
 
     " gitgutter {{{2
@@ -819,6 +882,7 @@ filetype off " Unload plugins.
 
     " localvimrc {{{2
         let g:localvimrc_ask = 0
+        let g:localvimrc_sandbox = 0
     " }}}2
 
     " tagbar {{{2
@@ -850,6 +914,19 @@ filetype off " Unload plugins.
         augroup END
     " }}}2
 
+    " javascript {{{2
+        let g:javascript_conceal            = 1
+        let g:javascript_conceal_function   = "ƒ"
+        let g:javascript_conceal_null       = "ø"
+        let g:javascript_conceal_this       = "@"
+        let g:javascript_conceal_return     = "⇚"
+        let g:javascript_conceal_undefined  = "¿"
+        let g:javascript_conceal_NaN        = "ℕ"
+        let g:javascript_conceal_prototype  = "¶"
+        let g:javascript_conceal_static     = "•"
+        let g:javascript_conceal_super      = "Ω"
+    " }}}2
+
 " Plugin Settings }}}1
 
 
@@ -865,7 +942,7 @@ filetype off " Unload plugins.
             \   endif                                           |
             \ endif
         " git-inline-diff on read,write
-        au BufReadPost,BufWritePost * exe "normal " . mapleader . "d"
+        "au BufReadPost,BufWritePost * exe "normal " . mapleader . "d"
     augroup END
 
     augroup VimL
@@ -877,14 +954,16 @@ filetype off " Unload plugins.
 
     augroup C_Cpp
         au!
+        au FileType c,c++ syn region foldPreprocessorIf start="^\#if" end="^\#endif" transparent fold
         au FileType c,c++ setl sw=4 ts=4 sts=4
         au FileType c,c++ setl fdm=marker fmr={,}
+        au BufWritePost *.c,*.cpp,*.h,*.hpp silent YcmDiags
     augroup END
 
     augroup JavaScript
         au!
-        au FileType javascript setl sw=4 ts=4 sts=4
-        au FileType javascript setl fdm=marker fmr={,}
+        au FileType javascript,javascript.jsx setl fdm=marker fmr={,}
+        au FileType javascript,javascript.jsx call JavaScriptFold()
     augroup END
 
     augroup Java
@@ -923,8 +1002,8 @@ filetype off " Unload plugins.
 
     augroup Haskell
         au!
-        au FileType haskell setl sw=4 ts=4 sts=4 si
-        au BufRead,BufNewFile *.hs compiler ghc
+        "au FileType haskell setl sw=4 ts=4 sts=4 si
+        "au BufRead,BufNewFile *.hs compiler ghc
         "au BufWritePost *.hs,*.hsc silent !fast-tags %
         "au BufWritePost *.hs,*.hsc SlimeSend1 :r
     augroup END
@@ -975,6 +1054,16 @@ filetype off " Unload plugins.
             colorscheme desert256
         endtry
     endtry
+
+    function! <SID>SetCursorLine()
+        hi clear CursorLine
+        hi CursorLineNR cterm=bold ctermfg=white guifg=white
+    endfunction
+    call <SID>SetCursorLine()
+    augroup _CursorLine
+        au!
+        au! ColorScheme * :call <SID>SetCursorLine()
+    augroup END
 
     filetype plugin indent on           " Load plugins.
 
