@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# https://github.com/nojhan/liquidprompt/blob/master/liquidprompt
+
+
+LP_BATTERY_THRESHOLD="75"  # the maximal value under which the battery level is displayed
+LP_LOAD_THRESHOLD="60"     # the minimal value after which the load average is displayed
+LP_TEMP_THRESHOLD="60"     # the minimal value after which the average temperature is displayed
+LP_RUNTIME_THRESHOLD="2"   # the minimal value after which the runtime is displayed
+LP_PATH_LENGTH="35"        # the maximum percentage of the screen width used to display the path
+LP_PATH_KEEP="2"           # how many directories to keep at the beginning of a shortened path
+LP_HOSTNAME_ALWAYS="0"     # a choice between always displaying the hostname or showing it only when connected via a remote shell
+LP_USER_ALWAYS="1"         # a choice between always displaying the user or showing it only when he is different from the one that logged in
+
+LP_ENABLE_PERM=1           # detect if the directory is writeable
+LP_ENABLE_SHORTEN_PATH=1   # shorten the path display
+LP_ENABLE_PROXY=0          # detect if a proxy is used
+LP_ENABLE_JOBS=1           # have jobs information
+LP_ENABLE_LOAD=1           # have load information
+LP_ENABLE_BATT=1           # have battery information
+LP_ENABLE_GIT=1            # have Git information
+LP_ENABLE_SVN=0            # have Subversion information
+LP_ENABLE_HG=0             # have Mercurial information
+LP_ENABLE_BZR=0            # have Bazaar information
+LP_ENABLE_FOSSIL=0         # have Fossil information
+LP_ENABLE_VCS_ROOT=0       # show VCS informations with root account
+LP_ENABLE_TITLE=1          # use the prompt as your terminal window's title
+LP_ENABLE_SCREEN_TITLE=0   # use the prompt as your screen window's title
+LP_ENABLE_SSH_COLORS=0     # different colors for hosts you SSH into
+LP_ENABLE_RUNTIME=0        # display the runtime of the last command
+LP_ENABLE_TIME=1           # display the time at which the prompt was shown
+LP_TIME_ANALOG=0           # show the time using an analog clock instead of numeric values
+

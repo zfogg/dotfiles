@@ -46,16 +46,19 @@ setopt VI
 
 
 # Modules. {{{
-autoload -U colors compinit zcalc zsh-mime-setup
+autoload -Uz compinit colors zcalc zsh-mime-setup
 
-colors
 compinit
+colors
 zsh-mime-setup
 # }}}
 
 
 # Automatic completion. {{{
+unsetopt menu_complete
 zstyle ':completion:*:functions' ignored-patterns '_*'
+zstyle ':completion:*' completer _complete
+bindkey '\t' expand-or-complete
 # }}}
 
 
@@ -137,6 +140,17 @@ bindkey '\e[4~' end-of-line
 # Et cetera. {{{
 
 
+# antigen-hs {{{
+
+# liquidprompt
+LP_ENABLE_TIME=1
+LP_USER_ALWAYS=1
+
+source ~/.zsh/antigen-hs/init.zsh
+
+# }}}
+
+
 # $PATH directories. {{{
 typeset -U path
 typeset -U manpath
@@ -163,17 +177,6 @@ fi
 
 path=($^path(N))
 manpath=($^manpath(N))
-# }}}
-
-
-# antigen-hs {{{
-
-# liquidprompt
-LP_ENABLE_TIME=1
-LP_USER_ALWAYS=1
-
-source ~/.zsh/antigen-hs/init.zsh
-
 # }}}
 
 
@@ -237,5 +240,5 @@ function aliasof {
 
 
 # For neovim.
-tic ~/$TERM.ti
+[[ -f ~/$TERM.ti ]] && tic ~/$TERM.ti
 

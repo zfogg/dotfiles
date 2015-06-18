@@ -20,8 +20,19 @@ import Shelly (shelly)
 
 bundles =
     [ (bundle "robbyrussell/oh-my-zsh")
-        { sourcingLocations = [ "plugins/aws"
-                              , "plugins/golang"
+        { sourcingStrategy = filePathsSourcingStrategy [ "lib/completion.zsh"
+                                                       , "lib/correction.zsh"
+                                                       , "lib/directories.zsh"
+                                                       , "lib/git.zsh"
+                                                       , "lib/grep.zsh"
+                                                       , "lib/history.zsh"
+                                                       , "lib/key-bindings.zsh"
+                                                       , "lib/termsupport.zsh"
+                                                       , "lib/theme-and-appearance.zsh"
+                                                       ] }
+    , (bundle "robbyrussell/oh-my-zsh")
+        { fpathLocations    = []
+        , sourcingLocations = [ "plugins/golang"
                               , "plugins/httpie"
                               , "plugins/tmux"
                               , "plugins/git"
@@ -40,10 +51,15 @@ bundles =
                               , "plugins/brew"
                               , "plugins/brew-cask"
                               , "plugins/osx"
-                              , "plugins/colorize"] }
+                              , "plugins/colorize"
+                              ] }
 
     , bundle "nojhan/liquidprompt"
     , bundle "hchbaw/opp.zsh"
+    , (bundle "rupa/z")
+        { sourcingStrategy = filePathsSourcingStrategy [ "z.sh" ] }
+    , (bundle "felixr/docker-zsh-completion")
+        { sourcingStrategy = filePathsSourcingStrategy [ "_docker" ] }
     , bundle "sharat87/zsh-vim-mode"
     , bundle "zsh-users/zsh-syntax-highlighting"
     , bundle "zsh-users/zsh-history-substring-search" ]
