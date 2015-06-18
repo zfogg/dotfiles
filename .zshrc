@@ -67,9 +67,9 @@ export OSX=`[ $(uname) = "Darwin" ] && echo $?`
 
 [ "$TERM" != "st-256color" ] && export TERM="screen-256color"
 
-export EDITOR=vim
+export EDITOR=vi
 
-export VISUAL=vim
+export VISUAL=vi
 
 export PAGER=vimpager
 
@@ -86,12 +86,7 @@ else
     export PYTHON=`which python2`
 fi
 
-# Enable video acceleration.
-export LIBVA_DRIVER_NAME=vdpau
-export VDPAU_DRIVER=r600
-
 export GEM_HOME=~/.gem/ruby/2.1.0
-
 export RAILS_ENV=development
 
 export CHROME_BIN=`which chromium`
@@ -100,7 +95,6 @@ export GOPATH="$HOME/src/go"
 export GOROOT=`go env GOROOT`
 
 export AWS_DEFAULT_PROFILE=zfogg-zfogg
-export EC2_HOME=/usr/local/Cellar/ec2-api-tools/1.7.3.0
 
 export JAVA_HOME=`/usr/libexec/java_home`
 
@@ -110,8 +104,8 @@ export JAVA_HOME=`/usr/libexec/java_home`
 # Key bindings. {{{
 # vi-mode.
 function _last-cmd-and-vi-cmd-mode {
-    vi-cmd-mode
-    history-substring-search-up
+    zle vi-cmd-mode
+    zle history-substring-search-up
 }
 zle -N last-cmd-and-vi-cmd-mode _last-cmd-and-vi-cmd-mode
 
@@ -140,115 +134,14 @@ bindkey '\e[4~' end-of-line
 # }}}
 
 
-# Aliases. {{{
-. ~/.aliases
-
-function aliasof {
-    if [ "$OSX" ]; then
-        sed_flags='-E'
-    else
-        sed_flags='-r'
-    fi
-    alias $1 | sed $sed_flags "s|$1=(.*)|\1|" | sed $sed_flags "s|'||g"
-}
-# }}}
-
-
 # Et cetera. {{{
-
-
-# oh-my-zsh {{{
-ZSH=~/.oh-my-zsh
-
-ZSH_THEME=muse
-DEFAULT_USER=zfogg
-
-DISABLE_AUTO_UPDATE=true
-
-COMPLETION_WAITING_DOTS=true
-
-DISABLE_CORRECTION=true
-
-DISABLE_UNTRACKED_FILES_DIRTY=true
-
-plugins=(
-    adb
-    aws
-    bower
-    bundler
-    cabal
-    cake
-    coffee
-    colored-man
-    colorize
-    cp
-    custom-aliases
-    docker
-    encode64
-    extract
-    fasd
-    gem
-    git
-    git-extras
-    git-flow
-    github
-    gnu-utils
-    go
-    golang
-    heroku
-    history-substring-search
-    lein
-    mvn
-    mvn
-    node
-    npm
-    pip
-    postgres
-    python
-    rails
-    rake
-    redis-cli
-    ruby
-    sudo
-    supervisor
-    themes
-    tmux
-    urltools
-    vagrant
-    vi-mode
-    web-search
-    z
-    zsh-syntax-highlighting
-)
-
-if [ "$OSX" ]; then
-    plugins+=(
-        brew
-        osx
-        xcode
-    )
-else # Linux
-    plugins+=(
-        archlinux
-        command-not-found
-        systemd
-    )
-fi
-
-. $ZSH/oh-my-zsh.sh
-# }}}
 
 
 # $PATH directories. {{{
 typeset -U path
+typeset -U manpath
 
 path=(~/bin "$path[@]")
-
-path=(~/sbin "$path[@]")
-
-path=(~/usr/bin "$path[@]")
-
-path=(~/usr/sbin "$path[@]")
 
 path=(~/.cabal/bin "$path[@]")
 
@@ -256,40 +149,37 @@ path=(~/.gem/ruby/2.1.0/bin "$path[@]")
 
 path=(~/Library/Python/2.7/bin "$path[@]")
 
-path=(/usr/lib/colorgcc/bin "$path[@]")
-
-path=(~/pebble/bin "$path[@]")
-
-path=(~/android-sdk/platform-tools "$path[@]")
-
-path=(~/android-sdk/build-tools "$path[@]")
-
-path=(~/go/bin "$path[@]")
-
 path=("$GOROOT/bin" "$path[@]")
 
-path=(/usr/local/opt/make/bin "$path[@]")
 
 if [ "$OSX" ]; then
-    export PATH=/usr/local/bin:$PATH
+    path=(/usr/local/bin "$path[@]")
+
+    path=(/usr/local/opt/make/bin "$path[@]")
+
+    path=(/usr/local/opt/coreutils/libexec/gnubin "$path[@]")
+    manpath=(/usr/local/opt/coreutils/libexec/gnuman "$manpath[@]")
 fi
 
-path=(/usr/local/bin "$path[@]")
-
 path=($^path(N))
+manpath=($^manpath(N))
+# }}}
+
+
+# antigen-hs {{{
+
+# liquidprompt
+LP_ENABLE_TIME=1
+LP_USER_ALWAYS=1
+
+source ~/.zsh/antigen-hs/init.zsh
+
 # }}}
 
 
 # Syntax highlighting. {{{
-if [ "$OSX" ]; then
-    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
+# Remember to install `zsh-syntax-highlighting`.
 if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
-    # aur/zsh-syntax-highlighting
-    #   # Remember to make a symlink:
-    #   $ ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting \
-    #           ~/.oh-my-zsh/plugins/zsh-syntax-highlighting
-
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root)
 
     ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' fg=black,bold,bg=red)
@@ -329,6 +219,20 @@ export NVM_DIR=~/.nvm
 # }}}
 
 
+# }}}
+
+
+# Aliases. {{{
+. ~/.aliases
+
+function aliasof {
+    if [ "$OSX" ]; then
+        sed_flags='-E'
+    else
+        sed_flags='-r'
+    fi
+    alias $1 | sed $sed_flags "s|$1=(.*)|\1|" | sed $sed_flags "s|'||g"
+}
 # }}}
 
 
