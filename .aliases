@@ -2,18 +2,18 @@
 
 
 alias vim='nvim'
+alias vi='vim'
+alias v='vim'
 
 alias zshrc="$EDITOR ~/.zshrc"
-alias vimrc="$EDITOR ~/.vimrc"
+alias vimrc="$EDITOR ~/.vim/vimrc"
 
 alias ls='ls --color=auto'
+alias lsd='ls -d *(/)'
 
 alias sudo='nocorrect sudo '
 
 alias s='sudo'
-
-alias vi='vim'
-alias v='vim'
 
 alias t='tmux'
 
@@ -36,18 +36,14 @@ alias ag='ag --hidden'
 # pip2 install pygments
 alias cat='pygmentize -O style=monokai -f console256 -g'
 
-alias ls='ls --color=auto'
-alias lsd='ls -d *(/)'
-
 alias ipaddr='dig +short myip.opendns.com @resolver1.opendns.com'
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-alias localip='ipconfig getifaddr en1'
-alias sniff="ngrep -d 'ens5' -t '^(GET|POST) ' 'tcp and port 80'"
+alias sniff="ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
 alias whois='whois -h whois-servers.net'
 alias flush='dscacheutil -flushcache'
-alias httpdump='tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
+alias httpdump='tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
 
-alias fs='du -ShL'
+alias fs='du -shL'
 
 alias make='colormake-short'
 
