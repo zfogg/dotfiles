@@ -332,6 +332,8 @@ filetype off " Unload plugins.
         "Bundle 'mustache/vim-mustache-handlebars'
         Bundle 'nginx.vim'
         Bundle 'vim-ruby/vim-ruby'
+        Bundle 'rust-lang/rust.vim'
+        Bundle 'phildawes/racer'
         Bundle 'saltstack/salt-vim'
         "Bundle 'wavded/vim-stylus'
         Bundle 'marijnh/tern_for_vim'

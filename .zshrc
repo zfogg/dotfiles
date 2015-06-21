@@ -128,6 +128,7 @@ zstyle ':completion::*:(rm|vi):*' ignore-line true
 zstyle ':completion:*' ignore-parents parent pwd
 
 zstyle ':completion::approximate*:*' prefix-needed false
+
 # }}}
 
 
@@ -214,6 +215,14 @@ bindkey '\e[4~' end-of-line
 # liquidprompt
 LP_ENABLE_TIME=1
 LP_USER_ALWAYS=1
+
+typeset -U fpath
+fpath=(
+    /usr/local/share/zsh/site-functions
+    /usr/local/share/zsh/functions
+    $fpath[@]
+)
+fpath=($^fpath(N))
 
 source ~/.zsh/antigen-hs/init.zsh
 
