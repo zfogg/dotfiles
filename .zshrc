@@ -2,6 +2,12 @@
 # vim: set fdm=marker:
 
 
+# unalias {{{
+unalias ls  2> /dev/null
+unalias cat 2> /dev/null
+# }}}
+
+
 # base16-shell {{{
 BASE16_SCHEME="default"
 BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
@@ -48,7 +54,12 @@ setopt VI
 # Modules. {{{
 autoload -U colors && colors
 autoload -U zsh-mime-setup && zsh-mime-setup
-zmodload zsh/complist; autoload -U compinit && compinit
+
+zmodload zsh/complist
+GENCOMPL_FPATH="$HOME/.zsh/complete"
+source $HOME/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
+autoload -U compinit && compinit
+
 autoload -U edit-command-line && zle -N edit-command-line
 autoload -U url-quote-magic && zle -N self-insert url-quote-magic
 autoload -U select-word-style && select-word-style bash
