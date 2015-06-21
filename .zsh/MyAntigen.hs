@@ -63,7 +63,8 @@ bundles =
     , bundle "sharat87/zsh-vim-mode"
     , bundle "zsh-users/zsh-syntax-highlighting"
     , bundle "zsh-users/zsh-history-substring-search"
-    , bundle "supercrabtree/k" ]
+    , bundle "supercrabtree/k"
+    ]
 
 config = AntigenConfiguration bundles
 

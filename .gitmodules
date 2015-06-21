@@ -17,3 +17,6 @@
 [submodule ".zsh/antigen-hs"]
 	path = .zsh/antigen-hs
 	url = git@github.com:Tarrasch/antigen-hs.git
+[submodule ".zsh/zsh-completion-generator"]
+	path = .zsh/zsh-completion-generator
+	url = https://github.com/RobSis/zsh-completion-generator
