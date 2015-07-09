@@ -171,6 +171,8 @@ export AWS_DEFAULT_PROFILE=zfogg-zfogg
 
 export JAVA_HOME=`/usr/libexec/java_home`
 
+export RUST_SRC_PATH="/usr/local/src/rust/src"
+
 # }}}
 
 
@@ -235,6 +237,7 @@ path=(
     ~/bin
     ~/.cabal/bin
     $GOROOT/bin
+    $GOPATH/bin
     $path[@]
 )
 
