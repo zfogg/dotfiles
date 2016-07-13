@@ -1,1 +1,9 @@
-let vimpager_disable_x11 = 1
+let g:vimpager = {}
+let g:less     = {}
+
+
+let g:vimpager.X11 = 0
+
+let g:vimpager.ansiesc = 0
+
+let g:less.number = 1

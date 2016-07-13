@@ -1,21 +1,12 @@
-" .vimrc | Vim 7.4 {{{1
-
-    " Author: Zach Fogg - zach@zachfogg.com
-    "  * @zfogg on GitHub and Twitter.
-    "
-    " Dependencies:
-    "   * git
-    "   * ctags, coffeetags, lushtags, fast-tags
-    "   * ghc, ghci, hdevtools, ghc-mod
-    "   * clang, eclim
-    "   * hcoffeelint, jslint, lint
-
+" .vimrc | neovim 0.1.3-dev {{{1
+    " Author: Zach Fogg - me@zfo.gg
+    "   @zfogg --> Twitter + GitHub + Snapchat
 " }}}1
 
 
 " Uninitialize Vim {{{1
 
-filetype off " Unload plugins.
+"filetype off " Unload plugins.
 
 " Uninitialize Vim }}}1
 
@@ -172,7 +163,7 @@ filetype off " Unload plugins.
         "}}}3
 
         " Rainbow Parentheses. {{{3
-            nnoremap <Leader>RPt :RainbowParenthesesToggleAll<CR>
+            nnoremap <Leader>RP<space> :RainbowParenthesesToggleAll<CR>
         "}}}3
 
         " Slime. {{{3
@@ -215,6 +206,13 @@ filetype off " Unload plugins.
             nnoremap -           :GitGutterPrevHunk<CR>
         " }}}3
 
+        " EasyAlign{{{3
+            xmap ga <Plug>(EasyAlign)
+            nmap ga <Plug>(EasyAlign)
+            nmap <Leader>: mtvai:EasyAlign * : { 'stick_to_left': 0, 'left_margin': 1 }<CR>`t
+            vmap <Leader>: mt:EasyAlign * : { 'stick_to_left': 0, 'left_margin': 1 }<CR>`t
+        " }}}3
+
     " }}}2
 
     " Et cetera. {{{2
@@ -238,7 +236,7 @@ filetype off " Unload plugins.
         nnoremap <Leader>S :%s/\s\+$//<cr>:let @/=''<CR><c-o>
 
         " Fixes for display glitches.
-        nnoremap <Leader><Space> :nohlsearch<CR>
+        nnoremap <silent> <Leader><Space> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>,<Space>
         nnoremap <Leader>rd      :redraw!<CR>
         " Set the background to transparent.
         nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
@@ -259,124 +257,98 @@ filetype off " Unload plugins.
 
 
 " Define Plugins {{{1
-
-    set rtp+=~/.vim/bundle/vundle/
-    call vundle#rc()
-
-    Bundle 'gmarik/vundle'
+    call plug#begin('~/.vim/bundle')
+    function! PCond(cond, ...)
+        let opts = get(a:000, 0, {})
+        return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+    endfunction
 
     " Integrate with other programs. {{{2
-        Bundle 'rking/ag.vim'
-        "Bundle 'tpope/vim-fireplace'
-        Bundle 'tpope/vim-fugitive'
-        Bundle 'airblade/vim-gitgutter'
-        "Bundle 'fs111/pydoc.vim'
-        "Bundle 'jpalardy/vim-slime'
-        Bundle 'Shougo/vimproc.vim'
+        Plug 'rking/ag.vim'
+        Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+        Plug 'tpope/vim-fugitive', { 'on': [] }
+        Plug 'airblade/vim-gitgutter'
+        "Plug 'fs111/pydoc.vim'
+        "Plug 'jpalardy/vim-slime'
+        Plug 'Shougo/vimproc.vim', { 'do': 'make' }
     " }}}2
 
     " Add features and functionality. {{{2
-        Bundle 'kien/ctrlp.vim'
-        Bundle 'Lokaltog/vim-easymotion'
-        Bundle 'scrooloose/nerdtree'
-        Bundle 'xolox/vim-session'
-        Bundle 'ervandew/supertab'
-        Bundle 'scrooloose/syntastic'
-        "Bundle 'SirVer/ultisnips'
-        "Bundle 'honza/vim-snippets'
-        Bundle 'Valloric/YouCompleteMe'
-        Bundle 'embear/vim-localvimrc'
-        Bundle 'editorconfig-vim'
-        "Bundle 'tpope/vim-rails'
+        Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlPLine'] }
+        Plug 'Lokaltog/vim-easymotion'
+        Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+        Plug 'xolox/vim-session'
+        Plug 'ervandew/supertab'
+        Plug 'neomake/neomake'
+        "Plug 'scrooloose/syntastic'
+        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --racer-completer --gocode-completer --tern-completer' }
+        Plug 'embear/vim-localvimrc'
+        Plug 'editorconfig/editorconfig-vim'
+        "Plug 'tpope/vim-rails', { 'on': [] }
+        Plug 'mattn/emmet-vim', { 'for': ['html', 'jinja.html', 'css', 'scss', 'less'] }
     " }}}2
 
     " Tags. {{{2
-        "Bundle 'Tagbar'
-        "Bundle 'lukaszkorecki/CoffeeTags'
-        "Bundle 'xolox/vim-easytags'
-        "Bundle 'bitc/lushtags'
     " }}}2
 
     " Plugin plugins. {{{2
-        Bundle 'suy/vim-ctrlp-commandline'
-        Bundle 'kana/vim-textobj-user'
+        Plug 'suy/vim-ctrlp-commandline'
+        Plug 'kana/vim-textobj-user'
+        Plug 'rizzatti/dash.vim'
+        "Plug 'rdnetto/YCM-Generator'
     " }}}2
 
     " Language support. {{{2
-        Bundle 'applescript.vim'
-        "Bundle 'mtscout6/vim-cjsx'
-        "Bundle 'guns/vim-clojure-static'
-        "Bundle 'jalcine/cmake.vim'
-        Bundle 'kchmck/vim-coffee-script'
-        Bundle 'ap/vim-css-color'
-        Bundle 'closetag.vim'
-        Bundle 'ekalinin/Dockerfile.vim'
-        Bundle 'mattn/emmet-vim'
-        "Bundle 'eagletmt/ghcmod-vim'
-        Bundle 'tikhomirov/vim-glsl'
-        Bundle 'fatih/vim-go'
-        "Bundle 'lukerandall/haskellmode-vim'
-        Bundle 'bitc/vim-hdevtools'
-        Bundle 'digitaltoad/vim-jade'
+        "let g:polyglot_disabled = ['javascript']
+        Plug 'sheerun/vim-polyglot'
 
-        "Bundle 'pangloss/vim-javascript'
-        Bundle 'jelera/vim-javascript-syntax'
-        Bundle 'JavaScript-Indent'
-        Bundle 'othree/javascript-libraries-syntax.vim'
-        Bundle 'mxw/vim-jsx'
-
-        Bundle 'lepture/vim-jinja'
-        Bundle 'groenewege/vim-less'
-        "Bundle "gilligan/vim-lldb"
-        Bundle 'plasticboy/vim-markdown'
-        "Bundle 'mustache/vim-mustache-handlebars'
-        Bundle 'nginx.vim'
-        Bundle 'vim-ruby/vim-ruby'
-        Bundle 'rust-lang/rust.vim'
-        Bundle 'cespare/vim-toml'
-        Bundle 'saltstack/salt-vim'
-        "Bundle 'wavded/vim-stylus'
-        Bundle 'marijnh/tern_for_vim'
-        "Bundle 'xmledit'
+        Plug 'applescript.vim', PCond(has('mac'), { 'for': 'applescript' })
+        Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
+        "Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+        "Plug 'lukerandall/haskellmode-vim', { 'for': 'haskell' }
+        Plug 'digitaltoad/vim-jade', { 'for': 'jade' }
+        "Plug 'kern/vim-es7'
+        Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
+        Plug 'lepture/vim-jinja', { 'for': ['jinja', 'jinja.html', 'sls'] }
+        Plug 'saltstack/salt-vim', { 'for': 'sls' }
+        "Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
     " }}}2
 
     " Colorschemes. {{{2
-        Bundle 'chriskempson/base16-vim'
-        "Bundle 'git://github.com/zfogg/vim-eddie.git'
-        "Bundle 'Pychimp/vim-luna'
-        Bundle 'google_prettify.vim'
-        Bundle 'junegunn/seoul256.vim'
-        "Bundle 'chriskempson/vim-tomorrow-theme'
-        "Bundle 'altercation/vim-colors-solarized'
+        Plug 'chriskempson/base16-vim'
+        "Plug 'git://github.com/zfogg/vim-eddie.git'
+        "Plug 'Pychimp/vim-luna'
     " }}}2
 
     " Beautify Vim. {{{2
-        Bundle 'nathanaelkane/vim-indent-guides'
-        Bundle 'itchyny/lightline.vim'
-        Bundle 'kien/rainbow_parentheses.vim'
-        Bundle 'AnsiEsc.vim'
+        Plug 'nathanaelkane/vim-indent-guides'
+        Plug 'itchyny/lightline.vim'
+        Plug 'kien/rainbow_parentheses.vim'
+        Plug 'AnsiEsc.vim', PCond(has('nvim'))
+        Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'sass', 'less'] }
+        Plug 'arakashic/chromatica.nvim', { 'for': ['c', 'cpp'], 'as': 'chromatica' }
     " }}}2
 
     " Direct text manipulation. {{{2
-        Bundle 'b4winckler/vim-angry'
-        Bundle 'junegunn/vim-easy-align'
-        Bundle 'tommcdo/vim-exchange'
-        Bundle 'Raimondi/delimitMate'
-        "Bundle 'tmhedberg/matchit'
-        Bundle 'scrooloose/nerdcommenter'
-        Bundle 'wellle/targets.vim'
-        Bundle 'tpope/vim-surround'
-        Bundle 'kana/vim-textobj-indent'
-        "Bundle 'tpope/vim-unimpaired'
+        Plug 'b4winckler/vim-angry'
+        Plug 'junegunn/vim-easy-align'
+        Plug 'tommcdo/vim-exchange'
+        Plug 'cohama/lexima.vim'
+        "^"Plug 'Raimondi/delimitMate'
+        Plug 'scrooloose/nerdcommenter'
+        Plug 'wellle/targets.vim'
+        Plug 'tpope/vim-surround'
+        Plug 'kana/vim-textobj-indent'
     " }}}2
 
     " Silent enhancements. {{{2
-        Bundle 'xolox/vim-misc'
-        Bundle 'kana/vim-niceblock'
-        Bundle 'sickill/vim-pasta'
-        Bundle 'tpope/vim-repeat'
-        "Bundle 'tpope/vim-speeddating'
-        "Bundle 'matthewsimo/angular-vim-snippets'
+        Plug 'xolox/vim-misc'
+        Plug 'kana/vim-niceblock'
+        Plug 'sickill/vim-pasta'
+        Plug 'tpope/vim-repeat'
+        "Plug 'tpope/vim-speeddating'
+        Plug 'unblevable/quick-scope', PCond(has('nvim'))
+        "Plug 'closetag.vim'
     " }}}2
 
 " Plugins }}}1
@@ -395,7 +367,6 @@ filetype off " Unload plugins.
     set backupskip=/tmp/*,/private/tmp/*" " Edit crontabs
 
     " Pretty colors.
-    syntax on                     " Smart syntax highlighing.
     set t_Co=256                  " To enable 256bit colors in the console.
 
     " Ignore these files when completing.
@@ -525,6 +496,8 @@ filetype off " Unload plugins.
         execute "set <F12>=\e[24;*~"
     endif
 
+    let g:python_host_prog='/usr/local/bin/python'
+    let g:python3_host_prog='/usr/local/bin/python3'
 " Basic Settings }}}1
 
 
@@ -546,8 +519,8 @@ filetype off " Unload plugins.
     " }}}2
 
     " Slime {{{2
-        "let g:slime_config    = {"sessionname": "repl", "windowname": "1"}
-        let g:slime_target = "tmux"
+        "let g:slime_config    = {'sessionname': 'repl', 'windowname': '1'}
+        let g:slime_target = 'tmux'
         let g:slime_paste_file = tempname()
         let g:slime_python_ipython = 1
     " }}}2
@@ -631,15 +604,12 @@ filetype off " Unload plugins.
     " }}}2
 
     " Syntastic {{{2
-        let g:syntastic_html_tidy_ignore_errors = [
-            \ " proprietary attribute \"ng-",
-        \]
-
         set statusline+=%#warningmsg#
         set statusline+=%{SyntasticStatuslineFlag()}
         set statusline+=%*
 
         let g:syntastic_javascript_checkers      = ['eslint']
+        let g:syntastic_html_checkers            = []
 
         let g:syntastic_always_populate_loc_list = 1
         let g:syntastic_auto_loc_list            = 1
@@ -810,14 +780,25 @@ filetype off " Unload plugins.
             return lightline#statusline(0)
         endfunction
 
-        augroup AutoSyntastic
+        "augroup AutoSyntastic
+            "autocmd!
+            "autocmd BufWritePost *.c,*.cpp call s:syntastic()
+        "augroup END
+        "function! s:syntastic()
+            "SyntasticCheck
+            "call lightline#update()
+        "endfunction
+    " }}}
+
+    " Neomake {{{2
+        augroup Neomake
             autocmd!
-            autocmd BufWritePost *.c,*.cpp call s:syntastic()
+            autocmd! BufWritePost * Neomake
         augroup END
-        function! s:syntastic()
-            SyntasticCheck
-            call lightline#update()
-        endfunction
+    " }}}2
+
+    " Chromatica {{{2
+        let g:chromatica#libclang_path='/usr/local/opt/llvm/lib'
     " }}}2
 
     " Session {{{2
@@ -929,6 +910,40 @@ filetype off " Unload plugins.
         let g:javascript_conceal_super      = "Ω"
     " }}}2
 
+    " quick-scope {{{2
+        function! Quick_scope_selective(movement)
+            let needs_disabling = 0
+            if !g:qs_enable
+                QuickScopeToggle
+                redraw
+                let needs_disabling = 1
+            endif
+            let letter = nr2char(getchar())
+            if needs_disabling
+                QuickScopeToggle
+            endif
+            return a:movement . letter
+        endfunction
+
+        let g:qs_enable = 0
+
+        nnoremap <expr> <silent> f Quick_scope_selective('f')
+        nnoremap <expr> <silent> F Quick_scope_selective('F')
+        nnoremap <expr> <silent> t Quick_scope_selective('t')
+        nnoremap <expr> <silent> T Quick_scope_selective('T')
+        vnoremap <expr> <silent> f Quick_scope_selective('f')
+        vnoremap <expr> <silent> F Quick_scope_selective('F')
+        vnoremap <expr> <silent> t Quick_scope_selective('t')
+        vnoremap <expr> <silent> T Quick_scope_selective('T')
+
+        nnoremap <C-_> :normal ,<CR>
+        vnoremap <C-_> :normal ,<CR>
+    " }}}2
+
+    " jsx {{{
+        let g:jsx_ext_required = 0
+    " }}}2
+
 " Plugin Settings }}}1
 
 
@@ -964,8 +979,7 @@ filetype off " Unload plugins.
 
     augroup JavaScript
         au!
-        au FileType javascript,javascript.jsx setl fdm=marker fmr={,}
-        au FileType javascript,javascript.jsx call JavaScriptFold()
+        au FileType javascript,javascript.jsx set foldmethod=syntax
     augroup END
 
     augroup Java
@@ -991,7 +1005,7 @@ filetype off " Unload plugins.
     augroup Python
         au!
         au FileType python setl expandtab sw=4 sts=4 cinwords=if,elif,else,for,while,try,except,finally,def,class,with
-        au FileType python set omnifunc=pythoncomplete#Complete
+        "au FileType python set omnifunc=pythoncomplete#Complete
         au FileType python set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
     augroup END
 
@@ -1000,6 +1014,13 @@ filetype off " Unload plugins.
         let g:clojure_foldwords = "def,ns"
         au FileType clojure setl sw=2
         au FileType clojure setl foldmethod=indent foldminlines=2 foldnestmax=2
+    augroup END
+
+    augroup ClojureScript
+        au!
+        au BufRead,BufNewFile *.cljs setl ft=clojure
+        au BufRead,BufNewFile *.cljs RainbowParenthesesActivate
+        au BufRead,BufNewFile *.cljs let g:paredit_mode=1
     augroup END
 
     augroup Haskell
@@ -1028,6 +1049,7 @@ filetype off " Unload plugins.
     augroup JSON
         au!
         au BufRead,BufNewFile *.json set filetype=json
+        au BufRead,BufNewFile .eslintrc,.babelrc set ft=json
     augroup END
 
     augroup YAML
@@ -1045,15 +1067,18 @@ filetype off " Unload plugins.
 
 " Initialize Vim {{{1
 
+    call plug#end()
+
     try                                 " Fall back to preferred colorschemes.
         set background=dark
+        set termguicolors
         let base16colorspace=256        " Access colors present in 256 colorspace
-        colorscheme base16-default
+        colorscheme base16-default-dark
     catch /^Vim\%((\a\+)\)\=:E185/
         try
             colorscheme jellybeans
         catch /^Vim\%((\a\+)\)\=:E185/
-            colorscheme desert256
+            colorscheme desert
         endtry
     endtry
 
@@ -1066,8 +1091,6 @@ filetype off " Unload plugins.
         au!
         au! ColorScheme * :call <SID>SetCursorLine()
     augroup END
-
-    filetype plugin indent on           " Load plugins.
 
 " Initialize Vim }}}1
 

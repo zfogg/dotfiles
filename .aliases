@@ -16,11 +16,7 @@ alias sudo='nocorrect sudo '
 alias s='sudo'
 
 alias t='tmux'
-
-alias p='pacman'
-alias pp='powerpill'
-alias packer='packer-color'
-alias pa='packer'
+alias ta='tmux attach -d -t'
 
 #alias python=$PYTHON
 
@@ -34,7 +30,8 @@ alias gh='git gh'
 alias ag='ag --hidden'
 
 # pip2 install pygments
-alias cat='pygmentize -O style=monokai -f console256 -g'
+#alias cat='pygmentize -O style=monokai -f console256 -g'
+alias ccat='pygmentize -O style=monokai -f console256 -g'
 
 alias ipaddr='dig +short myip.opendns.com @resolver1.opendns.com'
 alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
@@ -45,16 +42,17 @@ alias httpdump='tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*
 
 alias fs='du -shL'
 
+#alias make_='/usr/bin/make -j`sysctl -n hw.ncpu`'
+alias makefast='colormake-short -j`sysctl -n hw.ncpu`'
 alias make='colormake-short'
 
 alias m='make'
 alias mc='make clean'
 alias mt='make test'
-alias M='make clean all'
-alias MM='make clean test'
+alias M='make clean && make all'
+alias MM='make clean && make test'
 
 alias mvn='mvn-color'
 alias idea='vim ~/Dropbox/ideas.md'
 
 alias s3='aws s3'
-

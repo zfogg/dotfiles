@@ -17,12 +17,19 @@
     eol = lf
     autocrlf = input
 
+[difftool "vimdiff"]
+    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[difftool]
+    prompt = false
 [diff]
     tool = vimdiff
-
+[mergetool "vimdiff"]
+    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    trustExitCode = false
+[mergetool]
+    keepBackup = false
 [merge]
     tool = vimdiff
-    conflictstyle = diff3
 
 [color]
     ui = true

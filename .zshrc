@@ -8,10 +8,14 @@ unalias cat 2> /dev/null
 # }}}
 
 
-# base16-shell {{{
-BASE16_SCHEME="default"
-BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
+# theme {{{
+BASE16_SCHEME="default-dark"
+BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-$BASE16_SCHEME.sh"
 [[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+setopt multios
+setopt cdablevars
+setopt prompt_subst
 # }}}
 
 
@@ -48,6 +52,9 @@ setopt VI
 
 
 # Prompt. {{{
+TRAPWINCH() {
+  zle && { zle reset-prompt; zle -R }
+}
 # }}}
 
 
@@ -136,6 +143,8 @@ zstyle ':completion::approximate*:*' prefix-needed false
 
 export WI_HOME=~/src/wi
 
+export WORKON_HOME=~/.virtualenvs
+
 export OSX=`[ $(uname) = "Darwin" ] && echo $?`
 
 [ "$TERM" != "st-256color" ] && export TERM="screen-256color"
@@ -159,6 +168,8 @@ else
     export PYTHON=`which python2`
 fi
 
+export CAFFE_HOME=~/src/github.com/BVLC/caffe/distribute
+
 export GEM_HOME=~/.gem/ruby/2.1.0
 export RAILS_ENV=development
 
@@ -172,6 +183,13 @@ export AWS_DEFAULT_PROFILE=zfogg-zfogg
 export JAVA_HOME=`/usr/libexec/java_home`
 
 export RUST_SRC_PATH="/usr/local/src/rust/src"
+
+export LEIN_FAST_TRAMPOLINE="y"
+
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
+
+export POWERLINE_CONFIG_COMMAND="python /usr/local/bin/powerline-config"
 
 # }}}
 
@@ -214,9 +232,8 @@ bindkey '\e[4~' end-of-line
 
 # antigen-hs {{{
 
-# liquidprompt
-LP_ENABLE_TIME=1
-LP_USER_ALWAYS=1
+
+export ANTIGEN_HS_SANDBOX="cabal"
 
 typeset -U fpath
 fpath=(
@@ -238,6 +255,7 @@ path=(
     ~/.cabal/bin
     $GOROOT/bin
     $GOPATH/bin
+    $CAFFE_HOME/bin
     $path[@]
 )
 
@@ -251,6 +269,7 @@ if [ "$OSX" ]; then
         /usr/local/bin
         /usr/local/opt/make/bin
         /usr/local/opt/coreutils/libexec/gnubin
+        /usr/local/opt/gnu-sed/libexec/gnubin
         $GEM_HOME/bin
         ~/Library/Python/2.7/bin
         $path[@]
@@ -258,6 +277,7 @@ if [ "$OSX" ]; then
 
     manpath=(
         /usr/local/opt/coreutils/libexec/gnuman
+        /usr/local/opt/gnu-sed/libexec/gnuman
         $manpath[@]
     )
 fi
@@ -324,6 +344,14 @@ function aliasof {
 # }}}
 
 
-# For neovim.
-[[ -f ~/$TERM.ti ]] && tic ~/$TERM.ti
+# neovim
+if [[ ! -f ~/$TERM.ti ]]; then
+    infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
+fi
+tic ~/$TERM.ti
+
+
+# iTerm2
+# https://iterm2.com/documentation-shell-integration.html
+source ~/.iterm2_shell_integration.`basename $SHELL`
 
