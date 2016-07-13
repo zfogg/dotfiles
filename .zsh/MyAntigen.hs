@@ -1,12 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ExtendedDefaultRules #-}
 
 
-module MyAntigen where
+module Main where
 
 import Antigen (
     -- Rudimentary imports
-    AntigenConfiguration (..)
+    AntigenConfig (..)
+    , defaultConfig
     , bundle
     , antigen
     -- If you want to source a bit trickier plugins
@@ -15,16 +15,11 @@ import Antigen (
     , filePathsSourcingStrategy
     )
 
-import Shelly (shelly)
-
 
 ohMyZshPlugins = [ "plugins/golang"
                  , "plugins/git"
                  , "plugins/httpie"
-                 , "plugins/docker-compose"
                  , "plugins/node"
-                 , "plugins/pip"
-                 , "plugins/colored-man"
                  , "plugins/extract"
                  , "plugins/safe-paste"
                  , "plugins/vi-mode"
@@ -40,12 +35,8 @@ ohMyZshPlugins = [ "plugins/golang"
 bundles =
     [ (bundle "robbyrussell/oh-my-zsh")
         { fpathLocations   = []
-        , sourcingStrategy = filePathsSourcingStrategy [ "lib/completion.zsh"
-                                                       , "lib/correction.zsh"
-                                                       , "lib/directories.zsh"
-                                                       , "lib/history.zsh"
+        , sourcingStrategy = filePathsSourcingStrategy [ "lib/history.zsh"
                                                        , "lib/key-bindings.zsh"
-                                                       , "lib/termsupport.zsh"
                                                        , "lib/theme-and-appearance.zsh"
                                                        ] }
 
@@ -64,9 +55,9 @@ bundles =
     ]
 
 
-config = AntigenConfiguration bundles
+config = defaultConfig { plugins = bundles }
 
 
 main :: IO ()
-main = shelly $ antigen config
+main = antigen config
 
