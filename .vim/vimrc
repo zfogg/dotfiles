@@ -12,7 +12,6 @@
 
 
 " Key Mappings {{{1
-
     let mapleader=","
 
     " Opening, reading, writing, and closing. {{{2
@@ -166,10 +165,6 @@
             nnoremap <Leader>RP<space> :RainbowParenthesesToggleAll<CR>
         "}}}3
 
-        " Slime. {{{3
-            vnoremap <Leader>ss :SlimeSend<CR>
-        "}}}3
-
         " CtrlP. {{{3
             nnoremap <C-F> :CtrlPLine<CR>
         " }}}3
@@ -181,38 +176,22 @@
             nmap <Leader>SQ <Leader>Sq:q<CR>
         " }}}3
 
-        " ghc-mod. {{{3
-            nnoremap <Leader>Gc :GhcModCheckAndLintAsync<CR>
-            nnoremap <Leader>Gt :GhcModType<CR>
-            nnoremap <Leader>GT :GhcModTypeClear<CR>
-            nnoremap <Leader>Ge :GhcModExpand<CR>
-        " }}}3
-
-        " hdevtools. {{{3
-            nnoremap <Leader>Hi :HdevtoolsInfo<CR>
-            nnoremap <Leader>Ht :HdevtoolsType<CR>
-            nnoremap <Leader>Hc :HdevtoolsClear<CR>
-        " }}}3
-
         " Tagbar. {{{3
             nnoremap <Leader>t<Space> :TagbarToggle<CR>
             nnoremap <Leader>T<Space> :TagbarOpen fj<CR>
         " }}}3
 
         " gitgutter {{{3
-            nnoremap <Leader>ggs :GitGutterToggle<CR>
-            nnoremap <Leader>ggl :GitGutterLineHighlightsToggle<CR>
-            nnoremap +           :GitGutterNextHunk<CR>
-            nnoremap -           :GitGutterPrevHunk<CR>
+            nnoremap <Leader>gg<Space>  :GitGutterToggle<CR>
+            nnoremap <Leader>ggl<Space> :GitGutterLineHighlightsToggle<CR>
+            nnoremap =                  <Plug>GitGutterNextHunk
+            nnoremap -                  <Plug>GitGutterPrevHunk
         " }}}3
 
         " EasyAlign{{{3
-            xmap ga <Plug>(EasyAlign)
             nmap ga <Plug>(EasyAlign)
-            nmap <Leader>: mtvai:EasyAlign * : { 'stick_to_left': 0, 'left_margin': 1 }<CR>`t
-            vmap <Leader>: mt:EasyAlign * : { 'stick_to_left': 0, 'left_margin': 1 }<CR>`t
+            xmap ga <Plug>(EasyAlign)
         " }}}3
-
     " }}}2
 
     " Et cetera. {{{2
@@ -253,6 +232,14 @@
         nnoremap <Leader>T :silent !/usr/local/bin/ctags -R<CR>:redraw!<CR>
     " }}}2
 
+    " NERDCommenter {{{3 FIXME - I don't belong here
+        let NERDMenuMode="1"
+        let NERDSpaceDelims="1"
+        let NERDRemoveExtraSpaces="1"
+        let NERDCompactSexyComs="1"
+        let NERDAlignDefault="both"
+        let NERDTrimTrailingWhitespace="1"
+    " }}}3
 " Key Mappings }}}1
 
 
@@ -266,25 +253,30 @@
     " Integrate with other programs. {{{2
         Plug 'rking/ag.vim'
         Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-        Plug 'tpope/vim-fugitive', { 'on': [] }
+        Plug 'tpope/vim-fugitive'
         Plug 'airblade/vim-gitgutter'
         "Plug 'fs111/pydoc.vim'
         "Plug 'jpalardy/vim-slime'
         Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+        Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
     " }}}2
 
     " Add features and functionality. {{{2
-        Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlPLine'] }
+        Plug 'ctrlpvim/ctrlp.vim'
         Plug 'Lokaltog/vim-easymotion'
         Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
         Plug 'xolox/vim-session'
         Plug 'ervandew/supertab'
         Plug 'neomake/neomake'
-        "Plug 'scrooloose/syntastic'
-        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --racer-completer --gocode-completer --tern-completer' }
+        Plug 'Valloric/YouCompleteMe', {
+            \ 'do': './install.py'
+            \   . ' --clang-completer'
+            \   . ' --racer-completer'
+            \   . ' --gocode-completer'
+            \   . ' --tern-completer'
+            \ }
         Plug 'embear/vim-localvimrc'
         Plug 'editorconfig/editorconfig-vim'
-        "Plug 'tpope/vim-rails', { 'on': [] }
         Plug 'mattn/emmet-vim', { 'for': ['html', 'jinja.html', 'css', 'scss', 'less'] }
     " }}}2
 
@@ -292,7 +284,7 @@
     " }}}2
 
     " Plugin plugins. {{{2
-        Plug 'suy/vim-ctrlp-commandline'
+        Plug 'suy/vim-ctrlp-commandline', { 'on': ['CtrlP', 'CtrlPLine'] }
         Plug 'kana/vim-textobj-user'
         Plug 'rizzatti/dash.vim'
         "Plug 'rdnetto/YCM-Generator'
@@ -347,7 +339,7 @@
         Plug 'sickill/vim-pasta'
         Plug 'tpope/vim-repeat'
         "Plug 'tpope/vim-speeddating'
-        Plug 'unblevable/quick-scope', PCond(has('nvim'))
+        "Plug 'unblevable/quick-scope', PCond(has('nvim'))
         "Plug 'closetag.vim'
     " }}}2
 
@@ -467,48 +459,16 @@
 
     " For Vim within a tmux session.
     " http://stackoverflow.com/a/15471820
-    if &term =~ '^screen' && exists('$TMUX')
+    if $TERM =~ '^\(screen\|xterm\)' && exists('$TMUX')
         set mouse+=a
-        " tmux knows the extended mouse mode
-        set ttymouse=xterm2
-        " tmux will send xterm-style keys when xterm-keys is on
-        execute "set <xUp>=\e[1;*A"
-        execute "set <xDown>=\e[1;*B"
-        execute "set <xRight>=\e[1;*C"
-        execute "set <xLeft>=\e[1;*D"
-        execute "set <xHome>=\e[1;*H"
-        execute "set <xEnd>=\e[1;*F"
-        execute "set <Insert>=\e[2;*~"
-        execute "set <Delete>=\e[3;*~"
-        execute "set <PageUp>=\e[5;*~"
-        execute "set <PageDown>=\e[6;*~"
-        execute "set <xF1>=\e[1;*P"
-        execute "set <xF2>=\e[1;*Q"
-        execute "set <xF3>=\e[1;*R"
-        execute "set <xF4>=\e[1;*S"
-        execute "set <F5>=\e[15;*~"
-        execute "set <F6>=\e[17;*~"
-        execute "set <F7>=\e[18;*~"
-        execute "set <F8>=\e[19;*~"
-        execute "set <F9>=\e[20;*~"
-        execute "set <F10>=\e[21;*~"
-        execute "set <F11>=\e[23;*~"
-        execute "set <F12>=\e[24;*~"
     endif
 
-    let g:python_host_prog='/usr/local/bin/python'
-    let g:python3_host_prog='/usr/local/bin/python3'
+    "let g:python_host_prog='/usr/local/bin/python'
+    "let g:python3_host_prog='/usr/local/bin/python3'
 " Basic Settings }}}1
 
 
 " Plugin Settings {{{1
-
-    " Eclim {{{2
-        let g:EclimCompletionMethod        = 'omnifunc'
-        let g:EclimMavenPomClasspathUpdate = 1
-
-    " }}}2
-
     " NERDTree {{{2
         let NERDTreeIgnore = [
             \ '\.class$',
@@ -518,13 +478,6 @@
         \ ]
     " }}}2
 
-    " Slime {{{2
-        "let g:slime_config    = {'sessionname': 'repl', 'windowname': '1'}
-        let g:slime_target = 'tmux'
-        let g:slime_paste_file = tempname()
-        let g:slime_python_ipython = 1
-    " }}}2
-
     " Indent-Guides {{{2
         let g:indent_guides_start_level           = 2
         let g:indent_guides_guide_size            = 1
@@ -532,37 +485,40 @@
         let g:indent_guides_auto_colors           = 0
         augroup IndentGuides
             autocmd!
-            autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=grey
-            autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=darkgrey
+            autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=grey     guibg=#585858
+            autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=darkgrey guibg=#383838
         augroup END
     " }}}2
 
     " Rainbow Parentheses {{{2
-        let g:rbpt_colorpairs = [
-            \ ['brown',       'RoyalBlue3'],
-            \ ['blue',        'SeaGreen3'],
-            \ ['darkgray',    'DarkOrchid3'],
-            \ ['darkgreen',   'firebrick3'],
-            \ ['darkmagenta', 'DarkOrchid3'],
-            \ ['darkcyan',    'RoyalBlue3'],
-            \ ['darkred',     'SeaGreen3'],
-            \ ['brown',       'firebrick3'],
-            \ ['gray',        'RoyalBlue3'],
-            \ ['darkmagenta', 'DarkOrchid3'],
-            \ ['blue',        'firebrick3'],
-            \ ['red',         'firebrick3'],
-            \ ['darkgreen',   'RoyalBlue3'],
-            \ ['darkcyan',    'SeaGreen3'],
-            \ ['darkred',     'DarkOrchid3'],
-        \ ]
+        " let g:rbpt_colorpairs = [
+            " \ ['brown',       'RoyalBlue3'],
+            " \ ['blue',        'SeaGreen3'],
+            " \ ['darkgray',    'DarkOrchid3'],
+            " \ ['darkgreen',   'firebrick3'],
+            " \ ['darkmagenta', 'DarkOrchid3'],
+            " \ ['darkcyan',    'RoyalBlue3'],
+            " \ ['darkred',     'SeaGreen3'],
+            " \ ['brown',       'firebrick3'],
+            " \ ['gray',        'RoyalBlue3'],
+            " \ ['darkmagenta', 'DarkOrchid3'],
+            " \ ['blue',        'firebrick3'],
+            " \ ['red',         'firebrick3'],
+            " \ ['darkgreen',   'RoyalBlue3'],
+            " \ ['darkcyan',    'SeaGreen3'],
+            " \ ['darkred',     'DarkOrchid3'],
+        " \ ]
 
-        let g:rbpt_nax            = 16
-        let g:rbpt_loadcmd_toggle = 0
+        " let g:rbpt_nax            = 16
+        " let g:rbpt_loadcmd_toggle = 0
 
-        au VimEnter * silent! RainbowParenthesesToggle
-        au Syntax * silent! RainbowParenthesesLoadRound
-        au Syntax * silent! RainbowParenthesesLoadSquare
-        au Syntax * silent! RainbowParenthesesLoadBraces
+        " augroup RainbowParenthese
+            " autocmd!
+            " au VimEnter * silent! RainbowParenthesesToggle
+            " au Syntax * silent! RainbowParenthesesLoadRound
+            " au Syntax * silent! RainbowParenthesesLoadSquare
+            " au Syntax * silent! RainbowParenthesesLoadBraces
+        " augroup END
     " }}}2
 
     " YouCompleteMe {{{2
@@ -570,10 +526,8 @@
         let g:ycm_autoclose_preview_window_after_insertion  = 1
         let g:ycm_register_as_syntastic_checker             = 1
         let g:ycm_complete_in_comments                      = 1
-
         let g:ycm_seed_identifiers_with_syntax              = 1
         let g:ycm_collect_identifiers_from_tags_files       = 1
-
         let g:ycm_extra_conf_globlist                       = ['~/src/*']
 
         let g:ycm_semantic_triggers =  {
@@ -589,7 +543,6 @@
         \ }
 
         let g:ycm_filetype_blacklist = {
-            \ 'tagbar':   1,
             \ 'qf':       1,
             \ 'notes':    1,
             \ 'markdown': 1,
@@ -601,46 +554,6 @@
         let g:ycm_key_list_select_completion   = ['<C-n>', '<Down>']
         let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
         let g:SuperTabDefaultCompletionType    = '<C-n>'
-    " }}}2
-
-    " Syntastic {{{2
-        set statusline+=%#warningmsg#
-        set statusline+=%{SyntasticStatuslineFlag()}
-        set statusline+=%*
-
-        let g:syntastic_javascript_checkers      = ['eslint']
-        let g:syntastic_html_checkers            = []
-
-        let g:syntastic_always_populate_loc_list = 1
-        let g:syntastic_auto_loc_list            = 1
-        let g:syntastic_check_on_open            = 1
-        let g:syntastic_check_on_wq              = 0
-
-        function! <SID>LocationPrevious()
-            try
-                lprev
-            catch /^Vim\%((\a\+)\)\=:E553/
-                llast
-            endtry
-        endfunction
-
-        function! <SID>LocationNext()
-            try
-                lnext
-            catch /^Vim\%((\a\+)\)\=:E553/
-                lfirst
-            endtry
-        endfunction
-
-        nnoremap <silent> <Plug>LocationPrevious    :<C-u>exe 'call <SID>LocationPrevious()'<CR>
-        nnoremap <silent> <Plug>LocationNext        :<C-u>exe 'call <SID>LocationNext()'<CR>
-
-    " }}}2
-
-    " UltiSnips {{{2
-        let g:UltiSnipsExpandTrigger = "<tab>"
-        let g:UltiSnipsJumpForwardTrigger = "<tab>"
-        let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
     " }}}2
 
     " CtrlP {{{2
@@ -779,15 +692,6 @@
             let g:lightline.fname = a:fname
             return lightline#statusline(0)
         endfunction
-
-        "augroup AutoSyntastic
-            "autocmd!
-            "autocmd BufWritePost *.c,*.cpp call s:syntastic()
-        "augroup END
-        "function! s:syntastic()
-            "SyntasticCheck
-            "call lightline#update()
-        "endfunction
     " }}}
 
     " Neomake {{{2
@@ -798,7 +702,7 @@
     " }}}2
 
     " Chromatica {{{2
-        let g:chromatica#libclang_path='/usr/local/opt/llvm/lib'
+        "let g:chromatica#libclang_path='/usr/local/opt/llvm/lib'
     " }}}2
 
     " Session {{{2
@@ -817,46 +721,13 @@
         call add(g:session_persist_globals, 'g:session_persist_globals')
     " }}}2
 
-    " delimitMate {{{2
-        " Intuitive indentation and delimiter expansion.
-        let delimitMate_expand_cr = 1
-        imap <expr><CR> pumvisible() ? "\<C-n>" : "<Plug>delimitMateCR"
-    " }}}2
-
-    " haskellmode {{{2
-        "let g:haddock_browser = '/usr/bin/chromium'
-        "let g:haddock_docdir = '/usr/share/doc/ghc/html/'
-        "autocmd VimEnter * set cmdheight=1
-    " }}}2
-
-    " easy-align {{{2
-        vnoremap <silent> <Enter> :EasyAlign<Enter>
-    " }}}2
-
-    " coffeetags {{{2
-        let g:CoffeeAutoTagDisabled = 1
-        if executable('coffeetags')
-            let g:CoffeeAutoTagDisabled    = 1          " Disables autotaging on save (Default: 0 [false])
-            "let g:CoffeeAutoTagFile        = './tags'   " Name of the generated tag file (Default: ./tags)
-            let g:CoffeeAutoTagIncludeVars = 1          " Includes variables (Default: 0 [false])
-            let g:CoffeeAutoTagTagRelative = 1          " Sets file names to the relative path from the tag file location to the tag file location (Default: 1 [true])
-        endif
-    " }}}2
-
-    " easytags {{{2
-        let g:easytags_dynamic_files  = 1
-        let g:easytags_events         = ['BufReadPost', 'BufWritePost']
-        "let g:easytags_file           = './tags'
-        let g:easytags_async          = 1
-        let g:easytags_on_cursorhold  = 0
-        let g:easytags_updatetime_min = 4000
-        let g:easytags_auto_highlight = 0
-    " }}}2
-
     " gitgutter {{{2
-        let g:gitgutter_diff_args = '-w'
-        let g:gitgutter_realtime  = 0
-        let g:gitgutter_eager     = 0
+        let g:gitgutter_map_keys        = 0
+        let g:gitgutter_diff_args       = '-w'
+        let g:gitgutter_realtime        = 0
+        let g:gitgutter_eager           = 0
+        "let g:gitgutter_highlight_lines = 1
+        let g:gitgutter_async           = 0
     " }}}2
 
     " editorconfig-vim {{{2
@@ -864,19 +735,8 @@
     " }}}2
 
     " localvimrc {{{2
-        let g:localvimrc_ask = 0
+        let g:localvimrc_ask     = 0
         let g:localvimrc_sandbox = 0
-    " }}}2
-
-    " tagbar {{{2
-        let g:tagbar_type_markdown = {
-        \ 'ctagstype' : 'markdown',
-        \ 'kinds' : [
-        \   'h:Heading_L1',
-        \   'i:Heading_L2',
-        \   'k:Heading_L3'
-        \   ]
-        \ }
     " }}}2
 
     " go {{{2
@@ -887,68 +747,38 @@
         let g:go_highlight_structs   = 1
     " }}}2
 
-    " rails {{{2
-        augroup vim_rails
-            au!
-            autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading    = 1
-            autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-            autocmd FileType ruby,eruby let g:rubycomplete_rails             = 1
-            autocmd FileType ruby,eruby setl shell=/bin/sh
-        augroup END
-    " }}}2
-
-    " javascript {{{2
-        let g:javascript_conceal            = 1
-        let g:javascript_conceal_function   = "ƒ"
-        let g:javascript_conceal_null       = "ø"
-        let g:javascript_conceal_this       = "@"
-        let g:javascript_conceal_return     = "⇚"
-        let g:javascript_conceal_undefined  = "¿"
-        let g:javascript_conceal_NaN        = "ℕ"
-        let g:javascript_conceal_prototype  = "¶"
-        let g:javascript_conceal_static     = "•"
-        let g:javascript_conceal_super      = "Ω"
-    " }}}2
-
     " quick-scope {{{2
-        function! Quick_scope_selective(movement)
-            let needs_disabling = 0
-            if !g:qs_enable
-                QuickScopeToggle
-                redraw
-                let needs_disabling = 1
-            endif
-            let letter = nr2char(getchar())
-            if needs_disabling
-                QuickScopeToggle
-            endif
-            return a:movement . letter
-        endfunction
+        "let g:qs_enable = 0
+        "nnoremap <C-_> :normal ,<CR>
+        "vnoremap <C-_> :normal ,<CR>
 
-        let g:qs_enable = 0
+        "function! Quick_scope_selective(movement)
+            "let needs_disabling = 0
+            "if !g:qs_enable
+                "QuickScopeToggle
+                "redraw
+                "let needs_disabling = 1
+            "endif
+            "let letter = nr2char(getchar())
+            "if needs_disabling
+                "QuickScopeToggle
+            "endif
+            "return a:movement . letter
+        "endfunction
 
-        nnoremap <expr> <silent> f Quick_scope_selective('f')
-        nnoremap <expr> <silent> F Quick_scope_selective('F')
-        nnoremap <expr> <silent> t Quick_scope_selective('t')
-        nnoremap <expr> <silent> T Quick_scope_selective('T')
-        vnoremap <expr> <silent> f Quick_scope_selective('f')
-        vnoremap <expr> <silent> F Quick_scope_selective('F')
-        vnoremap <expr> <silent> t Quick_scope_selective('t')
-        vnoremap <expr> <silent> T Quick_scope_selective('T')
-
-        nnoremap <C-_> :normal ,<CR>
-        vnoremap <C-_> :normal ,<CR>
+        "nnoremap <expr> <silent> f Quick_scope_selective('f')
+        "nnoremap <expr> <silent> F Quick_scope_selective('F')
+        "nnoremap <expr> <silent> t Quick_scope_selective('t')
+        "nnoremap <expr> <silent> T Quick_scope_selective('T')
+        "vnoremap <expr> <silent> f Quick_scope_selective('f')
+        "vnoremap <expr> <silent> F Quick_scope_selective('F')
+        "vnoremap <expr> <silent> t Quick_scope_selective('t')
+        "vnoremap <expr> <silent> T Quick_scope_selective('T')
     " }}}2
-
-    " jsx {{{
-        let g:jsx_ext_required = 0
-    " }}}2
-
 " Plugin Settings }}}1
 
 
 " FileType Settings {{{1
-
     augroup AllFiles
         au!
         " Return cursor to last position.
@@ -959,7 +789,7 @@
             \   endif                                           |
             \ endif
         " git-inline-diff on read,write
-        "au BufReadPost,BufWritePost * exe "normal " . mapleader . "d"
+        au BufReadPost,BufWritePost * exe "normal " . mapleader . "d"
     augroup END
 
     augroup VimL
@@ -1061,21 +891,23 @@
         au!
         au BufRead,BufNewFile *.AppleScript set ft=applescript
     augroup END
-
 " Filetype Settings }}}1
 
 
 " Initialize Vim {{{1
-
     call plug#end()
 
-    try                                 " Fall back to preferred colorschemes.
-        set background=dark
+    if has('nvim')
+        let $NVIM_TUI_ENABLE_TRUE_COLOR="1"
         set termguicolors
-        let base16colorspace=256        " Access colors present in 256 colorspace
+    endif
+
+    try                                 " Fall back to preferred colorschemes.
+        let base16colorspace="256"      " Access colors present in 256 colorspace
         colorscheme base16-default-dark
-    catch /^Vim\%((\a\+)\)\=:E185/
+    catch
         try
+            set background=dark
             colorscheme jellybeans
         catch /^Vim\%((\a\+)\)\=:E185/
             colorscheme desert
@@ -1091,6 +923,4 @@
         au!
         au! ColorScheme * :call <SID>SetCursorLine()
     augroup END
-
 " Initialize Vim }}}1
-

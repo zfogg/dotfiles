@@ -12,7 +12,7 @@
 	default = simple
 
 [core]
-    editor = vim
+    editor = nvim
     pager = vimpager
     eol = lf
     autocrlf = input

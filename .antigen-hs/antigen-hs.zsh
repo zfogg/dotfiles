@@ -3,6 +3,7 @@
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/lib/history.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/lib/key-bindings.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/lib/theme-and-appearance.zsh
+source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-history-substring-search/zsh-history-substring-search.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/golang/golang.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/git/git.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/httpie/httpie.plugin.zsh
@@ -19,10 +20,12 @@ source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON-
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-nojhan-SLASH-liquidprompt/liquidprompt.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-hchbaw-SLASH-opp.zsh/opp.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-rupa-SLASH-z/z.sh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-sharat87-SLASH-zsh-vim-mode/zsh-vim-mode.plugin.zsh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-supercrabtree-SLASH-k/k.plugin.zsh
+source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zfogg-SLASH-zsh-syntax-highlighting-filetypes/zsh-syntax-highlighting-filetypes.plugin.zsh
+source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-willghatch-SLASH-zsh-hooks/zsh-hooks.plugin.zsh
+source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-sharat87-SLASH-zsh-vim-mode/zsh-vim-mode.plugin.zsh
+fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-history-substring-search
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/golang
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/git
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/httpie
@@ -39,7 +42,8 @@ fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-nojhan-SLASH-liquidprompt
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-hchbaw-SLASH-opp.zsh
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-rupa-SLASH-z
-fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-sharat87-SLASH-zsh-vim-mode
-fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting
-fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-history-substring-search
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-supercrabtree-SLASH-k
+fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting
+fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zfogg-SLASH-zsh-syntax-highlighting-filetypes
+fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-willghatch-SLASH-zsh-hooks
+fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-sharat87-SLASH-zsh-vim-mode
