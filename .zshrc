@@ -2,55 +2,6 @@
 # vim: set fdm=marker:
 
 
-# unalias {{{
-unalias ls  2> /dev/null
-unalias cat 2> /dev/null
-# }}}
-
-
-# theme {{{
-BASE16_SCHEME="default-dark"
-BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-$BASE16_SCHEME.sh"
-[[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
-setopt multios
-setopt cdablevars
-setopt prompt_subst
-# }}}
-
-
-# Options. {{{
-setopt COMPLETE_ALIASES
-
-setopt IGNORE_EOF
-
-setopt GLOB_COMPLETE
-setopt EXTENDED_GLOB
-setopt NO_CASE_GLOB
-setopt NUMERIC_GLOB_SORT
-
-setopt HIST_IGNORE_DUPS
-setopt HIST_REDUCE_BLANKS
-setopt HIST_SAVE_NO_DUPS
-setopt HIST_FIND_NO_DUPS
-setopt HIST_IGNORE_SPACE
-setopt EXTENDED_HISTORY
-
-setopt AUTO_PUSHD
-setopt PUSHD_MINUS
-setopt PUSHD_TO_HOME
-setopt PUSHD_IGNORE_DUPS
-
-setopt RC_EXPAND_PARAM
-
-setopt RM_STAR_WAIT
-
-setopt TRANSIENT_RPROMPT
-
-setopt VI
-# }}}
-
-
 # Prompt. {{{
 TRAPWINCH() {
   zle && { zle reset-prompt; zle -R }
@@ -73,7 +24,7 @@ autoload -U select-word-style && select-word-style bash
 # }}}
 
 
-# Automatic completion. {{{
+# Autocomplete. {{{
 unsetopt menu_complete
 
 _force_rehash() {
@@ -141,61 +92,109 @@ zstyle ':completion::approximate*:*' prefix-needed false
 
 # Environment variables. {{{
 
-export WI_HOME=~/src/wi
+#export TERM="$TERM"
+export COLORTERM="$TERM"
 
-export WORKON_HOME=~/.virtualenvs
+export OSX="`[ $(uname) = "Darwin" ] && echo $?`"
 
-export OSX=`[ $(uname) = "Darwin" ] && echo $?`
+export EDITOR="$(which nvim)"
 
-[ "$TERM" != "st-256color" ] && export TERM="screen-256color"
+export VISUAL="$(which nvim)"
 
-export EDITOR=vi
+export PAGER="$(which vimpager)"
 
-export VISUAL=vi
+export LESS="-R"
 
-export PAGER=vimpager
-
-export LESS='-R'
-
-if [ "$OSX" ]; then
-    export VIM_APP_DIR="/Applications/MacVim"
-    export PYTHON=/usr/local/bin/python
-    export LC_ALL=en_US.UTF-8
-    export LANG=en_US.UTF-8
-    export ARCHFLAGS="-arch x86_64"
-else
-    eval $(dircolors -b) # Generate and set `$LS_COLORS`.
-    export PYTHON=`which python2`
-fi
-
-export CAFFE_HOME=~/src/github.com/BVLC/caffe/distribute
-
-export GEM_HOME=~/.gem/ruby/2.1.0
-export RAILS_ENV=development
-
-export CHROME_BIN=`which chromium`
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 export GOPATH="$HOME/src/go"
-export GOROOT=`go env GOROOT`
+export GOROOT="`go env GOROOT`"
 
-export AWS_DEFAULT_PROFILE=zfogg-zfogg
+export AWS_DEFAULT_PROFILE="zfogg-zfogg"
 
-export JAVA_HOME=`/usr/libexec/java_home`
+export HOMEBREW_GITHUB_API_TOKEN='5c8597261ad87cf1951e4e4ce9e9c3b1d1b361be'
 
-export RUST_SRC_PATH="/usr/local/src/rust/src"
-
-export LEIN_FAST_TRAMPOLINE="y"
-
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
+export WORKON_HOME="~/.virtualenvs"
 
 export POWERLINE_CONFIG_COMMAND="python /usr/local/bin/powerline-config"
 
+export ZSH_TMUX_FIXTERM=true
+export ZSH_TMUX_ITERM2=true
+export ZSH_TMUX_FIXTERM_WITHOUT_256COLOR="xterm"
+export ZSH_TMUX_FIXTERM_WITH_256COLOR="xterm-256color"
+# }}}
+
+
+# $PATH, $MANPATH, $FPATH {{{
+typeset -U path
+typeset -U fpath
+typeset -U manpath
+
+path=(
+    ~/bin
+    ~/.cabal/bin
+    ~/.cargo/bin
+    $GOROOT/bin
+    $GOPATH/bin
+    /usr/local/bin
+    $path[@]
+)
+
+manpath=(
+    $manpath[@]
+)
+
+fpath=(
+    /usr/local/share/zsh/site-functions
+    /usr/local/share/zsh/functions
+    $fpath[@]
+)
+
+if [ "$OSX" ]; then
+    path=(
+        /usr/local/opt/coreutils/libexec/gnubin
+        /usr/local/opt/gnu-sed/bin
+        /usr/local/opt/gnu-tar/bin
+        /usr/local/opt/gnu-indent/bin
+        $path[@]
+    )
+    manpath=(
+        /usr/local/opt/coreutils/libexec/gnuman
+        /usr/local/opt/gnu-sed/share
+        /usr/local/opt/gnu-tar/share
+        /usr/local/opt/gnu-indent/share
+        $manpath[@]
+    )
+fi
+
+path=($^path(N))
+manpath=($^manpath(N))
+fpath=($^fpath(N))
+# }}}
+
+
+# Aliases. {{{
+. ~/.aliases
+
+function aliasof {
+    if [ "$OSX" ]; then
+        sed_flags='-E'
+    else
+        sed_flags='-r'
+    fi
+    alias $1 | sed $sed_flags "s|$1=(.*)|\1|" | sed $sed_flags "s|'||g"
+}
+# }}}
+
+
+# Plugins. {{{
+export ANTIGEN_HS_SANDBOX="cabal"
+source ~/.zsh/antigen-hs/init.zsh
 # }}}
 
 
 # Key bindings. {{{
-# vi-mode.
 function _last-cmd-and-vi-cmd-mode {
     zle vi-cmd-mode
     zle history-substring-search-up
@@ -227,84 +226,37 @@ bindkey '\e[4~' end-of-line
 # }}}
 
 
-# Et cetera. {{{
-
-
-# antigen-hs {{{
-
-
-export ANTIGEN_HS_SANDBOX="cabal"
-
-typeset -U fpath
-fpath=(
-    /usr/local/share/zsh/site-functions
-    /usr/local/share/zsh/functions
-    $fpath[@]
-)
-fpath=($^fpath(N))
-
-source ~/.zsh/antigen-hs/init.zsh
-
-# }}}
-
-
-# $PATH directories. {{{
-typeset -U path
-path=(
-    ~/bin
-    ~/.cabal/bin
-    $GOROOT/bin
-    $GOPATH/bin
-    $CAFFE_HOME/bin
-    $path[@]
-)
-
-typeset -U manpath
-manpath=(
-    $manpath[@]
-)
+# theme {{{
+BASE16_SCHEME="default-dark"
+BASE16_SHELL="$HOME/.config/base16-shell/scripts/base16-$BASE16_SCHEME.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 if [ "$OSX" ]; then
-    path=(
-        /usr/local/bin
-        /usr/local/opt/make/bin
-        /usr/local/opt/coreutils/libexec/gnubin
-        /usr/local/opt/gnu-sed/libexec/gnubin
-        $GEM_HOME/bin
-        ~/Library/Python/2.7/bin
-        $path[@]
-    )
-
-    manpath=(
-        /usr/local/opt/coreutils/libexec/gnuman
-        /usr/local/opt/gnu-sed/libexec/gnuman
-        $manpath[@]
-    )
+    # https://iterm2.com/documentation-shell-integration.html
+    source ~/.iterm2_shell_integration."`basename "$SHELL"`"
+    # neovim
+    [[ ! -f ~/".$TERM".ti ]] || infocmp "$TERM" | sed 's/kbs=^[hH]/kbs=\\177/' > ~/."$TERM".ti
+    tic ~/".$TERM".ti
 fi
 
-path=($^path(N))
-manpath=($^manpath(N))
-# }}}
+eval "$(dircolors ~/.dircolors)"
+export LSCOLORS="$LS_COLORS"
 
-
-# Syntax highlighting. {{{
-# Remember to install `zsh-syntax-highlighting`.
+# Syntax highlighting. {{{ Remember to install `zsh-syntax-highlighting`.
 if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root)
-
-    ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' fg=black,bold,bg=red)
-    ZSH_HIGHLIGHT_PATTERNS+=('sudo *'   fg=white,bold,bg=red)
-
+    ZSH_HIGHLIGHT_PATTERNS+=('rm -*' fg=grey,bold,underline,bg=red)
+    ZSH_HIGHLIGHT_PATTERNS+=('sudo*'   fg=white,bold,bg=red)
     ZSH_HIGHLIGHT_STYLES[default]=none
-    ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=009
-    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=009,standout
+    ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=248
+    #ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=009,standout
     ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan,bold
-    ZSH_HIGHLIGHT_STYLES[builtin]=fg=white,bold,bg=yellow
-    ZSH_HIGHLIGHT_STYLES[function]=fg=white,bold,bg=cyan
+    ZSH_HIGHLIGHT_STYLES[builtin]=fg=145,bold,underline
+    ZSH_HIGHLIGHT_STYLES[function]=fg=cyan,bold
     ZSH_HIGHLIGHT_STYLES[command]=fg=white,bold
     ZSH_HIGHLIGHT_STYLES[precommand]=fg=white,underline
-    ZSH_HIGHLIGHT_STYLES[commandseparator]=none
-    ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=009
+    #ZSH_HIGHLIGHT_STYLES[commandseparator]=none
+    #ZSH_HIGHLIGHT_STYLES[hashed-command]=fg=009
     ZSH_HIGHLIGHT_STYLES[path]=fg=214,underline
     ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
     ZSH_HIGHLIGHT_STYLES[history-expansion]=fg=white,underline
@@ -318,40 +270,38 @@ if (($+ZSH_HIGHLIGHT_HIGHLIGHTERS)); then
     #ZSH_HIGHLIGHT_STYLES[assign]=none
 fi
 # }}}
-
-
-# Extra init scripts. {{{
-source ~/.profile
-export NVM_DIR=~/.nvm
-#source $(brew --prefix nvm)/nvm.sh
 # }}}
 
 
+# Options. setopt {{{ NOTE - run me last
+setopt MULTIOS
+setopt CDABLEVARS
+setopt PROMPT_SUBST
+setopt COMPLETE_ALIASES
+
+setopt IGNORE_EOF
+
+setopt GLOB_COMPLETE
+setopt EXTENDED_GLOB
+setopt NO_CASE_GLOB
+setopt NUMERIC_GLOB_SORT
+
+setopt HIST_IGNORE_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+setopt EXTENDED_HISTORY
+
+setopt AUTO_PUSHD
+setopt PUSHD_MINUS
+setopt PUSHD_TO_HOME
+setopt PUSHD_IGNORE_DUPS
+
+setopt RC_EXPAND_PARAM
+
+setopt RM_STAR_WAIT
+
+setopt TRANSIENT_RPROMPT
 # }}}
-
-
-# Aliases. {{{
-. ~/.aliases
-
-function aliasof {
-    if [ "$OSX" ]; then
-        sed_flags='-E'
-    else
-        sed_flags='-r'
-    fi
-    alias $1 | sed $sed_flags "s|$1=(.*)|\1|" | sed $sed_flags "s|'||g"
-}
-# }}}
-
-
-# neovim
-if [[ ! -f ~/$TERM.ti ]]; then
-    infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
-fi
-tic ~/$TERM.ti
-
-
-# iTerm2
-# https://iterm2.com/documentation-shell-integration.html
-source ~/.iterm2_shell_integration.`basename $SHELL`
 

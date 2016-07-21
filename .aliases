@@ -8,13 +8,27 @@ alias v='vim'
 alias zshrc="$EDITOR ~/.zshrc"
 alias vimrc="$EDITOR ~/.vim/vimrc"
 
-alias ls='ls --color=auto'
+alias ql='quick-look'
+
+alias _l="ls --color=always -AgGhHLopQ --time-style=+'%Y/%m/%d-%H:%M:%S' --quoting-style='shell'"
+alias _l_clean="tail -n+2 |\
+    tr -s ' ' |\
+    sed    's/^\s\+//g; s/\s\+$//g' |\
+    cut -d' ' -f3- |\
+    sed -E 's/ /\n/g3; s/ /\t/g; s/\n/ /g' |\
+    column -t -s $'\t'
+"
+alias l='_l     | _l_clean'
+alias ll='_l -S | _l_clean'
+alias lt='_l -t | _l_clean'
+alias ls="ls --color=auto"
 alias lsd='ls -d *(/)'
 
 alias sudo='nocorrect sudo '
 
 alias s='sudo'
 
+alias tmux='env TERM=xterm-256color tmux -2'
 alias t='tmux'
 alias ta='tmux attach -d -t'
 
