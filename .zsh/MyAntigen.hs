@@ -16,18 +16,18 @@ import Antigen (
     )
 
 
-ohMyZshPlugins = [ "plugins/golang"
-                 , "plugins/git"
-                 , "plugins/httpie"
-                 , "plugins/node"
+ohMyZshPlugins = [-- "plugins/golang"
+                 --, "plugins/git"
+                 --, "plugins/httpie"
+                   "plugins/node"
                  , "plugins/extract"
                  , "plugins/safe-paste"
                  , "plugins/vi-mode"
-                 , "plugins/tmux"
+                 --, "plugins/tmux"
                  , "plugins/z"
                  , "plugins/brew"
-                 , "plugins/brew-cask"
-                 , "plugins/osx"
+                 --, "plugins/brew-cask"
+                 --, "plugins/osx"
                  , "plugins/colorize"
                  ]
 
@@ -38,6 +38,7 @@ bundles =
         , sourcingStrategy = filePathsSourcingStrategy [ "lib/history.zsh"
                                                        , "lib/key-bindings.zsh"
                                                        , "lib/theme-and-appearance.zsh"
+                                                       , "lib/completion.zsh"
                                                        ] }
 
     , (bundle "zsh-users/zsh-history-substring-search")
@@ -48,14 +49,13 @@ bundles =
         , sourcingLocations = ohMyZshPlugins }
 
     , bundle "nojhan/liquidprompt"
-    , bundle "hchbaw/opp.zsh"
 
     , (bundle "rupa/z")
         { sourcingStrategy = filePathsSourcingStrategy [ "z.sh" ] }
     , bundle "supercrabtree/k"
 
+    --, bundle "zfogg/zsh-syntax-highlighting-filetypes"
     , bundle "zsh-users/zsh-syntax-highlighting"
-    , bundle "zfogg/zsh-syntax-highlighting-filetypes"
 
     , bundle "willghatch/zsh-hooks"
     , bundle "sharat87/zsh-vim-mode"

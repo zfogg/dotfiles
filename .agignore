@@ -1,6 +1,25 @@
-.git
-node_modules
+/.antigen-hs/
+/.tmux/
+/.zsh/
 
-bower_components
+/.git/
+/node_modules/
+/bower_components/
+
+/log/
+/logs/
+/tmp/
+/vendor/
 
 .DS_Store
+
+*.sql
+*.tags*
+*.gemtags*
+*.tsv
+*.tmp*
+*.old
+*.plist
+*.pdf
+*.md
+*.log
