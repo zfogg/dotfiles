@@ -1,55 +1,56 @@
 #!/bin/zsh
 
 
-alias vim='nvim'
+alias vim='$EDITOR'
 alias vi='vim'
 alias v='vim'
 
-alias zshrc="$EDITOR ~/.zshrc"
-alias vimrc="$EDITOR ~/.vim/vimrc"
+alias zshrc='$EDITOR ~/.zshrc'
+alias vimrc='$EDITOR ~/.vim/vimrc'
 
 alias ql='quick-look'
 
-alias _l="ls --color=always -AgGhHLopQ --time-style=+'%Y/%m/%d-%H:%M:%S' --quoting-style='shell'"
-alias _l_clean="tail -n+2 |\
-    tr -s ' ' |\
-    sed    's/^\s\+//g; s/\s\+$//g' |\
-    cut -d' ' -f3- |\
-    sed -E 's/ /\n/g3; s/ /\t/g; s/\n/ /g' |\
-    column -t -s $'\t'
-"
-alias l='_l     | _l_clean'
-alias ll='_l -S | _l_clean'
-alias lt='_l -t | _l_clean'
-alias ls="ls --color=auto"
+alias _ls='ls --color=always -AgGhHLopQ --time-style=+"%Y/%m/%d-%H:%M:%S" --quoting-style="shell"'
+_ls_clean() {
+    _ls "$@"                                   |\
+        tr -s ' '                              |\
+        sed -E  's/^ \+//g; s/ \+$//g'         |\
+        cut -d ' ' -f3-                        |\
+        sed -E 's/ /\n/g3; s/ /\t/g; s/\n/ /g' |\
+        column -s $'\t' -t
+}
+alias l='_ls_clean'
+alias ll='_ls_clean -S'
+alias lt='_ls_clean -t'
+alias ls='ls --color=auto'
 alias lsd='ls -d *(/)'
 
 alias sudo='nocorrect sudo '
 
 alias s='sudo'
 
-alias tmux='env TERM=xterm-256color tmux -2'
+alias tmux='tmux -2'
 alias t='tmux'
-alias ta='tmux attach -d -t'
+alias ts='tmux new-session -s'
+alias tl='tmux list-sessions'
+alias ta='tmux attach-session -d -t'
 
-#alias python=$PYTHON
-
-alias less=$PAGER
-alias zless=$PAGER
+alias less='$PAGER'
+alias zless='$PAGER'
 
 alias htop='htop -u $USER'
 
 alias gh='git gh'
 
-alias ag='ag --hidden'
+alias ag='ag --hidden -p ~/.agignore'
 
 # pip2 install pygments
-#alias cat='pygmentize -O style=monokai -f console256 -g'
-alias ccat='pygmentize -O style=monokai -f console256 -g'
+alias ccat='pygmentize -O style=base16_default_dark -f 256 -g'
+alias c='ccat'
 
 alias ipaddr='dig +short myip.opendns.com @resolver1.opendns.com'
-alias ips="ifconfig -a | perl -nle'/(\d+\.\d+\.\d+\.\d+)/ && print $1'"
-alias sniff="ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
+alias ips='ifconfig -a | perl -nle"/(\d+\.\d+\.\d+\.\d+)/ && print \$1"'
+alias sniff='ngrep -d "en0" -t "^(GET|POST) " "tcp and port 80"'
 alias whois='whois -h whois-servers.net'
 alias flush='dscacheutil -flushcache'
 alias httpdump='tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
@@ -67,6 +68,15 @@ alias M='make clean && make all'
 alias MM='make clean && make test'
 
 alias mvn='mvn-color'
-alias idea='vim ~/Dropbox/ideas.md'
+alias idea='$EDITOR ~/Dropbox/ideas.md'
 
-alias s3='aws s3'
+alias colortest='~/.config/base16-shell/colortest'
+
+gencomp_all() {
+    for p in $path; do ls $p; done |\
+        uniq |\
+        { while read c; do gencomp $c; done }
+}
+
+trnl()  { tr "${1:-':'}" '\n' }
+ppvar() { eval 'echo "$'"${1:-PATH}"'"' | trnl "${2:-':'}" }

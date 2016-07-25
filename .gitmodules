@@ -15,7 +15,7 @@
 	url = git@github.com:Tarrasch/antigen-hs.git
 [submodule ".zsh/zsh-completion-generator"]
 	path = .zsh/zsh-completion-generator
-	url = https://github.com/RobSis/zsh-completion-generator
+	url = git@github.com:RobSis/zsh-completion-generator
 [submodule ".config/base16-iterm2"]
 	path = .config/base16-iterm2
 	url = git@github.com:chriskempson/base16-iterm2.git

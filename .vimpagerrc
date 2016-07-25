@@ -1,9 +1,56 @@
-let g:vimpager = {}
-let g:less     = {}
+" {{{1 vim: filetype=vim:
+" AUTHOR: Zach Fogg <me@zfo.gg>
+" DEPENDS:
+"   VIM:      >= 7.4
+"   VIMPAGER: >= 2.06
+" }}}1 `modeline`
 
 
-let g:vimpager.X11 = 0
+" Settings {{{
+" V1
+let g:vimpager         = {}
+let g:less             = {}
+let g:vimpager.X11     = 0
+let g:vimpager.ansiesc = 1
+let g:less.number      = 1
 
-let g:vimpager.ansiesc = 0
+" V2
+let g:vimpager_use_gvim        = 0
+let g:vimpager_disable_x11     = 1
+let g:vimpager_passthrough     = 1
+let g:vimpager_disable_ansiesc = 1
+" Settings }}}
 
-let g:less.number = 1
+
+" Define Plugins {{{1
+call plug#begin('~/.vim/bundle')
+function! PCond(cond, ...)
+    let opts = get(a:000, 0, {})
+    return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
+endfunction
+
+Plug 'chriskempson/base16-vim'
+
+call plug#end()
+" Plugins }}}1
+
+
+" Initialize {{{1
+try                                 " Fall back to preferred colorschemes.
+    let base16colorspace=256        " Access colors present in 256 colorspace
+    colorscheme base16-default-dark
+catch
+    colorscheme desert
+endtry
+" White cursorline number
+function! <SID>SetCursorLine()
+    hi clear CursorLine
+    hi CursorLineNR cterm=bold ctermfg=white guifg=white
+endfunction
+call <SID>SetCursorLine()
+augroup _CursorLine
+    au!
+    au! ColorScheme * :call <SID>SetCursorLine()
+augroup END
+" Initialize }}}1
+
