@@ -1,11 +1,4 @@
-/.vim/tags
 /.ssh/*
 /.vim/bundle
-/.config/configstore
-/.config/cortex
-
 /.zsh/complete
-
-.DS_Store
-
 /tmp

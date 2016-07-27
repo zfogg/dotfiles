@@ -8,59 +8,73 @@
 
 
 " {{{1 Basic Settings
-    if !exists('g:vim_home')
-        let g:vim_home = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+    set number           " display line numbers
+    set numberwidth=1    " numberglyphs use only one column
+    set title            " show file title in console title bar
+    set wildmenu         " menu completion in command mode on <Tab>
+    set showtabline=1    " show buffer tabs when more than one
+    set pastetoggle=<F1> " for 'Insert' mode pasting with <S-Insert>
+    set history=8192     " persist mode-cmdline history
+    set wildmode=full    " <Tab> cycles between all matching choices.
+
+    if !has('nvim')
+        set nocompatible                  " vim > vi
+        set t_Co=256                      " 256bit colors
+        set noerrorbells visualbell t_vb= " no system bell, no screen blink on error
     endif
 
-    set nocompatible                         " Activate Vim only features and mappings.
-    set number                               " Display line numbers.
-    set numberwidth=1                        " Numberglyphs use only one column.
-    set title                                " Show file title in console title bar.
-    set wildmenu                             " Menu completion in command mode on <Tab>.
-    set showtabline=1                        " Show buffer tabs when more than one.
-    set pastetoggle=<F1>                     " For 'Insert' mode pasting with <S-Insert>."
-    set t_Co=256                             " To enable 256bit colors in the console.
-    set noerrorbells visualbell t_vb=        " no system bell, no screen blink on error.
-    set history=8192                         " store this many : commands
-    set wildmode=full                        " <Tab> cycles between all matching choices.
-
     " {{{2 undo / redo, swap, backup
+        let s:vim_home = fnamemodify($MYVIMRC, ':p:h')
+        let g:vim_home = s:vim_home
+        let s:vim_dirs = {}
+        for [s:dir_name, s:dir_path] in items({
+            \ 'undo'   : '.undo',
+            \ 'swap'   : '.swap',
+            \ 'backup' : '.backup',
+        \ })
+            let s:dir = s:vim_home . '/' . s:dir_path
+            if !isdirectory(s:dir) | call mkdir(s:dir) | endif
+            let s:vim_dirs[s:dir_name] = s:dir[1:]
+        endfor
         function! MyTmpdirs(...)
-            let l:nada = ''
-            if exists('a:1') | let l:pree = a:1 | else | let l:pree = '' | endif
-            if exists('a:2') | let l:post = a:2 | else | let l:post = '' | endif
+            if exists('a:1') | let l:pree  = a:1 | else | let l:pree  = '' | endif
+            if exists('a:2') | let l:post  = a:2 | else | let l:post  = '' | endif
+            let l:predirs = []
+            if a:0 > 2
+                let l:predirs = map(a:000[2:], 'l:pree . v:val . l:post')
+                let l:predirs+= ['']
+            endif
             let l:tmpdir = system('echo -n "${TMPDIR%/}"')
-            return l:nada
-                \ . l:nada . l:tmpdir       . l:post . ','
-                \ . l:pree . 'private/tmp'  . l:post . ','
-                \ . l:pree . 'var/tmp'      . l:post . ','
-                \ . l:pree . 'tmp'          . l:post
+            return join(l:predirs, ',')
+                \ . ''     . l:tmpdir      . l:post . ','
+                \ . l:pree . 'private/tmp' . l:post . ','
+                \ . l:pree . 'var/tmp'     . l:post . ','
+                \ . l:pree . 'tmp'         . l:post
         endfunction
+
         " wildignore
         let &wildignore = MyTmpdirs('*/', '/*')
         set wildignore^=*/.git/*,*/.hg/*,*/.svn/*
         set wildignore^=*/node_modules/*,*/bower_components/*
-        set wildignore^=*.o,*.obj,*.so
+        set wildignore^=*.o,*.obj,*.so,*.exe,*.dmg
         set wildignore^=*.swp,*.pyc,*.class
         set wildignore^=*.tar,*.bz,*.gz,*.xz,*.zip
         set wildignore^=*~
 
         " {un,re}do history
-        let &undodir = MyTmpdirs('/')
-        set undodir^=s:vim_home/.undo
+        let &undodir = MyTmpdirs('/', '', s:vim_dirs['undo'])
+        set undofile
 
         " swapfiles
-        let &directory = MyTmpdirs('/', '//')
-        set directory^=s:vim_home/.swap//
+        let &directory = MyTmpdirs('/', '//', s:vim_dirs['swap'])
 
-        " backupdir
-        let &backupdir = MyTmpdirs('/')
-        set backupdir^=s:vim_home/.backup
-        " backupskip
-        let &backupskip = MyTmpdirs('/', '/*')
-        set backupskip^=s:vim_home/.undo/*
-        set backupskip^=s:vim_home/.swap/*
-        set backupskip^=s:vim_home/.backup/*
+        " backups
+        let &backupdir  = MyTmpdirs('/', '', s:vim_dirs['backup'])
+        let &backupskip = MyTmpdirs('/', '/*',
+            \ s:vim_dirs['undo'],
+            \ s:vim_dirs['swap'],
+            \ s:vim_dirs['backup'],
+        \ )
     " }}}2 undo / redo, swap, backup
 
     " {{{2 Moving around and editing
@@ -146,21 +160,25 @@
 " Key Mappings {{{1
     let mapleader=","
 
-    " Opening, reading, writing, and closing. {{{2
-        " Write from normal mode.
-        map <Leader>w :w<CR>
-        map <Leader>W :silent! w<CR>
+    noremap : <Nop>
+    noremap ; :
+    " and if you ever wanna map to ;
+    "noremap ;; ;
 
-        " Write with sudo.
-        cmap w! w !sudo tee % >/dev/null
+    " write
+    nnoremap <Leader>w :w<CR>
+    nmap     <Leader>W :silent! w<CR>
+    cnoremap w! w !sudo tee % >/dev/null
 
-        " Open this configuration file.
-        nmap <Leader>v :tabnew ~/.vim/vimrc<CR>
-        nmap <Leader>gv :tabnew ~/.gvimrc<CR>
+    " quit
+    nnoremap <Leader>q :q<CR>
 
-        " Quit window.
-        nnoremap <Leader>q :q<CR>
-    " }}}2
+    " vimrc
+    nnoremap <Leader>v :tabnew $MYVIMRC<CR>
+    nnoremap <Leader>V :source $MYVIMRC
+                \ <Bar> filetype detect
+                \ <Bar> echo 'vimrc reloaded'
+                \ <Bar> <CR>
 
     " Disabled default commands. {{{2
         nnoremap  Q  <nop>
@@ -257,20 +275,14 @@
     " }}}2
 
     " :make. {{{2
-        nnoremap <Leader>M  :silent! make<CR>:redraw!<CR>
-        nnoremap <Leader>Mc :silent! make clean<CR>:redraw!<CR>
-        nnoremap <Leader>Mm :silent! make clean all<CR>:redraw!<CR>
-        nnoremap <Leader>Mt :cclose \| silent! make test           \| copen<CR>:AnsiEsc<CR>G:redraw!<CR>
-        nnoremap <Leader>MT :cclose \| silent! make clean all test \| copen<CR>:AnsiEsc<CR>G:redraw!<CR>
+        "nnoremap <Leader>M  :silent! make<CR>:redraw!<CR>
+        "nnoremap <Leader>Mc :silent! make clean<CR>:redraw!<CR>
+        "nnoremap <Leader>Mm :silent! make clean all<CR>:redraw!<CR>
+        "nnoremap <Leader>Mt :cclose \| silent! make test           \| copen<CR>:AnsiEsc<CR>G:redraw!<CR>
+        "nnoremap <Leader>MT :cclose \| silent! make clean all test \| copen<CR>:AnsiEsc<CR>G:redraw!<CR>
     " }}}
 
-    " Plugin bindings. {{{2
-    " }}}2
-
     " Et cetera. {{{2
-        " Reload vim settings.
-        nnoremap <silent><Leader>V  :source ~/.vim/vimrc<CR>:filetype detect<CR>:echo 'vimrc reloaded'<CR>
-
         " Previous matching command or search.
         cnoremap kk <Up>
 
@@ -291,7 +303,7 @@
         nnoremap <Leader>rd :redraw!<CR>
 
         " Set the background to transparent.
-        nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
+        "nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
 
         " Change to the directory of the current buffer's file.
         nnoremap <Leader>lcd :lcd %:p:h<CR>
