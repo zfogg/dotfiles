@@ -1,16 +1,6 @@
 #!/usr/bin/env zsh
 # vim: set fdm=marker:
 
-
-# Homebrew {{{
-export HOMEBREW_PREFIX='/usr/local'
-export HOMEBREW_GITHUB_API_TOKEN='5c8597261ad87cf1951e4e4ce9e9c3b1d1b361be'
-unalias run-help
-autoload run-help
-export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"
-#}}}
-
-
 # Prompt. {{{
 TRAPWINCH() {
   zle && { zle reset-prompt; zle -R }
@@ -19,16 +9,21 @@ TRAPWINCH() {
 
 
 # Modules. {{{
-#autoload -U colors && colors
-autoload -U zsh-mime-setup && zsh-mime-setup
-autoload -U edit-command-line && zle -N edit-command-line
-autoload -U url-quote-magic && zle -N self-insert url-quote-magic
-autoload -U select-word-style && select-word-style bash
+autoload -Uz colors \
+    zsh-mime-setup \
+    edit-command-line-magic \
+    edit-command-line \
+    url-quote-magic \
+    select-word-style
+colors
+zsh-mime-setup
+zle -N self-insert url-quote-magic
+zle -N edit-command-line 
+select-word-style bash
 # }}}
 
 
 # Autocomplete. {{{
-GENCOMPL_FPATH="$HOME/.zsh/complete"
 source $HOME/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
 
 unsetopt menu_complete
@@ -66,10 +61,10 @@ zstyle ':completion:*' file-sort modification reverse
 # color code completion!!!!  Wohoo!
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 
-# Separate man page sections.  Neat.
+# Separate man page sections. Neat.
 zstyle ':completion:*:manuals' separate-sections true
 
-# Egomaniac!
+# Choose something pretty
 zstyle ':completion:*' list-separator ' → '
 
 # complete with a menu for xwindow ids
@@ -92,164 +87,30 @@ zstyle ':completion::approximate*:*' prefix-needed false
 # }}}
 
 
-# Environment variables. {{{
-#export TERM="$TERM"
-export COLORTERM="$TERM"
-
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-export EDITOR="$(which nvim)"
-export VISUAL="$(which nvim)"
-export PAGER="$(which vimpager)"
-export LESS="-isMR"
-
-export TRUE=true
-export FALSE=false
-
-export OSX="$(
-    [ "`uname`" = "Darwin" ]
-    [ $? -eq 0 ] \
-        && echo "$TRUE" \
-        || echo "$FALSE"
-)"
-export SHELL_NAME="$(
-    [ "$OSX" = "$TRUE" ] \
-        && ps -p$$ -ocommand= | tr -d '-' \
-        || ps -p$$ -ocmd=
-)"
-export SHELL_NAME_U="$SHELL_NAME:u"
-
-export GOPATH="$HOME/src/go"
-export GOROOT="$HOMEBREW_PREFIX/opt/go/libexec"
-
-export WORKON_HOME="~/.virtualenvs"
-
-export POWERLINE_CONFIG_COMMAND="python $HOMEBREW_PREFIX/bin/powerline-config"
-
-# path, manpath, fpath {{{
-typeset -gU  path     PATH
-typeset -gU  fpath    FPATH
-typeset -gU  manpath  MANPATH
-# new vars
-typeset -gU  infopath INFOPATH
-typeset -gTU INFOPATH infopath
-
-path=(
-    ~/bin
-    ~/.cabal/bin
-    ~/.cargo/bin
-    $GOROOT/bin
-    $GOPATH/bin
-    $HOMEBREW_PREFIX/bin
-    $(command -p getconf PATH | tr ':' '\n')
-    $path
-); path=($^path(N-/))
-
-fpath=(
-    $HOMEBREW_PREFIX/share/zsh-completions
-    $HOMEBREW_PREFIX/share/zsh/site-functions
-    $HOMEBREW_PREFIX/share/zsh/functions
-    $fpath
-); fpath=($^fpath(N-/))
-
-manpath=(
-    $HOMEBREW_PREFIX/share/man
-    /usr/share/man
-    $manpath
-); manpath=($^manpath(N-/))
-
-infopath=(
-    $HOMEBREW_PREFIX/share/info
-    /usr/share/info
-    $infopath
-); infopath=($^infopath(N-/))
-
-if [ "$OSX" ]; then
-    path=(
-        $HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin
-        $HOMEBREW_PREFIX/opt/gnu-sed/bin
-        $HOMEBREW_PREFIX/opt/gnu-tar/bin
-        $HOMEBREW_PREFIX/opt/gnu-indent/bin
-        $path
-    ); path=($^path(N-/))
-    manpath=(
-        $HOMEBREW_PREFIX/opt/coreutils/share/man
-        $HOMEBREW_PREFIX/opt/gnu-sed/share/man
-        $HOMEBREW_PREFIX/opt/gnu-tar/share/man
-        $HOMEBREW_PREFIX/opt/gnu-indent/share/man
-        $manpath
-    ); manpath=($^manpath(N-/))
-    infopath=(
-        $HOMEBREW_PREFIX/opt/coreutils/share/info
-        $HOMEBREW_PREFIX/opt/gnu-sed/share/info
-        $HOMEBREW_PREFIX/opt/gnu-tar/share/info
-        $HOMEBREW_PREFIX/opt/gnu-indent/share/info
-        $infopath
-    ); infopath=($^infopath(N-/))
-fi
-# }}}
-
-export ZSH_TMUX_FIXTERM=true
-export ZSH_TMUX_ITERM2=true
-export ZSH_TMUX_FIXTERM_WITHOUT_256COLOR="screen"
-export ZSH_TMUX_FIXTERM_WITH_256COLOR="$ZSH_TMUX_FIXTERM_WITHOUT_256COLOR"'-256color'
-# }}}
-
-
-# Key bindings. {{{
-function _last-cmd-and-vi-cmd-mode {
-    zle vi-cmd-mode
-    zle history-substring-search-up
-}
-zle -N last-cmd-and-vi-cmd-mode _last-cmd-and-vi-cmd-mode
-
-bindkey -M viins ' ' magic-space
-bindkey -M viins 'jj' vi-cmd-mode
-bindkey -M viins 'kk' last-cmd-and-vi-cmd-mode
-bindkey -M viins 'HH' beginning-of-line
-bindkey -M viins 'LL' end-of-line
-
-# Ctrl-backspace and ctrl-delete.
-bindkey '^[[2J' kill-word          # But you should use <a-d>.
-bindkey '^H'    backward-kill-word # <c-bs>.
-
-# Up and down.
-if [ "$OSX" = "$TRUE" ]; then
-    bindkey '^[OA' history-substring-search-up
-    bindkey '^[OB' history-substring-search-down
-else
-    bindkey '^[[A' history-substring-search-up
-    bindkey '^[[B' history-substring-search-down
-fi
-
-# Home and end.
-bindkey '\e[1~' beginning-of-line
-bindkey '\e[4~' end-of-line
-# }}}
-
-
-# Shell theme and colors {{{
-BASE16_SCHEME="default-dark"
-BASE16_SHELL="$HOME"'/.config/base16-shell/scripts/base16-'"$BASE16_SCHEME"'.sh'
-[[ -s "$BASE16_SHELL" ]] && source "$BASE16_SHELL"
+# Terminal - terminfo, base16 colors, iTerm integration {{{
+DOT_TI="$HOME"'/.terminfo/'"$TERM"'.ti'
+[ -f "$DOT_TI" ] \
+    || infocmp "$TERM" \
+    | sed 's/kbs=^[hH]/kbs=\\177/' \
+    > "$DOT_TI"
+tic "$DOT_TI"
 
 if [ "$OSX" = "$TRUE" ]; then
-    # https://iterm2.com/documentation-shell-integration.html
-    source "$HOME"'/.iterm2_shell_integration.'"$SHELL_NAME"
-    # make `neovim` and `tmux` play nice
-    DOT_TI="$HOME"'/.'"$TERM"'.ti' 
-    [ -f "$DOT_TI" ] \
-        || infocmp "$TERM" \
-        | sed 's/kbs=^[hH]/kbs=\\177/' \
-        > "$DOT_TI"
-    tic "$DOT_TI"
-    unset DOT_TI
+    # base16-shell
+    export BASE16_SHELL="$HOME/.config/base16-shell"
+    if ((${#ITERM_DOTAPP[@]})); then
+        [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+        # make `neovim` and `tmux` play nice
+        #   https://iterm2.com/documentation-shell-integration.html
+        # tmux.plugin settings
+        #   https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/tmux/tmux.plugin.zsh
+        export ZSH_TMUX_FIXTERM=true
+        #export ZSH_TMUX_ITERM2="$(((${#ITERM_DOTAPP[@]})) && echo true || echo false)"
+        #export ZSH_TMUX_FIXTERM_WITH_256COLOR="screen-256color"
+        iterm2_integration="$HOME"'/.iterm2_shell_integration.'"$SHELL_NAME"
+        [[ -f "$iterm2_integration" ]] && source "$iterm2_integration"
+    fi
 fi
-
-eval "$(dircolors ~/.dircolors)"
-export CLICOLOR="YES"
-export LSCOLORS="$LS_COLORS"
 # }}}
 
 
@@ -258,6 +119,61 @@ export ANTIGEN_HS_SANDBOX="cabal"
 source ~/.zsh/antigen-hs/init.zsh
 autoload -U compinit && compinit
 # }}}
+
+
+# Key bindings {{{
+bindkey -M viins 'jj'              vi-cmd-mode
+bindkey -M viins 'kk' last-cmd-and-vi-cmd-mode
+
+# useful motion shortcuts
+bindkey -M viins 'HH' beginning-of-line
+bindkey -M viins 'LL'       end-of-line
+bindkey -M vicmd 'HH' beginning-of-line
+bindkey -M vicmd 'LL'       end-of-line
+
+# <PageUp>, <PageDown>
+bindkey          '^[[5~' kill-word
+bindkey          '^[[5~' kill-word
+bindkey -M vicmd '^[[6~' kill-word
+
+# <Backspace>
+bindkey          '^?' backward-delete-char
+bindkey          '^h' backward-delete-char
+# <S-Backspace>
+bindkey          '^[[3~'       delete-char
+bindkey -M vicmd '^[[3~'       delete-char
+# <C-Backspace>
+bindkey          '^w' backward-kill-word
+# <C-S-Backspace>
+bindkey          '^[[2J'       kill-word
+bindkey -M vicmd '^[[2J'       kill-word
+
+# <Up>, <Down>
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# <Home>, <End>
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F'       end-of-line
+
+# <Option-Left>, <Option-Right>
+bindkey -M viins '^[b'    backward-word
+bindkey -M viins '^[f'     forward-word
+bindkey -M vicmd '^[b' vi-backward-word
+bindkey -M vicmd '^[f'  vi-forward-word
+
+# <Command-Backspace>
+bindkey -M viins '^U' backward-kill-line
+bindkey -M vicmd '^U' backward-kill-line
+
+# zsh vi-mode fixes
+bindkey -M viins ' ' magic-space
+function _last-cmd-and-vi-cmd-mode {
+    zle vi-cmd-mode
+    zle history-substring-search-up
+}
+zle -N last-cmd-and-vi-cmd-mode _last-cmd-and-vi-cmd-mode
+#ls}}}
 
 
 # Syntax highlighting. {{{ Remember to install `zsh-syntax-highlighting`.
@@ -291,7 +207,7 @@ fi
 
 
 # Aliases. {{{
-. ~/.aliases
+. "$DOTFILES"/.aliases
 aliasof() {
     if [ "$OSX" = "$TRUE" ]; then
         sed_flags='-E'

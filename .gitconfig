@@ -1,21 +1,22 @@
 [user]
     email = zach.fogg@gmail.com
-    name = Zach Fogg
+    name  = Zach Fogg
 
 [alias]
-    gh = !sh -c 'git clone git@github.com:$1' -
+    gh        = !sh -c 'git clone git@github.com:$1'
     submclean = !git submodule foreach "git reset --hard"
-    submsync = !git submodule foreach "git checkout master && git pull origin master"
-    mybranch = !git rev-parse --abbrev-ref HEAD
-	up = pull --rebase --autostash
+    submsync  = !git submodule foreach "git checkout master && git pull origin master"
+    mybranch  = !git rev-parse --abbrev-ref HEAD
+	bsync     = !git branch --set-upstream-to=origin/"`git mybranch`" "`git mybranch`"
+	up        = pull --rebase --autostash
 
 [push]
 	default = simple
 
 [core]
-    editor = nvim
-    pager = vimpager
-    eol = lf
+    editor   = nvim
+    pager    = vimpager
+    eol      = lf
     autocrlf = input
 
 [difftool "vimdiff"]
@@ -36,12 +37,10 @@
     ui = true
 
 [filter "media"]
-	clean = git-media-clean %f
+	clean  = git-media-clean %f
 	smudge = git-media-smudge %f
 
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
-[hub]
-	protocol = https

@@ -12,6 +12,7 @@
 /vendor/
 
 .DS_Store
+/Library/
 
 *.sql
 *.tags*

@@ -19,16 +19,16 @@ import Antigen (
 ohMyZshPlugins = [-- "plugins/golang"
                  --, "plugins/git"
                  --, "plugins/httpie"
-                   "plugins/node"
-                 , "plugins/extract"
+                 --  "plugins/node"
+                   "plugins/extract"
                  , "plugins/safe-paste"
                  , "plugins/vi-mode"
                  --, "plugins/tmux"
-                 , "plugins/z"
-                 , "plugins/brew"
+                 --, "plugins/z"
+                 --, "plugins/brew"
                  --, "plugins/brew-cask"
                  --, "plugins/osx"
-                 , "plugins/colorize"
+                 --, "plugins/colorize"
                  ]
 
 
@@ -37,7 +37,7 @@ bundles =
         { fpathLocations   = []
         , sourcingStrategy = filePathsSourcingStrategy [ "lib/history.zsh"
                                                        , "lib/key-bindings.zsh"
-                                                       , "lib/theme-and-appearance.zsh"
+                                                       --, "lib/theme-and-appearance.zsh"
                                                        , "lib/completion.zsh"
                                                        ] }
 

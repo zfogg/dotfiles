@@ -2,16 +2,11 @@
 
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/lib/history.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/lib/key-bindings.zsh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/lib/theme-and-appearance.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/lib/completion.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-history-substring-search/zsh-history-substring-search.zsh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/node/node.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/extract/extract.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/safe-paste/safe-paste.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/vi-mode/vi-mode.plugin.zsh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/z/z.plugin.zsh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/brew/brew.plugin.zsh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/colorize/colorize.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-nojhan-SLASH-liquidprompt/liquidprompt.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-rupa-SLASH-z/z.sh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-supercrabtree-SLASH-k/k.plugin.zsh
@@ -19,13 +14,9 @@ source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON-
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-willghatch-SLASH-zsh-hooks/zsh-hooks.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-sharat87-SLASH-zsh-vim-mode/zsh-vim-mode.plugin.zsh
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-history-substring-search
-fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/node
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/extract
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/safe-paste
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/vi-mode
-fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/z
-fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/brew
-fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/plugins/colorize
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-nojhan-SLASH-liquidprompt
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-rupa-SLASH-z
 fpath+=/Users/zfogg/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-supercrabtree-SLASH-k

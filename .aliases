@@ -5,8 +5,8 @@ alias vim='$EDITOR'
 alias vi='vim'
 alias v='vim'
 
-alias zshrc='$EDITOR ~/.zshrc'
-alias vimrc='$EDITOR ~/.vim/vimrc'
+alias zshrc='$EDITOR '"$DOTFILES"'/.zshrc'
+alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 
 alias ql='quick-look'
 
