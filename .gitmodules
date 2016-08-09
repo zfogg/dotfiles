@@ -28,3 +28,6 @@
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
+[submodule ".config/base16-terminal-app"]
+	path = .config/base16-terminal-app
+	url = git@github.com:vbwx/base16-terminal-app.git

@@ -37,7 +37,7 @@ bufferfile $HOME/.screen-exchange  # keep the buffer exchange file out of /tmp
 # Enable 256 Colors  (http://frexx.de/xterm-256-notes/)  ######################
 #
 # terminfo and termcap for nice 256 color terminal
-term xterm-256color
+#term xterm-256color
 # allow bold colors - necessary for some reason
 attrcolor b ".I"
 # tell screen how to set colors. AB=background, AF=foreground
