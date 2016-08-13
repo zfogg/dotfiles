@@ -28,8 +28,8 @@
         set clipboard+=unnamedplus
     endif
 
-    let s:dotfiles   = exists('$DOTFILES') ? $DOTFILES : '.dotfiles'
-    let s:dotvim     = exists('$DOTVIM')   ? $DOTVIM   : s:dotfiles.'/.vim'
+    let s:dotfiles   = fnamemodify(exists('$DOTFILES') ? $DOTFILES : '.dotfiles'       , ':~')
+    let s:dotvim     =             exists('$DOTVIM')   ? $DOTVIM   : s:dotfiles.'/.vim'
     let s:dotfiles_f = expand(s:dotfiles)
     let s:dotvim_f   = expand(s:dotvim)
     let s:dotfiles_r = fnamemodify(s:dotfiles, ':~')
@@ -210,7 +210,7 @@
     execute 'nnoremap <silent> <Leader>v'
         \.' :$tabe'
         \.' <BAR> lcd '.s:dotfiles_r
-        \.' <BAR> e '.substitute(s:myvimrc, s:dotfiles.'/', '', '')
+        \.' <BAR> e '.s:myvimrc
         \.' <BAR> silent! foldo!'
         \.' <BAR> norm zz'
         \.'<CR>'
