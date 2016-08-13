@@ -29,6 +29,9 @@ alias sudo='nocorrect sudo '
 
 alias s='sudo'
 
+alias ..='cd ..'
+alias ...='cd ../..'
+
 alias tmux='tmux -2'
 alias t='tmux'
 alias ts='tmux new-session -s'
@@ -40,7 +43,8 @@ alias zless='$PAGER'
 
 alias htop='htop -u $USER'
 
-alias gh='git gh'
+alias g='git'
+alias ghclone='_repo="$(git gh `pbpaste | tr "'"/"'" "'" "'"`)"; [ "$?" = "0" ] && cd "$_repo" || false'
 
 alias ag='ag --hidden -p ~/.agignore'
 

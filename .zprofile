@@ -11,10 +11,6 @@ export HELPDIR="${BREW}/share/zsh/help"
 # }}}
 
 
-export DOTFILES="$(dirname "$ZSHRC")"
-export   DOTVIM="$DOTFILES/.vim"
-export    ZSHRC="$DOTFILES/.zshrc"
-
 #export      TERM="xterm-256color"
 export COLORTERM="$TERM"
 if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
@@ -47,6 +43,8 @@ export GOROOT="$BREW/opt/go/libexec"
 
 export WORKON_HOME="$HOME/.virtualenvs"
 
+export GROOVY_HOME="$BREW/opt/groovy/libexec"
+
 export POWERLINE_CONFIG_COMMAND="python $BREW/bin/powerline-config"
 
 
@@ -55,6 +53,8 @@ typeset -U  path
 typeset -U  fpath
 typeset -U  manpath
 # new var
+typeset -aU classpath
+typeset -xT CLASSPATH classpath
 typeset -aU infopath
 typeset -xT INFOPATH infopath
 
@@ -79,10 +79,12 @@ manpath=(
     /usr/share/man
 ); manpath=($^manpath(N-/))
 
-infopath=(
-    $BREW/share/info
-    /usr/share/info
-); infopath=($^infopath(N-/))
+infopath=()
+
+classpath=(
+    $GROOVY_HOME/embeddable
+    $GROOVY_HOME/embeddable/groovy-all-2.4.7.jar
+    $classpath); classpath=($^classpath(N-/))
 
 if [ "$OSX" = "$TRUE" ]; then
     brew_gnu_progs=(
@@ -101,7 +103,6 @@ if [ "$OSX" = "$TRUE" ]; then
         $BREW/opt/{${^brew_gnu_progs},coreutils}/share/info
         $infopath); infopath=($^infopath(N-/))
 fi
-export MYPATH=$path
 # }}}
 
 
@@ -110,10 +111,15 @@ export VISUAL="$EDITOR"
 export PAGER='vimpager'
 export LESS="-isMR"
 
+export ZSHRC="$HOME/.zshrc"
+
 # depends on `coreutils`
-eval "$(dircolors $HOME/.dircolors)"
+eval "$(gdircolors $HOME/.dircolors)"
 export CLICOLOR="YES"
 export LSCOLORS="$LS_COLORS"
+export DOTFILES="`grealpath $(dirname "$ZSHRC")`"
+export   DOTVIM="$DOTFILES/.vim"
+export    ZSHRC="$DOTFILES/.zshrc"
 
 
 # zsh-completion-generator.plugin.zsh

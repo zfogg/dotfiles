@@ -6,21 +6,6 @@
 " }}}1 `modeline`
 
 
-" vimpager Settings {{{
-  " V1
-  let g:vimpager         = {}
-  let g:less             = {}
-  let g:vimpager.X11     = 0
-  let g:vimpager.ansiesc = 1
-  let g:less.number      = 1
-  " V2
-  let g:vimpager_use_gvim        = 0
-  let g:vimpager_disable_x11     = 1
-  let g:vimpager_passthrough     = 1
-  let g:vimpager_disable_ansiesc = 1
-" Settings }}}
-
-
 " {{{1 Basic Settings
     set number                  " display line numbers
     set numberwidth=1           " numberglyphs use only one column
@@ -872,3 +857,21 @@
         endtry
     endtry
 " Initialize Vim }}}1
+
+
+" vimpager Settings {{{
+    " V1
+    let g:vimpager         = {}
+    let g:less             = {}
+    let g:vimpager.X11     = 0
+    let g:vimpager.ansiesc = 1
+    let g:less.number      = 1
+    " V2
+    let g:vimpager_use_gvim        = 0
+    let g:vimpager_disable_x11     = 1
+    let g:vimpager_passthrough     = 1
+    let g:vimpager_disable_ansiesc = 1
+    " key mappings
+    unmap v
+    unmap y
+" Settings }}}
