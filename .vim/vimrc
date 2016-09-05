@@ -7,37 +7,46 @@
 " }}}1 `modeline`
 
 
+" {{{1 META: pre
+    "filetype off
+    "filetype plugin indent off
+    " {{{2 config paths
+            " s:mvvar =~# escape('s:\i+(_(l|f|r))?', '+()|?')
+                " s:myvar_l  (l)ocal path basename
+                " s:myvar_f  (f)ully resolved links (expanded vars)
+                " s:myvar_r  (r)elative to $HOME (un-expanded vars)
+        " dir/ ~/.dotfiles/ 's:dotfiles'
+        let s:dotfiles_l = '.dotfiles'
+        let s:dotfiles   = fnamemodify(exists('$DOTFILES') ? $DOTFILES : s:dotfiles_l, ':~')
+        let s:dotfiles_f = expand(s:dotfiles)
+        let s:dotfiles_r = fnamemodify(s:dotfiles, ':~')
+        " dir/ ~/.vim/ 's:dotvim'
+        let s:dotvim_l   = '.vim'
+        let s:dotvim     = exists('$DOTVIM')               ? $DOTVIM   : s:dotfiles.'/'.s:dotvim_l
+        let s:dotvim_f   = expand(s:dotvim)
+        let s:dotvim_r   = fnamemodify(s:dotvim,   ':~')
+        " file ~/.vimrc 's:myvimrc'
+        let s:myvimrc_l = 'vimrc'
+        let s:myvimrc   = s:dotvim  .'/'.s:myvimrc_l
+        let s:myvimrc_f = s:dotvim_f.'/'.s:myvimrc_l
+        let s:myvimrc_r = s:dotvim_r.'/'.s:myvimrc_l
+    " }}}2 config paths
+" }}}1 META: pre
+
+
 " {{{1 Basic Settings
-    set number                  " display line numbers
-    set numberwidth=1           " numberglyphs use only one column
-    set title                   " show file title in console title bar
-    set wildmenu                " menu completion in command mode on <Tab>
-    set showtabline=1           " show buffer tabs when more than one
+    set number numberwidth=3    " hybrid line numbers - relative & static
+    set title                   " file title in the $TERM titlebar
+    set showtabline=1           " show buffer tabs when more than `n`
     set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
     set history=8192            " persist mode-cmdline history
-    let g:netrw_dirhistmax=0    " http://www.vim.org/scripts/script.php?script_id=1075
-    set wildmode=full           " <Tab> cycles between all matching choices.
     set noerrorbells visualbell " no system bell, no screen blink on error
+    set wildmenu                " custom completion menu
+    set wildmode=
+        \longest:full,
+        \list:full
 
-    if !has('nvim')
-        set nocompatible        " vim > vi
-        set t_vb=               " no system bell, no screen blink on error
-    endif
-
-    if has("unnamedplus") " X11 support
-        set clipboard+=unnamedplus
-    endif
-
-    let s:dotfiles   = fnamemodify(exists('$DOTFILES') ? $DOTFILES : '.dotfiles'       , ':~')
-    let s:dotvim     =             exists('$DOTVIM')   ? $DOTVIM   : s:dotfiles.'/.vim'
-    let s:dotfiles_f = expand(s:dotfiles)
-    let s:dotvim_f   = expand(s:dotvim)
-    let s:dotfiles_r = fnamemodify(s:dotfiles, ':~')
-    let s:dotvim_r   = fnamemodify(s:dotvim,   ':~')
-
-    let s:myvimrc   = s:dotvim  .'/vimrc'
-    let s:myvimrc_f = s:dotvim_f.'/vimrc'
-    let s:myvimrc_r = s:dotvim_r.'/vimrc'
+    let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 
     " {{{2 undo / redo, swap, backup
         let s:dotvim_dotdirs = {}
@@ -95,85 +104,88 @@
     " }}}2 undo / redo, swap, backup
 
     " {{{2 Moving around and editing
-        set nostartofline           " Avoid moving cursor to BOL when jumping around.
-        set virtualedit=all         " Let cursor move past $ in command mode.
-        set backspace=2             " Allow backspacing over autoindent, EOL, and BOL.
-        set autoindent              " Always set autoindenting on.
-        set lazyredraw              " For better macro performance.
+        set nostartofline   " Avoid moving cursor to BOL when jumping around.
+        set virtualedit=all " Let cursor move past $ in command mode.
+        set backspace=2     " Allow backspacing over autoindent, EOL, and BOL.
+        set autoindent      " Always set autoindenting on.
+        set lazyredraw      " For better macro performance.
     " }}}2 Moving around and editing
 
     " {{{2 Tiny aesthetic tweaks
-        set cursorline              " A horizontal line for the cursor location.
-        set ruler                   " Show the cursor position all the time.
-        set scrolloff=3             " Keep n context lines above and below the cursor.
-        set showmatch               " Briefly jump to a paren once it's balanced.
-        set list                    " Visually display tabs and trailing whitespace.
-        set listchars=trail:·,tab:·\ ,eol:¬,extends:>,precedes:<
+        set cursorline      " A horizontal line for the cursor location.
+        set ruler           " Show the cursor position all the time.
+        set scrolloff=5     " Keep n context lines above and below the cursor.
+        set sidescrolloff=9 " a
+        set sidescroll=1    " b
+        set showmatch       " Briefly jump to a paren once it's balanced.
+        set list            " Visually display tabs and trailing whitespace.
+        set listchars=
+            \eol:¬,
+            \tab:→\ ,
+            \trail:·,
+            \extends:⟩,
+            \precedes:⟨,
+            \nbsp:␣
     " }}}2 Tiny aesthetic tweaks
 
     " Whitespace {{{2
-        set shiftwidth=4            " An indent level is n spaces.
-        set expandtab               " Use spaces, not tabs, for autoindent/tab key.
-        set tabstop=4               " <Tab> inserts n spaces.
-        set softtabstop=4           " <BS> over an autoindent deletes both spaces.
-        set shiftround              " Rounds indent to a multiple of shiftwidth.
-        set linebreak               " Don't wrap textin the middle of a word.
-        let &showbreak = '\\ '      " Visualize wrapped lines.
-        set nowrap                  " Don't wrap text.
-        set textwidth=0             " Don't break lines.
-        set wrapmargin=0            " Seriously, don't break lines.
+        set expandtab       " Use spaces, not tabs, for autoindent/tab key.
+        set copyindent
+        set preserveindent
+        set softtabstop=4   " <BS> over an autoindent deletes both spaces.
+        set shiftwidth=4    " An indent level is n spaces.
+        set tabstop=4       " <Tab> inserts n spaces.
+        set shiftround      " Rounds indent to a multiple of shiftwidth.
+        set nowrap          " Don't wrap text.
+        set linebreak       " Don't wrap textin the middle of a word.
+        set wrapmargin=0    " Seriously, don't break lines.
+        set textwidth=0     " Don't break lines.
+        set showbreak=↪\    " Visualize wrapped lines.
     " }}}2
 
     " Folding. {{{2
-        set foldenable
         set foldmethod=syntax
         set foldopen=mark,percent,quickfix,tag,undo
+        set foldenable
     " }}}2
 
     " Reading and writing. {{{2
-        set noautowrite             " Never write a file unless I request it.
-        set noautowriteall          " NEVER.
-        set noautoread              " Don't automatically re-read changed files.
-        set modeline                " Allow vim options to be embedded in files;
-        set modelines=3             " they must be within the first or last 5 lines.
-        set ffs=unix,dos,mac        " Try recognizing dos, unix, and mac line endings.
+        set noautowrite      " Never write a file unless I request it.
+        set noautowriteall   " NEVER.
+        set noautoread       " Don't automatically re-read changed files.
+        set modeline         " Allow vim options to be embedded in files;
+        set modelines=3      " they must be within the first or last 5 lines.
+        set ffs=unix,dos,mac " Try recognizing dos, unix, and mac line endings.
     " }}}2
 
     " Messages, info, and statuses. {{{2
-        set shortmess=aOstTI             " :help 'shortmess'
-        set laststatus=2                " allways show status line
-        set confirm                     " Y-N-C prompt if closing with unsaved changes.
-        set showcmd                     " Show incomplete normal mode commands as I type.
-        set report=0                    " : commands always print changed line count.
-        set ruler                       " Show some info, even without statuslines.
-        set laststatus=2                " Always show statusline, even if only 1 window.
+        set shortmess=aOstTI " :help 'shortmess'
+        set laststatus=2     " allways show status line
+        set confirm          " Y-N-C prompt if closing with unsaved changes.
+        set showcmd          " Show incomplete normal mode commands as I type.
+        set report=0         " : commands always print changed line count.
+        set ruler            " Show some info, even without statuslines.
+        set laststatus=2     " Always show statusline, even if only 1 window.
         "set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
     " }}}2
 
     " Searching and Patterns {{{2
-        set ignorecase              " Default to using case insensitive searches.
-        set smartcase               " unless uppercase letters are used in the regex.
-        set smarttab                " Handle tabs more intelligently.
-        set hlsearch                " Highlight searches by default.
-        set incsearch               " Incrementally search while typing a /regex.
+        set ignorecase " Default to using case insensitive searches.
+        set smartcase  " unless uppercase letters are used in the regex.
+        set smarttab   " Handle tabs more intelligently.
+        set hlsearch   " Highlight searches by default.
+        set incsearch  " Incrementally search while typing a /regex.
     " }}}2
 
     " The 'Session' plugin does this on save.
     set sessionoptions-=blank
-    set sessionoptions-=options
     set sessionoptions-=buffers
 
     " Per-project .vimrc.
-    set exrc
-    set secure
+    set exrc secure
 
     " Faster CursorHold aucmd
-    set updatetime=250 " milliseconds
-
-    " http://stackoverflow.com/a/15471820
-    if $TERM =~ '^\(screen\|xterm\)' && exists('$TMUX')
-        set mouse+=a
-    endif
+    set updatetime=180 " milliseconds
 
     " 'text-obj' patterns for 'word' and file /path
         " NOTE: http://www.ascii-code.com/
@@ -184,14 +196,16 @@
             " ,@-@,     == /@/
             " ,^,,      == /[^,]/
             " ,^<EOL>   == /\^/
-        " NOTE: :help 'isfname' | :help 'iskeyword'
-    set   isfname=@,48-57,#,~,$,_,-,/,.,+,,,%,=
-    set iskeyword=@,48-57,#,~,$,_,-,192-255
+        " NOTE: :h 'isfname' | :help 'iskeyword'
+    set   isfname=@,48-57,_,#,~,$,-,/,.,+,,,%,=
+    set iskeyword=@,48-57,_,192-255
 " }}}1 Basic Settings
 
 
 " Key Mappings {{{1
     let mapleader=","
+
+    inoremap <C-c> <Esc>
 
     noremap : <Nop>
     noremap ; :
@@ -200,25 +214,25 @@
 
     " write
     nnoremap <Leader>w :w<CR>
-    nnoremap <Leader>W :silent! w<CR>
+    nnoremap <Leader>W :sil! w<CR>
     cnoremap w! w !sudo tee % >/dev/null
 
     " quit
     nnoremap <Leader>q :q<CR>
 
     " vimrc
-    execute 'nnoremap <silent> <Leader>v'
-        \.' :$tabe'
-        \.' <BAR> lcd '.s:dotfiles_r
-        \.' <BAR> e '.s:myvimrc
-        \.' <BAR> silent! foldo!'
-        \.' <BAR> norm zz'
+    exe 'nn <silent> <Leader>v :'
+        \.'cd '.s:dotvim_r             .' <Bar> '
+        \.'$tabe! '.s:myvimrc_l        .' <Bar> '
+        \.'cd -'                       .' <Bar> '
+        \.'exe "norm! zvzz"'           .' <Bar> '
         \.'<CR>'
-    execute 'nnoremap <silent> <Leader>V'
-        \.' :source '.s:myvimrc
-        \.' <Bar> filetype detect'
-        \.' <Bar> redraw'
-        \.' <Bar> echo "vimrc reloaded"'
+    exe 'nn <silent> <Leader>V :'
+        \.'cd '.s:dotvim_r             .' <Bar> '
+        \.'so '.s:myvimrc_l            .' <Bar> '
+        \.'cd -'                       .' <Bar> '
+        \.'filet detect'               .' <Bar> '
+        \.'exe "norm! zvzz"'           .' <Bar> '
         \.'<CR>'
 
     " Disabled default commands. {{{2
@@ -284,8 +298,8 @@
         " nnoremap <a-h> zhh
 
         " think of your left pinky
-        inoremap jj <Esc>
-        inoremap kk <Esc>:w<CR>
+        inoremap jj    <Esc>
+        inoremap kk    <Esc>:w<CR>
 
         " Leaving `Insert-mode` is too much sometimes.
         inoremap HH <C-o>^
@@ -335,7 +349,7 @@
         nnoremap . .`[
 
         " Delete trailing whitespace.
-        nnoremap <Leader>S :%s/\s\+$//<cr>:let @/=''<CR><c-o>
+        nnoremap <Leader>S :%s/\s\+$//<CR>:let @/=''<CR><c-o>
 
         " Fixes for display glitches.
         nnoremap <silent> <Leader><Space> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>,<Space>
@@ -345,8 +359,8 @@
         "nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
 
         " Change to the directory of the current buffer's file.
-        nnoremap <Leader>lcd :lcd %:p:h<CR>
-        nnoremap <Leader>cd  :cd  %:p:h<CR>
+        nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
+        nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
 
         " omnicomplete
         "imap </            <C-_>
@@ -357,32 +371,80 @@
 
 " Plugin Settings {{{1
     " NERDTree {{{2
-        let NERDTreeWinPos    = "right"
-        let NERDTreeMinimalUI = 1
-        let NERDTreeIgnore    = [
-            \ ''  . '\~'               . '$' . '[[file]]' ,
-            \ ''  . '\~'               . '$' . '[[dir]]'  ,
-            \ '^' . '\.git'            . '$' . '[[dir]]'  ,
-            \ '^' . '\.hg'             . '$' . '[[dir]]'  ,
-            \ '^' . '\.svn'            . '$' . '[[dir]]'  ,
-            \ '^' . 'node_modules'     . '$' . '[[dir]]'  ,
-            \ '^' . 'bower_components' . '$' . '[[dir]]'  ,
-            \ ''  . '\.o'              . '$' . '[[file]]' ,
-            \ ''  . '\.obj'            . '$' . '[[file]]' ,
-            \ ''  . '\.so'             . '$' . '[[file]]' ,
-            \ ''  . '\.exe'            . '$' . '[[file]]' ,
-            \ ''  . '\.dmg'            . '$' . '[[file]]' ,
-            \ ''  . '\.swap'           . '$' . '[[file]]' ,
-            \ ''  . '\.class'          . '$' . '[[file]]' ,
-            \ ''  . '\.pyc'            . '$' . '[[file]]' ,
-            \ ''  . '\.tar'            . '$' . '[[file]]' ,
-            \ ''  . '\.bz'             . '$' . '[[file]]' ,
-            \ ''  . '\.gz'             . '$' . '[[file]]' ,
-            \ ''  . '\.xz'             . '$' . '[[file]]' ,
-            \ ''  . '\.zip'            . '$' . '[[file]]' ,
+        let NERDTreeWinPos                    = "left"
+        let NERDTreeAutoCenter                = 1
+        let NERDTreeCaseSensitiveSort         = 0
+        let NERDTreeHighlightCursorline       = 1
+        let NERDTreeBookmarksFile             = s:dotvim_f.'.cache/NERDTree.bookmarks'
+        let NERDTreeMouseMode                 = 2
+        let NERDTreeShowHidden                = 1
+        let NERDTreeMinimalUI                 = 1
+        let NERDTreeHijackNetrw               = 1
+        let NERDTreeRespectWildIgnore         = 1
+        let NERDTreeCascadeOpenSingleChildDir = 2
+        let NERDTreeAutoDeleteBuffer          = 1
+        "let NERDTreeChDirMode                 = 2
+        let NERDTreeWinSize                   = 24
+
+        let NERDTreeCreatePrefix = 'silent keepa keepj keepp keepm'
+
+        let NERDTreeIgnore    = [ '\~$' ,
+            \ '' . '.git'             . '$' . '[[dir]]'  ,
+            \ '' . '.hg'              . '$' . '[[dir]]'  ,
+            \ '' . '.svn'             . '$' . '[[dir]]'  ,
+            \ '' . 'node_modules'     . '$' . '[[dir]]'  ,
+            \ '' . 'bower_components' . '$' . '[[dir]]'  ,
+            \ ''  . '.o'              . '$' . '[[file]]' ,
+            \ ''  . '.obj'            . '$' . '[[file]]' ,
+            \ ''  . '.so'             . '$' . '[[file]]' ,
+            \ ''  . '.exe'            . '$' . '[[file]]' ,
+            \ ''  . '.dmg'            . '$' . '[[file]]' ,
+            \ ''  . '.swap'           . '$' . '[[file]]' ,
+            \ ''  . '.class'          . '$' . '[[file]]' ,
+            \ ''  . '.pyc'            . '$' . '[[file]]' ,
+            \ ''  . '.tar'            . '$' . '[[file]]' ,
+            \ ''  . '.bz'             . '$' . '[[file]]' ,
+            \ ''  . '.gz'             . '$' . '[[file]]' ,
+            \ ''  . '.xz'             . '$' . '[[file]]' ,
+            \ ''  . '.zip'            . '$' . '[[file]]' ,
+            \ ''  . '.DS_Store'       . '$' . '[[file]]' ,
+            \ ''  . '%'               . ''  . '[[file]]' ,
         \ ]
-        " key bindings
-        nnoremap <Leader>n<Space> :NERDTreeToggle<CR>
+
+        " command - toggle
+        func! <SID>MyNERDTreeToggle()
+            if exists('t:NERDTreeBufName')
+                if exists('g:zNTOn') || &buftype != ''
+                    unlet! g:zNTOn
+                    NERDTreeClose
+                    return
+                else
+                    NERDTree
+                endif
+            else
+                NERDTree %:p:h
+            endif
+            let g:zNTOn = 1
+            wincmd p
+        endfunc
+        nnoremap <silent> <Leader>n<Space> :call <SID>MyNERDTreeToggle()<CR>
+
+        " autocommand - auto-cwd (BufEnter *)
+        func! <SID>MyNERDTreeAutoCWD()
+            if exists("b:noNERDTreeAutoCWD")
+                return
+            elseif exists("g:zNTOn")
+                "cd %:p:h
+                "NERDTreeCWD
+                "wincmd p
+            endif
+        endfunc
+
+        aug <SID>MyNERDTree
+            au!
+            "au BufEnter      * silent! call <SID>MyNERDTreeAutoCWD()
+            "au TabNew * call <SID>MyNERDTreeToggle()
+        aug END
     " }}}2
 
     " NERDCommenter {{{2
@@ -477,41 +539,17 @@
         "nnoremap <Leader>rp<Space> :RainbowParenthesesToggleAll<CR>
     " }}}2
 
-    " YouCompleteMe {{{2
-        let g:ycm_autoclose_preview_window_after_completion = 1
-        let g:ycm_autoclose_preview_window_after_insertion  = 1
-        let g:ycm_register_as_syntastic_checker             = 0
-        let g:ycm_complete_in_comments                      = 1
-        let g:ycm_seed_identifiers_with_syntax              = 1
-        let g:ycm_collect_identifiers_from_tags_files       = 0
-        "let g:ycm_extra_conf_globlist                       = ['~/src/*']
-        "let g:ycm_semantic_triggers =  {
-            "\ 'c,objc'                    : ['->', '.'],
-            "\ 'cpp,objcpp'                : ['->', '.', '::'],
-            "\ 'haskell'                   : ['.'],
-            "\ 'java'                      : ['.'],
-            "\ 'javascript,javascript.jsx' : ['.'],
-            "\ 'ocaml'                     : ['.',  '#'],
-            "\ 'php'                       : ['-,', '::'],
-            "\ 'python'                    : ['.'],
-            "\ 'vim'                       : ['.'],
-        "\ }
-        let g:ycm_filetype_blacklist = {
-            \ 'tagbar'   : 1,
-            \ 'qf'       : 1,
-            \ 'notes'    : 1,
-            \ 'markdown' : 1,
-            \ 'unite'    : 1,
-            \ 'text'     : 1,
-            \ 'vimwiki'  : 1,
-            \ 'pandoc'   : 1,
-            \ 'infolog'  : 1,
-            \ 'mail'     : 1
-        \ }
-        " key bindings
-        let g:ycm_key_list_select_completion   = ['<C-n>', '<Down>']
-        let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-        let g:SuperTabDefaultCompletionType    = '<C-n>'
+    " SuperTab {{{2
+        let g:SuperTabDefaultCompletionType = '<c-n>'
+    " }}}2
+
+    " deoplete {{{2
+        let g:deoplete#enable_at_startup           = 1 " just work
+        let g:deoplete#enable_smart_case           = 1 " smartcase
+        "let g:deoplete#sources#clang#libclang_path = '/Library/Developer/CommandLineTools/usr/lib/libclang.dylib'
+        "let g:deoplete#sources#clang#clang_header  = '/Library/Developer/CommandLineTools/usr/lib/clang'
+        let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
+        let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
     " }}}2
 
     " Ag {{{2
@@ -524,12 +562,12 @@
         endif
     " Ag }}}2
 
-    " C trlP {{{2
+    " CtrlP {{{2
         let g:ctrlp_map               = '<C-p>'
         let g:ctrlp_cmd               = 'CtrlP'
         let g:ctrlp_root_markers      = ['.git',  '.hg', '.svn']
         let g:ctrlp_working_path_mode = 'ra'
-        let g:ctrlp_cache_dir         = $HOME.'/.cache/ctrlp'
+        let g:ctrlp_cache_dir         = s:dotvim_f.'/.cache/ctrlp'
         let g:ctrlp_extensions        = ['mixed', 'tag', 'line', 'dir', 'commandline']
         let g:ctrlp_custom_ignore = {
           \ 'dir':  '\v[\/]\.(git|hg|svn)$',
@@ -683,7 +721,7 @@
     " }}}2
 
     " Chromatica {{{2
-        "let g:chromatica#libclang_path='/usr/local/opt/llvm/lib'
+        let g:chromatica#libclang_path=$BREW.'/opt/llvm/lib'
     " }}}2
 
     " Session {{{2
@@ -731,11 +769,6 @@
         let g:EditorConfig_exec_path = $BREW . '/bin/editorconfig'
     " }}}2
 
-    " localvimrc {{{2
-        let g:localvimrc_ask     = 0
-        let g:localvimrc_sandbox = 0
-    " }}}2
-
     " go {{{2
         let g:go_auto_type_info      = 1
         let g:go_highlight_operators = 1
@@ -778,77 +811,90 @@
             let g:neoterm_position = "vertical" " vertical split
         endif
     " }}}2
+
+    " plasticboy/vim-markdown {{{2
+        if has('nvim')
+            let g:markdown_fold_style             = 'nested'
+            let g:markdown_fold_override_foldtext = 0
+        endif
+    " plasticboy/vim-markdown }}}2
 " Plugin Settings }}}1
 
 
-" Define Plugins {{{1
+" Plugins {{{1
     call plug#begin('~/.vim/bundle')
-    function! PCond(cond, ...)
+
+    function! PIf(cond, ...)
         let opts = get(a:000, 0, {})
         return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
     endfunction
 
-    " Integrate with other programs. {{{2
-        Plug 'rking/ag.vim', PCond(executable('ag'), { 'on': 'Ag' })
-        Plug 'tpope/vim-fugitive'
-        Plug 'xolox/vim-misc' | Plug 'xolox/vim-shell' |
-            \ Plug 'airblade/vim-gitgutter'
+    " integrate with other programs {{{2
         Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-        Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
-        Plug 'tmux-plugins/vim-tmux-focus-events'
-        Plug 'christoomey/vim-tmux-navigator', PCond(!empty($TMUX))
+        Plug 'rking/ag.vim', PIf(executable('ag'), { 'on': 'Ag' })
         Plug 'rizzatti/dash.vim'
+        Plug 'tpope/vim-fugitive'
+        Plug 'airblade/vim-gitgutter'
+        Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
+        Plug 'tmux-plugins/vim-tmux-focus-events', PIf(executable('tmux') && !empty($TMUX))
+        Plug 'christoomey/vim-tmux-navigator',     PIf(executable('tmux') && !empty($TMUX))
     " }}}2
 
     " Add features and functionality. {{{2
-        Plug 'ctrlpvim/ctrlp.vim' |
-            \ Plug 'suy/vim-ctrlp-commandline', { 'on': ['CtrlPLine'] }
         Plug 'easymotion/vim-easymotion'
-        Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } |
-            \ Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' } |
-            \ Plug 'taiansu/nerdtree-ag', { 'on':  'NERDTreeToggle' }
-        Plug 'xolox/vim-misc' |
-            \ Plug 'xolox/vim-session'
-        Plug 'neomake/neomake'
-        Plug 'ervandew/supertab' |
-            \ Plug 'Valloric/YouCompleteMe', {
-                \ 'do': './install.py'
-                    \ . ' --clang-completer'
-                    \ . ' --racer-completer'
-                    \ . ' --gocode-completer'
-                    \ . ' --tern-completer'
-            \ }
-        Plug 'embear/vim-localvimrc'
-        Plug 'editorconfig/editorconfig-vim'
-        Plug 'mattn/emmet-vim', { 'for': ['html', 'jinja.html', 'css', 'scss', 'less'] }
-        Plug 'kassio/neoterm', PCond(has('nvim'))
+        Plug 'scrooloose/nerdtree'                                                                                                 |
+            \Plug 'Xuyuanp/nerdtree-git-plugin'                                                                                    |
+            \Plug 'taiansu/nerdtree-ag'
+        Plug 'xolox/vim-misc'                                                                                                      |
+            \Plug 'xolox/vim-session'
+        Plug 'neomake/neomake', PIf(has('nvim'),                 { 'do': 'npm i -g vimlint'                                     }) |
+            \Plug 'Shougo/neoinclude.vim'
+        Plug 'ervandew/supertab'                                                                                                   |
+            \Plug 'Shougo/deoplete.nvim', PIf(has('nvim'),       { 'do': ':UpdateRemotePlugins'                                 }) |
+            \Plug 'Shougo/neco-vim',                             { 'for': ['vim']                                               }  |
+            \Plug 'eagletmt/neco-ghc',    PIf(executable('ghc'), { 'for': ['haskell']                                           }) |
+            \Plug 'zchee/deoplete-zsh',                          { 'for': ['zsh']                                               }  |
+            \Plug 'zchee/deoplete-go',                           { 'for': ['go']                                                }  |
+            \Plug 'zchee/deoplete-clang',                        { 'for': ['c', 'cpp', 'objc', 'objcpp']                        }  |
+            \Plug 'carlitux/deoplete-ternjs',                    {
+                \'for' : ['javascript'],
+                \'do'  : 'npm install -g tern',
+            \}
     " }}}2
 
     " Language support. {{{2
         "let g:polyglot_disabled = ['javascript']
+        Plug 'gisphm/vim-gitignore'
         Plug 'sheerun/vim-polyglot'
-        Plug 'applescript.vim', PCond(has('mac'), { 'for': 'applescript' })
-        Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
-        Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] }
-        Plug 'lepture/vim-jinja', { 'for': ['jinja', 'jinja.html', 'sls'] }
-        Plug 'saltstack/salt-vim', { 'for': 'sls' }
-        Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
-        Plug 'libclang-vim/libclang-vim',                    { 'for': ['c', 'cpp'] }  |
-            \ Plug 'kana/vim-textobj-user'                                            |
-            \ Plug 'libclang-vim/vim-textobj-clang',          { 'for': ['c', 'cpp'] }
-            "\ Plug 'kana/vim-textobj-function'                                        |
-            "\ Plug 'libclang-vim/vim-textobj-function-clang', { 'for': ['c', 'cpp'] }
+        Plug 'applescript.vim',                              { 'for': ['applescript', 'osascript']               }
+        Plug 'guns/vim-clojure-highlight',                   { 'for': ['clojure']                                }
+        Plug 'saltstack/salt-vim',                           { 'for': ['sls']                                    }
+        Plug 'mxw/vim-jsx',                                  { 'for': ['javascript', 'jsx']                      }
+        Plug 'ternjs/tern_for_vim',                          { 'for': ['javascript', 'jsx'], 'do': 'npm install' }
+        " markdown
+        Plug 'plasticboy/vim-markdown',                      { 'for': ['markdown']                               } |
+            \Plug 'nelstrom/vim-markdown-folding',           { 'for': ['markdown']                               }
+        " clang
+        Plug 'libclang-vim/libclang-vim',                    { 'for': ['c', 'cpp']                               } |
+            \Plug 'kana/vim-textobj-user'                                                                          |
+            \Plug 'libclang-vim/vim-textobj-clang',          { 'for': ['c', 'cpp']                               } |
+            \Plug 'libclang-vim/vim-textobj-function-clang', { 'for': ['c', 'cpp']                               }
+        " web
+        Plug 'lepture/vim-jinja',                            { 'for': ['jinja', 'jinja.html', 'sls']             }
+        Plug 'mattn/emmet-vim', {
+            \'for': ['html', 'jinja.html', 'css', 'sass', 'scss', 'less']
+        \}
     " }}}2
 
     " Beautify Vim. {{{2
         Plug 'chriskempson/base16-vim'
-        "Plug 'w0ng/vim-hybrid'
         Plug 'nathanaelkane/vim-indent-guides'
         Plug 'itchyny/lightline.vim'
         Plug 'luochen1990/rainbow'
-        Plug 'AnsiEsc.vim', PCond(!exists('g:vimpager'))
-        Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'sass', 'less'] }
-        Plug 'arakashic/chromatica.nvim', { 'for': ['c', 'cpp'], 'as': 'chromatica' }
+        Plug 'AnsiEsc.vim'
+        Plug 'ap/vim-css-color',          { 'for': ['css', 'scss', 'sass', 'less'] }
+        Plug 'arakashic/chromatica.nvim', { 'for': ['c', 'cpp', 'objc', 'objcpp']  }
+        "Plug 'qstrahl/vim-matchmaker'
     " }}}2
 
     " Direct text manipulation. {{{2
@@ -858,63 +904,62 @@
         Plug 'cohama/lexima.vim'
         "Plug 'Raimondi/delimitMate'
         Plug 'scrooloose/nerdcommenter'
-        "Plug 'wellle/targets.vim'
+        Plug 'wellle/targets.vim'
         Plug 'tpope/vim-surround'
-        Plug 'kana/vim-textobj-user'                     |
-            \ Plug 'kana/vim-textobj-indent'             |
-            \ Plug 'kana/vim-textobj-line'               |
-            \ Plug 'kana/vim-textobj-syntax'             |
-            \ Plug 'kana/vim-textobj-lastpat'            |
-            \ Plug 'kana/vim-textobj-fold'               |
-            \ Plug 'kana/vim-textobj-function'           |
-            \ Plug 'thinca/vim-textobj-between'          |
-            \ Plug 'glts/vim-textobj-comment'            |
-            \ Plug 'gilligan/textobj-gitgutter'          |
-            \ Plug 'saaguero/vim-textobj-pastedtext'     |
-            \ Plug 'paulhybryant/vim-textobj-path'       |
-            \ Plug 'beloglazov/vim-textobj-quotes'       |
-            \ Plug 'saihoooooooo/vim-textobj-space'      |
-            \ Plug 'jceb/vim-textobj-uri'                |
-            \ Plug 'Julian/vim-textobj-variable-segment'
+        Plug 'kana/vim-textobj-user'                    |
+            \Plug 'kana/vim-textobj-indent'             |
+            \Plug 'kana/vim-textobj-line'               |
+            \Plug 'kana/vim-textobj-syntax'             |
+            \Plug 'kana/vim-textobj-lastpat'            |
+            \Plug 'kana/vim-textobj-fold'               |
+            \Plug 'kana/vim-textobj-function'           |
+            \Plug 'thinca/vim-textobj-between'          |
+            \Plug 'glts/vim-textobj-comment'            |
+            \Plug 'gilligan/textobj-gitgutter'          |
+            \Plug 'saaguero/vim-textobj-pastedtext'     |
+            \Plug 'paulhybryant/vim-textobj-path'       |
+            \Plug 'beloglazov/vim-textobj-quotes'       |
+            \Plug 'saihoooooooo/vim-textobj-space'      |
+            \Plug 'jceb/vim-textobj-uri'                |
+            \Plug 'Julian/vim-textobj-variable-segment'
     " }}}2
 
     " Silent enhancements. {{{2
+        Plug 'editorconfig/editorconfig-vim'
         Plug 'kana/vim-niceblock'
         Plug 'tpope/vim-repeat'
-        "Plug 'sickill/vim-pasta'
-        "Plug 'unblevable/quick-scope', PCond(has('nvim'))
+        Plug 'sickill/vim-pasta'
+        Plug 'unblevable/quick-scope', PIf(!has('nvim'))
     " }}}2
+
+    call plug#end()
 " Plugins }}}1
 
 
 " FileType Settings {{{1
     augroup AllFiles
         au!
-        " Return cursor to last position.
-        au! BufReadPost *
+        au BufReadPost *
             \ if ! exists("g:leave_my_cursor_position_alone")      |
             \   let g:cursor_line = line("'\"")                    |
             \   if g:cursor_line > 0 && g:cursor_line <= line("$") |
             \     exe "normal g'\""                                |
             \   endif                                              |
             \ endif
-    augroup END
 
-    augroup C_Cpp
-        au!
-        "au BufWritePost *.c,*.cpp,*.h,*.hpp silent YcmDiags
-    augroup END
-
-    augroup JSON
-        au!
-        au BufRead,BufNewFile .eslintrc,.babelrc set ft=json
+        au    InsertEnter *
+        \ setl relativenumber
+        au    InsertLeave
+        \,WinLeave
+        \,BufLeave
+        \,BufWinLeave
+        \,TabLeave *
+        \ setl norelativenumber
     augroup END
 " Filetype Settings }}}1
 
 
 " Initialize Vim {{{1
-    call plug#end()
-
     if has('nvim')
         let $NVIM_TUI_ENABLE_TRUE_COLOR="1"
     endif
@@ -944,8 +989,13 @@
     catch
         try
             colorscheme jellybeans
-        catch /^Vim\%((\a\+)\)\=:E185/
+        catch /^Vim(colorscheme):E185/
             colorscheme desert
         endtry
     endtry
 " Initialize Vim }}}1
+
+
+" {{{1 META: post
+    " YO: yo
+" }}}1 META: post

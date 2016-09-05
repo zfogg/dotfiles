@@ -1,4 +1,4 @@
-" filetype=json
+" filetype=yaml
 
 
 setl sw=2
