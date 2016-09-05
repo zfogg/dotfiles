@@ -5,4 +5,4 @@
 
 setl foldmethod=marker
 setl keywordprg=:help
-setl iskeyword+=:
+"setl iskeyword+=:

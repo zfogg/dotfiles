@@ -1,9 +1,0 @@
-:set prompt "\ESC[32m%s> \ESC[m"
-
-let __parseArgs arg = "'" ++ concatMap (\c -> if c == '\'' then "'\"'\"'" else [c]) arg ++ "'"
-
-let __noArgs f x = f
-
-:def! hoogle return . (":! hoogle " ++)
-
-:def! rc return . __noArgs ":script /home/zfogg/.ghci"

@@ -1,3 +1,28 @@
 *.swp
-bundle/*/
-sessions/
+
+/autoload/plug.vim.old
+/bundle/*/
+
+/sessions/
+
+# {{{ defaults
+#
+# README: taken from
+#     HOST:   github.com
+#     REPO:   github/gitignore
+#     COMMIT: master#504f444
+#     FILE:   /Global/Vim.gitignore
+#
+
+# swap
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
+
+# }}} defaults

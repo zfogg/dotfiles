@@ -11,12 +11,12 @@ export HELPDIR="${BREW}/share/zsh/help"
 # }}}
 
 
-#export      TERM="xterm-256color"
+#export TERM="xterm-256color"
 export COLORTERM="$TERM"
-if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
+if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
     export TERMINAL_DOTAPP="true"
     #setopt combiningchars # Correctly display UTF-8 with combining characters.
-elif [ "$TERM_PROGRAM" = "iTerm.app" ]; then
+elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
     export ITERM_DOTAPP="true"
 fi
 
@@ -27,13 +27,13 @@ export  TRUE="true"
 export FALSE="false"
 
 export OSX="$(
-    [ "`uname`" = "Darwin" ]
-    [ $? -eq 0 ] \
+    [[ "`uname`" == "Darwin" ]]
+    [[ "$?" == "0" ]] \
         && echo "$TRUE" \
         || echo "$FALSE"
 )"
 export SHELL_NAME="$(
-    [ "$OSX" = "$TRUE" ] \
+    [[ "$OSX" == "$TRUE" ]] \
         && ps -p$$ -ocommand= | tr -d '-' \
         || ps -p$$ -ocmd=
 )"
@@ -63,30 +63,30 @@ path=(
     $HOME/.cabal/bin
     $HOME/.cargo/bin
     $GOPATH/bin
-    /Applications/Karabiner.app/Contents/Library/bin
+    #/Applications/Karabiner.app/Contents/Library/bin
     $BREW/bin
-    $(command -p getconf PATH | tr ':' '\n')
+    $(command -p getconf PATH | tr ':' '\n' | tail -r)
 )
 
 fpath=(
     $BREW/share/zsh-completions
     $BREW/share/zsh/site-functions
     $BREW/share/zsh/functions
-    $fpath); fpath=($^fpath(N-/))
+    $fpath)
 
 manpath=(
     $BREW/share/man
     /usr/share/man
-); manpath=($^manpath(N-/))
+)
 
 infopath=()
 
 classpath=(
     $GROOVY_HOME/embeddable
     $GROOVY_HOME/embeddable/groovy-all-2.4.7.jar
-    $classpath); classpath=($^classpath(N-/))
+    $classpath)
 
-if [ "$OSX" = "$TRUE" ]; then
+if [[ "$OSX" == "$TRUE" ]]; then
     brew_gnu_progs=(
         gnu-sed
         gnu-tar
@@ -98,10 +98,47 @@ if [ "$OSX" = "$TRUE" ]; then
         $path)
     manpath=(
         $BREW/opt/{${^brew_gnu_progs},coreutils}/share/man
-        $manpath); manpath=($^manpath(N-/))
+        $manpath)
     infopath=(
         $BREW/opt/{${^brew_gnu_progs},coreutils}/share/info
-        $infopath); infopath=($^infopath(N-/))
+        $infopath)
+fi
+# }}}
+
+
+# compilation {{{
+typeset -aU dyld_library_path
+typeset -xT DYLD_LIBRARY_PATH dyld_library_path ':'
+#
+typeset -aU cppflags
+typeset -xT CPPFLAGS          cppflags          ' '
+#
+typeset -aU ldflags
+typeset -xT LDFLAGS           ldflags           ' '
+
+local llvm_root="$BREW/opt/llvm"
+if [[ -d "$llvm_root" ]]; then
+	path=(                          $llvm_root/bin
+									$llvm_root/libexec
+									$path                )
+	manpath=(                       $llvm_root/share/man
+									$manpath             )
+	dyld_library_path+=(            $llvm_root/lib       )
+	ldflags+=(                    -L$llvm_root/lib       )
+	ldflags+=(           -Wl,-rpath,$llvm_root/lib       )
+	cppflags+=(                   -I$llvm_root/include   )
+fi
+
+local ossl_root="$BREW/opt/openssl"
+if [[ -d "$ossl_root" ]]; then
+	path=(                          $ossl_root/bin
+									$path                )
+	manpath=(                       $ossl_root/share/man
+									$manpath             )
+	dyld_library_path+=(            $ossl_root/lib       )
+	ldflags+=(                    -L$ossl_root/lib       )
+	ldflags+=(           -Wl,-rpath,$ossl_root/lib       )
+	cppflags+=(                   -I$ossl_root/include   )
 fi
 # }}}
 
@@ -109,17 +146,19 @@ fi
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export PAGER='vimpager'
-export LESS="-isMR"
-
-export ZSHRC="$HOME/.zshrc"
+export LESS='-isMR'
 
 # depends on `coreutils`
-eval "$(gdircolors $HOME/.dircolors)"
-export CLICOLOR="YES"
-export LSCOLORS="$LS_COLORS"
+export    ZSHRC="`grealpath "$HOME/.zshrc"`"
 export DOTFILES="`grealpath $(dirname "$ZSHRC")`"
 export   DOTVIM="$DOTFILES/.vim"
 export    ZSHRC="$DOTFILES/.zshrc"
+# depends on `coreutils`
+[[ ! -f ~/.LS_COLORS ]] && \
+    gdircolors $HOME/.dircolors > ~/.LS_COLORS
+source ~/.LS_COLORS
+export CLICOLOR=true
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 
 # zsh-completion-generator.plugin.zsh

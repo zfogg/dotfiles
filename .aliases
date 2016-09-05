@@ -2,49 +2,30 @@
 
 
 alias vim='$EDITOR'
-alias vi='vim'
-alias v='vim'
+alias  vi="$EDITOR"
+alias   v="$EDITOR"
 
 alias zshrc='$EDITOR '"$DOTFILES"'/.zshrc'
 alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 
 alias ql='quick-look'
 
-alias _ls='ls --color=always -AgGhHLopQ --time-style=+"%Y/%m/%d-%H:%M:%S" --quoting-style="shell"'
-_ls_clean() {
-    _ls "$@"                                   |\
-        tr -s ' '                              |\
-        sed -E  's/^ \+//g; s/ \+$//g'         |\
-        cut -d ' ' -f3-                        |\
-        sed -E 's/ /\n/g3; s/ /\t/g; s/\n/ /g' |\
-        column -s $'\t' -t
-}
-alias l='_ls_clean'
-alias ll='_ls_clean -S'
-alias lt='_ls_clean -t'
 alias ls='ls --color=auto'
 alias lsd='ls -d *(/)'
 
 alias sudo='nocorrect sudo '
 
-alias s='sudo'
+alias   s='sudo'
 
 alias ..='cd ..'
 alias ...='cd ../..'
-
-alias tmux='tmux -2'
-alias t='tmux'
-alias ts='tmux new-session -s'
-alias tl='tmux list-sessions'
-alias ta='tmux attach-session -d -t'
 
 alias less='$PAGER'
 alias zless='$PAGER'
 
 alias htop='htop -u $USER'
 
-alias g='git'
-alias ghclone='_repo="$(git gh `pbpaste | tr "'"/"'" "'" "'"`)"; [ "$?" = "0" ] && cd "$_repo" || false'
+alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 
 alias ag='ag --hidden -p ~/.agignore'
 
@@ -58,6 +39,8 @@ alias sniff='ngrep -d "en0" -t "^(GET|POST) " "tcp and port 80"'
 alias whois='whois -h whois-servers.net'
 alias flush='dscacheutil -flushcache'
 alias httpdump='tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
+
+alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q'
 
 alias fs='du -shL'
 

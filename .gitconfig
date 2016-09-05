@@ -3,35 +3,18 @@
     name  = Zach Fogg
 
 [alias]
-    submsync  = !git submodule foreach "git checkout master && git pull origin master" && :
-    mybranch  = !git rev-parse --abbrev-ref HEAD && :
-	bsync     = !git branch --set-upstream-to=origin/"`git mybranch`" "`git mybranch`" && :
-	up        = pull --rebase --autostash
-    gh        = !git clonex git github.com "$1" "$2" && :
-    clonex    = !:                                                                  ";"\\\n\
-    [ ! -z ${DEBUG+x} ] && >&2 echo '\ngit clonex\n'\"$0\"'\n'                      ";"\\\n\
-    export ghost=\"${2:-_}\"                                                        ";"\\\n\
-    export subdir=\"${3:-./}\"                                                      ";"\\\n\
-    export grepo=\"${4:-$}\"                                                        ";"\\\n\
-    export xdir=\"$HOME\"'/src/'\"$ghost\"'/'\"$subdir\"                            ";"\\\n\
-    zsh -c ':                                                                       ";"\\\n\
-        xrepo=\"${1:-git}\""'@'"\"$ghost\""':'"\"$subdir\""'/'"\"$grepo\"           ";"\\\n\
-        [ \"$ghost\" = \"_\" ] &&                                                      \\\n\
-            >&2 echo \"host arg err!\" && exit 1                                    ";"\\\n\
-        [ \"$grepo\" = \"$\" ] &&                                                      \\\n\
-            >&2 echo \"repo arg err!\" && exit 1                                    ";"\\\n\
-        ping -q -t 5 -c 1 \"$ghost\" 1>/dev/null";" [ ! \"$?\" = \"0\"  ] &&           \\\n\
-            >&2 echo \"unable to reach host \"\"$ghost\" && exit 2                  ";"\\\n\
-        git ls-remote --quiet --heads --exit-code \"$xrepo\" master 1>/dev/null ||     \\\n\
-            exit 3                                                                  ";"\\\n\
-        mkdir -p  \"$xdir\"                                                         ";"\\\n\
-        cd        \"$xdir\"                                                         ";"\\\n\
-        git clone \"$xrepo\"                                                        ";"\\\n\
-        >&2 echo && echo \"$xdir\""'/'"\"$grepo\"                                   ";"\\\n\
-    ' && :
+    submsync = submodule foreach \"git checkout master && git pull origin master\"
+    mybranch = rev-parse --abbrev-ref HEAD
+    bsync    = !git branch --set-upstream-to=origin/"`git mybranch`" "`git mybranch`" && :
+    up       = pull --rebase --autostash
+    gh       = joopal-clone git github.com
+    l        = log -18 --color=always --all --topo-order --pretty='format:%Cgreen%h%Creset %s%Cred%d%Creset %C(black bold)(by %an)%Creset'
+    ll       = log     --color=always --all --topo-order --pretty='format:%Cgreen%h%Creset %s%Cred%d%Creset %C(black bold)(by %an)%Creset'
+    gl       = log -12 --color=always --all --graph --topo-order --pretty='format:%Cgreen%h%Creset %s %C(black bold)(by %an)%Creset%C(yellow bold)%d%Creset%n'
+    gll      = log     --color=always --all --graph --topo-order --pretty='format:%Cgreen%h%Creset %s %C(black bold)(%cr by %an)%Creset%C(yellow bold)%d%Creset%n'
 
 [push]
-	default = simple
+    default = simple
 
 [core]
     editor   = nvim
@@ -57,10 +40,10 @@
     ui = true
 
 [filter "media"]
-	clean  = git-media-clean %f
-	smudge = git-media-smudge %f
+    clean  = git-media-clean %f
+    smudge = git-media-smudge %f
 
 [url "git@github.com:"]
-	insteadOf = https://github.com/
+    insteadOf = https://github.com/
 [url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+    insteadOf = https://github.com/
