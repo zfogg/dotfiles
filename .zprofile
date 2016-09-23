@@ -3,9 +3,8 @@
 
 
 # brew's zsh {{{
-export BREW='/usr/local'
 export HOMEBREW_GITHUB_API_TOKEN='5c8597261ad87cf1951e4e4ce9e9c3b1d1b361be'
-unalias  run-help
+unalias run-help 2>/dev/null
 autoload run-help
 export HELPDIR="${BREW}/share/zsh/help"
 # }}}
@@ -20,11 +19,7 @@ elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
     export ITERM_DOTAPP="true"
 fi
 
-export LC_ALL="en_US.UTF-8"
-export   LANG="en_US.UTF-8"
-
-export  TRUE="true"
-export FALSE="false"
+export DOTFILES_PACKAGE="$PACKAGE_PREFIX"'.Dotfiles'
 
 export OSX="$(
     [[ "`uname`" == "Darwin" ]]
@@ -42,9 +37,7 @@ export GOPATH="$HOME/src/go"
 export GOROOT="$BREW/opt/go/libexec"
 
 export WORKON_HOME="$HOME/.virtualenvs"
-
 export GROOVY_HOME="$BREW/opt/groovy/libexec"
-
 export POWERLINE_CONFIG_COMMAND="python $BREW/bin/powerline-config"
 
 
@@ -52,26 +45,27 @@ export POWERLINE_CONFIG_COMMAND="python $BREW/bin/powerline-config"
 typeset -U  path
 typeset -U  fpath
 typeset -U  manpath
-# new var
+
+# new vars
+#   CLASSPATH
 typeset -aU classpath
 typeset -xT CLASSPATH classpath
+#   INFOPATH
 typeset -aU infopath
 typeset -xT INFOPATH infopath
 
 path=(
     $HOME/bin
-    $HOME/.cabal/bin
-    $HOME/.cargo/bin
+    $HOME/{.cabal,.cargo}/bin
     $GOPATH/bin
-    #/Applications/Karabiner.app/Contents/Library/bin
+    $GOROOT/bin
     $BREW/bin
-    $(command -p getconf PATH | tr ':' '\n' | tail -r)
+    $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r)
 )
 
 fpath=(
     $BREW/share/zsh-completions
-    $BREW/share/zsh/site-functions
-    $BREW/share/zsh/functions
+    $BREW/share/zsh/{site-functions,functions}
     $fpath)
 
 manpath=(
@@ -93,7 +87,7 @@ if [[ "$OSX" == "$TRUE" ]]; then
         gnu-indent
     )
     path=(
-        $BREW/opt/coreutils/libexec/gnubin
+        #$BREW/opt/coreutils/libexec/gnubin
         $BREW/opt/${^brew_gnu_progs}/bin
         $path)
     manpath=(
@@ -115,38 +109,78 @@ typeset -xT CPPFLAGS          cppflags          ' '
 #
 typeset -aU ldflags
 typeset -xT LDFLAGS           ldflags           ' '
+#
+typeset -aU pkg_config_path
+typeset -xT PKG_CONFIG_PATH pkg_config_path     ':'
 
-local llvm_root="$BREW/opt/llvm"
-if [[ -d "$llvm_root" ]]; then
-	path=(                          $llvm_root/bin
-									$llvm_root/libexec
-									$path                )
-	manpath=(                       $llvm_root/share/man
-									$manpath             )
-	dyld_library_path+=(            $llvm_root/lib       )
-	ldflags+=(                    -L$llvm_root/lib       )
-	ldflags+=(           -Wl,-rpath,$llvm_root/lib       )
-	cppflags+=(                   -I$llvm_root/include   )
-fi
+function opt_dep() {
+    local opt_root=${BREW}/opt
+    local dep_root=${opt_root}/${1:-\$}
+    if [ ! -d $dep_root ]; then
+        >&2 echo "$0() - err\n\tdep_root $dep_root"
+        return 1
+    fi
 
-local ossl_root="$BREW/opt/openssl"
-if [[ -d "$ossl_root" ]]; then
-	path=(                          $ossl_root/bin
-									$path                )
-	manpath=(                       $ossl_root/share/man
-									$manpath             )
-	dyld_library_path+=(            $ossl_root/lib       )
-	ldflags+=(                    -L$ossl_root/lib       )
-	ldflags+=(           -Wl,-rpath,$ossl_root/lib       )
-	cppflags+=(                   -I$ossl_root/include   )
-fi
+    if [ ${2:-$} != '$' ]; then
+        local -aU bin_dirs
+        local -T BIN_DIRS bin_dirs
+        BIN_DIRS=${2:-bin}
+        bin_dirs=(${dep_root}/${^bin_dirs})
+        path=($bin_dirs $path)
+    fi
+
+    local manpath_dir=${dep_root}/${3:-share/man}
+    if [ -d $manpath_dir ]; then
+        manpath=($manpath_dir $manpath)
+    fi
+    local sharedlib_dir=${dep_root}/${4:-lib}
+    if [ -d $sharedlib_dir ]; then
+        dyld_library_path+=(  $sharedlib_dir )
+        ldflags+=(          -L$sharedlib_dir )
+        ldflags+=( -Wl,-rpath,$sharedlib_dir )
+    fi
+    local headers_dir=${dep_root}/${5:-include}
+    if [ -d $headers_dir ]; then
+        cppflags+=( -I$headers_dir )
+    fi
+    local pkgconfig_dir=${sharedlib_dir}/${6:-pkgconfig}
+    if [ -d $pkgconfig_dir ]; then
+        pkg_config_path=($pkgconfig_dir $pkg_config_path)
+    fi
+}
+
+opt_dep llvm    bin:libexec
+opt_dep openssl
+opt_dep curl
+opt_dep libgit2 '$'
 # }}}
 
 
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export PAGER='vimpager'
-export LESS='-isMR'
+
+
+function command_exists() { command -v "$1" 2>/dev/null 1>&2 }
+function alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
+
+if command_exists pt; then
+    export GREPPRG_PRG='pt'
+    export GREPPRG_ARGS='--hidden --home-ptignore --global-gitignore --follow --depth=15'
+elif command_exists ag; then
+    export GREPPRG_PRG='ag'
+    export GREPPRG_ARGS='--hidden --all-text --pager ${PAGER} --follow'
+elif ! alias_exists grep; then
+    export GREPPRG_PRG='grep'
+    export GREPPRG_ARGS='--color=auto --exclude=*.pyc --exclude-dir=.git'
+fi
+
+if [ -n "${GREPPRG_PRG+x}" ] && [ -n"${GREPPRG_ARGS+x}" ]; then
+    export GREPPRG='command '"$GREPPRG_PRG"' '"$GREPPRG_ARGS"
+else
+    export GREPPRG="${GREPPRG:-command grep}"
+fi
+
 
 # depends on `coreutils`
 export    ZSHRC="`grealpath "$HOME/.zshrc"`"
@@ -163,3 +197,6 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 # zsh-completion-generator.plugin.zsh
 export GENCOMPL_FPATH="$DOTFILES/.zsh/complete"
+
+export FZF_DEFAULT_COMMAND='ag -g ""'
+

@@ -1,41 +1,52 @@
-" {{{1 vim: filetype=vim:
+" {{{1 ~/.vimpagerrc
+"  vim: filetype=vim:
 " AUTHOR: Zach Fogg <me@zfo.gg>
 " DEPENDS:
 "   VIM:      >= 7.4
 "   VIMPAGER: >= 2.06
-" }}}1 `modeline`
+"   NEOVIM:   >= 0.1.5
+" }}}1 zfogg/dotfiles ~/.vim/init.vim
+
+
+" {{{1 META: pre
+    scriptencoding utf-8
+    " {{{2 config paths
+            " s:mvvar =~# escape('s:\i+(_(l|f|r))?', '+()|?')
+                " s:myvar_l  (l)ocal path basename
+                " s:myvar_f  (f)ully resolved links (expanded vars)
+                " s:myvar_r  (r)elative to $HOME (un-expanded vars)
+        " dir/ ~/.dotfiles/ 's:dotfiles'
+        let s:dotfiles_l = '.dotfiles'
+        let s:dotfiles   = fnamemodify(exists('$DOTFILES') ? $DOTFILES : s:dotfiles_l, ':~')
+        let s:dotfiles_f = expand(s:dotfiles)
+        let s:dotfiles_r = fnamemodify(s:dotfiles, ':~')
+        " dir/ ~/.vim/ 's:dotvim'
+        let s:dotvim_l   = '.vim'
+        let s:dotvim     = exists('$DOTVIM')               ? $DOTVIM   : s:dotfiles.'/'.s:dotvim_l
+        let s:dotvim_f   = expand(s:dotvim)
+        let s:dotvim_r   = fnamemodify(s:dotvim,   ':~')
+        " file ~/.vim/init.vim 's:myvimrc'
+        let s:myvimrc_l = 'init.vim'
+        let s:myvimrc   = s:dotvim  .'/'.s:myvimrc_l
+        let s:myvimrc_f = s:dotvim_f.'/'.s:myvimrc_l
+        let s:myvimrc_r = s:dotvim_r.'/'.s:myvimrc_l
+    " }}}2 config paths
+" }}}1 META: pre
 
 
 " {{{1 Basic Settings
-    set number                  " display line numbers
-    set numberwidth=1           " numberglyphs use only one column
-    set title                   " show file title in console title bar
-    set wildmenu                " menu completion in command mode on <Tab>
-    set showtabline=1           " show buffer tabs when more than one
+    set number numberwidth=3    " hybrid line numbers - relative & static
+    set title                   " file title in the $TERM titlebar
+    set showtabline=1           " show buffer tabs when more than `n`
     set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
     set history=8192            " persist mode-cmdline history
-    set wildmode=full           " <Tab> cycles between all matching choices.
     set noerrorbells visualbell " no system bell, no screen blink on error
+    set wildmenu                " custom completion menu
+    set wildmode=
+        \longest:full,
+        \list:full
 
-    if !has('nvim')
-        set nocompatible        " vim > vi
-        set t_vb=               " no system bell, no screen blink on error
-    endif
-
-    if has("unnamedplus") " X11 support
-        set clipboard+=unnamedplus
-    endif
-
-    let s:dotfiles   = exists('$DOTFILES') ? $DOTFILES : '.dotfiles'
-    let s:dotvim     = exists('$DOTVIM')   ? $DOTVIM   : s:dotfiles.'/.vim'
-    let s:dotfiles_f = expand(s:dotfiles)
-    let s:dotvim_f   = expand(s:dotvim)
-    let s:dotfiles_r = fnamemodify(s:dotfiles, ':~')
-    let s:dotvim_r   = fnamemodify(s:dotvim,   ':~')
-
-    let s:myvimrc   = s:dotvim  .'/vimrc'
-    let s:myvimrc_f = s:dotvim_f.'/vimrc'
-    let s:myvimrc_r = s:dotvim_r.'/vimrc'
+    let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 
     " {{{2 undo / redo, swap, backup
         let s:dotvim_dotdirs = {}
@@ -93,85 +104,91 @@
     " }}}2 undo / redo, swap, backup
 
     " {{{2 Moving around and editing
-        set nostartofline           " Avoid moving cursor to BOL when jumping around.
-        set virtualedit=all         " Let cursor move past $ in command mode.
-        set backspace=2             " Allow backspacing over autoindent, EOL, and BOL.
-        set autoindent              " Always set autoindenting on.
-        set lazyredraw              " For better macro performance.
+        set nostartofline   " Avoid moving cursor to BOL when jumping around.
+        set virtualedit=all " Let cursor move past $ in command mode.
+        set backspace=2     " Allow backspacing over autoindent, EOL, and BOL.
+        set autoindent      " Always set autoindenting on.
+        set lazyredraw      " For better macro performance.
     " }}}2 Moving around and editing
 
     " {{{2 Tiny aesthetic tweaks
-        set cursorline              " A horizontal line for the cursor location.
-        set ruler                   " Show the cursor position all the time.
-        set scrolloff=3             " Keep n context lines above and below the cursor.
-        set showmatch               " Briefly jump to a paren once it's balanced.
-        set list                    " Visually display tabs and trailing whitespace.
-        set listchars=trail:·,tab:·\ ,eol:¬,extends:>,precedes:<
+        set cursorline      " A horizontal line for the cursor location.
+        set ruler           " Show the cursor position all the time.
+        set scrolloff=3     " Keep n context lines above and below the cursor.
+        set sidescrolloff=5 " FIXME
+        set sidescroll=1    " FIXME
+        set showmatch       " Briefly jump to a paren once it's balanced.
+        set list            " Visually display tabs and trailing whitespace.
+        set listchars=
+            \eol:¬,
+            \tab:→\ ,
+            \trail:·,
+            \extends:⟩,
+            \precedes:⟨,
+            \nbsp:␣
     " }}}2 Tiny aesthetic tweaks
 
     " Whitespace {{{2
-        set shiftwidth=4            " An indent level is n spaces.
-        set expandtab               " Use spaces, not tabs, for autoindent/tab key.
-        set tabstop=4               " <Tab> inserts n spaces.
-        set softtabstop=4           " <BS> over an autoindent deletes both spaces.
-        set shiftround              " Rounds indent to a multiple of shiftwidth.
-        set linebreak               " Don't wrap textin the middle of a word.
-        let &showbreak = '\\ '      " Visualize wrapped lines.
-        set nowrap                  " Don't wrap text.
-        set textwidth=0             " Don't break lines.
-        set wrapmargin=0            " Seriously, don't break lines.
+        set expandtab       " Use spaces, not tabs, for autoindent/tab key.
+        set copyindent
+        set preserveindent
+        set softtabstop=4   " <BS> over an autoindent deletes both spaces.
+        set shiftwidth=4    " An indent level is n spaces.
+        set tabstop=4       " <Tab> inserts n spaces.
+        set shiftround      " Rounds indent to a multiple of shiftwidth.
+        set nowrap          " Don't wrap text.
+        set linebreak       " Don't wrap textin the middle of a word.
+        set wrapmargin=0    " Seriously, don't break lines.
+        set textwidth=0     " Don't break lines.
+        set showbreak=↪\    " Visualize wrapped lines.
     " }}}2
 
     " Folding. {{{2
-        set foldenable
         set foldmethod=syntax
         set foldopen=mark,percent,quickfix,tag,undo
+        set foldenable
     " }}}2
 
     " Reading and writing. {{{2
-        set noautowrite             " Never write a file unless I request it.
-        set noautowriteall          " NEVER.
-        set noautoread              " Don't automatically re-read changed files.
-        set modeline                " Allow vim options to be embedded in files;
-        set modelines=3             " they must be within the first or last 5 lines.
-        set ffs=unix,dos,mac        " Try recognizing dos, unix, and mac line endings.
+        set noautowrite      " Never write a file unless I request it.
+        set noautowriteall   " NEVER.
+        set noautoread       " Don't automatically re-read changed files.
+        set modeline         " Allow vim options to be embedded in files;
+        set modelines=3      " they must be within the first or last 5 lines.
+        set ffs=unix,dos,mac " Try recognizing dos, unix, and mac line endings.
     " }}}2
 
     " Messages, info, and statuses. {{{2
-        set shortmess=aOstTI             " :help 'shortmess'
-        set laststatus=2                " allways show status line
-        set confirm                     " Y-N-C prompt if closing with unsaved changes.
-        set showcmd                     " Show incomplete normal mode commands as I type.
-        set report=0                    " : commands always print changed line count.
-        set ruler                       " Show some info, even without statuslines.
-        set laststatus=2                " Always show statusline, even if only 1 window.
+        set shortmess=aOstTI " :help 'shortmess'
+        set laststatus=2     " allways show status line
+        set confirm          " Y-N-C prompt if closing with unsaved changes.
+        set showcmd          " Show incomplete normal mode commands as I type.
+        set report=0         " : commands always print changed line count.
+        set ruler            " Show some info, even without statuslines.
+        set laststatus=2     " Always show statusline, even if only 1 window.
         "set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
     " }}}2
 
     " Searching and Patterns {{{2
-        set ignorecase              " Default to using case insensitive searches.
-        set smartcase               " unless uppercase letters are used in the regex.
-        set smarttab                " Handle tabs more intelligently.
-        set hlsearch                " Highlight searches by default.
-        set incsearch               " Incrementally search while typing a /regex.
+        set ignorecase " Default to using case insensitive searches.
+        set smartcase  " unless uppercase letters are used in the regex.
+        set smarttab   " Handle tabs more intelligently.
+        set hlsearch   " Highlight searches by default.
+        set incsearch  " Incrementally search while typing a /regex.
     " }}}2
 
     " The 'Session' plugin does this on save.
     set sessionoptions-=blank
-    set sessionoptions-=options
     set sessionoptions-=buffers
 
     " Per-project .vimrc.
-    set exrc
-    set secure
+    "   NOTE: don't ever set this, you moron
+    "set exrc secure
 
     " Faster CursorHold aucmd
-    set updatetime=250 " milliseconds
+    set updatetime=180 " milliseconds
 
-    " http://stackoverflow.com/a/15471820
-    if $TERM =~ '^\(screen\|xterm\)' && exists('$TMUX')
-        set mouse+=a
-    endif
+    set shell=$SHELL
 
     " 'text-obj' patterns for 'word' and file /path
         " NOTE: http://www.ascii-code.com/
@@ -182,14 +199,16 @@
             " ,@-@,     == /@/
             " ,^,,      == /[^,]/
             " ,^<EOL>   == /\^/
-        " NOTE: :help 'isfname' | :help 'iskeyword'
-    set   isfname=@,48-57,#,~,$,_,-,/,.,+,,,%,=
-    set iskeyword=@,48-57,#,~,$,_,-,192-255
+        " NOTE: :h 'isfname' | :help 'iskeyword'
+    set   isfname=@,48-57,_,#,~,$,-,/,.,+,,,%,=
+    set iskeyword=@,48-57,_,192-255
 " }}}1 Basic Settings
 
 
 " Key Mappings {{{1
-    let mapleader=","
+    let g:mapleader=','
+
+    inoremap <C-c> <Esc>
 
     noremap : <Nop>
     noremap ; :
@@ -198,25 +217,26 @@
 
     " write
     nnoremap <Leader>w :w<CR>
-    nnoremap <Leader>W :silent! w<CR>
+    nnoremap <Leader>W :sil! w<CR>
     cnoremap w! w !sudo tee % >/dev/null
 
     " quit
     nnoremap <Leader>q :q<CR>
 
     " vimrc
-    execute 'nnoremap <silent> <Leader>v'
-        \.' :$tabe'
-        \.' <BAR> lcd '.s:dotfiles_r
-        \.' <BAR> e '.substitute(s:myvimrc, s:dotfiles.'/', '', '')
-        \.' <BAR> silent! foldo!'
-        \.' <BAR> norm zz'
+    exe 'nn <silent> <Leader>v :'
+        \.'cd '.s:dotvim_r             .' <Bar> '
+        \.'$tabe! '                    .' <Bar> '
+        \.'e '.s:myvimrc_l             .' <Bar> '
+        \.'cd -'                       .' <Bar> '
+        \.'exe "norm! zvzz"'           .' <Bar> '
         \.'<CR>'
-    execute 'nnoremap <silent> <Leader>V'
-        \.' :source '.s:myvimrc
-        \.' <Bar> filetype detect'
-        \.' <Bar> redraw'
-        \.' <Bar> echo "vimrc reloaded"'
+    exe 'nn <silent> <Leader>V :'
+        \.'cd '.s:dotvim_r             .' <Bar> '
+        \.'so '.s:myvimrc_l            .' <Bar> '
+        \.'cd -'                       .' <Bar> '
+        \.'filet detect'               .' <Bar> '
+        \.'exe "norm! zvzz"'           .' <Bar> '
         \.'<CR>'
 
     " Disabled default commands. {{{2
@@ -259,11 +279,10 @@
         if has('nvim')
             let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1          " change cursor to bar in insert mode
             tnoremap <Esc> <C-\><C-n>
-            tmap     <silent> jj <C-\><C-n>{}k$
-            tmap     <silent> <C-h> jj<C-h>
-            tmap     <silent> <C-j> jj<C-j>
-            tmap     <silent> <C-k> jj<C-k>
-            tmap     <silent> <C-l> jj<C-l>
+            tnoremap     <silent> jj <C-\><C-n>{}k$
+            tnoremap     <silent> <C-j> jj<C-j>
+            tnoremap     <silent> <C-k> jj<C-k>
+            tnoremap     <silent> <C-l> jj<C-l>
         end
 
         " j and k just work on long wrapped lines.
@@ -282,8 +301,8 @@
         " nnoremap <a-h> zhh
 
         " think of your left pinky
-        inoremap jj <Esc>
-        inoremap kk <Esc>:w<CR>
+        inoremap jj    <Esc>
+        inoremap kk    <Esc>:w<CR>
 
         " Leaving `Insert-mode` is too much sometimes.
         inoremap HH <C-o>^
@@ -325,6 +344,8 @@
     " Et cetera. {{{2
         " Previous matching command or search.
         cnoremap kk <Up>
+        cnoremap HH <Home>
+        cnoremap LL <Home>
 
         " Enter Replace mode from Visual mode.
         vnoremap R r<Space>R
@@ -333,7 +354,7 @@
         nnoremap . .`[
 
         " Delete trailing whitespace.
-        nnoremap <Leader>S :%s/\s\+$//<cr>:let @/=''<CR><c-o>
+        nnoremap <Leader>S :%s/\s\+$//<CR>:let @/=''<CR><c-o>
 
         " Fixes for display glitches.
         nnoremap <silent> <Leader><Space> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>,<Space>
@@ -343,8 +364,8 @@
         "nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
 
         " Change to the directory of the current buffer's file.
-        nnoremap <Leader>lcd :lcd %:p:h<CR>
-        nnoremap <Leader>cd  :cd  %:p:h<CR>
+        nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
+        nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
 
         " omnicomplete
         "imap </            <C-_>
@@ -355,41 +376,89 @@
 
 " Plugin Settings {{{1
     " NERDTree {{{2
-        let NERDTreeWinPos    = "right"
-        let NERDTreeMinimalUI = 1
-        let NERDTreeIgnore    = [
-            \ ''  . '\~'               . '$' . '[[file]]' ,
-            \ ''  . '\~'               . '$' . '[[dir]]'  ,
-            \ '^' . '\.git'            . '$' . '[[dir]]'  ,
-            \ '^' . '\.hg'             . '$' . '[[dir]]'  ,
-            \ '^' . '\.svn'            . '$' . '[[dir]]'  ,
-            \ '^' . 'node_modules'     . '$' . '[[dir]]'  ,
-            \ '^' . 'bower_components' . '$' . '[[dir]]'  ,
-            \ ''  . '\.o'              . '$' . '[[file]]' ,
-            \ ''  . '\.obj'            . '$' . '[[file]]' ,
-            \ ''  . '\.so'             . '$' . '[[file]]' ,
-            \ ''  . '\.exe'            . '$' . '[[file]]' ,
-            \ ''  . '\.dmg'            . '$' . '[[file]]' ,
-            \ ''  . '\.swap'           . '$' . '[[file]]' ,
-            \ ''  . '\.class'          . '$' . '[[file]]' ,
-            \ ''  . '\.pyc'            . '$' . '[[file]]' ,
-            \ ''  . '\.tar'            . '$' . '[[file]]' ,
-            \ ''  . '\.bz'             . '$' . '[[file]]' ,
-            \ ''  . '\.gz'             . '$' . '[[file]]' ,
-            \ ''  . '\.xz'             . '$' . '[[file]]' ,
-            \ ''  . '\.zip'            . '$' . '[[file]]' ,
+        let g:NERDTreeWinPos                    = 'left'
+        let g:NERDTreeAutoCenter                = 1
+        let g:NERDTreeCaseSensitiveSort         = 0
+        let g:NERDTreeHighlightCursorline       = 1
+        let g:NERDTreeBookmarksFile             = s:dotvim_f.'.cache/NERDTree.bookmarks'
+        let g:NERDTreeMouseMode                 = 2
+        let g:NERDTreeShowHidden                = 1
+        let g:NERDTreeMinimalUI                 = 1
+        let g:NERDTreeHijackNetrw               = 1
+        let g:NERDTreeRespectWildIgnore         = 1
+        let g:NERDTreeCascadeOpenSingleChildDir = 2
+        let g:NERDTreeAutoDeleteBuffer          = 1
+        "let g:NERDTreeChDirMode                 = 2
+        let g:NERDTreeWinSize                   = 24
+
+        let g:NERDTreeCreatePrefix = 'silent keepa keepj keepp keepm'
+
+        let g:NERDTreeIgnore    = [ '\~$' ,
+            \ '' . '.git'             . '$' . '[[dir]]'  ,
+            \ '' . '.hg'              . '$' . '[[dir]]'  ,
+            \ '' . '.svn'             . '$' . '[[dir]]'  ,
+            \ '' . 'node_modules'     . '$' . '[[dir]]'  ,
+            \ '' . 'bower_components' . '$' . '[[dir]]'  ,
+            \ ''  . '.o'              . '$' . '[[file]]' ,
+            \ ''  . '.obj'            . '$' . '[[file]]' ,
+            \ ''  . '.so'             . '$' . '[[file]]' ,
+            \ ''  . '.exe'            . '$' . '[[file]]' ,
+            \ ''  . '.dmg'            . '$' . '[[file]]' ,
+            \ ''  . '.swap'           . '$' . '[[file]]' ,
+            \ ''  . '.class'          . '$' . '[[file]]' ,
+            \ ''  . '.pyc'            . '$' . '[[file]]' ,
+            \ ''  . '.tar'            . '$' . '[[file]]' ,
+            \ ''  . '.bz'             . '$' . '[[file]]' ,
+            \ ''  . '.gz'             . '$' . '[[file]]' ,
+            \ ''  . '.xz'             . '$' . '[[file]]' ,
+            \ ''  . '.zip'            . '$' . '[[file]]' ,
+            \ ''  . '.DS_Store'       . '$' . '[[file]]' ,
+            \ ''  . '%'               . ''  . '[[file]]' ,
         \ ]
-        " key bindings
-        nnoremap <Leader>n<Space> :NERDTreeToggle<CR>
+
+        " command - toggle
+        func! <SID>MyNERDTreeToggle()
+            if exists('t:NERDTreeBufName')
+                if exists('g:zNTOn') || &buftype !=# ''
+                    unlet! g:zNTOn
+                    NERDTreeClose
+                    return
+                else
+                    NERDTree
+                endif
+            else
+                NERDTree %:p:h
+            endif
+            let g:zNTOn = 1
+            wincmd p
+        endfunc
+        nnoremap <silent> <Leader>n<Space> :call <SID>MyNERDTreeToggle()<CR>
+
+        " autocommand - auto-cwd (BufEnter *)
+        func! <SID>MyNERDTreeAutoCWD()
+            if exists('b:noNERDTreeAutoCWD')
+                return
+            elseif exists('g:zNTOn')
+                "cd %:p:h
+                NERDTreeMirror
+                wincmd p
+            endif
+        endfunc
+
+        aug <SID>MyNERDTree
+            au!
+            "au BufEnter      * silent! call <SID>MyNERDTreeAutoCWD()
+            "au TabNew * call <SID>MyNERDTreeToggle()
+        aug END
     " }}}2
 
     " NERDCommenter {{{2
-        let NERDMenuMode               = 1
-        let NERDSpaceDelims            = 0
-        let NERDRemoveExtraSpaces      = 1
-        let NERDCompactSexyComs        = 1
-        let NERDAlignDefault           = "both"
-        let NERDTrimTrailingWhitespace = 1
+        let g:NERDMenuMode               = 1
+        let g:NERDSpaceDelims            = 0
+        let g:NERDRemoveExtraSpaces      = 1
+        let g:NERDCompactSexyComs        = 1
+        let g:NERDAlignDefault           = 'both'
+        let g:NERDTrimTrailingWhitespace = 1
         " `&filetype` settings
         let g:NERDAltDelims_haskell    = 1
     " }}}2
@@ -425,7 +494,7 @@
     " }}}2
 
     " Rainbow Parentheses {{{2
-        let g:rainbow_active = 1
+        "let g:rainbow_active = 1
         let g:rainbow_conf = {
             \ 'operators': '_,_',
             \ 'parentheses': [
@@ -472,44 +541,11 @@
             \ }
         \ }
         " key bindings
-        "nnoremap <Leader>rp<Space> :RainbowParenthesesToggleAll<CR>
+        "nnoremap <Leader>rp<Space> :RainbowTogglp<CR>
     " }}}2
 
-    " YouCompleteMe {{{2
-        let g:ycm_autoclose_preview_window_after_completion = 1
-        let g:ycm_autoclose_preview_window_after_insertion  = 1
-        let g:ycm_register_as_syntastic_checker             = 0
-        let g:ycm_complete_in_comments                      = 1
-        let g:ycm_seed_identifiers_with_syntax              = 1
-        let g:ycm_collect_identifiers_from_tags_files       = 0
-        "let g:ycm_extra_conf_globlist                       = ['~/src/*']
-        "let g:ycm_semantic_triggers =  {
-            "\ 'c,objc'                    : ['->', '.'],
-            "\ 'cpp,objcpp'                : ['->', '.', '::'],
-            "\ 'haskell'                   : ['.'],
-            "\ 'java'                      : ['.'],
-            "\ 'javascript,javascript.jsx' : ['.'],
-            "\ 'ocaml'                     : ['.',  '#'],
-            "\ 'php'                       : ['-,', '::'],
-            "\ 'python'                    : ['.'],
-            "\ 'vim'                       : ['.'],
-        "\ }
-        let g:ycm_filetype_blacklist = {
-            \ 'tagbar'   : 1,
-            \ 'qf'       : 1,
-            \ 'notes'    : 1,
-            \ 'markdown' : 1,
-            \ 'unite'    : 1,
-            \ 'text'     : 1,
-            \ 'vimwiki'  : 1,
-            \ 'pandoc'   : 1,
-            \ 'infolog'  : 1,
-            \ 'mail'     : 1
-        \ }
-        " key bindings
-        let g:ycm_key_list_select_completion   = ['<C-n>', '<Down>']
-        let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-        let g:SuperTabDefaultCompletionType    = '<C-n>'
+    " SuperTab {{{2
+        let g:SuperTabDefaultCompletionType = '<c-n>'
     " }}}2
 
     " Ag {{{2
@@ -521,28 +557,6 @@
             let &grepprg = 'grep --color=never -e --exclude-dir .git -nrI $* . /dev/null'
         endif
     " Ag }}}2
-
-    " C trlP {{{2
-        let g:ctrlp_map               = '<C-p>'
-        let g:ctrlp_cmd               = 'CtrlP'
-        let g:ctrlp_root_markers      = ['.git',  '.hg', '.svn']
-        let g:ctrlp_working_path_mode = 'ra'
-        let g:ctrlp_cache_dir         = $HOME.'/.cache/ctrlp'
-        let g:ctrlp_extensions        = ['mixed', 'tag', 'line', 'dir', 'commandline']
-        let g:ctrlp_custom_ignore = {
-          \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-          \ 'file': '\v\.(exe|so|dll)$',
-          \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-          \ }
-        let g:ctrlp_user_command = {
-            \ 'types': {
-                \ 1: ['.git', 'cd %s && git ls-files -co --exclude-standard'],
-            \ },
-        \ }
-        " key bindings
-        "nmap <C-p> <Plug>CtrlP
-        "nmap <C-f> <Plug>CtrlPLine
-    " }}}2
 
     " {{{2 EasyMotion
         "let g:EasyMotion_leader_key = '<Leader>'
@@ -559,51 +573,56 @@
 
     " Lightline {{{2
         let g:lightline = {
-            \ 'colorscheme': 'jellybeans',
-            \ 'separator'    : { 'left': '', 'right': '' },
-            \ 'subseparator' : { 'left': '', 'right': '' },
-            \ 'active': {
+            \ 'colorscheme': 'jellybeans'
+            \,'separator'    : { 'left': '', 'right': '' }
+            \,'subseparator' : { 'left': '', 'right': '' }
+            \,'active': {
                 \ 'left': [
-                    \ ['mode', 'paste'],
-                    \ ['fugitive', 'filename'],
-                    \ ['ctrlpmark'],
+                    \ ['mode', 'paste']
+                    \,['fugitive', 'filename']
                 \ ],
                 \ 'right': [
-                    \ ['percent'],
-                    \ ['fileformat', 'fileencoding', 'filetype'],
+                    \ ['lineinfo', 'neomake']
+                    \,['percent']
+                    \,['fileformat', 'fileencoding', 'filetype']
                 \ ],
             \ },
             \ 'component_function': {
-                \ 'readonly'     : 'LightLineReadonly',
-                \ 'modified'     : 'LightLineModified',
-                \ 'fugitive'     : 'LightLineFugitive',
-                \ 'filename'     : 'LightLineFilename',
-                \ 'fileformat'   : 'LightLineFileformat',
-                \ 'filetype'     : 'LightLineFiletype',
-                \ 'fileencoding' : 'LightLineFileencoding',
-                \ 'mode'         : 'LightLineMode',
-                \ 'ctrlpmark'    : 'CtrlPMark',
+                \ 'readonly'     : 'LightLineReadonly'
+                \,'modified'     : 'LightLineModified'
+                \,'fugitive'     : 'LightLineFugitive'
+                \,'filename'     : 'LightLineFilename'
+                \,'fileformat'   : 'LightLineFileformat'
+                \,'filetype'     : 'LightLineFiletype'
+                \,'fileencoding' : 'LightLineFileencoding'
+                \,'mode'         : 'LightLineMode'
+            \ },
+            \ 'component_expand': {
+                \ 'neomake' : 'LightLineNeomake'
+            \ },
+            \ 'component_type': {
+                \ 'neomake' : 'error'
             \ },
         \ }
 
         function! LightLineReadonly()
-            if &ft == 'help' | return ''
-            elseif &readonly | return '🔒'
-            else             | return '' | endif
+            if &ft ==? 'help' | return ''
+            elseif &readonly  | return '🔒'
+            else              | return '' | endif
         endfunction
 
         function! LightLineModified()
-            if &ft == 'help'   | return ''
-            elseif &modified   | return '+'
-            elseif &modifiable | return '-'
-            else               | return '' | endif
+            if &ft ==? 'help'   | return ''
+            elseif &modified    | return '+'
+            elseif &modifiable  | return '-'
+            else                | return '' | endif
         endfunction
 
         function! LightLineFugitive()
             try
-                if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-                let branch = fugitive#head()
-                return branch !=# '' ? ' ' . branch : ''
+                if expand('%:t') !~? 'NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+                let l:branch = fugitive#head()
+                return l:branch !=# '' ? ' ' . l:branch : ''
                 endif
             catch
             endtry
@@ -611,15 +630,10 @@
         endfunction
 
         function! LightLineFilename()
-            let fname = expand('%:t')
-            if fname == 'ControlP' && has_key(g:lightline, 'ctrlp_item')
-                return g:lightline.ctrlp_item
-            elseif fname =~ 'NERD_tree' | return ''
-            else
-                return ('' != LightLineReadonly() ?       LightLineReadonly() . ' ' : '') .
-                    \  ('' != fname ? expand('%:h:t').'/'.fname : '[No Name]') .
-                    \  ('' != LightLineModified() ? ' ' . LightLineModified()       : '')
-            endif
+            let l:fname = expand('%:t')
+            return ('' !=? LightLineReadonly() ?       LightLineReadonly() . ' ' : '') .
+                \  ('' !=# l:fname ? expand('%:h:t').'/'.l:fname : '[No Name]') .
+                \  ('' !=? LightLineModified() ? ' ' . LightLineModified()       : '')
         endfunction
 
         function! LightLineFileformat()
@@ -635,53 +649,29 @@
         endfunction
 
         function! LightLineMode()
-            let fname = expand('%:t')
-            return fname == 'ControlP' ? 'CtrlP' :
-                \ fname =~ 'NERD_tree' ? 'NERDTree' :
+            let l:fname = expand('%:t')
+            return l:fname =~? 'NERD_tree' ? 'NERDTree' :
                 \ winwidth(0) > 60 ? lightline#mode() : ''
         endfunction
 
-        function! CtrlPMark()
-            if expand('%:t') =~ 'ControlP' && has_key(g:lightline, 'ctrlp_item')
-                call lightline#link('iR'[g:lightline.ctrlp_regex])
-                return lightline#concatenate([
-                    \ g:lightline.ctrlp_prev,
-                    \ g:lightline.ctrlp_item,
-                    \ g:lightline.ctrlp_next,
-                \ ], 0)
-            else | return '' | endif
+        function! LightLineNeomake()
+            return '%{neomake#statusline#LoclistStatus()}'
         endfunction
 
-        let g:ctrlp_status_func = {
-            \ 'main': 'CtrlPStatusFunc_1',
-            \ 'prog': 'CtrlPStatusFunc_2',
-        \ }
-        function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-            let g:lightline.ctrlp_regex = a:regex
-            let g:lightline.ctrlp_prev  = a:prev
-            let g:lightline.ctrlp_item  = a:item
-            let g:lightline.ctrlp_next  = a:next
-            return lightline#statusline(0)
-        endfunction
-        function! CtrlPStatusFunc_2(str)
-            return lightline#statusline(0)
-        endfunction
-    " }}}2
 
-    " Neomake {{{2
-        hi link NeomakeErrorSign   NeomakeErrorSignDefault
-        hi link NeomakeWarningSign NeomakeWarningSignDefault
-        augroup Neomake
-            autocmd!
-            " autocmd ColorScheme *
-                " \ hi NeomakeErrorSign   ctermfg=red    guifg=red |
-                " \ hi NeomakeWarningSign ctermfg=yellow guifg=yellow
-            " autocmd! BufWritePost * Neomake
-        augroup END
+        function! OnNeomakeCountsChanged() abort
+            call lightline#update()
+        endfunction
+
+        aug MyLightLine
+            au!
+            au User NeomakeCountsChanged,NeomakeMakerFinished call OnNeomakeCountsChanged()
+        aug END
+
     " }}}2
 
     " Chromatica {{{2
-        "let g:chromatica#libclang_path='/usr/local/opt/llvm/lib'
+        let g:chromatica#libclang_path=$BREW.'/opt/llvm/lib'
     " }}}2
 
     " Session {{{2
@@ -729,11 +719,6 @@
         let g:EditorConfig_exec_path = $BREW . '/bin/editorconfig'
     " }}}2
 
-    " localvimrc {{{2
-        let g:localvimrc_ask     = 0
-        let g:localvimrc_sandbox = 0
-    " }}}2
-
     " go {{{2
         let g:go_auto_type_info      = 1
         let g:go_highlight_operators = 1
@@ -742,117 +727,53 @@
         let g:go_highlight_structs   = 1
     " }}}2
 
-    " quick-scope {{{2
-        "let g:qs_enable = 0
-        "nnoremap <C-_> :normal ,<CR>
-        "vnoremap <C-_> :normal ,<CR>
-        "function! Quick_scope_selective(movement)
-            "let needs_disabling = 0
-            "if !g:qs_enable
-                "QuickScopeToggle
-                "redraw
-                "let needs_disabling = 1
-            "endif
-            "let letter = nr2char(getchar())
-            "if needs_disabling
-                "QuickScopeToggle
-            "endif
-            "return a:movement . letter
-        "endfunction
-        " key bindings
-        "nnoremap <expr> <silent> f Quick_scope_selective('f')
-        "nnoremap <expr> <silent> F Quick_scope_selective('F')
-        "nnoremap <expr> <silent> t Quick_scope_selective('t')
-        "nnoremap <expr> <silent> T Quick_scope_selective('T')
-        "vnoremap <expr> <silent> f Quick_scope_selective('f')
-        "vnoremap <expr> <silent> F Quick_scope_selective('F')
-        "vnoremap <expr> <silent> t Quick_scope_selective('t')
-        "vnoremap <expr> <silent> T Quick_scope_selective('T')
-    " }}}2
-
     " neoterm {{{2
         if has('nvim')
-            let test#strategy      = "neoterm"  " run tests with :T
-            let g:neoterm_position = "vertical" " vertical split
+            let g:test#strategy    = 'neoterm'  " run tests with :T
+            let g:neoterm_position = 'vertical' " vertical split
         endif
     " }}}2
+
+    " plasticboy/vim-markdown {{{2
+        if has('nvim')
+            let g:markdown_fold_style             = 'nested'
+            let g:markdown_fold_override_foldtext = 0
+        endif
+    " plasticboy/vim-markdown }}}2
 " Plugin Settings }}}1
 
 
 " Define Plugins {{{1
-  call plug#begin('~/.vim/bundle')
-  function! PCond(cond, ...)
-    let opts = get(a:000, 0, {})
-    return a:cond ? opts : extend(opts, { 'on': [], 'for': [] })
-  endfunction
+    call plug#begin('~/.vim/bundle')
+    function! PIf(cond, ...)
+        let l:opts = get(a:000, 0, {})
+        return a:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
+    endfunction
 
-  Plug 'chriskempson/base16-vim'
-  Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
-  Plug 'tmux-plugins/vim-tmux-focus-events'
-  Plug 'christoomey/vim-tmux-navigator', PCond(!empty($TMUX))
+    Plug 'chriskempson/base16-vim'
+    Plug 'tmux-plugins/vim-tmux-focus-events'    , PIf(!empty($TMUX)) |
+        \ Plug 'christoomey/vim-tmux-navigator'  , PIf(!empty($TMUX))
 
-  call plug#end()
+    call plug#end()
 " Plugins }}}1
 
 
-" FileType Settings {{{1
-    augroup AllFiles
-        au!
-        " Return cursor to last position.
-        au! BufReadPost *
-            \ if ! exists("g:leave_my_cursor_position_alone")      |
-            \   let g:cursor_line = line("'\"")                    |
-            \   if g:cursor_line > 0 && g:cursor_line <= line("$") |
-            \     exe "normal g'\""                                |
-            \   endif                                              |
-            \ endif
-    augroup END
-
-    augroup C_Cpp
-        au!
-        "au BufWritePost *.c,*.cpp,*.h,*.hpp silent YcmDiags
-    augroup END
-
-    augroup JSON
-        au!
-        au BufRead,BufNewFile .eslintrc,.babelrc set ft=json
-    augroup END
-" Filetype Settings }}}1
-
-
 " Initialize Vim {{{1
-    call plug#end()
-
-    if has('nvim')
-        let $NVIM_TUI_ENABLE_TRUE_COLOR="1"
-    endif
-
     if has('termguicolors')
         set termguicolors
     endif
 
     " do CursorLine stuff before `:colorsc` or `:set background`
-    function! <SID>SetCursorLine()
-        hi clear CursorLine
-        hi CursorLineNR term=bold cterm=bold ctermfg=white gui=bold guifg=white
-    endfunction
-    call <SID>SetCursorLine()
-    augroup CursorLine
-        au!
-        au! ColorScheme * :call <SID>SetCursorLine()
-    augroup END
-
     try
-        let base16colorspace=256
-        let g:base16_shell_path=$BASE16_SHELL.'/scripts'
-        set background=dark
-        if filereadable(expand("~/.vimrc_background"))
+        let g:base16colorspace  = 256
+        let g:base16_shell_path = $BASE16_SHELL.'/scripts'
+        if filereadable(expand('~/.vimrc_background'))
             source ~/.vimrc_background
         endif
     catch
         try
             colorscheme jellybeans
-        catch /^Vim\%((\a\+)\)\=:E185/
+        catch /^Vim(colorscheme):E185/
             colorscheme desert
         endtry
     endtry

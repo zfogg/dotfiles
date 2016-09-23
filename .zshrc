@@ -5,18 +5,16 @@
 # modules {{{
 zmodload zsh/zpty
 autoload -Uz                 \
-    colors                   \
-    compinit                 \
-    select-word-style        \
     url-quote-magic          \
-    zsh-mime-setup
-# now load em
+    colors                   \
+    select-word-style        \
+    zsh-mime-setup           \
+    compinit
+    #predict-on               \
 colors
-#compinit -i -d ~/.zcompdump # this gets done after fpath
 select-word-style normal
 zsh-mime-setup
-#autoload -Uz                 \
-    #predict-on               \
+#compinit -i -d ~/.zcompdump # this gets done after fpath
 #predict-on
 # }}}
 
@@ -103,7 +101,9 @@ fi
 
 # plugins {{{
 export ANTIGEN_HS_SANDBOX="cabal"
-source "$BREW"/etc/profile.d/z.sh
+
+[ -f "$BREW"/etc/profile.d/z.sh ] && source "$BREW"/etc/profile.d/z.sh
+[ -f ~/.fzf.zsh                 ] && source ~/.fzf.zsh
 
 _my_plugins=(
     battery

@@ -1,4 +1,6 @@
-#!/bin/zsh
+#!/usr/local/bin/zsh
+# vim: set fdm=marker:
+#   ~/.aliases
 
 
 alias vim='$EDITOR'
@@ -10,7 +12,7 @@ alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 
 alias ql='quick-look'
 
-alias ls='ls --color=auto'
+alias ls='/bin/ls'
 alias lsd='ls -d *(/)'
 
 alias sudo='nocorrect sudo '
@@ -27,43 +29,69 @@ alias htop='htop -u $USER'
 
 alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 
-alias ag='ag --hidden -p ~/.agignore'
+alias ag="${GREPPRG:-grep}"
 
 # pip2 install pygments
 alias ccat='pygmentize -O style=base16_default_dark -f 256 -g'
 alias c='ccat'
-
-alias ipaddr='dig +short myip.opendns.com @resolver1.opendns.com'
-alias ips='ifconfig -a | perl -nle"/(\d+\.\d+\.\d+\.\d+)/ && print \$1"'
-alias sniff='ngrep -d "en0" -t "^(GET|POST) " "tcp and port 80"'
-alias whois='whois -h whois-servers.net'
-alias flush='dscacheutil -flushcache'
-alias httpdump='tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\"'
 
 alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q'
 
 alias fs='du -shL'
 
 #alias make_='/usr/bin/make -j`sysctl -n hw.ncpu`'
-alias makefast='colormake-short -j`sysctl -n hw.ncpu`'
-alias make='colormake-short'
+#alias makefast='colormake-short -j`sysctl -n hw.ncpu`'
+#alias make='colormake-short'
+#
+#alias m='make'
+#alias mc='make clean'
+#alias mt='make test'
+#alias M='make clean && make all'
+#alias MM='make clean && make test'
 
-alias m='make'
-alias mc='make clean'
-alias mt='make test'
-alias M='make clean && make all'
-alias MM='make clean && make test'
-
-alias mvn='mvn-color'
 alias idea='$EDITOR ~/Dropbox/ideas.md'
 
 alias colortest='~/.config/base16-shell/colortest'
 
-gencomp_all() {
+
+function echoer() {
+    printf "%s\n" "$*" >&2;
+}
+
+
+function gencomp_all() {
     for p in $path; do ls $p; done |\
         uniq |\
         { while read c; do gencomp $c; done }
 }
 
-trnl()  { tr "${1:-':'}" '\n' }
-ppvar() { eval 'echo "$'"${1:-PATH}"'"' | trnl "${2:-':'}" }
+
+function trnl() {
+    tr "${1:-':'}" '\n'
+}
+
+function mktempf() {
+    fpref="${DOTFILES_PACKAGE:-"$USER"_`basename $SHELL`}"
+    tempf="${fpref}.${1:-$0}.XXXX"
+    mktemp -t "${tempf}" 2>/dev/null || (
+        read -d '' errmsg<<-"EOF"
+			%s - error
+			    \$TMPDIR = "%s"
+			    \$tempf  = "%s"
+		EOF
+        echo "$0" "$TMPDIR" "$tempf" | echoer
+    )
+}
+
+function ppvar() {
+    tempf=`mktempf`
+    exec 3>&2 2>$tempf
+    var_name=`echo "${1:-PATH}" | tr -d '$'`
+    echoer "$0"' - pretty print shell env vars'
+    echoer $'\tvar name\t-> '"$var_name"''
+    plines=$(eval echo \${$var_name} | trnl "${2:-':'}")
+    echoer $'\titem count\t-> '"$(echo "$plines" | wc -l)"
+    echo "$plines"
+    exec 2>&3 3>&-
+    xargs -0 printf '\n%s\n' >&2 < $tempf
+}

@@ -32,6 +32,7 @@ export ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(
 
 # Widgets that accept the entire suggestion and execute it
 export ZSH_AUTOSUGGEST_EXECUTE_WIDGETS=(
+    accept-line
 )
 
 # Widgets that accept the suggestion as far as the cursor moves

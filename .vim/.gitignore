@@ -1,7 +1,7 @@
 *.swp
 
 /autoload/plug.vim.old
-/bundle/*/
+/bundle/
 
 /sessions/
 
