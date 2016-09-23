@@ -1,8 +1,7 @@
-" filetype=markdown
+" ftplugin/markdown
+scriptencoding utf-8
 
-
-" IF PLUGIN ACTIVE: tpope/vim-markdown?
-"   YAS: do NOT manually set `'filetype='` anywhere
-"   NAH: set the 
-"
-"setl ft=markdown
+if exists('b:did_load_filetypes_userafter')
+  finish
+endif
+let b:did_load_filetypes_userafter = 1

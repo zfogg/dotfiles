@@ -1,5 +1,7 @@
-" filetype=objcpp
+" ftplugin/objcpp
+scriptencoding utf-8
 
-
-"au! BufReadPost,FileReadPost,BufWritePost *.mm,*.hh          Neomake
-"au! InsertChange,TextChanged              *.mm,*.hh update | Neomake
+if exists('b:did_load_filetypes_userafter')
+  finish
+endif
+let b:did_load_filetypes_userafter = 1

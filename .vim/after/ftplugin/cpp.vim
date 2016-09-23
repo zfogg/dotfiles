@@ -1,10 +1,18 @@
-" filetype=cpp
+" ftplugin/cpp
+scriptencoding utf-8
+
+if exists('b:did_load_filetypes_userafter')
+  finish
+endif
+let b:did_load_filetypes_userafter = 1
 
 
-syn region foldPreprocessorIf start="^\#if" end="^\#endif" transparent fold
+if (&filetype !=? 'cpp')
+    finish
+endif
+
 
 setl sw=4 ts=4 sts=4
-setl fdm=marker fmr={,}
 
-"au! BufReadPost,FileReadPost,BufWritePost *.cpp,*.hpp          Neomake
-"au! InsertChange,TextChanged              *.cpp,*.hpp update | Neomake
+"setl fdm=marker fmr={,}
+setl fdm=syntax
