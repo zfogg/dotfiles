@@ -42,21 +42,15 @@ bundles =
             ]
         }
 
-    , bundle "zsh-users/zsh-syntax-highlighting"
+    ,  bundle "zsh-users/zsh-syntax-highlighting"
     , (bundle "zsh-users/zsh-history-substring-search")
         { sourcingStrategy = filePathsSourcingStrategy [
                 "zsh-history-substring-search.zsh"
-            ]
-        }
+        ] }
     , (bundle "b4b4r07/zsh-vimode-visual")
         { sourcingStrategy = filePathsSourcingStrategy [
-                "zsh-vimode-visual.sh"
-            ]
-        }
-
-    --, (bundle "robbyrussell/oh-my-zsh")
-        --{ fpathLocations    = ohMyZshPlugins
-        --, sourcingLocations = ohMyZshPlugins }
+                "zsh-vimode-visual.zsh"
+        ] }
 
     , bundle "nojhan/liquidprompt"
 

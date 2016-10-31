@@ -3,7 +3,7 @@ scriptencoding utf-8
 
 
 func! neomakeft#SetupFt(ft, ...) abort
-    let l:opts = z#util#opts(s:setupFt_opts, get(a:, '1', v:null))
+    let l:opts = z#util#Opts(s:setupFt_opts, get(a:, '1', v:null))
     let l:neomakers_var = 'g:neomake_'.a:ft.'_enabled_makers'
     exe 'let '.l:neomakers_var.' = '.string(l:opts.makers)
     if l:opts.autocmds

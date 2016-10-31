@@ -12,7 +12,7 @@ source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON-
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh/lib/termsupport.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-history-substring-search/zsh-history-substring-search.zsh
-source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-b4b4r07-SLASH-zsh-vimode-visual/zsh-vimode-visual.sh
+source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-b4b4r07-SLASH-zsh-vimode-visual/zsh-vimode-visual.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-nojhan-SLASH-liquidprompt/liquidprompt.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-supercrabtree-SLASH-k/k.plugin.zsh
 source /Users/zfogg/src/github.com/zfogg/dotfiles/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-willghatch-SLASH-zsh-hooks/zsh-hooks.plugin.zsh

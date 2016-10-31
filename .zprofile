@@ -149,9 +149,11 @@ function opt_dep() {
     fi
 }
 
-opt_dep llvm    bin:libexec
-opt_dep openssl
+#opt_dep llvm    bin:libexec
+#opt_dep openssl
+opt_dep libressl
 opt_dep curl
+opt_dep readline
 opt_dep libgit2 '$'
 # }}}
 

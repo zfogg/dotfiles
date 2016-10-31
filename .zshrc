@@ -109,7 +109,7 @@ _my_plugins=(
     battery
     branch
     brew
-    brew-cask
+    #brew-cask
     #colored-man-pages
     compleat
     extract
