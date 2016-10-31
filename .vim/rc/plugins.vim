@@ -42,20 +42,23 @@ call plug#begin('~/.vim/bundle')
         \Plug 'Shougo/neoinclude.vim'
     " completion
     Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {
-            \'do': ':UpdateRemotePlugins'
+            \'do' : ':UpdateRemotePlugins'
         \})                                                |
         \Plug 'Shougo/neco-vim',    { 'for': ['vim']     } |
-        \Plug 'eagletmt/neco-ghc',  { 'for': ['haskell'] } |
         \Plug 'zchee/deoplete-zsh', { 'for': ['zsh']     } |
         \Plug 'zchee/deoplete-go',  { 'for': ['go']      } |
         \Plug 'zchee/deoplete-clang', {
-            \'for': ['c', 'cpp', 'objc', 'objcpp'],
+            \'for' : ['c', 'cpp', 'objc', 'objcpp'],
         \}                                                 |
         \Plug 'carlitux/deoplete-ternjs', {
             \'for' : ['javascript', 'javascript.jsx'],
             \'do'  : 'npm i -g tern',
         \}                                                 |
-        \Plug 'ervandew/supertab'                          |
+        \Plug 'eagletmt/neco-ghc',  PIf(1, {
+            \'for' : ['haskell'],
+        \})                                                |
+        \Plug 'ervandew/supertab'
+    " etc
 " }}}
 
 
@@ -90,7 +93,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'nathanaelkane/vim-indent-guides'
     Plug 'itchyny/lightline.vim'
     Plug 'luochen1990/rainbow'
-    Plug 'AnsiEsc.vim'
+    "Plug 'AnsiEsc.vim'
     Plug 'ap/vim-css-color',          { 'for': ['css', 'scss', 'sass', 'less'] }
     Plug 'arakashic/chromatica.nvim', { 'for': ['c', 'cpp', 'objc', 'objcpp']  }
     "Plug 'qstrahl/vim-matchmaker'

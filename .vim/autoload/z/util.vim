@@ -24,7 +24,7 @@ func! z#util#TempDirs(pree, post, ...) abort
 endfunc
 
 
-func! z#util#opts(defaults, ...) abort
+func! z#util#Opts(defaults, ...) abort
     let l:opts = deepcopy(get(a:000, '0', {}))
     for [l:k, l:v] in items(a:defaults)
         let l:opts[l:k] = get(l:opts, l:k, l:v)

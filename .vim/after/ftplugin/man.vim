@@ -2,7 +2,7 @@
 scriptencoding utf-8
 
 
-setl nonu nornu
+setl nu nornu
 
 
 redraw!

@@ -2,4 +2,4 @@
 scriptencoding utf-8
 
 
-set nonu nornu
+setl nonu nornu

@@ -2,6 +2,8 @@
 # vim: set fdm=marker:
 #   ~/.zshenv
 
+
+
 if [[ -z "$DOTFILES_SETENV" ]]; then
     . ~/bin/gg.zfo.Dotfiles.setenv.sh
     pkill -flai $TERM_PROGRAM
