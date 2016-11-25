@@ -1,4 +1,5 @@
-" autoload/z/indentguides
+" autoload/z/nerdtree
+scriptencoding utf-8
 
 
 func! z#nerdtree#AutoCwd() abort
@@ -7,23 +8,11 @@ func! z#nerdtree#AutoCwd() abort
     elseif exists('g:zNTOn')
         "cd %:p:h
         NERDTreeMirror
-        wincmd p
+        "wincmd p
     endif
 endfunc
 
 
-func! z#nerdtree#Toggle() abort
-    if exists('t:NERDTreeBufName')
-        if exists('g:zNTOn') || &buftype !=# ''
-            unlet! g:zNTOn
-            NERDTreeClose
-            return
-        else
-            NERDTreeMirrorToggle
-        endif
-    else
-        NERDTree %:p:h
-    endif
-    let g:zNTOn = 1
-    wincmd p
+func! z#nerdtree#isNERDTreeOpen() abort
+    return exists('t:NERDTreeBufName') && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunc

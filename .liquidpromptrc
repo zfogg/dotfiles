@@ -7,6 +7,9 @@
 #source ~/.config/liquidprompt/nojhan.theme
 #LP_PS1_FILE=~/.config/liquidprompt/nojhan.ps1
 
+LP_PS1_POSTFIX=$'\n'"> "
+
+
 #############
 # BEHAVIOUR #
 #############

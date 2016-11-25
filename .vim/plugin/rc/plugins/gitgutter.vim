@@ -8,7 +8,7 @@ let g:gitgutter_async           = 1
 let g:gitgutter_realtime        = 1
 let g:gitgutter_eager           = 1
 let g:gitgutter_diff_args       = '-w'
-let g:gitgutter_max_signs       = 1024
+let g:gitgutter_max_signs       = 7000
 
 "let g:gitgutter_grep_command    = &grepprg
 

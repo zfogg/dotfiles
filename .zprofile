@@ -40,6 +40,8 @@ export WORKON_HOME="$HOME/.virtualenvs"
 export GROOVY_HOME="$BREW/opt/groovy/libexec"
 export POWERLINE_CONFIG_COMMAND="python $BREW/bin/powerline-config"
 
+export PYENV_ROOT="/usr/local/var/lib/pyenv"
+
 
 # path, manpath, fpath {{{
 typeset -U  path
@@ -149,18 +151,23 @@ function opt_dep() {
     fi
 }
 
-#opt_dep llvm    bin:libexec
-#opt_dep openssl
-opt_dep libressl
-opt_dep curl
+opt_dep llvm       bin:libexec
+opt_dep libressl   '$'
+opt_dep openssl    bin
+opt_dep curl       bin:libexec
 opt_dep readline
-opt_dep libgit2 '$'
+opt_dep libgit2    '$'
+
+export CURL_CA_BUNDLE=$BREW/etc/libressl/certs/cacert.pem
+export  SSL_CERT_FILE=$CURL_CA_BUNDLE
 # }}}
 
 
 export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export PAGER='vimpager'
+export VIMPAGER_VIM="`which nvim`"
+export VIMPAGER_RC="$HOME/.vimpagerrc"
 
 
 function command_exists() { command -v "$1" 2>/dev/null 1>&2 }

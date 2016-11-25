@@ -8,20 +8,24 @@ let g:neomake_airline                         = 0
 let g:neomake_ft_maker_remove_invalid_entries = 0
 
 
-" neomakeft
+" filetype
 
-" meta
+" vimscript
 call neomakeft#SetupFt('vim', {
     \ 'makers': ['vint'],
 \ })
 
 " c-family
 call neomakeft#SetupFt('c', {
-    \ 'makers': ['clang', 'clangcheck'],
+    \ 'makers': ['clang', 'clangtidy', 'clangcheck'],
 \ })
 call neomakeft#SetupFt('cpp', {
-    \ 'makers': ['clang', 'clangcheck'],
+    \ 'makers': ['clang', 'clangtidy', 'clangcheck'],
 \ })
+let g:neomake_c_clangtidy_args    = ['-p', './build']
+let g:neomake_cpp_clangtidy_args  = ['-p', './build']
+let g:neomake_c_clangcheck_args   = ['-p', './build']
+let g:neomake_cpp_clangcheck_args = ['-p', './build']
 
 " shell
 call neomakeft#SetupFt('bash', {
@@ -29,4 +33,12 @@ call neomakeft#SetupFt('bash', {
 \ })
 call neomakeft#SetupFt('zsh', {
     \ 'makers': ['zsh'],
+\ })
+
+" js
+call neomakeft#SetupFt('javascript', {
+    \ 'makers': ['jshint'],
+\ })
+call neomakeft#SetupFt('jsx', {
+    \ 'makers': ['jshint'],
 \ })

@@ -2,9 +2,6 @@
 scriptencoding utf-8
 
 
-filetype plugin indent on
-
-
 set number numberwidth=3    " hybrid line numbers - relative & static
 set title                   " file title in the $TERM titlebar
 set showtabline=1           " show buffer tabs when more than `n`
@@ -17,12 +14,14 @@ set wildmode=
     \longest:full,
     \list:full
 
+set conceallevel=1
+set concealcursor=nvic
 
 set omnifunc=syntaxcomplete#Complete
 
 
 set sessionoptions-=blank,buffers " The 'Session' plugin does this on save.
-set updatetime=650 " for CursorHold autocmd (milliseconds)
+set updatetime=250                " for CursorHold autocmd (milliseconds)
 
 
 let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
@@ -108,9 +107,11 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 
 
 " Folding. {{{
-    set foldmethod=syntax
-    set foldopen=mark,percent,quickfix,tag,undo
     set foldenable
+    "set foldmethod=syntax
+    set foldopen=mark,percent,quickfix,tag,undo
+    set foldnestmax=1
+    set foldminlines=3
 " }}}
 
 
@@ -140,7 +141,7 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
     set ignorecase " Default to using case insensitive searches.
     set smartcase  " unless uppercase letters are used in the regex.
     set smarttab   " Handle tabs more intelligently.
-    set hlsearch   " Highlight searches by default.
+    "set hlsearch   " Highlight searches by default.
     set incsearch  " Incrementally search while typing a /regex.
 
     " 'text-obj' patterns for 'word' and file /path

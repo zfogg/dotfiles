@@ -2,6 +2,30 @@
 scriptencoding utf-8
 
 
+function! BufferIsPlugin() abort
+    let l:fname = expand('%:t')
+    let l:pnames = [
+        \ '__Tag_List__'
+        \,'ControlP'
+        \,'NERD_tree_'
+    \ ]
+    for l:pname in l:pnames
+        if l:fname =~? l:pname
+            return v:true
+        endif
+    endfor
+    return v:false
+endfunction
+
+function! BufferIsWide() abort
+  return winwidth(0) > 70
+endfunction
+
+function! LightlineVisible() abort
+  return !BufferIsPlugin() && BufferIsWide()
+endfunction
+
+
 func! z#lightline#Readonly() abort
     if &ft ==? 'help' | return ''
     elseif &readonly  | return '🔒'
@@ -18,52 +42,76 @@ endfunc
 
 
 func! z#lightline#Fugitive() abort
-    try
-        if expand('%:t') !~? 'NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+    if LightlineVisible() && exists('*fugitive#head')
         let l:branch = fugitive#head()
         return l:branch !=# '' ? ' ' . l:branch : ''
-        endif
-    catch
-    endtry
-    return ''
+    else
+        return ''
+    endif
 endfunc
 
 
 func! z#lightline#Filename() abort
-    let l:fname = expand('%:t')
-    return ('' !=? z#lightline#Readonly() ?       z#lightline#Readonly() . ' ' : '') .
-        \  ('' !=# l:fname ? expand('%:h:t').'/'.l:fname : '[No Name]') .
-        \  ('' !=? z#lightline#Modified() ? ' ' . z#lightline#Modified()       : '')
+    if LightlineVisible()
+        let l:fname = expand('%:t')
+        return ('' !=? z#lightline#Readonly() ?       z#lightline#Readonly() . ' ' : '') .
+            \  ('' !=# l:fname ? expand('%:h:t').'/'.l:fname : '[No name]')              .
+            \  ('' !=? z#lightline#Modified() ? ' ' . z#lightline#Modified()       : '')
+    else
+        return ''
+    endif
 endfunc
 
 
 func! z#lightline#Fileformat() abort
-    return winwidth(0) > 70 ? &fileformat : ''
+    return LightlineVisible() ? &fileformat : ''
+endfunc
+
+func! z#lightline#Lineinfo() abort
+    return !BufferIsPlugin() ? '%3l:%-2v' : ''
+endfunc
+
+
+function! z#lightline#BytePercent() abort
+    let l:byte = line2byte(line( '.' )    ) + col( '.' ) - 1
+    let l:size = line2byte(line( '$' ) + 1)              - 1
+    return (l:byte * 100) / l:size
+endfunction
+
+func! z#lightline#Percent() abort
+    return LightlineVisible()
+        \ ? (z#lightline#BytePercent() . '%')
+        \ : ''
 endfunc
 
 
 func! z#lightline#Filetype() abort
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+    return LightlineVisible()
+        \ ? (strlen(&filetype) ? &filetype : '[No ft]')
+        \ : ''
 endfunc
 
 
 func! z#lightline#Fileencoding() abort
-    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+    return LightlineVisible()
+        \ ? (strlen(&fenc) ? &fenc : &enc)
+        \ : ''
 endfunc
 
 
 func! z#lightline#Mode() abort
-    let l:fname = expand('%:t')
-    return l:fname =~? 'NERD_tree' ? 'NERDTree' :
-        \ winwidth(0) > 60 ? lightline#mode() : ''
+    return BufferIsPlugin()
+        \ ? '[Plugin]'
+        \ : BufferIsWide()
+            \ ? lightline#mode()
+            \ : ''
 endfunc
 
 
 func! z#lightline#Neomake() abort
-    if has('nvim')
-        return '%{neomake#statusline#LoclistStatus()}'
-    endif
-    return ''
+    return (LightlineVisible() && has('nvim'))
+        \ ? '%{neomake#statusline#LoclistStatus()}'
+        \ : ''
 endfunc
 
 
