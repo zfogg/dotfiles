@@ -95,3 +95,8 @@ function ppvar() {
     exec 2>&3 3>&-
     xargs -0 printf '\n%s\n' >&2 < $tempf
 }
+
+
+function npm-do {
+    (PATH=$(npm bin):$PATH; eval $@;)
+}

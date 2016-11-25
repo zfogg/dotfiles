@@ -33,13 +33,14 @@ call plug#begin('~/.vim/bundle')
     Plug 'scrooloose/nerdtree'              |
         \Plug 'Xuyuanp/nerdtree-git-plugin' |
         \Plug 'taiansu/nerdtree-ag'         |
-        \Plug 'jistr/vim-nerdtree-tabs'
+        \Plug 'jistr/vim-nerdtree-tabs'     |
+        \Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
     " sessions
     Plug 'xolox/vim-misc' |
         \Plug 'xolox/vim-session'
     " making / linting
-    Plug 'neomake/neomake', PIf(has('nvim')) |
-        \Plug 'Shougo/neoinclude.vim'
+    Plug 'Shougo/neoinclude.vim', {'frozen': v:true} |
+        \Plug 'neomake/neomake', PIf(has('nvim')) |
     " completion
     Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {
             \'do' : ':UpdateRemotePlugins'
@@ -69,12 +70,14 @@ call plug#begin('~/.vim/bundle')
     Plug 'applescript.vim',                              { 'for': ['applescript', 'osascript']               }
     Plug 'guns/vim-clojure-highlight',                   { 'for': ['clojure']                                }
     Plug 'saltstack/salt-vim',                           { 'for': ['sls']                                    }
-    Plug 'mxw/vim-jsx',                                  { 'for': ['javascript', 'jsx']                      }
+    Plug 'pangloss/vim-javascript',                      { 'for': ['javascript', 'jsx']                      } |
+        \Plug 'Wolfy87/vim-syntax-expand'
     Plug 'ternjs/tern_for_vim',                          { 'for': ['javascript', 'jsx'], 'do': 'npm install' }
     " markdown
     Plug 'plasticboy/vim-markdown',                      { 'for': ['markdown']                               } |
         \Plug 'nelstrom/vim-markdown-folding',           { 'for': ['markdown']                               }
     " clang
+    Plug 'justmao945/vim-clang',                         { 'for': ['c', 'cpp']                               } |
     Plug 'libclang-vim/libclang-vim',                    { 'for': ['c', 'cpp']                               } |
         \Plug 'kana/vim-textobj-user'                                                                          |
         \Plug 'libclang-vim/vim-textobj-clang',          { 'for': ['c', 'cpp']                               }
@@ -91,15 +94,17 @@ call plug#begin('~/.vim/bundle')
     Plug 'chriskempson/base16-vim' |
         \ Plug 'AfterColors.vim'
     Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'itchyny/lightline.vim'
     Plug 'luochen1990/rainbow'
     "Plug 'AnsiEsc.vim'
     Plug 'ap/vim-css-color',          { 'for': ['css', 'scss', 'sass', 'less'] }
     Plug 'arakashic/chromatica.nvim', { 'for': ['c', 'cpp', 'objc', 'objcpp']  }
     "Plug 'qstrahl/vim-matchmaker'
-    Plug 'machakann/vim-highlightedyank', { 'on': '<Plug>(highlightedyank)' }
+    "Plug 'machakann/vim-highlightedyank', { 'on': '<Plug>(highlightedyank)' }
     Plug 'ryanoasis/vim-devicons'
-    Plug 'haya14busa/incsearch.vim'
+    Plug 'haya14busa/incsearch.vim' |
+        \Plug 'haya14busa/incsearch-easymotion.vim' |
+        \Plug 'haya14busa/incsearch-fuzzy.vim'
+    Plug 'haya14busa/vim-keeppad'
 " }}}
 
 
@@ -107,7 +112,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'b4winckler/vim-angry'
     Plug 'junegunn/vim-easy-align'
     Plug 'tommcdo/vim-exchange'
-    Plug 'cohama/lexima.vim'
+    "Plug 'cohama/lexima.vim'
     "Plug 'Raimondi/delimitMate'
     Plug 'scrooloose/nerdcommenter'
     Plug 'wellle/targets.vim'
@@ -137,6 +142,8 @@ call plug#begin('~/.vim/bundle')
     Plug 'tpope/vim-repeat'
     Plug 'sickill/vim-pasta'
     Plug 'unblevable/quick-scope', PIf(!has('nvim'))
+    Plug 'kana/vim-operator-user' |
+        Plug 'haya14busa/vim-operator-flashy'
 " }}}
 
 

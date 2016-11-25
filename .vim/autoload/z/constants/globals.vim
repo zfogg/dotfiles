@@ -30,15 +30,22 @@ endfunc
 
 func! z#constants#globals#Vimpager() abort
     " V1
-    let g:vimpager                 = {}
-    let g:less                     = {}
-    let g:vimpager.X11             = 0
-    let g:vimpager.ansiesc         = 1
-    let g:less.number              = 1
-
+    let g:vimpager = {
+        \ 'enabled'     : 0,
+        \ 'X11'         : 0,
+        \ 'ansiesc'     : 0,
+        \ 'passthrough' : 1,
+    \ }
+    let g:less     = {
+        \ 'enabled'     : 1,
+        \ 'number'      : 1,
+        \ 'hlsearch'    : 1,
+        \ 'scrolloff'   : 5,
+    \ }
     " V2
     let g:vimpager_use_gvim        = 0
-    let g:vimpager_disable_x11     = 1
     let g:vimpager_passthrough     = 1
-    let g:vimpager_disable_ansiesc = 0
+    let g:vimpager_disable_x11     = 1
+    let g:vimpager_scrolloff       = 5
+    let g:vimpager_disable_ansiesc = 1
 endfunc

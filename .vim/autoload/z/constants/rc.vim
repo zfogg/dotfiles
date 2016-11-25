@@ -17,9 +17,10 @@ endfunc
 
 let s:RcFiles_opts = {
     \ 'rcfiles' : {
-        \  'colorsc'  : 'colorsc'
-        \ ,'keys'     : 'keys'
-        \ ,'plugins'  : 'plugins'
-        \ ,'settings' : 'settings'
+        \  'colorsc'    : 'colorsc'
+        \ ,'keys'       : 'keys'
+        \ ,'plugins'    : 'plugins'
+        \ ,'settings'   : 'settings'
+        \ ,'statusline' : 'statusline'
     \ },
 \ }
