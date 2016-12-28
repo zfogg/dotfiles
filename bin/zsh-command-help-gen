@@ -1,0 +1,62 @@
+#!/usr/bin/env zsh
+
+
+blacklist_commands=(
+    "`basename $0`"
+    karabiner
+    splain
+    bnepd
+    igawk
+    zless
+    instmodsh
+    jconsole
+    fax
+    cpan
+    postsuper
+    postkick
+    vimtutor
+    gnuserv
+    csdiagnose
+    WirelessRadioManagerd
+    postcat
+    git-credential-osxkeychain
+    distnoted
+    tab2space
+    wish
+    ssh-keygen
+    fax2ps
+)
+
+zsh_commands="`basename -a $commands | sort | uniq |\
+    ag -v '^a2p' |\
+    ag -v '^perl' |\
+    ag -v '^xpath' |\
+    ag -v '^png-fix' |\
+    ag -v '^snmp' |\
+    ag -v '^zmore' |\
+    ag -v '^cpan' |\
+    ag -v '\.py$' |\
+    ag -v '\.pyc$' |\
+    ag -v '\.sh' |\
+    ag -v '^\.'\
+`"
+
+typeset -A clean_commands
+for cc in `echo $zsh_commands`; do
+    clean_commands+=("$cc" "1")
+done
+
+for bc in $blacklist_commands; do
+    clean_commands+=("$bc" "0")
+done
+
+autoload -Uz colors && colors
+echo $bg
+for k in "${(@k)clean_commands}"; do
+    [[ "$clean_commands[$k]" -ne "1" ]] && echo "$bg[yellow]"NAH"$bg[default]" "$k"
+    [[ "$clean_commands[$k]" -eq "1" ]] || continue
+    $k --help 2>/dev/null 1>&2 || \
+    $k  -h    2>/dev/null 1>&2
+    [[ "$?" -eq "0" ]] && echo "$bg[green]"YAS"$bg[default]" "$k"
+    [[ "$?" -ne "0" ]] && echo "$bg[red]"ERR"$bg[default]" "$k"
+done

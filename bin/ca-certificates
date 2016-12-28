@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+
+set -e
+
+
+certsName='ca-bundle.pem'
+certsDir='/usr/local/etc/libressl/certs'
+
+[ -d "$certsDir" ] || \
+    sudo mkdir -p "$certsDir"
+
+sudo security export -p \
+    -t certs \
+    -k `security list-keychains -d system|cut -d '"' -f 2` \
+    -o "$certsDir"'/'"$certsName"
+
+sudo chmod 444 $certsDir/*
+
+sudo security add-trusted-cert -d "$certsDir"/"$certsName"

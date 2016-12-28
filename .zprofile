@@ -3,10 +3,15 @@
 
 
 # brew's zsh {{{
-export HOMEBREW_GITHUB_API_TOKEN='5c8597261ad87cf1951e4e4ce9e9c3b1d1b361be'
+export ZDOTDIR="$HOME"
+export   ZSHRC="$ZDOTDIR/.zshrc"
+# }}}
+
+
+# shell help {{{
+export HELPDIR="${BREW}/share/zsh/help"
 unalias run-help 2>/dev/null
 autoload run-help
-export HELPDIR="${BREW}/share/zsh/help"
 # }}}
 
 
@@ -40,7 +45,27 @@ export WORKON_HOME="$HOME/.virtualenvs"
 export GROOVY_HOME="$BREW/opt/groovy/libexec"
 export POWERLINE_CONFIG_COMMAND="python $BREW/bin/powerline-config"
 
-export PYENV_ROOT="/usr/local/var/lib/pyenv"
+
+# pyenv {{{
+export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+export PYTHON_CONFIGURE_OPTS=$(echo \
+    "--enable-framework" \
+    "--enable-ipv6" \
+    "--enable-toolbox-glue" \
+    "--enable-big-digits" \
+    "--enable-unicode" \
+    "--with-thread" \
+    "CC=clang")
+#export PYTHON_CONFIGURE_OPTS="--enable-framework"
+#export PYTHON_CONFIGURE_OPTS="--enable-shared"
+
+if which pyenv > /dev/null 2>&1; then
+    eval "$(pyenv            init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
+# }}}
 
 
 # path, manpath, fpath {{{
@@ -58,14 +83,17 @@ typeset -xT INFOPATH infopath
 
 path=(
     $HOME/bin
+    $PYENV_ROOT/shims
     $HOME/{.cabal,.cargo}/bin
     $GOPATH/bin
     $GOROOT/bin
     $BREW/bin
+    $PYENV_ROOT/shims
     $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r)
 )
 
 fpath=(
+    $HOME/.zsh/{site-functions,functions}
     $BREW/share/zsh-completions
     $BREW/share/zsh/{site-functions,functions}
     $fpath)
@@ -89,14 +117,17 @@ if [[ "$OSX" == "$TRUE" ]]; then
         gnu-indent
     )
     path=(
-        #$BREW/opt/coreutils/libexec/gnubin
-        $BREW/opt/${^brew_gnu_progs}/bin
+        $BREW/opt/coreutils/libexec/gnubin
+        $BREW/opt/ccache/libexec
+        $BREW/opt/${^brew_gnu_progs}/gnubin
         $path)
     manpath=(
-        $BREW/opt/{${^brew_gnu_progs},coreutils}/share/man
+        $BREW/opt/coreutils/share/man
+        $BREW/opt/${^brew_gnu_progs}/libexec/gnuman
         $manpath)
     infopath=(
-        $BREW/opt/{${^brew_gnu_progs},coreutils}/share/info
+        $BREW/opt/coreutils/share/info
+        $BREW/opt/${^brew_gnu_progs}/share/info
         $infopath)
 fi
 # }}}
@@ -108,12 +139,19 @@ typeset -xT DYLD_LIBRARY_PATH dyld_library_path ':'
 #
 typeset -aU cppflags
 typeset -xT CPPFLAGS          cppflags          ' '
+
+typeset -aU cflags
+typeset -xT CFLAGS            cflags            ' '
 #
 typeset -aU ldflags
 typeset -xT LDFLAGS           ldflags           ' '
 #
 typeset -aU pkg_config_path
 typeset -xT PKG_CONFIG_PATH pkg_config_path     ':'
+
+
+cppflags+=( '-O2' )
+
 
 function opt_dep() {
     local opt_root=${BREW}/opt
@@ -151,15 +189,18 @@ function opt_dep() {
     fi
 }
 
-opt_dep llvm       bin:libexec
-opt_dep libressl   '$'
-opt_dep openssl    bin
-opt_dep curl       bin:libexec
+opt_dep libressl       '$'
+opt_dep openssl        bin
 opt_dep readline
-opt_dep libgit2    '$'
+opt_dep libgit2        '$'
+opt_dep postgresql-9.5 bin
 
-export CURL_CA_BUNDLE=$BREW/etc/libressl/certs/cacert.pem
-export  SSL_CERT_FILE=$CURL_CA_BUNDLE
+# NOTE: these break curl, homebrew, etc
+#opt_dep llvm       bin:libexec
+#opt_dep curl       bin:libexec
+
+cflags="$cppflags"
+
 # }}}
 
 
@@ -175,7 +216,7 @@ function alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
 
 if command_exists pt; then
     export GREPPRG_PRG='pt'
-    export GREPPRG_ARGS='--hidden --home-ptignore --global-gitignore --follow --depth=15'
+    export GREPPRG_ARGS='-S --home-ptignore --global-gitignore --depth=15 -f --hidden'
 elif command_exists ag; then
     export GREPPRG_PRG='ag'
     export GREPPRG_ARGS='--hidden --all-text --pager ${PAGER} --follow'
@@ -192,10 +233,8 @@ fi
 
 
 # depends on `coreutils`
-export    ZSHRC="`grealpath "$HOME/.zshrc"`"
-export DOTFILES="`grealpath $(dirname "$ZSHRC")`"
+export DOTFILES="`dirname "$(grealpath "$ZSHRC")"`"
 export   DOTVIM="$DOTFILES/.vim"
-export    ZSHRC="$DOTFILES/.zshrc"
 # depends on `coreutils`
 [[ ! -f ~/.LS_COLORS ]] && \
     gdircolors $HOME/.dircolors > ~/.LS_COLORS
@@ -207,5 +246,11 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 # zsh-completion-generator.plugin.zsh
 export GENCOMPL_FPATH="$DOTFILES/.zsh/complete"
 
-export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_DEFAULT_COMMAND='ag -i -g ""'
 
+
+# postgresql
+export     PGDATA="$BREW/var/postgres"
+export     PGHOST="localhost"
+export PGHOSTADDR="127.0.0.1"
+export     PGPORT="5432"

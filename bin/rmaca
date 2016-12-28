@@ -1,0 +1,50 @@
+#!/bin/bash
+# OS X
+# change my MAC address
+
+
+LC_CTYPE='C'
+
+
+function rhex_bytes() {
+    n_bytes="${1:-1}"
+    openssl rand -hex "$n_bytes"
+    return `[ "$n_bytes" -gt 0 ]`
+}
+
+function valid_byte() {
+    sed -n '/^[a-fA-F0-9]\{2\}$/p' <<< "$1"
+}
+
+prefix="${1:-}"
+bytes_needed=''
+if [[ -z "${prefix}" ]]; then
+    bytes_needed='6'
+else
+    prefix="`sed 's/^:*//' <<< "$prefix" | sed 's/:*$//'`"
+    lines="`tr ':' '\n' <<< "$prefix"`"
+    hex_bytes="`valid_byte "$lines" | grep -v '^$'`"
+
+    bytes_needed="$((6 - `wc -l <<< "$hex_bytes"`))"
+
+    byte_too_big=""
+    for l in $lines; do
+        if [ ${#l} -gt 2 ]; then byte_too_big=1; break; fi
+    done
+
+    ([ ${#hex_bytes} -gt 0 ] \
+        && [ "`wc -l <<< "$lines"`" != "`wc -l <<< "$hex_bytes"`" ] \
+        || [ ${#lines} -eq 0 ] \
+        || ([ ${#prefix} -lt 3 ] && [ "$prefix" == "$lines" ] && [ "`valid_byte "$prefix"`" == ""  ]) \
+        || [ "$bytes_needed" -lt 0 ] \
+        || [ "$bytes_needed" -gt 6 ] \
+        || [ "$byte_too_big" ]) \
+    && (echo 'Error: invalid prefix' && exit 1) \
+    || :
+
+    echo "$prefix"
+    prefix="`tr '\n' ':' <<< "$hex_bytes"`"
+    prefix="${prefix:0:${#prefix}-1}"
+    echo "$prefix"
+fi
+

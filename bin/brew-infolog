@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+# brew-infolog - @zfogg <me@zfo.gg>
+
+
+function _debug() {
+    local errmsg="${1:-DEBUG_MSG_DEFAULT}"
+    ((${#DEBUG[@]})) && >&2 echo "$errmsg"
+}
+
+local tmpdir="$TMPDIR"'brew/'
+local __prefix='__'
+
+_debug '\t'"$0"'\n'
+brew search "${1:-ARG1_DEFAULT}" | while read package; do
+    _debug '!!!!!!!\t'"$package"'\t!!!!!!!'
+
+    local package_prefix=''
+    if [[ "$package" =~ '/' ]]; then
+        package_prefix="`dirname "$package" | sed 's!\/!'"$__prefix"'!g'`"'-'
+        _debug 'package_prefix='"$package_prefix"
+    fi
+
+    local package_logfile="$tmpdir""$package_prefix""`basename "$package"`"'.log'
+    _debug 'brew info '"$package"' > '"$package_logfile"
+    brew info "$package" > "$package_logfile" 2>&1
+done
+_debug '\n'"$0"'\t'

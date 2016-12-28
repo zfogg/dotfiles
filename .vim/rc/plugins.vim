@@ -39,27 +39,29 @@ call plug#begin('~/.vim/bundle')
     Plug 'xolox/vim-misc' |
         \Plug 'xolox/vim-session'
     " making / linting
-    Plug 'Shougo/neoinclude.vim', {'frozen': v:true} |
-        \Plug 'neomake/neomake', PIf(has('nvim')) |
+    Plug 'Shougo/neoinclude.vim' |
+        \Plug 'neomake/neomake', PIf(has('nvim'), {'do': 'npm i -g jsonlint'})
     " completion
     Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {
             \'do' : ':UpdateRemotePlugins'
-        \})                                                |
-        \Plug 'Shougo/neco-vim',    { 'for': ['vim']     } |
-        \Plug 'zchee/deoplete-zsh', { 'for': ['zsh']     } |
-        \Plug 'zchee/deoplete-go',  { 'for': ['go']      } |
+        \}) |
+        \Plug 'Shougo/neco-vim',      { 'for': ['vim']     } |
+        \Plug 'zchee/deoplete-zsh',   { 'for': ['zsh']     } |
+        \Plug 'zchee/deoplete-go',    { 'for': ['go']      } |
+        \Plug 'zchee/deoplete-jedi',  { 'for' : ['python'] } |
         \Plug 'zchee/deoplete-clang', {
-            \'for' : ['c', 'cpp', 'objc', 'objcpp'],
-        \}                                                 |
+            \'for' : ['c', 'cpp', 'objc', 'objcpp'],       } |
         \Plug 'carlitux/deoplete-ternjs', {
             \'for' : ['javascript', 'javascript.jsx'],
-            \'do'  : 'npm i -g tern',
-        \}                                                 |
-        \Plug 'eagletmt/neco-ghc',  PIf(1, {
-            \'for' : ['haskell'],
-        \})                                                |
-        \Plug 'ervandew/supertab'
+            \'do'  : 'npm i -g tern',                      } |
+        \Plug 'eagletmt/neco-ghc',  {'for' : ['haskell'],  } |
+        \Plug 'Shougo/context_filetype.vim'
+    " snippets
+    Plug 'Shougo/neosnippet' |
+        \Plug 'Shougo/neosnippet-snippets'
     " etc
+    Plug 'ervandew/supertab'
+    Plug 'tpope/vim-rsi'
 " }}}
 
 
@@ -70,9 +72,10 @@ call plug#begin('~/.vim/bundle')
     Plug 'applescript.vim',                              { 'for': ['applescript', 'osascript']               }
     Plug 'guns/vim-clojure-highlight',                   { 'for': ['clojure']                                }
     Plug 'saltstack/salt-vim',                           { 'for': ['sls']                                    }
-    Plug 'pangloss/vim-javascript',                      { 'for': ['javascript', 'jsx']                      } |
+    Plug 'pangloss/vim-javascript',                      { 'for': ['javascript', 'javascript.jsx']                      } |
         \Plug 'Wolfy87/vim-syntax-expand'
-    Plug 'ternjs/tern_for_vim',                          { 'for': ['javascript', 'jsx'], 'do': 'npm install' }
+    Plug 'ternjs/tern_for_vim',                          { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
+    Plug 'othree/jspc.vim',                              { 'for': ['javascript', 'javascript.jsx'] }
     " markdown
     Plug 'plasticboy/vim-markdown',                      { 'for': ['markdown']                               } |
         \Plug 'nelstrom/vim-markdown-folding',           { 'for': ['markdown']                               }
@@ -101,7 +104,7 @@ call plug#begin('~/.vim/bundle')
     "Plug 'qstrahl/vim-matchmaker'
     "Plug 'machakann/vim-highlightedyank', { 'on': '<Plug>(highlightedyank)' }
     Plug 'ryanoasis/vim-devicons'
-    Plug 'haya14busa/incsearch.vim' |
+    "Plug 'haya14busa/incsearch.vim' |
         \Plug 'haya14busa/incsearch-easymotion.vim' |
         \Plug 'haya14busa/incsearch-fuzzy.vim'
     Plug 'haya14busa/vim-keeppad'
@@ -114,6 +117,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'tommcdo/vim-exchange'
     "Plug 'cohama/lexima.vim'
     "Plug 'Raimondi/delimitMate'
+    Plug 'jiangmiao/auto-pairs'
     Plug 'scrooloose/nerdcommenter'
     Plug 'wellle/targets.vim'
     Plug 'tpope/vim-surround'

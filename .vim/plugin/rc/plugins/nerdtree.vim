@@ -2,6 +2,9 @@
 scriptencoding utf-8
 
 
+if exists('g:vimpager') | finish | endif
+
+
 let g:NERDTreeAutoCenter                = 1
 let g:NERDTreeAutoCenterThreshold       = 5
 
@@ -17,10 +20,15 @@ let g:NERDTreeCascadeOpenSingleChildDir = 1
 let g:NERDTreeAutoDeleteBuffer          = 1
 
 let g:NERDTreeHighlightCursorline       = 1
-let g:NERDTreeStatusline                = '%{matchstr(getline("."), "[0-9A-Za-z_/].*")}'
 let g:NERDTreeWinPos                    = 'left'
 let g:NERDTreeWinSize                   = 29
 let g:NERDTreeMinimalUI                 = 1
+
+let g:NERDTreeStatusline                = ''
+            \.'%{matchstr(getline("."), "[0-9A-Za-z_/].*")}'
+            \.'%='
+            \.' %=  '
+            \.'%2l'
 
 let g:NERDTreeCreatePrefix  = 'silent! keepald keepjumps keepmarks keeppatterns'
 let g:NERDTreeBookmarksFile = g:dotvim_f.'/.cache/NERDTree.bookmarks'

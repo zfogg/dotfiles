@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+
+brew_bin="${BREW:-/usr/local}/bin/brew"
+
+if [ -d "${PYENV_ROOT}" ]; then
+    env PATH="${PATH//\$PYENV_ROOT/shims:/}" "${brew_bin}" "$@"
+else
+    ${brew_bin} "$@"
+fi

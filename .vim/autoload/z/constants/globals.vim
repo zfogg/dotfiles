@@ -28,6 +28,17 @@ func! z#constants#globals#ConfigPaths() abort
 endfunc
 
 
+func! z#constants#globals#Python() abort
+    if exists('$PYENV_ROOT')
+        let g:python_host_prog  = $PYENV_ROOT.'/versions/neovim2/bin/python'
+        let g:python3_host_prog = $PYENV_ROOT.'/versions/neovim3/bin/python'
+    elseif exists('$BREW')
+        let g:python_host_prog  = $BREW.'/bin/python2.7'
+        let g:python3_host_prog = $BREW.'/bin/python3.5'
+    endif
+endfunc
+
+
 func! z#constants#globals#Vimpager() abort
     " V1
     let g:vimpager = {

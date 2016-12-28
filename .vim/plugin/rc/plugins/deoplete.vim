@@ -2,6 +2,9 @@
 scriptencoding utf-8
 
 
+if exists('g:vimpager') | finish | endif
+
+
 let s:llvm_confs = {
     \ 'mac': {
         \ 'libclang_glob': 'libclang.{so,dylib}'
@@ -31,3 +34,37 @@ let g:deoplete#sources#clang#clang_header  = s:clang_header
 
 let g:deoplete#enable_at_startup = 1 " just work
 let g:deoplete#enable_smart_case = 1 " smartcase
+
+
+call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+
+
+" deoplete#{sources,omni#functions} {{{
+" NOTE: import at the top
+let s:sources = get(g:, 'deoplete#sources',        {})
+let s:omnifns = get(g:, 'deoplete#omni#functions', {})
+
+let s:sources.javascript = [
+        \'buffer',
+        \'member',
+        \'file',
+        \'omni',
+    \]
+let s:omnifns.javascript = [
+        \'tern#Complete',
+        \'jspc#omni',
+    \]
+
+let s:sources['javascript.jsx'] = get(s:sources, 'javascript', [])
+let s:omnifns['javascript.jsx'] = get(s:omnifns, 'javascript', [])
+
+" NOTE: export at the bottom
+let g:deoplete#omni#functions = s:omnifns
+let g:deoplete#sources        = s:sources
+" }}}
+
+
+aug RcPlugin__deoplete
+    au!
+	au CompleteDone * pclose!
+aug END

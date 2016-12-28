@@ -1,4 +1,4 @@
-" chromatic
+" chromatica
 scriptencoding utf-8
 
 

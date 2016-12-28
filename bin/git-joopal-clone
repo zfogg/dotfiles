@@ -63,7 +63,7 @@ git ls-remote -h -q --exit-code "$gremote" master 1>/dev/null ||
 gdir="$HOME"'/src/'"$ghost""$gdelim""$gsubd"
 mkdir -p "$gdir"
 cd       "$gdir"
-git clone "$gremote"
+git clone --depth 1 --shallow-submodules "$gremote"
 
 # >&1 local repo path for `cd`
 echo "$gdir"'/'"$grepo"

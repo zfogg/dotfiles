@@ -32,7 +32,7 @@ alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 alias ag="${GREPPRG:-grep}"
 
 # pip2 install pygments
-alias ccat='pygmentize -O style=base16_default_dark -f 256 -g'
+alias ccat='pygmentize -O style=base16-default.dark -f 256 -g'
 alias c='ccat'
 
 alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q'
