@@ -2,7 +2,7 @@
 scriptencoding utf-8
 
 
-set number numberwidth=3    " hybrid line numbers - relative & static
+set number numberwidth=2    " hybrid line numbers - relative & static
 set title                   " file title in the $TERM titlebar
 set showtabline=1           " show buffer tabs when more than `n`
 set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
@@ -12,17 +12,19 @@ set shell=$SHELL
 set wildmenu                " custom completion menu
 set wildmode=
     \longest:full,
-    \list:full
+    \full
 
 set conceallevel=1
 set concealcursor=nvic
 
-set omnifunc=syntaxcomplete#Complete
-
-
 set sessionoptions-=blank,buffers " The 'Session' plugin does this on save.
 set updatetime=250                " for CursorHold autocmd (milliseconds)
 
+set path=,,
+set path+=**
+
+set cdpath=,,
+set cdpath+=~
 
 let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 
@@ -64,11 +66,11 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 
 
 " {{{ Moving around and editing
-    set nostartofline   " Avoid moving cursor to BOL when jumping around.
-    set virtualedit=all " Let cursor move past $ in command mode.
-    set backspace=2     " Allow backspacing over autoindent, EOL, and BOL.
-    set autoindent      " Always set autoindenting on.
-    set lazyredraw      " For better macro performance.
+    set nostartofline              " Avoid moving cursor to BOL when jumping around.
+    set virtualedit=all            " Let cursor move past $ in command mode.
+    set backspace=indent,eol,start " Allow backspacing over autoindent, EOL, and BOL.
+    set autoindent                 " Always set autoindenting on.
+    set lazyredraw                 " For better macro performance.
 " }}} Moving around and editing
 
 
@@ -94,9 +96,9 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
     set expandtab       " Use spaces, not tabs, for autoindent/tab key.
     set copyindent
     set preserveindent
-    set softtabstop=4   " <BS> over an autoindent deletes both spaces.
-    set shiftwidth=4    " An indent level is n spaces.
     set tabstop=4       " <Tab> inserts n spaces.
+    set softtabstop=0   " <BS> over an autoindent deletes both spaces.
+    set shiftwidth=0    " An indent level is n spaces.
     set shiftround      " Rounds indent to a multiple of shiftwidth.
     set nowrap          " Don't wrap text.
     set linebreak       " Don't wrap textin the middle of a word.
@@ -133,16 +135,16 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
     set report=0         " : commands always print changed line count.
     set ruler            " Show some info, even without statuslines.
     set laststatus=2     " Always show statusline, even if only 1 window.
-    "set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 " }}}
 
 
 " Searching and Patterns {{{
-    set ignorecase " Default to using case insensitive searches.
-    set smartcase  " unless uppercase letters are used in the regex.
-    set smarttab   " Handle tabs more intelligently.
-    "set hlsearch   " Highlight searches by default.
-    set incsearch  " Incrementally search while typing a /regex.
+    set ignorecase  " Default to using case insensitive searches.
+    set smartcase   " unless uppercase letters are used in the regex.
+    set smarttab    " Handle tabs more intelligently.
+    set smartindent " Indent intelligently.
+    " set hlsearch   " Highlight searches by default.
+    set incsearch   " Incrementally search while typing a /regex.
 
     " 'text-obj' patterns for 'word' and file /path
         " NOTE: http://www.ascii-code.com/

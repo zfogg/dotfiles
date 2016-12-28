@@ -7,7 +7,7 @@ if (&filetype !=? 'cpp')
 endif
 
 
-setl sw=4 ts=4 sts=4
+setl ts=4
 
 "setl fdm=marker fmr={,}
 setl fdm=syntax

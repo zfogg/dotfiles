@@ -2,4 +2,4 @@
 scriptencoding utf-8
 
 
-so expand('<sfile>:p:h').'/html.vim'
+exe 'so '.expand('<sfile>:p:h').'/html.vim'

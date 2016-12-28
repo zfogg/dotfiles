@@ -1,11 +1,5 @@
-"  vim-javascript
+"  syntax-expand
 scriptencoding utf-8
-
-
-let s:auPre = 'au FileType javascript inoremap <silent> <buffer> '
-func s:auEnd(hideme) abort
-    return ', "'.a:hideme.'")<CR>'
-endfunc
 
 
 func! <SID>ft_conceal_syntax(ft, hideSyntax) abort
@@ -15,7 +9,8 @@ func! <SID>ft_conceal_syntax(ft, hideSyntax) abort
         \.' <C-r>=syntax_expand#expand('.l:hideChar.', "'.a:hideSyntax.'")<CR>'
 endfunc
 
-aug RcPlugin__Syntax_ConcealExpand
+
+aug RcPlugin__syntaxExpand_conceal
     au!
     call <SID>ft_conceal_syntax('javascript', 'function')
     call <SID>ft_conceal_syntax('javascript', 'null')

@@ -21,18 +21,12 @@ nnoremap <Leader>q :q<CR>
 
 " vimrc
 exe 'nn <silent> <Leader>v :'
-    \.'cd '.g:dotvim_r             .' <Bar> '
-    \.'$tabe! '                    .' <Bar> '
-    \.'e '.g:myvimrc_l             .' <Bar> '
-    \.'cd -'                       .' <Bar> '
-    \.'exe "norm! zvzz"'           .' <Bar> '
+    \.'silent! $tabe! '.g:myvimrc_f                .' <Bar> '
+    \.'silent! NERDTreeFromBookmark vimrc' .' <Bar> '
+    \.'wincmd p'                           .' <Bar> '
     \.'<CR>'
 exe 'nn <silent> <Leader>V :'
-    \.'cd '.g:dotvim_r             .' <Bar> '
-    \.'so '.g:myvimrc_l            .' <Bar> '
-    \.'cd -'                       .' <Bar> '
-    \.'filet detect'               .' <Bar> '
-    \.'exe "norm! zvzz"'           .' <Bar> '
+    \.'so '.g:myvimrc_f                    .' <Bar> '
     \.'<CR>'
 
 " Disabled default commands. {{{
@@ -76,16 +70,34 @@ exe 'nn <silent> <Leader>V :'
     " nnoremap <a-l> zll
     " nnoremap <a-h> zhh
 
-    " think of your left pinky
-    inoremap jj    <Esc>
-    inoremap kk    <Esc>:w<CR>
+    inoremap JJ <C-o>J<C-o>==
+    inoremap KK <C-o>k<C-o>J<C-o>==
+    inoremap uu <C-o>u
+    inoremap <C-r><C-r> <C-o><C-r>
 
-    " Leaving `Insert-mode` is too much sometimes.
-    inoremap HH <C-o>^
-    inoremap LL <C-o>$
+    " think of your left pinky
+    inoremap jj <Esc>
+    inoremap kk <Esc>:w<CR>
+    cnoremap kk <Up>
+    cnoremap jj <Down>
+
+    inoremap HH <Home>
+    inoremap LL <End>
+    cnoremap HH <Home>
+    cnoremap LL <End>
+
+    noremap  <PageUp>    <S-h>zz<S-l>
+    inoremap <PageUp>    <C-o>zt
+    nnoremap <PageDown>  <S-l>zz<S-h>
+    inoremap <PageDown>  <C-o>zb
+
+    noremap! <M-Right> <M-S-Right>
+    inoremap <M-Right> <M-S-Right>
+    inoremap <M-Left>  <M-S-Left>
+    noremap! <M-Left>  <M-S-Left>
 
     " Jump to matching pairs easily with tab.
-    vnoremap <Tab> %
+    "vnoremap <Tab> %
 " }}}
 
 " Folds. {{{
@@ -118,11 +130,6 @@ exe 'nn <silent> <Leader>V :'
 " }}}
 
 " Et cetera. {{{
-    " Previous matching command or search.
-    cnoremap kk <Up>
-    cnoremap HH <Home>
-    cnoremap LL <Home>
-
     " Enter Replace mode from Visual mode.
     vnoremap R r<Space>R
 

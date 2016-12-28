@@ -2,7 +2,7 @@
 scriptencoding utf-8
 
 
-setl sw=4 ts=4 sts=2
+setl ts=4
     \ foldmethod=marker
     \ keywordprg=:help
     \ iskeyword-=#

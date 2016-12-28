@@ -1,15 +1,8 @@
 " lightline
 scriptencoding utf-8
 
-" NOTE: not using this plugin
-finish
 
-
-aug rc_plugins_lightline
-    au!
-    au User NeomakeCountsChanged,NeomakeMakerFinished
-        \ :call z#lightline#OnNeomakeCountsChanged()
-aug END
+finish " FIXME: not using this plugin
 
 
 let g:lightline = {
@@ -48,3 +41,10 @@ let g:lightline = {
         \ 'neomake' : 'error'
     \ },
 \ }
+
+
+aug RcPlugin__lightline_neomake
+    au!
+    au User NeomakeCountsChanged,NeomakeMakerFinished
+        \ call z#lightline#OnNeomakeCountsChanged()
+aug END

@@ -9,16 +9,12 @@ scriptencoding utf-8
 "   NEOVIM:   >= 0.1.6
 
 
-filetype off
-filetype plugin indent off
-
-
 call z#rc#Init()
 
 let s:rcfiles = z#constants#rc#RcFiles()
 
-exe 'so '.s:rcfiles.settings
-exe 'so '.s:rcfiles.keys
 exe 'so '.s:rcfiles.plugins
-exe 'so '.s:rcfiles.colorsc
+exe 'so '.s:rcfiles.settings
 exe 'so '.s:rcfiles.statusline
+exe 'so '.s:rcfiles.keys
+exe 'so '.s:rcfiles.colorsc

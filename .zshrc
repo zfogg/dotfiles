@@ -69,6 +69,9 @@ zstyle ':completion:*' ignore-parents parent pwd
 zstyle ':completion::approximate*:*' prefix-needed false
 # https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/ssh-agent/ssh-agent.plugin.zsh
 zstyle ':omz:plugins:ssh-agent' agent-forwarding on
+
+set completion-ignore-case on
+set show-all-if-ambiguous on
 # }}}
 
 
@@ -187,51 +190,73 @@ source $BREW/etc/grc.bashrc
 bindkey -M viins 'jj'              vi-cmd-mode
 bindkey -M viins 'kk' last-cmd-and-vi-cmd-mode
 
-bindkey -rM vicmd ':' execute-named-cmd # Space for command line mode
-bindkey -M vicmd  ';' execute-named-cmd # ; line vim
+bindkey -M viins 'jj'              vi-cmd-mode
+bindkey -M viins 'kk' last-cmd-and-vi-cmd-mode
+
+bindkey -rM vicmd ':'
+bindkey  -M vicmd ':' execute-named-cmd # ; line vim
 
 # useful motion shortcuts
-bindkey -M viins 'HH' beginning-of-line
-bindkey -M viins 'LL'       end-of-line
-bindkey -M vicmd 'HH' beginning-of-line
-bindkey -M vicmd 'LL'       end-of-line
+bindkey -M viins 'HH'    beginning-of-line
+bindkey -M viins 'LL'          end-of-line
+bindkey -M vicmd 'HH' vi-beginning-of-line
+bindkey -M vicmd 'LL'       vi-end-of-line
+
+bindkey -r        '^H'
+bindkey -rM viins '^H'
+bindkey -rM vicmd '^H'
+bindkey -r        '^J'
+bindkey -rM viins '^J'
+bindkey -rM vicmd '^J'
+bindkey -r        '^L'
+bindkey -rM viins '^L'
+bindkey -rM vicmd '^L'
 
 bindkey          '^[[Z' reverse-menu-complete
 
-# <PageUp>, <PageDown>
-bindkey          '^[[5~' kill-word
-bindkey          '^[[5~' kill-word
-bindkey -M vicmd '^[[6~' kill-word
+# <M-direction>
+bindkey          '^[[1;3D'    backward-word
+bindkey -M vicmd '^[[1;3D' vi-backward-word
+bindkey -M viins '^[[1;3D'    backward-word
+bindkey          '^[[1;3C'     forward-word
+bindkey -M vicmd '^[[1;3C'  vi-forward-word
+bindkey -M viins '^[[1;3C'     forward-word
 
-# <Backspace>
-bindkey          '^?' backward-delete-char
-bindkey          '^h' backward-delete-char
 # <S-Backspace>
 bindkey          '^[[3~'       delete-char
-bindkey -M vicmd '^[[3~'       delete-char
+bindkey -M vicmd '^[[3~'    vi-delete-char
 # <C-Backspace>
-bindkey          '^w' backward-kill-word
+bindkey          '^W'    backward-kill-word
+bindkey -M viins '^W'    backward-kill-word
+bindkey -M vicmd '^W' vi-backward-kill-word
 # <C-S-Backspace>
-bindkey          '^[[2J'       kill-word
-bindkey -M vicmd '^[[2J'       kill-word
+bindkey          '^[[2J'            kill-word
+bindkey -M vicmd '^[[2J' vi-forward-kill-word
+# <Command-Backspace>
+bindkey            '^U' backward-kill-line
+bindkey -M vicmd   '^U' backward-kill-line
+bindkey -M viins   '^U' vi-kill-line
+bindkey            '^K'    kill-line
+bindkey -M vicmd   '^K' vi-kill-eol
+bindkey -M viins   '^K' vi-change-eol
 
 # <Up>, <Down>
 bindkey          '^[[A' history-substring-search-up
 bindkey          '^[[B' history-substring-search-down
+bindkey          '^[[a' history-beginning-search-backward
+bindkey          '^[[b' history-beginning-search-forward
 
 # <Home>, <End>
-bindkey '^[[H' beginning-of-line
-bindkey '^[[F'       end-of-line
+bindkey '^[[H'  beginning-of-line
+bindkey '^[[F'        end-of-line
+bindkey '^[[5~'   up-line-or-history
+bindkey '^[[6~' down-line-or-history
 
 # <Option-Left>, <Option-Right>
 bindkey -M viins '^[b'    backward-word
 bindkey -M viins '^[f'     forward-word
 bindkey -M vicmd '^[b' vi-backward-word
 bindkey -M vicmd '^[f'  vi-forward-word
-
-# <Command-Backspace>
-bindkey -M viins '^U' backward-kill-line
-bindkey -M vicmd '^U' backward-kill-line
 
 # zsh vi-mode fixes
 zle -N self-insert url-quote-magic

@@ -24,3 +24,5 @@
 *.pdf
 *.md
 *.log
+
+yarn.lock

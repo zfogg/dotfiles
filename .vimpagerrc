@@ -14,11 +14,11 @@ call z#rc#Init()
 let s:suffix = '_vimpager'
 let s:rcfiles = z#constants#rc#RcFiles({
     \ 'rcfiles' : {
-        \  'colorsc'    : 'colorsc'  .s:suffix
-        \ ,'keys'       : 'keys'     .s:suffix
-        \ ,'plugins'    : 'plugins'  .s:suffix
-        \ ,'settings'   : 'settings' .s:suffix
-        \ ,'statusline' : 'statusline'
+        \  'colorsc'    : 'colorsc'    .s:suffix
+        \ ,'keys'       : 'keys'       .s:suffix
+        \ ,'plugins'    : 'plugins'    .s:suffix
+        \ ,'settings'   : 'settings'   .s:suffix
+        \ ,'statusline' : 'statusline' .s:suffix
     \ },
 \ })
 

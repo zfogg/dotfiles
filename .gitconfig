@@ -2,45 +2,51 @@
     email = zach.fogg@gmail.com
     name  = Zach Fogg
 
+[core]
+    editor   = nvim
+    pager    = vimpager
+    eol      = lf
+    autocrlf = input
+    excludesfile = /Users/zfogg/.gitignore_global
+
+[push]
+    default = simple
+
+[color]
+    ui = true
+
+
+[url "git@github.com:"]
+    insteadOf = https://github.com/
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+
+[filter "media"]
+    clean  = git-media-clean %f
+    smudge = git-media-smudge %f
+
+
+[merge]
+    tool = vimdiff
+[mergetool]
+    prompt = true
+[mergetool "vimdiff"]
+    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = true
+[difftool "vimdiff"]
+    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+
 [alias]
     submsync = submodule foreach \"git checkout master && git pull origin master\"
     mybranch = rev-parse --abbrev-ref HEAD
-    bsync    = !git branch --set-upstream-to=origin/"`git mybranch`" "`git mybranch`" && :
     up       = pull --rebase --autostash
     gh       = joopal-clone git github.com
     l        = log -18 --color=always --all --topo-order --pretty='format:%Cgreen%h%Creset %s%Cred%d%Creset %C(black bold)(by %an)%Creset'
     ll       = log     --color=always --all --topo-order --pretty='format:%Cgreen%h%Creset %s%Cred%d%Creset %C(black bold)(by %an)%Creset'
     gl       = log -12 --color=always --all --graph --topo-order --pretty='format:%Cgreen%h%Creset %s %C(black bold)(by %an)%Creset%C(yellow bold)%d%Creset%n'
     gll      = log     --color=always --all --graph --topo-order --pretty='format:%Cgreen%h%Creset %s %C(black bold)(%cr by %an)%Creset%C(yellow bold)%d%Creset%n'
-
-[push]
-    default = simple
-
-[core]
-    editor   = nvim
-    pager    = vimpager
-    eol      = lf
-    autocrlf = input
-	excludesfile = /Users/zfogg/.gitignore_global
-
-[difftool "vimdiff"]
-    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-[difftool]
-    prompt = false
-[mergetool "vimdiff"]
-    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-    trustExitCode = false
-[mergetool]
-    keepBackup = false
-
-[color]
-    ui = true
-
-[filter "media"]
-    clean  = git-media-clean %f
-    smudge = git-media-smudge %f
-
-[url "git@github.com:"]
-    insteadOf = https://github.com/
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/

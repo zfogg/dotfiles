@@ -1,4 +1,4 @@
-" rc/colorsc
+" rc/colorsc_vimpager
 scriptencoding utf-8
 
 
