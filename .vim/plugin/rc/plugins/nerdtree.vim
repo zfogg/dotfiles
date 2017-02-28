@@ -56,6 +56,7 @@ let g:NERDTreeIgnore            = [
     \ '' . '.svn'             . '$' . '[[dir]]'  ,
     \ '' . 'node_modules'     . '$' . '[[dir]]'  ,
     \ '' . 'bower_components' . '$' . '[[dir]]'  ,
+    \ '' . '__pycache__'      . '$' . '[[dir]]'  ,
 \ ]
 
 

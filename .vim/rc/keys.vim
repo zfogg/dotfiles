@@ -10,6 +10,25 @@ noremap : <Nop>
 noremap ; :
 " and if you ever wanna map to ;
 "noremap ;; ;
+ 
+" Don't jump cursor when using * to search for word under cursor
+nnoremap * *``
+nnoremap # #``
+
+" Reselect visual block after indent/outdent
+vnoremap < <gv
+vnoremap > >gv
+
+" Opposite of J. Split line at current point.
+nmap <M-j> i<CR><Esc>d^==kg_lD
+
+" Keep cursor in centre of screen after motions
+nnoremap n nzz
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap { {zz
+nnoremap } }zz
+nnoremap gd gdzz
 
 " write
 nnoremap <Leader>w :w<CR>

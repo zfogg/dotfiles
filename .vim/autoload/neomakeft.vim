@@ -6,7 +6,8 @@ func! neomakeft#SetupFt(ft, ...) abort
     let l:opts = z#util#Opts(s:setupFt_opts, get(a:, '1', v:null))
     for l:maker in l:opts.neomakers
         let l:neomaker_var = 'g:neomake_'.a:ft.'_'.l:maker.'_maker'
-        exe 'let l:neomake_maker = neomake#makers#ft#'.a:ft.'#'.l:maker.'()'
+        let l:neomake_autoload = 'neomake#makers#ft#'.a:ft.'#'.l:maker.'()'
+        let l:neomake_maker = execute('call '.l:neomake_autoload)
         exe 'let '.l:neomaker_var.' = '.string(l:neomake_maker)
     endfor
     let l:neomakers_var = 'g:neomake_'.a:ft.'_enabled_makers'

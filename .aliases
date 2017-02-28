@@ -1,7 +1,8 @@
-#!/usr/local/bin/zsh
-# vim: set fdm=marker:
-#   ~/.aliases
+#!/usr/bin/env zsh -e
+#   ~/.dotfiles/.aliases
 
+
+alias rm='trash'
 
 alias vim='$EDITOR'
 alias  vi="$EDITOR"
@@ -12,8 +13,11 @@ alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 
 alias ql='quick-look'
 
-alias ls='/bin/ls'
-alias lsd='ls -d *(/)'
+alias ls='ls --color=auto --group-directories-first'
+alias  k='ls -LhGstcr'
+alias  l='k -1'
+alias ll='l -A'
+alias la='ll -g'
 
 alias sudo='nocorrect sudo '
 
@@ -29,10 +33,13 @@ alias htop='htop -u $USER'
 
 alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 
-alias ag="${GREPPRG:-grep}"
+alias grep="${GREP_PRG:-grep} ${GREP_ARGS}"
+alias ag="${AG_PRG:-ag} ${AG_ARGS}"
+alias rg="${RG_PRG:-rg} ${RG_ARGS}"
 
 # pip2 install pygments
-alias ccat='pygmentize -O style=base16-default.dark -f 256 -g'
+#alias ccat='pygmentize -O style=base16-default.dark -f 256 -g'
+alias ccat='pygmentize -O style=monokai -f 256 -g'
 alias c='ccat'
 
 alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q'
@@ -52,6 +59,18 @@ alias fs='du -shL'
 alias idea='$EDITOR ~/Dropbox/ideas.md'
 
 alias colortest='~/.config/base16-shell/colortest'
+
+
+# git
+alias gst='git status'
+alias gca='git commit -a'
+alias gd='git diff'
+alias gl='git log'
+alias grv='git remote -v'
+alias gp='git push'
+
+
+alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components" -L 5'
 
 
 function echoer() {
@@ -100,3 +119,9 @@ function ppvar() {
 function npm-do {
     (PATH=$(npm bin):$PATH; eval $@;)
 }
+
+
+# pyenv
+function gpip()  {PIP_REQUIRE_VIRTUALENV='' pip  "$@"}
+function gpip2() {PIP_REQUIRE_VIRTUALENV='' pip2 "$@"}
+function gpip3() {PIP_REQUIRE_VIRTUALENV='' pip3 "$@"}

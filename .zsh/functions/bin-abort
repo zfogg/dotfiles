@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh -e
-# joopal-bin-abort
-#   sane, default, accessible error handling for shell scripts
-#   ~/bin/bin-abort
-
-
-_abort() {
-    ~/bin/bin-abort
-}

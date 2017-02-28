@@ -18,46 +18,56 @@ import Antigen (
 
 bundles =
     [ (bundle "robbyrussell/oh-my-zsh")
-        { fpathLocations   = []
-        , sourcingStrategy = filePathsSourcingStrategy [
-            --, "lib/bzr.zsh"
-                "lib/history.zsh"
-            --, "lib/clipboard.zsh"
-                , "lib/compfix.zsh"
-                , "lib/completion.zsh"
-            --, "lib/correction.zsh"
-            --, "lib/diagnostics.zsh"
-                , "lib/directories.zsh"
-                , "lib/functions.zsh"
-                , "lib/git.zsh"
-                , "lib/grep.zsh"
-                , "lib/history.zsh"
-                , "lib/key-bindings.zsh"
-            --, "lib/misc.zsh"
-            --, "lib/nvm.zsh"
-            --, "lib/prompt_info_functions.zsh"
-            --, "lib/spectrum.zsh"
-                , "lib/termsupport.zsh"
-            --, "lib/theme-and-appearance.zsh"
-            ]
-        }
+        { fpathLocations    = [ ]
+        , sourcingStrategy  = antigenSourcingStrategy
+        , sourcingLocations =
+            [ "plugins/battery"
+            , "plugins/branch"
+            , "plugins/brew"
+            , "plugins/compleat"
+            , "plugins/extract"
+            , "plugins/emoji"
+            , "plugins/git"
+            , "plugins/gitfast"
+            , "plugins/gitignore"
+            , "plugins/git-extras"
+            , "plugins/gnu-utils"
+            , "plugins/golang"
+            , "plugins/node"
+            , "plugins/osx"
+            , "plugins/ruby"
+            , "plugins/ssh-agent"
+            , "plugins/sudo"
+            , "plugins/tmux"
+            , "plugins/vi-mode"
+            , "plugins/xcode" ] }
 
-    ,  bundle "zsh-users/zsh-syntax-highlighting"
+    , (bundle "zsh-users/zsh-syntax-highlighting")
+        { fpathLocations = [] }
     , (bundle "zsh-users/zsh-history-substring-search")
-        { sourcingStrategy = filePathsSourcingStrategy [
-                "zsh-history-substring-search.zsh"
-        ] }
-    , (bundle "b4b4r07/zsh-vimode-visual")
-        { sourcingStrategy = filePathsSourcingStrategy [
-                "zsh-vimode-visual.zsh"
-        ] }
+        { fpathLocations = []
+        , sourcingStrategy = filePathsSourcingStrategy
+            [ "zsh-history-substring-search.zsh" ] }
 
-    , bundle "nojhan/liquidprompt"
+    , (bundle "nojhan/liquidprompt")
+        { fpathLocations = [] }
 
-    , bundle "supercrabtree/k"
+    --, (bundle "supercrabtree/k")
+        --{ fpathLocations = [] }
 
-    , bundle "willghatch/zsh-hooks"
-    , bundle "sharat87/zsh-vim-mode"
+    , (bundle "willghatch/zsh-hooks")
+        { fpathLocations = [] }
+    , (bundle "sharat87/zsh-vim-mode")
+        { fpathLocations = [] }
+
+    , (bundle "djui/alias-tips")
+        { fpathLocations = [] }
+
+    , (bundle "Tarrasch/zsh-autoenv")
+        { fpathLocations = [] }
+
+    , (bundle "zsh-users/zsh-autosuggestions")
+        { fpathLocations = [] }
     ]
 
 

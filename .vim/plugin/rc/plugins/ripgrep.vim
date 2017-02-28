@@ -1,10 +1,10 @@
-" ag
+" ripgrep
 scriptencoding utf-8
 
 
-if executable('ag')
-    let g:ag_prg    = 'ag --vimgrep --nogroup --hidden -p '.$HOME.'/.agignore $*'
-    let &grepprg    = g:ag_prg
+if executable('rg')
+    let g:rg_prg    = 'rg --vimgrep --ignore-case --ignore-file='.$HOME.'/.rgignore'
+    let &grepprg    = g:rg_prg
     let &grepformat = '%f:%l:%c:%m'
 else
     let &grepprg = 'grep --color=never -e --exclude-dir .git -nrI $* . /dev/null'

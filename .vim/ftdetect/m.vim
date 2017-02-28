@@ -1,4 +1,4 @@
-" ftdetect/m.vim
+" ftdetect/m
 
 
 au BufRead,BufNewFile

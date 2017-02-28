@@ -1,4 +1,4 @@
-" ftdetect/json.vim
+" ftdetect/json
 
 
 au BufRead,BufNewFile 
