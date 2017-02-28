@@ -94,7 +94,7 @@ which nvim >/dev/null || brew tap neovim/neovim
 brew_install neovim
 
 
-brew_install the_silver_searcher
+brew_install rg
 brew_install tmux
 brew_install ghc
 brew_install cabal-install

@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh -e
+
+
+n="${1:-/dev/null/invalid}"
+if [[ ! -e "$n" ]]; then
+    >&2 echo '🔴  no file '"'$n'"' 😩' && exit 1
+fi
+
+
+d="$(date +%Y%m%d-%H%M%S)"
+f="$(basename "`readlink -f "$n"`")"."$d".tar.gz
+
+
+echo 'tar . . .'
+tar czfv "$f" "$n"
+echo '. . . tar'; echo
+
+echo 'gpg . . .'
+gpg --output "$f".gpg --sign --symmetric "$f"
+echo '. . . gpg'; echo
+
+echo 'du . . .'
+du --si "$n" "$f"*
+echo '. . . du'; echo
+
+echo 'rm '"$f"
+rm "$f"
+echo

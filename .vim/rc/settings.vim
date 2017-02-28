@@ -13,6 +13,8 @@ set wildmenu                " custom completion menu
 set wildmode=
     \longest:full,
     \full
+set pumheight=16
+set completeopt=menu,menuone,preview,noinsert,noselect
 
 set conceallevel=1
 set concealcursor=nvic
@@ -62,6 +64,8 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
         \ s:dotvim_dotdirs['backup'],
     \ )
     set backupskip=&backupskip
+
+    let g:omni_sql_no_default_maps = 1
 " }}} undo / redo, swap, backup
 
 

@@ -12,21 +12,22 @@ aug END
 
 
 set statusline= " {{{
-
 " buffer number
 set stl+=%(\ %{
     \'help'!=&ft?bufnr('%'):'[help]'
     \}\ %)
 
 " filename
-set stl+=%(\ %{
-    \(substitute(
-        \expand('%:h:t').'/'.expand('%:t'),
-        \'^\.\/',
-        \'',''))
-    \}\ %#ErrorMsg#%{
+set stl+=\ %{(substitute(
+    \expand('%:h:t').'/'.expand('%:t'),
+    \'^\.\/','',''))}
+set stl+=%(\ %)
+if has('nvim')
+    set stl+=%(%#ErrorMsg#%{
         \neomake#statusline#QflistStatus('qf\ :')
-    \}%1*%)
+    \}%)
+endif
+set stl+=%(%1*%)
 
 " META: center
 set stl+=%=

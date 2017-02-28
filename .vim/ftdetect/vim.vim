@@ -1,4 +1,4 @@
-" ftdetect/vim.vim
+" ftdetect/vim
 
 
 au BufRead,BufNewFile
@@ -6,4 +6,3 @@ au BufRead,BufNewFile
         \,*.nvim,.nvimrc,_nvimrc,nvimrc
         \,.exrc,.lvimrc
     \ setfiletype vim
-

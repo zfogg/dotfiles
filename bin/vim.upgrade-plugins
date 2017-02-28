@@ -1,24 +1,16 @@
 #!/usr/bin/env zsh -e
-#  shim for using brew with pyenv
-#    ~/bin/brew
 
 
-source ~/.zsh/functions/bin-abort
+source ~/.zsh/site-functions/bin-abort
 trap 'bin-abort' ERR
 
 
-eval "$(pyenv            init -)"
-eval "$(pyenv virtualenv-init -)"
+source ~/.aliases
+eval "`pyenv init -`"
+cd ~/.vim
 
-pyenvs=(neovim2 neovim3)
-for env in $pyenvs; do
-    pyenv activate "$env"
-    pip install --upgrade pip setuptools wheel
-    pip install --upgrade neovim
-    pip install --upgrade flake8
-    pyenv rehash # NOTE: run me after installing executables
-done
-pyenv deactivate
+for pip in gpip2 gpip3; \
+    "$pip" install -Ur "`pyenv root`"/global-packages
 
 
 $EDITOR +PlugUpgrade +qall

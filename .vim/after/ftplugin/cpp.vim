@@ -10,4 +10,4 @@ endif
 setl ts=4
 
 "setl fdm=marker fmr={,}
-setl fdm=syntax
+setl makeprg=make
