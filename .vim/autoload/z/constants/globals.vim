@@ -27,32 +27,18 @@ func! z#constants#globals#ConfigPaths() abort
     let g:myvimrc_r = g:dotvim_r.'/'.g:myvimrc_l
 endfunc
 
-func! z#constants#globals#Python() abort
-    func! s:python_v(env, pythonn, short) abort
-        let l:output=system('cd ~;'
-            \.'p="`'.a:env.' '.a:pythonn.' -V 2>&1`";'
-            \.(get(a:, 'short', v:false) == v:true?
-                \'gsed -E "s!^Python\ ([23]\.[0-9]+)\..+!\1!"':
-                \'gsed -E "s!^Python\ ([23]\.[0-9]+\.[0-9]+)!\1!"')
-                    \.' <<< "$p"'
-                    \." | xargs -0 printf '%s';")
-        return substitute(l:output, '\n$', '', '')
-    endfunc
 
-    if exists('$PYENV_ROOT')
-        let l:python_root = $PYENV_ROOT.'/versions/neovim'
-        if     has('python3') | let l:python3_bin = 'bin/python3'
-        elseif has('python2') | let l:python2_bin = 'bin/python2'
-        endif
+func! z#constants#globals#Python() abort
+    if     exists('$PYENV_ROOT')
+        let l:py3_root = $PYENV_ROOT.'/versions/neovim3'
+        let l:py_root  = $PYENV_ROOT.'/versions/neovim2'
     elseif exists('$BREW')
-        let l:python_root = $BREW
-        if     has('python3') | let l:python3_bin = 'bin/python3'
-        elseif has('python2') | let l:python2_bin = 'bin/python2'
-        endif
+        let l:py3_root = $BREW
+        let l:py_root  = $BREW
+    else | echomsg "can't find python root"
     endif
-    if     has('python3') | let g:python_host_prog = l:python_root.'/'.l:python3_bin
-    elseif has('python2') | let g:python_host_prog = l:python_root.'/'.l:python2_bin
-    endif
+    let g:python3_host_prog = l:py3_root.'/bin/python3'
+    let g:python_host_prog  = l:py_root .'/bin/python2'
 endfunc
 
 

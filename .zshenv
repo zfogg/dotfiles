@@ -8,6 +8,11 @@ if [[ -z "$DOTFILES_SETENV" ]]; then
 fi
 
 
+if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
+  source "${VIRTUAL_ENV}/bin/activate"
+fi
+
+
 # zsh startup debug (TOP of ~/.zshenv) {{{
 #   https://kev.inburke.com/kevin/profiling-zsh-startup-time
 if [[ ! -z "$SHELL_DEBUG" ]]; then

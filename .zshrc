@@ -313,7 +313,6 @@ export WORKON_HOME=~/.virtualenvs
 if command_exists pyenv; then
     export PYENV_ROOT=~/.pyenv
     export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
-    export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
     export PYTHON_CONFIGURE_OPTS=$(echo \
         "--enable-framework" \
         "--enable-ipv6" \
@@ -328,7 +327,7 @@ if command_exists pyenv; then
     eval "$(pyenv            init -)"
 
     # virtualenv
-    eval "$(pyenv virtualenv-init -)"
+    #eval "$(pyenv virtualenv-init -)"
 
     # powerline
     export POWERLINE_CONFIG_COMMAND="`which powerline-config`"
@@ -391,10 +390,10 @@ aliasof() {
 
 # history {{{
 [[ -z "$HISTFILE" ]] && \
-    HISTFILE=~/.zsh_history
+    export HISTFILE=~/.zsh_history
 
-histsize=$(( 128**2 ))
-SAVEHIST=$(( 128**2 ))
+export HISTSIZE=$(( 128**2 ))
+export SAVEHIST=$(( 128**3 ))
 
 setopt APPEND_HISTORY
 setopt EXTENDED_HISTORY

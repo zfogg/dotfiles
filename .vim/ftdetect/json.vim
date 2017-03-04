@@ -1,6 +1,8 @@
 " ftdetect/json
 
 
-au BufRead,BufNewFile 
-        \ *.eslintrc*,*.babelrc*
+au BufRead,BufNewFile
+        \ .jslintrc,.eslintrc,.jshintrc
+        \,.babelrc
+        \,.bowererrc
     \ setfiletype json

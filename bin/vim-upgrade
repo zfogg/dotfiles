@@ -1,0 +1,42 @@
+#!/usr/bin/env zsh -e
+
+
+source ~/.zsh/site-functions/bin-abort
+trap 'bin-abort' ERR
+
+
+eval "$(pyenv init -)"
+local pip_reqs="`pyenv root`"'/neovim-packages'
+for py_v in 2 3; do
+    pyenv activate neovim"$py_v"
+    pyenv exec pip install --quiet --requirement "$pip_reqs"
+done
+
+
+local cargo_reqs=(
+    racer
+    clippy
+)
+for p in $cargo_reqs; do
+    cargo install --quiet "$p" 2>/dev/null || true
+done
+
+
+local npm_reqs=(
+    jsonlint
+    tern
+)
+npm --silent install --global ${npm_reqs}
+
+
+local goget_reqs=(
+    github.com/nsf/gocode
+)
+for r in ${goget_reqs}; do
+    go get -u "$r"
+done
+
+
+$EDITOR +PlugUpgrade +qall
+$EDITOR +PlugClean +PlugInstall +qall
+$EDITOR +PlugUpdate

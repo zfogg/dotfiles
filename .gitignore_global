@@ -25,3 +25,5 @@ yarn.lock
 Gemfile.lock
 
 .tern-port
+
+.python-version

@@ -4,5 +4,6 @@
 au BufRead,BufNewFile
         \ *.vim,.vimrc,_vimrc,vimrc
         \,*.nvim,.nvimrc,_nvimrc,nvimrc
-        \,.exrc,.lvimrc
+        \,*.exrc,.exrc,_exrc,exrc
+        \,*.lvimrc,.lvimrc,_lvimrc,lvimrc
     \ setfiletype vim
