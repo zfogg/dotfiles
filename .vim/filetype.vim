@@ -13,6 +13,7 @@ aug rc_filetype_omnicomplete
     au FileType xml        setl ofu=xmlcomplete#CompleteTags
     au FileType php        setl ofu=phpcomplete#CompletePHP
     au FileType c          setl ofu=ccomplete#Complete
+    au FileType sql        setl ofu=sqlcomplete#Complete
 
     au FileType javascript setl ofu=javascriptcomplete#CompleteJS
 
