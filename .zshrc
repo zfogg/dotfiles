@@ -93,7 +93,7 @@ if [[ "$OSX" == "$TRUE" ]]; then
     # base16-shell
     export BASE16_SHELL=~/.config/base16-shell
     if ((${#iterm_dotapp[@]})); then
-        [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+        #[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
         # make `neovim` and `tmux` play nice
         #   https://iterm2.com/documentation-shell-integration.html
         # tmux.plugin settings
@@ -310,33 +310,46 @@ fi
 # pyenv, virtualenv {{{
 export WORKON_HOME=~/.virtualenvs
 
+# brew install pyenv \
+#   pyenv-ccache pyenv-default-packages pyenv-virtualenv pyenv-virtualenvwrapper pyenv-which-ext
 if command_exists pyenv; then
-    export PYENV_ROOT=~/.pyenv
-    export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
-    export PYTHON_CONFIGURE_OPTS=$(echo \
-        "--enable-framework" \
-        "--enable-ipv6" \
-        "--enable-toolbox-glue" \
-        "--enable-big-digits" \
-        "--enable-unicode" \
-        "--with-thread" \
-        "cc=clang")
-
-    export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV=true
-    export PIP_REQUIRE_VIRTUALENV=true
-    eval "$(pyenv            init -)"
-
-    # virtualenv
+    #eval  "$(pyenv            init -)"
     #eval "$(pyenv virtualenv-init -)"
-
-    # powerline
     export POWERLINE_CONFIG_COMMAND="`which powerline-config`"
-fi # }}}
+fi
+
+if command_exists pipenv; then
+    #eval "$(env _PIPENV_COMPLETE=source-zsh pipenv)"
+fi
+
+if command_exists pew; then
+    #source "$(pew shell_config)"
+fi
+# }}}
 
 
 # nvm {{{
-export NVM_DIR=~/.nvm
-source /usr/local/opt/nvm/nvm.sh
+#source /usr/local/opt/nvm/nvm.sh
+if command_exists nvm; then
+    autoload -U add-zsh-hook
+    function load-nvmrc() {
+        local node_version="$(nvm version)"
+        local nvmrc_path="$(nvm_find_nvmrc)"
+        if [ -n "$nvmrc_path" ]; then
+            local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+            if [ "$nvmrc_node_version" = "N/A" ]; then
+                nvm install
+            elif [ "$nvmrc_node_version" != "$node_version" ]; then
+                nvm use
+            fi
+        elif [ "$node_version" != "$(nvm version default)" ]; then
+            echo "Reverting to nvm default version"
+            nvm use default
+        fi
+    }
+    add-zsh-hook chpwd load-nvmrc
+    load-nvmrc
+fi
 # }}}
 
 

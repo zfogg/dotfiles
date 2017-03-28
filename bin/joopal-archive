@@ -8,7 +8,7 @@ fi
 
 
 d="$(date +%Y%m%d-%H%M%S)"
-f="$(basename "`readlink -f "$n"`")"."$d".tar.gz
+f="$(basename "$(readlink -f "$n")")"."$d".tar.gz
 
 
 echo 'tar . . .'
@@ -16,11 +16,12 @@ tar czfv "$f" "$n"
 echo '. . . tar'; echo
 
 echo 'gpg . . .'
-gpg --output "$f".gpg --sign --symmetric "$f"
+gpg --sign --symmetric \
+    --output "$f".gpg "$f"
 echo '. . . gpg'; echo
 
 echo 'du . . .'
-du --si "$n" "$f"*
+du -s --si "$n" "$f"*
 echo '. . . du'; echo
 
 echo 'rm '"$f"

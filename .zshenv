@@ -1,10 +1,9 @@
-#!/usr/local/bin/zsh
 # vim: set fdm=marker:
 
 
-if [[ -z "$DOTFILES_SETENV" ]]; then
-    . ~/bin/gg.zfo.Dotfiles.setenv.sh
-    pkill -flai $TERM_PROGRAM
+if [[ -z "$DOTFILES_SETENV" && -o login ]]; then
+    source ~/.launchd.conf
+    pkill -flai "$TERM_PROGRAM"
 fi
 
 

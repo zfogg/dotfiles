@@ -9,6 +9,7 @@ eval "$(pyenv init -)"
 local pip_reqs="`pyenv root`"'/neovim-packages'
 for py_v in 2 3; do
     pyenv activate neovim"$py_v"
+    pyenv exec pip install --quiet wheel setuptools pip
     pyenv exec pip install --quiet --requirement "$pip_reqs"
 done
 
@@ -35,6 +36,12 @@ local goget_reqs=(
 for r in ${goget_reqs}; do
     go get -u "$r"
 done
+
+
+# compile editor binaries last
+brew update
+brew upgrade vim    || true
+brew upgrade neovim || true
 
 
 $EDITOR +PlugUpgrade +qall

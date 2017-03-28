@@ -1,4 +1,5 @@
 " ftdetect/sql
+scriptencoding utf-8
 
 
 let g:sql_type_default = 'pgsql'

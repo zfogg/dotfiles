@@ -1,0 +1,3 @@
+grep "^export" ~/.launchd.conf | while IFS=' =' read ignoreexport envvar ignorevalue; do
+  launchctl setenv ${envvar} ${!envvar}
+done

@@ -2,29 +2,13 @@
 # vim: set fdm=marker:
 
 
-# brew's zsh {{{
+# zsh {{{
 export ZDOTDIR="$HOME"
 export   ZSHRC="$ZDOTDIR/.zshrc"
 # }}}
 
 
-# shell help {{{
-export HELPDIR="${BREW}/share/zsh/help"
-unalias run-help 2>/dev/null
-autoload -U run-help
-# }}}
-
-
-#export TERM="xterm-256color"
-export COLORTERM="$TERM"
-if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
-    export TERMINAL_DOTAPP="true"
-    # Correctly display UTF-8 with combining characters:
-    setopt combiningchars
-elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
-    export ITERM_DOTAPP="true"
-fi
-
+# $SHELL config {{{
 export OSX="$(
     [[ "`uname`" == "Darwin" ]]
     [[ "$?" == "0" ]] \
@@ -34,17 +18,73 @@ export SHELL_NAME="$(
     [[ "$OSX" == "$TRUE" ]] \
         && ps -p$$ -ocommand= | tr -d '-' \
         || ps -p$$ -ocmd=)"
+# }}}
 
+
+# $SHELL help {{{
+export HELPDIR="${BREW}/share/zsh/help"
+unalias run-help 2>/dev/null
+autoload -U run-help
+# }}}
+
+
+# terminal {{{
+#export TERM="xterm-256color"
+export COLORTERM="$TERM"
+if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+    export TERMINAL_DOTAPP="true"
+    # Correctly display UTF-8 with combining characters:
+    setopt combiningchars
+elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+    export ITERM_DOTAPP="true"
+fi
+# }}}
+
+
+# groovy {{{
+export GROOVY_HOME="$BREW/opt/groovy/libexec"
+# }}}
+
+
+# golang {{{
 export GOPATH=~/src/go
 export GOROOT="$BREW/opt/go/libexec"
+# }}}
 
-export GROOVY_HOME="$BREW/opt/groovy/libexec"
+
+# node {{{
+export NVM_DIR=~/.nvm
+# }}}
+
+
+# python {{{
+export PIP_REQUIRE_VIRTUALENV=true
+    # pyenv {{{
+    export PYENV_SHELL=zsh
+    export PYENV_ROOT=~/.pyenv
+    export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
+    export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
+    export PYTHON_CONFIGURE_OPTS=$(echo \
+        "--enable-framework" \
+        "--enable-ipv6" \
+        "--enable-toolbox-glue" \
+        "--enable-big-digits" \
+        "--enable-unicode" \
+        "--with-thread" \
+        "cc=clang")
+    # }}}
+    # pipenv {{{
+    export PIPENV_SHELL_COMPAT="$TRUE"
+    export PIPENV_VENV_IN_PROJECT="$TRUE"
+    export PIPENV_MAX_DEPTH='4'
+    # }}}
+# }}}
 
 
 # path, manpath, fpath {{{
-typeset -U  path
-typeset -U  fpath
-typeset -U  manpath
+typeset -U path
+typeset -U fpath
+typeset -U manpath
 
 # new vars
 typeset -aU classpath
@@ -54,11 +94,11 @@ typeset -xT INFOPATH infopath
 
 path=(
     ~/bin
-    $PYENV_ROOT/shims
+    "$PYENV_ROOT"/shims
     ~/{.cabal,.cargo}/bin
-    $GOPATH/bin
-    $GOROOT/bin
-    $BREW/bin
+    "$GOPATH"/bin
+    "$GOROOT"/bin
+    "$BREW"/bin
     $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r)
 )
 
@@ -66,19 +106,19 @@ fpath=(
     ~/.zsh/site-functions
     ~/.zsh/.oh-my-zsh/plugins/*/_*(.:h)
     ~/.zsh/complete
-    $BREW/share/zsh-completions
-    $BREW/share/zsh/{site-functions,functions})
+    "$BREW"/share/zsh-completions
+    "$BREW"/share/zsh/{site-functions,functions})
 
 manpath=(
-    $BREW/share/man
+    "$BREW"/share/man
     /usr/share/man)
 
 infopath=()
 
 classpath=(
-    $GROOVY_HOME/embeddable
-    $GROOVY_HOME/embeddable/groovy-all-2.4.7.jar
-    $classpath)
+    "$GROOVY_HOME"/embeddable
+    "$GROOVY_HOME"/embeddable/groovy-all-2.4.7.jar
+    "$classpath")
 
 if [[ "$OSX" == "$TRUE" ]]; then
     local brew_gnu_progs=(
@@ -88,15 +128,15 @@ if [[ "$OSX" == "$TRUE" ]]; then
         gnu-tar
         gnu-which)
     path=(
-        $BREW/opt/${^brew_gnu_progs}/libexec/gnubin
-        $BREW/opt/ccache/libexec
+        "$BREW"/opt/${^brew_gnu_progs}/libexec/gnubin
+        "$BREW"/opt/ccache/libexec
         $path)
     manpath=(
-        $BREW/opt/${^brew_gnu_progs}/libexec/gnuman
-        $manpath)
+        "$BREW"/opt/${^brew_gnu_progs}/libexec/gnuman
+        "$manpath")
     infopath=(
-        $BREW/opt/${^brew_gnu_progs}/share/info
-        $infopath)
+        "$BREW"/opt/${^brew_gnu_progs}/share/info
+        "$infopath")
 fi
 # }}}
 
@@ -123,7 +163,7 @@ typeset -xT PKG_CONFIG_PATH pkg_config_path     ':'
 cppflags+=( '-O2' )
 
 function opt_dep() {
-    local opt_root=${BREW}/opt
+    local opt_root=$BREW/opt
     local dep_root=${opt_root}/${1:-\$}
     if [ ! -d $dep_root ]; then
         >&2 echo "$0() - err\n\tdep_root $dep_root"
@@ -168,90 +208,12 @@ opt_dep postgresql-9.5 bin
 #opt_dep llvm       bin:libexec
 #opt_dep curl       bin:libexec
 
-export OPENSSL_ROOT_DIR="$BREW"'/opt/openssl'
-export OPENSSL_INCLUDE_DIR="$OPENSSL_ROOT_DIR"'/include'
+export OPENSSL_ROOT_DIR="$BREW"/opt/openssl
+export OPENSSL_INCLUDE_DIR="$OPENSSL_ROOT_DIR"/include
 
 cflags="$cppflags"
 
 library_path=(
-    $BREW/lib
-    $library_path)
-# }}}
-
-
-# colors {{{
-#   from: http://mediadoneright.com/content/ultimate-git-ps1-bash-prompt
-
-# Reset
-export color_off="\[\033[0m\]"       # Text Reset
-
-# Regular Colors
-export color_black="\[\033[0;30m\]"        # Black
-export color_red="\[\033[0;31m\]"          # Red
-export color_green="\[\033[0;32m\]"        # Green
-export color_yellow="\[\033[0;33m\]"       # Yellow
-export color_blue="\[\033[0;34m\]"         # Blue
-export color_purple="\[\033[0;35m\]"       # Purple
-export color_cyan="\[\033[0;36m\]"         # Cyan
-export color_white="\[\033[0;37m\]"        # White
-
-# Bold
-export color_b_black="\[\033[1;30m\]"       # Black
-export color_b_red="\[\033[1;31m\]"         # Red
-export color_b_green="\[\033[1;32m\]"       # Green
-export color_b_yellow="\[\033[1;33m\]"      # Yellow
-export color_b_blue="\[\033[1;34m\]"        # Blue
-export color_b_purple="\[\033[1;35m\]"      # Purple
-export color_b_cyan="\[\033[1;36m\]"        # Cyan
-export color_b_white="\[\033[1;37m\]"       # White
-
-# Underline
-export color_u_black="\[\033[4;30m\]"       # Black
-export color_u_red="\[\033[4;31m\]"         # Red
-export color_u_green="\[\033[4;32m\]"       # Green
-export color_u_yellow="\[\033[4;33m\]"      # Yellow
-export color_u_blue="\[\033[4;34m\]"        # Blue
-export color_u_purple="\[\033[4;35m\]"      # Purple
-export color_u_cyan="\[\033[4;36m\]"        # Cyan
-export color_u_white="\[\033[4;37m\]"       # White
-
-# Background
-export color_bg_black="\[\033[40m\]"       # Black
-export color_bg_red="\[\033[41m\]"         # Red
-export color_bg_green="\[\033[42m\]"       # Green
-export color_bg_yellow="\[\033[43m\]"      # Yellow
-export color_bg_blue="\[\033[44m\]"        # Blue
-export color_bg_purple="\[\033[45m\]"      # Purple
-export color_bg_cyan="\[\033[46m\]"        # Cyan
-export color_bg_white="\[\033[47m\]"       # White
-
-# High Intensty
-export color_i_black="\[\033[0;90m\]"       # Black
-export color_i_red="\[\033[0;91m\]"         # Red
-export color_i_green="\[\033[0;92m\]"       # Green
-export color_i_yellow="\[\033[0;93m\]"      # Yellow
-export color_i_blue="\[\033[0;94m\]"        # Blue
-export color_i_purple="\[\033[0;95m\]"      # Purple
-export color_i_cyan="\[\033[0;96m\]"        # Cyan
-export color_i_white="\[\033[0;97m\]"       # White
-
-# Bold High Intensty
-export color_bi_black="\[\033[1;90m\]"      # Black
-export color_bi_red="\[\033[1;91m\]"        # Red
-export color_bi_green="\[\033[1;92m\]"      # Green
-export color_bi_yellow="\[\033[1;93m\]"     # Yellow
-export color_bi_blue="\[\033[1;94m\]"       # Blue
-export color_bi_purple="\[\033[1;95m\]"     # Purple
-export color_bi_cyan="\[\033[1;96m\]"       # Cyan
-export color_bi_white="\[\033[1;97m\]"      # White
-
-# High Intensty backgrounds
-export color_bg_iblack="\[\033[0;100m\]"   # Black
-export color_bg_ired="\[\033[0;101m\]"     # Red
-export color_bg_igreen="\[\033[0;102m\]"   # Green
-export color_bg_iyellow="\[\033[0;103m\]"  # Yellow
-export color_bg_iblue="\[\033[0;104m\]"    # Blue
-export color_bg_ipurple="\[\033[10;95m\]"  # Purple
-export color_bg_icyan="\[\033[0;106m\]"    # Cyan
-export color_bg_iwhite="\[\033[0;107m\]"   # White
+    "$BREW"/lib
+    "$library_path")
 # }}}
