@@ -2,11 +2,12 @@
 scriptencoding utf-8
 
 
-finish " FIXME: not using this plugin
+"finish " FIXME: not using this plugin
+if (!exists('g:incsearch')) | finish | endif
 
 
 "set hlsearch
-let g:incsearch#auto_nohlsearch                   = 1
+let g:incsearch#auto_nohlsearch                   = 0
 let g:incsearch#consistent_n_direction            = 1
 let g:incsearch#do_not_save_error_message_history = 1
 

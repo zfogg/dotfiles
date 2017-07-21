@@ -20,8 +20,9 @@ Plug 'tmux-plugins/vim-tmux-focus-events'    , PIf(!empty($TMUX)) |
 
 
 Plug 'chriskempson/base16-vim' |
-    \ Plug 'AfterColors.vim'
-Plug 'AnsiEsc.vim'
+    \ Plug 'vim-scripts/AfterColors.vim'
+"Plug 'AnsiEsc.vim'
+Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'haya14busa/incsearch.vim'
 
 
