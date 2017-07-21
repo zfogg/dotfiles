@@ -10,9 +10,10 @@ noremap : <Nop>
 noremap ; :
 
 
-unmap v
-
-unmap y
+if has('nvim')
+    unmap v
+    unmap y
+endif
 
 
 call z#keys#Tmux()

@@ -2,6 +2,9 @@
 scriptencoding utf-8
 
 
+if !has('nvim') | finish | endif
+
+
 set completeopt=menuone,noinsert,noselect
 let g:neosnippet#enable_completed_snippet = 1
 

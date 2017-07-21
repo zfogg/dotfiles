@@ -5,21 +5,21 @@ scriptencoding utf-8
 if exists('g:vimpager') | finish | endif
 
 
-let g:NERDTreeAutoCenter                = 1
+let g:NERDTreeAutoCenter                = 0
 let g:NERDTreeAutoCenterThreshold       = 5
 
 let g:NERDTreeCaseSensitiveSort         = 0
 let g:NERDTreeSortHiddenFirst           = 1
-let g:NERDTreeShowHidden                = 1
+let g:NERDTreeShowHidden                = 0
 
-let g:NERDTreeChDirMode                 = 2
+let g:NERDTreeChDirMode                 = 1
 let g:NERDTreeMouseMode                 = 2
 let g:NERDTreeHijackNetrw               = 1
 let g:NERDTreeCascadeSingleChildDir     = 1
 let g:NERDTreeCascadeOpenSingleChildDir = 1
 let g:NERDTreeAutoDeleteBuffer          = 1
 
-let g:NERDTreeHighlightCursorline       = 1
+let g:NERDTreeHighlightCursorline       = 0
 let g:NERDTreeWinPos                    = 'left'
 let g:NERDTreeWinSize                   = 29
 let g:NERDTreeMinimalUI                 = 1
@@ -31,7 +31,8 @@ let g:NERDTreeStatusline                = ''
             \.'%2l'
 
 let g:NERDTreeCreatePrefix  = 'silent! keepald keepjumps keepmarks keeppatterns'
-let g:NERDTreeBookmarksFile = g:dotvim_f.'/.cache/NERDTree.bookmarks'
+let s:dotvim_f = get(g:, 'dotvim_f', $HOME.'/.vim')
+let g:NERDTreeBookmarksFile = s:dotvim_f.'/.cache/NERDTree.bookmarks'
 
 let g:NERDTreeRespectWildIgnore = 1
 let g:NERDTreeIgnore            = [
@@ -56,7 +57,9 @@ let g:NERDTreeIgnore            = [
     \ '' . '.svn'             . '$' . '[[dir]]'  ,
     \ '' . 'node_modules'     . '$' . '[[dir]]'  ,
     \ '' . 'bower_components' . '$' . '[[dir]]'  ,
+    \ '' . 'vendor'           . '$' . '[[dir]]'  ,
     \ '' . '__pycache__'      . '$' . '[[dir]]'  ,
+    \ '' . 'dist'             . '$' . '[[dir]]'  ,
 \ ]
 
 

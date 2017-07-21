@@ -13,7 +13,7 @@ alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 
 alias ql='quick-look'
 
-alias ls='ls --color=auto --group-directories-first'
+alias ls='gls --color=auto --group-directories-first'
 alias  k='ls -LhGstcr'
 alias  l='k -1'
 alias ll='l -A'
@@ -70,7 +70,10 @@ alias grv='git remote -v'
 alias gp='git push'
 
 
-alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components" -L 5'
+alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public" -L 5'
+
+
+alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
 
 function echoer() {
@@ -125,3 +128,6 @@ function npm-do {
 function gpip()  {PIP_REQUIRE_VIRTUALENV='' pip  "$@"}
 function gpip2() {PIP_REQUIRE_VIRTUALENV='' pip2 "$@"}
 function gpip3() {PIP_REQUIRE_VIRTUALENV='' pip3 "$@"}
+
+
+function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }

@@ -12,7 +12,7 @@ func! neomakeft#SetupFt(ft, ...) abort
     endfor
     let l:neomakers_var = 'g:neomake_'.a:ft.'_enabled_makers'
     exe 'let '.l:neomakers_var.' = '.string(l:opts.makers)
-    if l:opts.autocmds
+    if exists(l:opts.autocmds)
         call <SID>MakeAuFt(a:ft)
     endif
 endfunc

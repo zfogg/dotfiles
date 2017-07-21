@@ -9,20 +9,7 @@ func! PIf(cond, ...) abort
 endfunc
 
 
-let ft = {
-    \'py':     ['python', 'python3'],
-    \'js':     ['javascript', 'javascript.jsx'],
-    \'cx':     ['c', 'cpp', 'objc', 'objcpp', 'ch'],
-    \'jinja':  ['jinja', 'jinja.html', 'sls'],
-    \'markup': ['xml', 'html', 'jinja.html'],
-    \'styles': ['css', 'sass', 'scss', 'less', 'stylus'],
-    \'jade':   ['jade', 'pug'],
-    \'image':  ['jpg', 'jpeg', 'gif', 'png', 'ico'],
-    \'config': ['toml', 'yaml', 'json', 'markdown', 'apiblueprint'],
-    \'scpt':   ['applescript', 'osascript'],
-    \'clj':    ['clojure', 'clojurescript'],
-    \'sql':    ['sql', 'pgsql'],
-\}
+let ft = copy(z#constants#globals#Ft())
 
 
 call plug#begin('~/.vim/bundle')
@@ -57,82 +44,97 @@ call plug#begin('~/.vim/bundle')
     Plug 'Shougo/neoinclude.vim' |
         \Plug 'neomake/neomake', PIf(has('nvim'))
     " completion
+    Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'}) |
+        \Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'}) |
+        \Plug 'Shougo/denite.nvim', PIf(has('nvim')) |
+        \Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
     Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'}) |
+        \Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))     |
+        \Plug 'Shougo/echodoc.vim'                                  |
         \Plug 'Shougo/neco-syntax'                                  |
         \Plug 'Shougo/neco-vim',     {'for': ['vim']}               |
         \Plug 'zchee/deoplete-zsh',  {'for': ['zsh']}               |
-        \Plug 'zchee/deoplete-go',   {'for': ['go'], 'do': 'make',} |
-        \Plug 'zchee/deoplete-jedi', {'for': ft.py} |
-        \Plug 'zchee/deoplete-clang', {'for': ft.cx, } |
+        \Plug 'zchee/deoplete-go',   {'for': ['go'], 'do': 'make'}  |
+        \Plug 'zchee/deoplete-jedi', {'for': ft['py']}              |
+        \Plug 'zchee/deoplete-clang', {'for': ft['cx'], }           |
         \Plug 'racer-rust/vim-racer', {'for': ['rust'], }           |
-        \Plug 'carlitux/deoplete-ternjs', {
-            \'for': ft.js, }             |
+        \Plug 'carlitux/deoplete-ternjs', {'for': ft['js'], }       |
         \Plug 'eagletmt/neco-ghc',  {'for' : ['haskell'], }         |
+        \Plug 'fszymanski/deoplete-emoji', PIf(has('mac'))          |
         \Plug 'Shougo/context_filetype.vim'
     " snippets
-    Plug 'Shougo/neosnippet' |
-        \Plug 'Shougo/neosnippet-snippets'
+    Plug 'Shougo/neosnippet', PIf(has('nvim')) |
+        \Plug 'Shougo/neosnippet-snippets', PIf(has('nvim'))
     " etc
     Plug 'ervandew/supertab'
     Plug 'tpope/vim-rsi'
+    Plug 'miya0001/vim-dict-wordpress',   {'for': ft['php']}
+    Plug 'MarcWeber/vim-addon-local-vimrc'
 " }}}
 
 
 " Language support. {{{
-    Plug 'lifepillar/pgsql.vim',       {'for': ft.sql}
+    Plug 'chr4/nginx.vim'
+    Plug 'wavded/vim-stylus',             {'for': ft['stylus']}
+    Plug 'lumiliet/vim-twig',             {'for': ft['twig']}
+    Plug 'joonty/vdebug',                 {'for': ft['php']}
+    "Plug 'StanAngeloff/php.vim',          {'for': ft['php']}
+    Plug '2072/PHP-Indenting-for-VIm',    {'for': ft['php']}
+    Plug 'lvht/phpfold.vim',              {'for': ft['php']}
+    Plug 'othree/html5.vim'
+    Plug 'lifepillar/pgsql.vim',          {'for': ft['sql']}
     "Plug 'sheerun/vim-polyglot'
-    Plug 'lambdalisue/vim-pyenv',      {'for': ft.py}
-    Plug 'python-mode/python-mode',    {'for': ft.py}
+    Plug 'lambdalisue/vim-pyenv',         {'for': ft['py']}
+    "Plug 'python-mode/python-mode',       {'for': ft['py']}
     Plug 'gisphm/vim-gitignore'
-    Plug 'rust-lang/rust.vim',         {'for': ['rust'], }
-    Plug 'applescript.vim',            {'for': ft.scpt}
-    Plug 'guns/vim-clojure-highlight', {'for': ft.clj}
-    Plug 'pangloss/vim-javascript',    {'for': ft.js} |
+    Plug 'rust-lang/rust.vim',            {'for': ft['rs'], }
+    Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
+    Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
+    Plug 'pangloss/vim-javascript',       {'for': ft['js']} |
         \Plug 'Wolfy87/vim-syntax-expand'
-    Plug 'ternjs/tern_for_vim',        {'for': ft.js,
-                                        \'do': 'npm install'}
-    Plug 'othree/jspc.vim',            {'for': ft.js}
-    Plug 'itchyny/vim-haskell-indent', {'for': ['haskell'] }
+    Plug 'ternjs/tern_for_vim',           {'for': ft['js'],
+                                           \'do': 'npm install'}
+    Plug 'othree/jspc.vim',               {'for': ft['js']}
+    Plug 'itchyny/vim-haskell-indent',    {'for': ['haskell'] }
     " markdown
     Plug 'plasticboy/vim-markdown',            {'for': ['markdown']} |
         \Plug 'nelstrom/vim-markdown-folding', {'for': ['markdown']}
     " web
     Plug 'saltstack/salt-vim', {'for': ['sls']}
-    Plug 'lepture/vim-jinja',  {'for': ft.jinja}
-    Plug 'mattn/emmet-vim',    {'for': ft.markup + ft.styles}
+    Plug 'lepture/vim-jinja',  {'for': ft['jinja']}
+    Plug 'mattn/emmet-vim',    {'for': ft['markup'] + ft['styles']}
     " clang
-    Plug 'justmao945/vim-clang',      {'for': ft.cx} |
-    Plug 'libclang-vim/libclang-vim', {'for': ft.cx} |
+    Plug 'justmao945/vim-clang',      {'for': ft['cx']} |
+    Plug 'libclang-vim/libclang-vim', {'for': ft['cx']} |
         \Plug 'kana/vim-textobj-user'                                          |
-        \Plug 'libclang-vim/vim-textobj-clang', {'for': ft.cx}
-    "\Plug 'libclang-vim/vim-textobj-function-clang', {'for': ft.cx}
+        \Plug 'libclang-vim/vim-textobj-clang', {'for': ft['cx']}
+    "\Plug 'libclang-vim/vim-textobj-function-clang', {'for': ft['cx']}
     Plug 'kchmck/vim-coffee-script', {'for': ['coffee']}
     Plug 'tweekmonster/braceless.vim',
-        \{'for': ft.py + ft.jade + ['coffee',
+        \{'for': ft['py'] + ft['jade'] + ['coffee',
             \'yaml', 'haml',
         \]}
-    Plug 'openvpn'
-    Plug 'vim-utils/vim-man'
+    Plug 'vim-scripts/openvpn'
+    "Plug 'vim-utils/vim-man'
     Plug 'chrisbra/csv.vim',    {'for': ['csv']}
     Plug 'cespare/vim-toml',    {'for': ['toml']}
-    Plug 'digitaltoad/vim-pug', {'for': ft.jade}
-    Plug 'tpope/vim-afterimage', {'for': ft.image}
+    Plug 'digitaltoad/vim-pug', {'for': ft['jade']}
+    Plug 'tpope/vim-afterimage', {'for': ft['image']}
     Plug 'kylef/apiblueprint.vim', {'for': ['apiblueprint']}
 " }}}
 
 
 " Beautify Vim. {{{
     Plug 'chriskempson/base16-vim' |
-        \ Plug 'AfterColors.vim'
+        \ Plug 'vim-scripts/AfterColors.vim'
     Plug 'nathanaelkane/vim-indent-guides'
     Plug 'luochen1990/rainbow'
-    Plug 'AnsiEsc.vim'
-    Plug 'ap/vim-css-color',          { 'for': ft.styles }
-    Plug 'arakashic/chromatica.nvim', { 'for': ft.cx  }
+    Plug 'ap/vim-css-color',          { 'for': ft['styles'] }
+    Plug 'arakashic/chromatica.nvim', { 'for': ft['cx']  }
     "Plug 'qstrahl/vim-matchmaker'
     "Plug 'machakann/vim-highlightedyank', { 'on': '<Plug>(highlightedyank)' }
     Plug 'ryanoasis/vim-devicons'
-    "Plug 'haya14busa/incsearch.vim' |
+    Plug 'haya14busa/incsearch.vim' |
         \Plug 'haya14busa/incsearch-easymotion.vim' |
         \Plug 'haya14busa/incsearch-fuzzy.vim'
     Plug 'haya14busa/vim-keeppad'
@@ -176,6 +178,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'editorconfig/editorconfig-vim'
     Plug 'kana/vim-niceblock'
     Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-sleuth'
     Plug 'sickill/vim-pasta'
     Plug 'unblevable/quick-scope'
     Plug 'kana/vim-operator-user' |

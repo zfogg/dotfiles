@@ -280,6 +280,9 @@ GREP_ARGS+=' --exclude-dir={.bzr,cvs,.git,.hg,.svn,node_modules}'
 export RG_PRG='rg'
 export RG_ARGS='--follow --hidden --pretty --ignore-case'
 RG_ARGS+=" --ignore-file=${HOME}/.rgignore"
+RG_ARGS+=" --before-context 1"
+RG_ARGS+=" --after-context  1"
+RG_ARGS+=" --max-columns 512"
 
 export AG_PRG='ag'
 export AG_ARGS='--follow --hidden --nogroup'
@@ -304,6 +307,11 @@ if [ -n "${GREPPRG_PRG+x}" ] && [ -n"${GREPPRG_ARGS+x}" ]; then
 else
     export GREPPRG="${GREPPRG:-command grep}"
 fi
+# }}}
+
+
+# Vagrant {{{
+export VAGRANT_DEFAULT_PROVIDER='parallels'
 # }}}
 
 
@@ -352,6 +360,17 @@ if command_exists nvm; then
 fi
 # }}}
 
+# jenv {{{
+if command_exists jenv; then
+  eval "$(jenv init -)"
+fi
+# }}}
+
+# direnv {{{
+if command_exists direnv; then
+  eval "$(direnv hook zsh)"
+fi
+# }}}
 
 # rust {{{
 export RUSTUP_HOME=~/.multirust
@@ -373,13 +392,16 @@ export     PGPORT="5432"
 
 # vim {{{
 export EDITOR='nvim'
-export VISUAL="$EDITOR"
+export VISUAL="${EDITOR}"
+export MANPAGER="${EDITOR} -c 'set ft=man' -c 'AnsiEsc' -"
+export LESS='-R'
+export LESSOPEN=' | vimcat -o - %s'
 #}}}
 
 
 # pager {{{
 if command_exists vimpager; then
-    export VIMPAGER_VIM="`which nvim`"
+    export VIMPAGER_VIM="`which vim`"
     export VIMPAGER_RC=~/.vimpagerrc
     export PAGER='vimpager'
 else
@@ -398,6 +420,8 @@ aliasof() {
         sed "$args" 's|'"$1"'=(.*)|\1|' |\
         sed "$args" "s|'||g"
 }
+
+unset MAILCHECK
 # }}}
 
 

@@ -2,6 +2,29 @@
 scriptencoding utf-8
 
 
+func! z#constants#globals#Ft() abort
+  let g:zft = {
+      \'py':     ['python', 'python3'],
+      \'js':     ['javascript', 'javascript.jsx'],
+      \'cx':     ['c', 'cpp', 'objc', 'objcpp', 'ch'],
+      \'jinja':  ['jinja', 'jinja.html', 'sls'],
+      \'markup': ['xml', 'html', 'jinja.html'],
+      \'styles': ['css', 'sass', 'scss', 'less', 'stylus'],
+      \'jade':   ['jade', 'pug'],
+      \'image':  ['jpg', 'jpeg', 'gif', 'png', 'ico'],
+      \'config': ['toml', 'yaml', 'json', 'markdown', 'apiblueprint'],
+      \'scpt':   ['applescript', 'osascript'],
+      \'clj':    ['clojure', 'clojurescript'],
+      \'sql':    ['sql', 'pgsql'],
+      \'vim':    ['vim'],
+      \'rs':     ['rust'],
+      \'php':    ['php'],
+      \'twig':   ['twig', 'html.twig'],
+      \'stylus': ['stylus']
+  \}
+  return g:zft
+endfunc
+
 func! z#constants#globals#ConfigPaths() abort
     " g:mvvar =~# escape('s:\i+(_(l|f|r))?', '+()|?')
         " g:myvar_l  (l)ocal path basename
@@ -31,7 +54,8 @@ endfunc
 func! z#constants#globals#Python() abort
     if     exists('$PYENV_ROOT')
         let l:py3_root = $PYENV_ROOT.'/versions/neovim3'
-        let l:py_root  = $PYENV_ROOT.'/versions/neovim2'
+        "let l:py_root  = $PYENV_ROOT.'/versions/neovim2'
+        let l:py_root  = $PYENV_ROOT.'/versions/2.7.13'
     elseif exists('$BREW')
         let l:py3_root = $BREW
         let l:py_root  = $BREW
@@ -45,7 +69,7 @@ endfunc
 func! z#constants#globals#Vimpager() abort
     " V1
     let g:vimpager = {
-        \ 'enabled'     : 0,
+        \ 'enabled'     : 1,
         \ 'X11'         : 0,
         \ 'ansiesc'     : 1,
         \ 'passthrough' : 1,
@@ -57,9 +81,9 @@ func! z#constants#globals#Vimpager() abort
         \ 'scrolloff'   : 5,
     \ }
     " V2
-    let vimpager_use_gvim        = 0
-    let vimpager_passthrough     = 1
-    let vimpager_disable_x11     = 1
-    let vimpager_scrolloff       = 5
-    let vimpager_disable_ansiesc = 1
+    let g:vimpager_use_gvim        = 0
+    let g:vimpager_passthrough     = 1
+    let g:vimpager_disable_x11     = 1
+    let g:vimpager_scrolloff       = 5
+    let g:vimpager_disable_ansiesc = 0
 endfunc

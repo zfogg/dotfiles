@@ -22,3 +22,6 @@ export BREW="/usr/local"
 export HOMEBREW_GITHUB_API_TOKEN="941d5149b50fa9453a8d5094818184483057165c"
 
 export DOTFILES_SETENV="1"
+
+export CC="clang"
+export CXX="clang++"

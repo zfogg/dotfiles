@@ -58,7 +58,7 @@ export NVM_DIR=~/.nvm
 
 
 # python {{{
-export PIP_REQUIRE_VIRTUALENV=true
+#export PIP_REQUIRE_VIRTUALENV=true
     # pyenv {{{
     export PYENV_SHELL=zsh
     export PYENV_ROOT=~/.pyenv
@@ -81,6 +81,12 @@ export PIP_REQUIRE_VIRTUALENV=true
 # }}}
 
 
+# compilers {{{
+export  CC='clang'
+export CXX='clang++'
+# }}}
+
+
 # path, manpath, fpath {{{
 typeset -U path
 typeset -U fpath
@@ -94,23 +100,25 @@ typeset -xT INFOPATH infopath
 
 path=(
     ~/bin
+    ~/.config/composer/vendor/bin
+    ~/.platformio/penv/bin
+    "$BREW"/opt/php71/bin
+    "$BREW"/opt/node/bin
     "$PYENV_ROOT"/shims
+    ~/.jenv/bin
     ~/{.cabal,.cargo}/bin
     "$GOPATH"/bin
     "$GOROOT"/bin
+    "$BREW"/sbin
     "$BREW"/bin
-    $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r)
-)
+    $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r))
 
 fpath=(
     ~/.zsh/site-functions
     ~/.zsh/.oh-my-zsh/plugins/*/_*(.:h)
-    ~/.zsh/complete
-    "$BREW"/share/zsh-completions
-    "$BREW"/share/zsh/{site-functions,functions})
+    ~/.zsh/complete)
 
 manpath=(
-    "$BREW"/share/man
     /usr/share/man)
 
 infopath=()
@@ -118,7 +126,7 @@ infopath=()
 classpath=(
     "$GROOVY_HOME"/embeddable
     "$GROOVY_HOME"/embeddable/groovy-all-2.4.7.jar
-    "$classpath")
+    $classpath)
 
 if [[ "$OSX" == "$TRUE" ]]; then
     local brew_gnu_progs=(
@@ -131,12 +139,18 @@ if [[ "$OSX" == "$TRUE" ]]; then
         "$BREW"/opt/${^brew_gnu_progs}/libexec/gnubin
         "$BREW"/opt/ccache/libexec
         $path)
+    fpath=(
+        "$BREW"/share/zsh-completions
+        "$BREW"/share/zsh/{site-functions,functions}
+        $fpath)
     manpath=(
         "$BREW"/opt/${^brew_gnu_progs}/libexec/gnuman
-        "$manpath")
+        "$BREW"/share/man
+        $manpath
+    )
     infopath=(
         "$BREW"/opt/${^brew_gnu_progs}/share/info
-        "$infopath")
+        $infopath)
 fi
 # }}}
 
@@ -203,6 +217,7 @@ opt_dep openssl        bin
 opt_dep readline
 opt_dep libgit2        '$'
 opt_dep postgresql-9.5 bin
+opt_dep gpg-agent      bin
 
 # NOTE: these break curl, homebrew, etc
 #opt_dep llvm       bin:libexec
@@ -215,5 +230,5 @@ cflags="$cppflags"
 
 library_path=(
     "$BREW"/lib
-    "$library_path")
+    $library_path)
 # }}}

@@ -22,11 +22,11 @@ set concealcursor=nvic
 set sessionoptions-=blank,buffers " The 'Session' plugin does this on save.
 set updatetime=250                " for CursorHold autocmd (milliseconds)
 
-set path=,,
-set path+=**
+"set path=,,
+"set path+=**
 
-set cdpath=,,
-set cdpath+=~
+"set cdpath=,,
+"set cdpath+=.
 
 let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 
@@ -75,6 +75,8 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
     set backspace=indent,eol,start " Allow backspacing over autoindent, EOL, and BOL.
     set autoindent                 " Always set autoindenting on.
     set lazyredraw                 " For better macro performance.
+    set synmaxcol=128
+    syntax sync minlines=256
 " }}} Moving around and editing
 
 
@@ -114,7 +116,7 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 
 " Folding. {{{
     set foldenable
-    "set foldmethod=syntax
+    set foldmethod=syntax
     set foldopen=mark,percent,quickfix,tag,undo
     set foldnestmax=1
     set foldminlines=3
@@ -125,9 +127,9 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
     set noautowrite      " Never write a file unless I request it.
     set noautowriteall   " NEVER.
     set noautoread       " Don't automatically re-read changed files.
-    set modeline         " Allow vim options to be embedded in files;
-    set modelines=3      " they must be within the first or last 5 lines.
-    set ffs=unix,dos,mac " Try recognizing dos, unix, and mac line endings.
+    set modeline         " Allow vim options to be embedded in files.
+    set modelines=3      " look in the first or last `n` lines.
+    set ffs=unix,mac,dos " Try recognizing dos, unix, and mac line endings.
 " }}}
 
 

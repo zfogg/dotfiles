@@ -7,10 +7,11 @@ trap 'bin-abort' ERR
 
 eval "$(pyenv init -)"
 local pip_reqs="`pyenv root`"'/neovim-packages'
-for py_v in 2 3; do
+#for py_v in 2 3; do
+for py_v in 3; do
     pyenv activate neovim"$py_v"
     pyenv exec pip install --quiet wheel setuptools pip
-    pyenv exec pip install --quiet --requirement "$pip_reqs"
+    pyenv exec pip install --quiet --requirement "${pip_reqs}${py_v}"
 done
 
 
