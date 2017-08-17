@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh -e
+
+
+source ~/.zsh/site-functions/bin-abort
+trap 'bin-abort' ERR

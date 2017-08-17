@@ -1,6 +1,10 @@
 #!/usr/bin/env zsh -e
 
 
+source ~/.zsh/site-functions/bin-abort
+trap 'bin-abort' ERR
+
+
 n="${1:-/dev/null/invalid}"
 if [[ ! -e "$n" ]]; then
     >&2 echo '🔴  no file '"'$n'"' 😩' && exit 1

@@ -1,0 +1,197 @@
+"*":
+  Hydrogen:
+    debug: true
+  "atom-autocomplete-php":
+    autoloadPaths: [
+      "vendor/autoload.php"
+      "autoload.php"
+      "site/vendor/autoload.php"
+    ]
+    binPhp: "/usr/local/opt/php71/bin/php"
+    verboseErrors: true
+  "atom-beautify":
+    c:
+      default_beautifier: "clang-format"
+    cpp:
+      default_beautifier: "clang-format"
+    general:
+      beautifyEntireFileOnSave: false
+      muteUnsupportedLanguageErrors: true
+    php:
+      beautify_on_save: true
+      cs_fixer_path: "/usr/local/bin/php-cs-fixer"
+      phpcbf_path: "/usr/local/bin/phpcbf"
+    python:
+      beautify_on_save: true
+      max_line_length: 140
+    rust:
+      beautify_on_save: true
+      rustfmt_path: "/Users/zfogg/.cargo/bin/rustfmt"
+    sql:
+      beautify_on_save: true
+      identifiers: "lower"
+    twig:
+      end_with_comma: true
+  "atom-material-ui":
+    colors:
+      abaseColor: "#2c3064"
+      accentColor: "#4cd8c2"
+      predefinedColor: "Indigo"
+    fonts:
+      fontSize: 14
+    tabs:
+      compactTabs: true
+      tintedTabBar: true
+    ui:
+      panelContrast: true
+      panelShadows: true
+  "autocomplete-clang":
+    clangCommand: "/usr/local/opt/ccache/libexec/clang"
+    ignoreClangErrors: false
+    includePaths: [
+      "."
+      "external"
+      "include"
+    ]
+    includeSystemHeadersDocumentation: true
+    "std c++": "c++0x"
+  "autocomplete-haskell":
+    hideHintPanelIfEmpty: true
+  "autocomplete-php":
+    executablePath: "/usr/local/opt/php71/bin/php"
+  build:
+    hidePanelHeading: true
+    overrideThemeColors: false
+    panelVisibility: "Keep Visible"
+    saveOnBuild: true
+    scrollOnError: true
+    statusBar: "Right"
+    stealFocus: false
+  "build-cmake":
+    buildDirectory: "$PROJECT_DIR/.build"
+    executable: "/usr/local/bin/cmake"
+  "clang-format":
+    executable: "/usr/local/bin/clang-format"
+  core:
+    audioBeep: false
+    closeDeletedFileTabs: true
+    disabledPackages: [
+      "language-gfm"
+      "busy-signal"
+      "wordpress-suite"
+      "whitespace"
+      "linter-gcc"
+    ]
+    ignoredNames: [
+      ".git"
+      ".hg"
+      ".svn"
+      ".DS_Store"
+      "._*"
+      "Thumbs.db"
+      "desktop.ini"
+      ".pioenvs"
+      ".piolibdeps"
+      ".clang_complete"
+      ".gcc-flags.json"
+    ]
+    projectHome: "/Users/zfogg/src"
+    reopenProjectMenuCount: 7
+    telemetryConsent: "no"
+    themes: [
+      "one-dark-ui"
+      "base16-tomorrow-dark-theme"
+    ]
+    titleBar: "hidden"
+    warnOnLargeFileLimit: 5
+  docblockr:
+    c_style_block_comments: true
+    deep_indent: true
+    per_section_indent: true
+    short_primitives: true
+  editor:
+    fontFamily: "PT Mono"
+    fontSize: 13
+    invisibles:
+      cr: " "
+      tab: "→"
+    lineHeight: 1.3
+    preferredLineLength: 180
+    scrollPastEnd: true
+    scrollSensitivity: 30
+    showIndentGuide: true
+    showInvisibles: true
+    softWrapHangingIndent: 4
+  "exception-reporting":
+    userId: "bd76adb7-e2c1-64b8-d572-feb110c69f26"
+  "file-icons": {}
+  "hey-pane":
+    expandedWidth: 60
+  "highlight-line":
+    enableBackgroundColor: false
+  linter: {}
+  "linter-clang":
+    clangDefaultCFlags: "-Weverything"
+    clangDefaultCppFlags: "-Weverything -stdlib=libc++ -std=c++0x"
+    clangDefaultObjCFlags: "-Weverything -Wno-objc-missing-property-synthesis -Wno-semicolon-before-method-body"
+    clangDefaultObjCppFlags: "-Weverything -Wno-objc-missing-property-synthesis -Wno-semicolon-before-method-body"
+    clangErrorLimit: 128
+    clangIncludePaths: [
+      "."
+      "include"
+      "external"
+    ]
+    executablePath: "/usr/local/opt/ccache/libexec/clang"
+  "linter-phpcs": {}
+  "linter-ui-default":
+    gutterPosition: "Left"
+    showPanel: true
+    showProviderName: true
+    statusBarClickBehavior: "Jump to next issue"
+    statusBarRepresents: "Current File"
+    tooltipFollows: "Keyboard"
+  minimap: {}
+  "one-dark-ui":
+    tabSizing: "Minimum"
+  "platformio-ide":
+    advanced:
+      checkAuthOnStartup: false
+      customLibraryStorages: "/Users/zfogg/src/arduino/libraries"
+      customPATH: "/Users/zfogg/.platformio/penv/bin"
+    autoUpdateIDE: false
+    highlightActiveProject: false
+  "platformio-ide-terminal":
+    core:
+      mapTerminalsTo: "Folder"
+    style:
+      defaultPanelHeight: "200px"
+      fontFamily: "DejaVu Sans Mono"
+      fontSize: "10"
+    toggles:
+      autoClose: true
+      selectToCopy: false
+  "tool-bar":
+    position: "Right"
+  "tree-view":
+    hideIgnoredNames: true
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ensureSingleTrailingNewline: false
+    removeTrailingWhitespace: false
+  "wordpress-suite":
+    wpcli:
+      admin_email: "admin@cms.allin.dev"
+      admin_password: "allin"
+      admin_user: "admin"
+      dbhost: "cms.allin.dev"
+      dbname: "atom_wp_db_export__cms.allin.dev.sql"
+      dbpass: "hunter2"
+      dbuser: "cms_allin_com"
+      url: "cms.allin.dev/cms_allin_com_development"
+".breakpoints.hydrogen":
+  editor:
+    autoIndent: true
+".php.source.wordpress":
+  editor:
+    softWrap: false

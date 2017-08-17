@@ -1,9 +1,41 @@
-#!/bin/zsh
+#!/usr/bin/env zsh -e
+
+
+local port="${1:-8080}"
+local host="${2:-localhost}"
+
+
+local py="${PYTHON:-python3}"
+
+command_exists "$py" || (
+    echo "❌ invalid executable ‼️"
+    echo "	PYTHON='${py}'"
+    exit 2
+);
+
+
+local pyargs=''
+
+local pyver="`"$py" -V 2>&1       | cut -d' ' -f2`"
+local pyver_major="`echo "$pyver" | cut -d'.' -f1`"
+
+case "$pyver_major" in
+    2) pyargs="-m SimpleHTTPServer ${port}";;
+    3) pyargs="-m http.server ${port} --bind ${host}";;
+    *) echo "❌ invalid version ‼️"
+        echo "	\`${py} -V\` =~ '${pyver}'"
+        exit 3;;
+esac
 
 
 
-local port="${1:-8000}"
-local py="${PYTHON:-python2}"
+function server_() {
+    echo "$pyargs" | xargs "$py" 2>/dev/null
+}
 
-chromium --new-tab "http://localhost:${port}/"
-$py -m SimpleHTTPServer "$port"
+function server() {
+    trap : INT
+    server_ || echo '❕ killing server ⚠️'
+}
+
+server

@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env zsh -e
 
 
 local usr_local=`brew --prefix || echo /usr/local`

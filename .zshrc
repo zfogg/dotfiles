@@ -321,8 +321,8 @@ export WORKON_HOME=~/.virtualenvs
 # brew install pyenv \
 #   pyenv-ccache pyenv-default-packages pyenv-virtualenv pyenv-virtualenvwrapper pyenv-which-ext
 if command_exists pyenv; then
-    #eval  "$(pyenv            init -)"
-    #eval "$(pyenv virtualenv-init -)"
+    eval  "$(pyenv           init -)"
+    eval "$(pyenv virtualenv-init -)"
     export POWERLINE_CONFIG_COMMAND="`which powerline-config`"
 fi
 

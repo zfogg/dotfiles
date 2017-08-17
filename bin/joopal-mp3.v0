@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh -e
+
+
+source ~/.zsh/site-functions/bin-abort
+trap 'bin-abort' ERR
+
+
+local to_convert="${1:-/dev/null}"
+
+local filetype="${:-wav}"
+
+
+if [ "$to_convert" -eq "/dev/null" ];
+    echo "no input files 🙄" && \
+    exit -420
+
+
+for f in $to_convert;
+    ffmpeg -i "$f" \
+        -codec:v copy \
+        -codec:a libmp3lame \
+        -qscale:a 0 \
+            "${f%."$filetype"}.mp3"
