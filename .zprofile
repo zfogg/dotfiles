@@ -101,7 +101,7 @@ typeset -xT INFOPATH infopath
 path=(
     ~/bin
     ~/.config/composer/vendor/bin
-    ~/.platformio/penv/bin
+    #~/.platformio/penv/bin
     "$BREW"/opt/php71/bin
     "$BREW"/opt/node/bin
     "$PYENV_ROOT"/shims

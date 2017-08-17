@@ -70,6 +70,9 @@ alias grv='git remote -v'
 alias gp='git push'
 
 
+alias get='ghq get -u -p --shallow `"pbpaste"`; echo'
+
+
 alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public" -L 5'
 
 
