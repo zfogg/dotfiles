@@ -51,6 +51,9 @@ export GOPATH=~/src/go
 export GOROOT="$BREW/opt/go/libexec"
 # }}}
 
+# mono {{{
+export MONO_GAC_PREFIX="$BREW"
+# }}}
 
 # node {{{
 export NVM_DIR=~/.nvm
@@ -60,19 +63,20 @@ export NVM_DIR=~/.nvm
 # python {{{
 #export PIP_REQUIRE_VIRTUALENV=true
     # pyenv {{{
-    export PYENV_SHELL=zsh
-    export PYENV_ROOT=~/.pyenv
+    export PYENV_SHELL="$SHELL_NAME"
+    export PYENV_ROOT="${HOME}/.pyenv"
     export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
     export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
     export PYTHON_CONFIGURE_OPTS=$(echo \
-        "--enable-framework" \
-        "--enable-ipv6" \
+        "--enable-framework"    \
+        "--enable-ipv6"         \
         "--enable-toolbox-glue" \
-        "--enable-big-digits" \
-        "--enable-unicode" \
-        "--with-thread" \
+        "--enable-big-digits"   \
+        "--enable-unicode"      \
+        "--with-thread"         \
         "cc=clang")
     # }}}
+
     # pipenv {{{
     export PIPENV_SHELL_COMPAT="$TRUE"
     export PIPENV_VENV_IN_PROJECT="$TRUE"
@@ -105,11 +109,12 @@ path=(
     "$BREW"/opt/php71/bin
     "$BREW"/opt/node/bin
     "$PYENV_ROOT"/shims
-    ~/.jenv/bin
+    ~/.jenv/shims
     ~/{.cabal,.cargo}/bin
     "$GOPATH"/bin
     "$GOROOT"/bin
     "$BREW"/sbin
+    "$BREW"/MacGPG2/bin
     "$BREW"/bin
     $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r))
 
@@ -133,8 +138,8 @@ if [[ "$OSX" == "$TRUE" ]]; then
         coreutils
         findutils
         gnu-sed
-        gnu-tar
-        gnu-which)
+        gnu-tar)
+        #gnu-which
     path=(
         "$BREW"/opt/${^brew_gnu_progs}/libexec/gnubin
         "$BREW"/opt/ccache/libexec
@@ -200,7 +205,7 @@ function opt_dep() {
     if [ -d $sharedlib_dir ]; then
         dyld_library_path+=(  $sharedlib_dir )
         ldflags+=(          -L$sharedlib_dir )
-        ldflags+=( -Wl,-rpath,$sharedlib_dir )
+        #ldflags+=( -Wl,-rpath,$sharedlib_dir )
     fi
     local headers_dir=${dep_root}/${5:-include}
     if [ -d $headers_dir ]; then
@@ -215,9 +220,11 @@ function opt_dep() {
 opt_dep libressl       '$'
 opt_dep openssl        bin
 opt_dep readline
-opt_dep libgit2        '$'
-opt_dep postgresql-9.5 bin
-opt_dep gpg-agent      bin
+#opt_dep libgit2        '$'
+#opt_dep postgresql-9.5 bin
+#opt_dep gpg-agent      bin
+
+opt_dep opencv@2       bin
 
 # NOTE: these break curl, homebrew, etc
 #opt_dep llvm       bin:libexec

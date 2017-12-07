@@ -8,12 +8,14 @@ alias vim='$EDITOR'
 alias  vi="$EDITOR"
 alias   v="$EDITOR"
 
+alias python3="python3.6.2"
+
 alias zshrc='$EDITOR '"$DOTFILES"'/.zshrc'
 alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 
 alias ql='quick-look'
 
-alias ls='gls --color=auto --group-directories-first'
+alias ls="${BREW}/bin/gls --color=auto --group-directories-first"
 alias  k='ls -LhGstcr'
 alias  l='k -1'
 alias ll='l -A'
@@ -59,6 +61,17 @@ alias fs='du -shL'
 alias idea='$EDITOR ~/Dropbox/ideas.md'
 
 alias colortest='~/.config/base16-shell/colortest'
+
+function pyeve() { eval "`~/bin/pyeve ${1:-';'}`" }
+
+alias chmod='command -p chmod'
+alias chown='command -p chown'
+alias chgrp='command -p chgrp'
+
+
+# shell output line wrapping
+alias wrapoff='tput rmam'
+alias  wrapon='tput smam'
 
 
 # git

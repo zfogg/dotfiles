@@ -1,9 +1,10 @@
-" ftplugin/vim
+" after/ftplugin/vim
 scriptencoding utf-8
 
 
-setl ts=4
-    \ fdm=marker
-    \ keywordprg=:help
-    \ iskeyword-=#
-    \ iskeyword+=:
+setl tabstop=4
+setl foldmethod=marker
+
+setl keywordprg=:help
+setl iskeyword-=#
+setl iskeyword+=:

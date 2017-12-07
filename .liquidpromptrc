@@ -7,7 +7,15 @@
 #source ~/.config/liquidprompt/nojhan.theme
 #LP_PS1_FILE=~/.config/liquidprompt/nojhan.ps1
 
-LP_PS1_POSTFIX=$'\n'"> "
+LP_PS1_PREFIX=''
+
+if [[ "$ITERM_SHELL_INTEGRATION_INSTALLED" == "Yes" ]]; then
+    # https://www.iterm2.com/documentation-shell-integration.html
+    #   (newline then caret)
+    LP_PS1_POSTFIX=$'\n'"%{$(iterm2_prompt_mark)%}"
+else
+    LP_PS1_POSTFIX=$'\n'"> "
+fi
 
 
 #############
@@ -16,23 +24,23 @@ LP_PS1_POSTFIX=$'\n'"> "
 
 # Maximal value under which the battery level is displayed
 # Recommended value is 75
-LP_BATTERY_THRESHOLD=75
+LP_BATTERY_THRESHOLD=65
 
 # Minimal value after which the load average is displayed
 # Recommended value is 60
-LP_LOAD_THRESHOLD=60
+LP_LOAD_THRESHOLD=70
 
 # Minimal value after which the temperature is displayed (in degrees Celsius)
 # Recommended value is 60
-LP_TEMP_THRESHOLD=60
+LP_TEMP_THRESHOLD=68
 
 # The maximum percentage of the screen width used to display the path
 # Recommended value is 35
-LP_PATH_LENGTH=35
+LP_PATH_LENGTH=55
 
 # How many directories to keep at the beginning of a shortened path
 # Recommended value is 2
-LP_PATH_KEEP=2
+LP_PATH_KEEP=4
 
 # Do you want to display the hostname, even if not connected through network?
 # Defaults to 0 (do not display hostname when locally connected)
@@ -47,7 +55,7 @@ LP_USER_ALWAYS=0
 # Do you want to display the percentages of load/batteries along with their
 # corresponding marks? Set to 0 to only print the colored marks.
 # Defaults to 1 (display percentages)
-LP_PERCENTS_ALWAYS=1
+LP_PERCENTS_ALWAYS=0
 
 # Do you want to use the permissions feature?
 # Recommended value is 1
@@ -59,19 +67,19 @@ LP_ENABLE_SHORTEN_PATH=1
 
 # Do you want to use the proxy detection feature?
 # Recommended value is 1
-LP_ENABLE_PROXY=0
+LP_ENABLE_PROXY=1
 
 # Do you want to use the jobs feature?
 # Recommended value is 1
-LP_ENABLE_JOBS=0
+LP_ENABLE_JOBS=1
 
 # Do you want to use the load feature?
 # Recommended value is 1
-LP_ENABLE_LOAD=0
+LP_ENABLE_LOAD=1
 
 # Do you want to use the battery feature?
 # Recommended value is 1
-LP_ENABLE_BATT=0
+LP_ENABLE_BATT=1
 
 # Do you want to use VCS features with the root account?
 # Recommended value is 0
@@ -107,7 +115,7 @@ LP_ENABLE_RUNTIME=1
 
 # Minimal runtime to be displayed
 # Recommended value is 2
-LP_RUNTIME_THRESHOLD=2
+LP_RUNTIME_THRESHOLD=3
 
 # Display the virtualenv that is currently activated, if any
 # Recommended value is 1
@@ -143,6 +151,13 @@ LP_ENABLE_SSH_COLORS=1
 
 # Specify a list of complete and colon (":") separated paths in which, all vcs
 # will be disabled
-LP_DISABLED_VCS_PATH=""
+LP_DISABLED_VCS_PATH="/usr/local/Homebrew"
+
+#  Make the prompt change color during password-less root access
+LP_ENABLE_SUDO=1
+
+#  Display the fully qualified domain name
+LP_ENABLE_FQDN=0
+
 
 # vim: set et sts=4 sw=4 tw=120 ft=sh:

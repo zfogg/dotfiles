@@ -1,23 +1,30 @@
 #!/usr/bin/env zsh -e
 
 
-source ~/.zsh/site-functions/bin-abort
-trap 'bin-abort' ERR
+#source ~/.zsh/site-functions/bin-abort
+#trap 'bin-abort' ERR
 
-
-local to_convert="${1:-/dev/null}"
 
 local filetype="${:-wav}"
 
+local to_convert="${1:-/dev/null}"
+if [[ "$1" == "/dev/null" ]]; then
+    echo "ERROR: no input files lol" \
+        && exit -420
+fi
 
-if [ "$to_convert" -eq "/dev/null" ];
-    echo "no input files 🙄" && \
-    exit -420
 
+while [ $# -gt 0 ]; do
+    if [[ -e "$1" ]]; then
+        ffmpeg -i "$1" \
+            -codec:v copy \
+            -codec:a libmp3lame \
+            -qscale:a 0 \
+            "${1%."$filetype"}.mp3"
+    else
+        echo "ERROR: bad input file: '$1'" \
+            && exit -520
+    fi
+    shift
+done
 
-for f in $to_convert;
-    ffmpeg -i "$f" \
-        -codec:v copy \
-        -codec:a libmp3lame \
-        -qscale:a 0 \
-            "${f%."$filetype"}.mp3"

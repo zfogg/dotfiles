@@ -1,34 +1,40 @@
 " rc/settings
+"  vim: foldmethod=marker:
 scriptencoding utf-8
 
 
-set number numberwidth=2    " hybrid line numbers - relative & static
+set nonumber numberwidth=2  " hybrid line numbers - relative & static
 set title                   " file title in the $TERM titlebar
 set showtabline=1           " show buffer tabs when more than `n`
 set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
-set history=8192            " persist mode-cmdline history
+set history=2048            " persist mode-cmdline history
 set noerrorbells visualbell " no system bell, no screen blink on error
 set shell=$SHELL
-set wildmenu                " custom completion menu
-set wildmode=
-    \longest:full,
-    \full
-set pumheight=16
-set completeopt=menu,menuone,preview,noinsert,noselect
 
-set conceallevel=1
-set concealcursor=nvic
+set updatetime=250        " for CursorHold autocmd (milliseconds)
+let g:netrw_dirhistmax=0  " http://www.vim.org/scripts/script.php?script_id=1075
 
-set sessionoptions-=blank,buffers " The 'Session' plugin does this on save.
-set updatetime=250                " for CursorHold autocmd (milliseconds)
 
-"set path=,,
-"set path+=**
+" for :mksession
+set sessionoptions-=blank,buffers,localoptions,help
+set sessionoptions+=curdir,globals,options,tabpages
+set sessionoptions+=folds,resize,winpos,winsize
+" for :mksession also
+set viewoptions-=options,localoptions
+set viewoptions+=cursor,curdir,folds
 
-"set cdpath=,,
-"set cdpath+=.
 
-let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
+" {{{ 'path'  'cdpath'  file-searching
+    set path=
+    set path+=.
+    set path+=,
+    "set path+=**3
+
+    let &cdpath = ','.substitute(substitute($CDPATH, '[, ]', '\\\0', 'g'), ':', ',', 'g')
+    set cdpath+=.
+    set cdpath+=,
+    "set cdpath+=**3
+" }}} 'path'  'cdpath'  file-searching
 
 
 " {{{ undo / redo, swap, backup
@@ -43,27 +49,42 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
         let s:dotvim_dotdirs[s:dir_name] = s:dir[1:]
     endfor
 
-    " wildignore
+    set wildmenu wildignorecase
+    set wildchar=<Tab>
+    set wildmode=longest:full,full
+    " NOTE: 'wildignore'  (default: v:null)
+    set wildignore=
     set wildignore+=*.o,*.obj,*.so,,*.exe,*.dll,*.manifest,*.dmg
     set wildignore+=*.swp,*.pyc,*.class
-    set wildignore+=*.tar,*.bz,*.gz,*.xz,*.zip
-    set wildignore+=*~
+    set wildignore+=*.tar,*.bz,*.gz,*.xz,*.zip,*.7z,*.rar
+    set wildignore+=*~,~*
 
-    " {un,re}do history
-    let &undodir = z#util#TempDirs('/', '', s:dotvim_dotdirs['undo'])
-    set undofile
+    set pumheight=8
+    set completeopt=menu,menuone,preview,noinsert,noselect
+    set conceallevel=1 concealcursor=nvic
 
-    " swapfiles
-    let &directory = z#util#TempDirs('/', '//', s:dotvim_dotdirs['swap'])
+    if !has('nvim') " {un,re}do history
+        set undofile
+        if has('persistent_undo')
+            let &undodir = z#util#TempDirs('/', '', s:dotvim_dotdirs['undo'])
+        endif
+    endif
 
-    " backups
-    let &backupdir  = z#util#TempDirs('/', '', s:dotvim_dotdirs['backup'])
-    let &backupskip = z#util#TempDirs('/', '/*',
-        \ s:dotvim_dotdirs['undo'],
-        \ s:dotvim_dotdirs['swap'],
-        \ s:dotvim_dotdirs['backup'],
-    \ )
-    set backupskip=&backupskip
+    if !has('nvim') " swapfiles
+        let &directory = z#util#TempDirs('/', '//', s:dotvim_dotdirs['swap'])
+        set swapfile
+    endif
+
+    if !has('nvim') " backup-table
+        let &backupdir = z#util#TempDirs('/', '', s:dotvim_dotdirs['backup'])
+        if has('wildignore')
+            let &backupskip = z#util#TempDirs('/', '/*',
+                \ s:dotvim_dotdirs['undo'],
+                \ s:dotvim_dotdirs['swap'],
+                \ s:dotvim_dotdirs['backup'],
+            \ )
+        endif
+    endif
 
     let g:omni_sql_no_default_maps = 1
 " }}} undo / redo, swap, backup
@@ -77,15 +98,50 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
     set lazyredraw                 " For better macro performance.
     set synmaxcol=128
     syntax sync minlines=256
+    set  timeoutlen=700            " Time (ms) for a mapped sequence to complete.
+    set ttimeoutlen=30             " Time (ms) for a key code sequence to complete.
 " }}} Moving around and editing
 
 
+" {{{ 'cpoptions'
+    "   default:aABceFs
+    set cpo+=aA        " cpo-a cpo-A
+    set cpo+=c cpo-=C  " cpo-c cpo-C
+    set cpo+=b cpo-=B  " cpo-b cpo-B
+    set cpo+=d cpo-=D  " cpo-d cpo-D
+    set cpo+=Ee        " cpo-E cpo-e
+    set cpo+=fF        " cpo-f cpo-F
+    set cpo-=i cpo+=I  " cpo-i cpo-I
+    set cpo-=J         " cpo-J
+    set cpo-=K         " cpo-K
+    set cpo-=lL        " cpo-l cpo-L
+    set cpo-=m cpo+=M  " cpo-m cpo-M
+    set cpo+=n         " cpo-n
+    set cpo+=o cpo-=O  " cpo-o cpo-O
+    set cpo-=p cpo+=P  " cpo-p cpo-P
+    set cpo+=q         " cpo-q
+    set cpo-=r cpo+=R  " cpo-r cpo-R
+    set cpo+=s cpo-=S  " cpo-s cpo-S
+    set cpo+=t         " cpo-t
+    set cpo-=u         " cpo-u
+    set cpo-=v         " cpo-v
+    set cpo+=W         " cpo-W
+    set cpo-=x cpo+=X  " cpo-x cpo-X
+    set cpo-=y         " cpo-y
+    set cpo+=Z         " cpo-Z
+    set cpo-=! cpo-=$  " cpo-! cpo-$
+    set cpo-=% cpo+=+  " cpo-% cpo-+
+    set cpo-=> cpo+=;  " cpo-> cpo-;
+    set cpo+=_         " cpo-_
+" }}} 'cpoptions'
+
+
 " {{{ Tiny aesthetic tweaks
-    set cursorline      " A horizontal line for the cursor location.
+    set cul cuc         " A horizontal line for the cursor location.
     set ruler           " Show the cursor position all the time.
     set scrolloff=3     " Keep n context lines above and below the cursor.
-    set sidescrolloff=5 " FIXME
-    set sidescroll=1    " FIXME
+    set sidescrolloff=4 " FIXME
+    set sidescroll=2    " FIXME
     set showmatch       " Briefly jump to a paren once it's balanced.
     set list            " Visually display tabs and trailing whitespace.
     set listchars=
@@ -98,7 +154,7 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 " }}} Tiny aesthetic tweaks
 
 
-" Whitespace {{{
+" {{{ Whitespace
     set expandtab       " Use spaces, not tabs, for autoindent/tab key.
     set copyindent
     set preserveindent
@@ -111,16 +167,24 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
     set wrapmargin=0    " Seriously, don't break lines.
     set textwidth=0     " Don't break lines.
     set showbreak=↪\    " Visualize wrapped lines.
-" }}}
+" }}} Whitespace
 
 
-" Folding. {{{
+" {{{ Folding
     set foldenable
     set foldmethod=syntax
-    set foldopen=mark,percent,quickfix,tag,undo
-    set foldnestmax=1
+    set foldopen+=percent,quickfix,tag,undo
+    set foldnestmax=2
     set foldminlines=3
-" }}}
+
+    "let g:vimsyn_folding='afp'
+    let g:fastfold_skip_filetypes = [
+        \ 'taglist'
+        \,'nerdtree'
+        \,'help'
+        \,'vim'
+    \]
+" }}} Folding
 
 
 " Reading and writing. {{{
@@ -133,35 +197,64 @@ let g:netrw_dirhistmax=0 " http://www.vim.org/scripts/script.php?script_id=1075
 " }}}
 
 
+" shortmess {{{
+    " NOTE: default  ->  set shortmess=filnxtToO
+    "set shortmess=aOstTI " :help 'shortmess'
+    set shm+=a  " shortcut for shm+=ailmnrwx
+    set shm-=O
+    set shm+=O
+    set shm+=s
+    set shm+=t
+    set shm+=T
+    set shm-=W
+    set shm-=A
+    set shm+=I
+    set shm+=c
+    set shm-=q
+    set shm-=F
+" }}}
+
+
 " Messages, info, and statuses. {{{
-    set shortmess=aOstTI " :help 'shortmess'
     set laststatus=2     " allways show status line
     set confirm          " Y-N-C prompt if closing with unsaved changes.
-    set showcmd          " Show incomplete normal mode commands as I type.
+    set noshowcmd        " Show incomplete normal mode commands as I type.
     set report=0         " : commands always print changed line count.
     set ruler            " Show some info, even without statuslines.
     set laststatus=2     " Always show statusline, even if only 1 window.
 " }}}
 
 
-" Searching and Patterns {{{
-    set ignorecase  " Default to using case insensitive searches.
-    set smartcase   " unless uppercase letters are used in the regex.
-    set smarttab    " Handle tabs more intelligently.
-    set smartindent " Indent intelligently.
-    " set hlsearch   " Highlight searches by default.
-    set incsearch   " Incrementally search while typing a /regex.
+" {{{ Searching and Patterns
+    set ignorecase      " Default to using case insensitive searches.
+    set smartcase       " unless uppercase letters are used in the regex.
+    set smarttab        " Handle tabs more intelligently.
+    set smartindent     " Indent intelligently.
+    set hlsearch        " Highlight searches by default.
+    set incsearch       " Incrementally search while typing a /regex.
+    set regexpengine=0  " Auto-switch regexp engines if workload hangs.
 
-    " 'text-obj' patterns for 'word' and file /path
-        " NOTE: http://www.ascii-code.com/
-            " '@'       == /[a-zA-Z]/ == filter(isalpha, $ascii_arr)
-            " ,48-57,   == /[0-9]/    == filter(isdigit, $ascii_arr)
-            " ,192-255, == /[À-ÿ]/    /* accented characters - extended ascii */
-            " ,,,       == /,/
-            " ,@-@,     == /@/
-            " ,^,,      == /[^,]/
-            " ,^<EOL>   == /\^/
-        " NOTE: :h 'isfname' | :help 'iskeyword'
-    set   isfname=@,48-57,_,#,~,$,-,/,.,+,,,%,=
-    set iskeyword=@,48-57,_,192-255
-" }}}
+    " http://www.ascii-code.com/
+    "         '@'       == /[a-zA-Z]/ == filter(isalpha, $ascii_arr)
+    "         ,48-57,   == /[0-9]/    == filter(isdigit, $ascii_arr)
+    "         ,192-255, == /[À-ÿ]/    /* accented characters - extended ascii */
+    "         ,,,       == /,/
+    "         ,@-@,     == /@/
+    "         ,^,,      == /[^,]/
+    "         ,^<EOL>   == /\^/
+    "     NOTE: 'text-obj' patterns for 'word' and file /path
+
+    " 'isfname' 'isf'  string
+    "   default: @,48-57,/,.,-,_,+,,,#,$,%,~,=
+    set  isfname=@,48-57,_,#,~,$,-,/,\\,.,+,,,%,=
+    "set isfname+=@,48-57,_,#,~,$,-,/,.,+,,,%,=
+
+    " 'isident' 'isi'  string
+    "   default: @,48-57,_,192-255
+    set isident+=@,48-57,_,192-255
+
+    " 'iskeyword' 'isk'  string
+    "   default: @,48-57,_
+    set iskeyword+=@,48-57,_,192-255
+" }}} Searching and Patterns
+
