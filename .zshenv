@@ -1,9 +1,10 @@
+#!/usr/bin/env zsh
 # vim: set fdm=marker:
 
 
 if [[ -z "$DOTFILES_SETENV" && -o login ]]; then
     source ~/.launchd.conf
-    pkill -flai "$TERM_PROGRAM"
+    #pkill -flai "$TERM_PROGRAM"
 fi
 
 

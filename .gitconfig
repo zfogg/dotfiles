@@ -16,10 +16,10 @@
     ui = true
 
 
-[url "git@github.com:"]
-    insteadOf = https://github.com/
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
+;[url "git@github.com:"]
+    ;insteadOf = https://github.com/
+;[url "ssh://git@github.com/"]
+    ;insteadOf = https://github.com/
 
 [filter "media"]
     clean  = git-media-clean %f
@@ -56,3 +56,8 @@
 	root = /Users/zfogg/src
 [ghq "https://bitbucket.org/"]
 	vcs = git
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

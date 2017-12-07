@@ -9,3 +9,4 @@ func! cursorline#RestorePosition() abort
         endif
     endif
 endfunc
+

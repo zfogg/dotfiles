@@ -54,8 +54,8 @@ endfunc
 func! z#constants#globals#Python() abort
     if     exists('$PYENV_ROOT')
         let l:py3_root = $PYENV_ROOT.'/versions/neovim3'
-        "let l:py_root  = $PYENV_ROOT.'/versions/neovim2'
-        let l:py_root  = $PYENV_ROOT.'/versions/2.7.13'
+        let l:py_root  = $PYENV_ROOT.'/versions/neovim2'
+        "let l:py_root  = $PYENV_ROOT.'/versions/2.7.13'
     elseif exists('$BREW')
         let l:py3_root = $BREW
         let l:py_root  = $BREW

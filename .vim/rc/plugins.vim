@@ -121,6 +121,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'digitaltoad/vim-pug', {'for': ft['jade']}
     Plug 'tpope/vim-afterimage', {'for': ft['image']}
     Plug 'kylef/apiblueprint.vim', {'for': ['apiblueprint']}
+    Plug 'darfink/vim-plist'
 " }}}
 
 
@@ -143,7 +144,6 @@ call plug#begin('~/.vim/bundle')
 
 " Direct text manipulation. {{{
     Plug 'b4winckler/vim-angry'
-    Plug 'junegunn/vim-easy-align'
     Plug 'tommcdo/vim-exchange'
     "Plug 'cohama/lexima.vim'
     "Plug 'Raimondi/delimitMate'
@@ -177,10 +177,12 @@ call plug#begin('~/.vim/bundle')
 " Silent enhancements. {{{
     Plug 'editorconfig/editorconfig-vim'
     Plug 'kana/vim-niceblock'
-    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-repeat' |
+        \Plug 'junegunn/vim-easy-align'
+    Plug 'vim-scripts/visualrepeat'
     Plug 'tpope/vim-sleuth'
     Plug 'sickill/vim-pasta'
-    Plug 'unblevable/quick-scope'
+    "Plug 'unblevable/quick-scope'
     Plug 'kana/vim-operator-user' |
         Plug 'haya14busa/vim-operator-flashy'
     Plug 'itchyny/vim-cursorword'

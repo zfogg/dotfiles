@@ -5,7 +5,7 @@ aug PluginConfig_cursorline
     au!
     au BufReadPost * call cursorline#RestorePosition()
     au InsertLeave,WinEnter,TabEnter,BufEnter *
-        \set   cursorline
+        \setl   cursorline   cursorcolumn
     au InsertEnter,WinLeave,TabLeave *
-        \set nocursorline
+        \setl nocursorline nocursorcolumn
 aug END

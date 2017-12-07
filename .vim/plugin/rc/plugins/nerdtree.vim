@@ -5,12 +5,13 @@ scriptencoding utf-8
 if exists('g:vimpager') | finish | endif
 
 
-let g:NERDTreeAutoCenter                = 0
+let g:NERDTreeAutoCenter                = 1
 let g:NERDTreeAutoCenterThreshold       = 5
 
 let g:NERDTreeCaseSensitiveSort         = 0
 let g:NERDTreeSortHiddenFirst           = 1
-let g:NERDTreeShowHidden                = 0
+let g:NERDTreeShowHidden                = 1
+
 
 let g:NERDTreeChDirMode                 = 1
 let g:NERDTreeMouseMode                 = 2
@@ -21,7 +22,7 @@ let g:NERDTreeAutoDeleteBuffer          = 1
 
 let g:NERDTreeHighlightCursorline       = 0
 let g:NERDTreeWinPos                    = 'left'
-let g:NERDTreeWinSize                   = 29
+let g:NERDTreeWinSize                   = 27
 let g:NERDTreeMinimalUI                 = 1
 
 let g:NERDTreeStatusline                = ''
