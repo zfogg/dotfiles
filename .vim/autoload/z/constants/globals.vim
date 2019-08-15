@@ -59,11 +59,17 @@ func! z#constants#globals#Python() abort
     elseif exists('$BREW')
         let l:py3_root = $BREW
         let l:py_root  = $BREW
-    else | echomsg "can't find python root"
+    else
+	throw "error with PYENV_ROOT"
     endif
     let g:python3_host_prog = l:py3_root.'/bin/python3'
     let g:python_host_prog  = l:py_root .'/bin/python2'
 endfunc
+
+func! z#constants#globals#Ruby() abort
+    let g:ruby_host_prog = $HOME.'/bin/neovim-ruby-host'
+endfunc
+
 
 
 func! z#constants#globals#Vimpager() abort

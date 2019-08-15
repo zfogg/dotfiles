@@ -1,19 +1,20 @@
 [user]
-    email = zach.fogg@gmail.com
-    name  = Zach Fogg
+    email = me@zfo.gg
+    name  = Zachary Fogg
 
 [core]
-    editor   = nvim
-    pager    = vimpager
+    ;editor   = $EDITOR
+    ;pager    = $PAGER
     eol      = lf
     autocrlf = input
-    excludesfile = /Users/zfogg/.gitignore_global
+    excludesfile = ~/.gitignore_global
 
 [push]
     default = simple
 
 [color]
-    ui = true
+    ui    = true
+    pager = no
 
 
 ;[url "git@github.com:"]
@@ -36,7 +37,7 @@
 [diff]
     tool = vimdiff
 [difftool]
-    prompt = true
+    prompt = false
 [difftool "vimdiff"]
     cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 
@@ -53,11 +54,14 @@
 
 
 [ghq]
-	root = /Users/zfogg/src
+    root = ~/zfogg/src
 [ghq "https://bitbucket.org/"]
-	vcs = git
+    vcs = git
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+[grep]
+    lineNumber = true
+

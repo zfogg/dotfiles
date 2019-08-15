@@ -48,7 +48,11 @@ export GROOVY_HOME="$BREW/opt/groovy/libexec"
 
 # golang {{{
 export GOPATH=~/src/go
-export GOROOT="$BREW/opt/go/libexec"
+if [[ "$OSX" == "$TRUE" ]]; then
+    export GOROOT="$BREW/opt/go/libexec"
+else
+    export GOROOT="/usr/lib/go"
+fi
 # }}}
 
 # mono {{{
@@ -61,20 +65,12 @@ export NVM_DIR=~/.nvm
 
 
 # python {{{
-#export PIP_REQUIRE_VIRTUALENV=true
+    export PIP_REQUIRE_VIRTUALENV=true
     # pyenv {{{
     export PYENV_SHELL="$SHELL_NAME"
     export PYENV_ROOT="${HOME}/.pyenv"
     export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
     export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
-    export PYTHON_CONFIGURE_OPTS=$(echo \
-        "--enable-framework"    \
-        "--enable-ipv6"         \
-        "--enable-toolbox-glue" \
-        "--enable-big-digits"   \
-        "--enable-unicode"      \
-        "--with-thread"         \
-        "cc=clang")
     # }}}
 
     # pipenv {{{
@@ -86,8 +82,8 @@ export NVM_DIR=~/.nvm
 
 
 # compilers {{{
-export  CC='clang'
-export CXX='clang++'
+    export  CC='clang'
+    export CXX='clang++'
 # }}}
 
 
@@ -102,26 +98,40 @@ typeset -xT CLASSPATH classpath
 typeset -aU infopath
 typeset -xT INFOPATH infopath
 
-path=(
-    ~/bin
-    ~/.config/composer/vendor/bin
-    #~/.platformio/penv/bin
-    "$BREW"/opt/php71/bin
-    "$BREW"/opt/node/bin
-    "$PYENV_ROOT"/shims
-    ~/.jenv/shims
-    ~/{.cabal,.cargo}/bin
-    "$GOPATH"/bin
-    "$GOROOT"/bin
-    "$BREW"/sbin
-    "$BREW"/MacGPG2/bin
-    "$BREW"/bin
-    $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r))
+if [[ "$OSX" == "$TRUE" ]]; then
+   path=(
+      ~/bin
+      ~/.config/composer/vendor/bin
+      #~/.platformio/penv/bin
+      "$BREW"/opt/php71/bin
+      "$BREW"/opt/node/bin
+      "$PYENV_ROOT"/shims
+      ~/.jenv/shims
+      ~/{.cabal,.cargo}/bin
+      "$GOPATH"/bin
+      "$GOROOT"/bin
+      "$BREW"/sbin
+      "$BREW"/MacGPG2/bin
+      "$BREW"/bin
+      $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r))
+
+else
+   path=(
+      ~/bin
+      ~/.local/bin
+      ~/.{cabal,cargo,gem}/bin
+      "$PYENV_ROOT"/shims
+      "$GOPATH"/bin
+      "$GOROOT"/bin
+      $path)
+      #$(echo $PATH | tr ':' '\n' | tac)
+      #$(getconf PATH | tr ':' '\n' | tac))
+fi
 
 fpath=(
-    ~/.zsh/site-functions
-    ~/.zsh/.oh-my-zsh/plugins/*/_*(.:h)
-    ~/.zsh/complete)
+   ~/.zsh/site-functions
+   ~/.zsh/complete
+   $fpath)
 
 manpath=(
     /usr/share/man)
@@ -129,8 +139,6 @@ manpath=(
 infopath=()
 
 classpath=(
-    "$GROOVY_HOME"/embeddable
-    "$GROOVY_HOME"/embeddable/groovy-all-2.4.7.jar
     $classpath)
 
 if [[ "$OSX" == "$TRUE" ]]; then
@@ -217,25 +225,28 @@ function opt_dep() {
     fi
 }
 
-opt_dep libressl       '$'
-opt_dep openssl        bin
-opt_dep readline
-#opt_dep libgit2        '$'
-#opt_dep postgresql-9.5 bin
-#opt_dep gpg-agent      bin
 
-opt_dep opencv@2       bin
+if [[ "$OSX" == "$TRUE" ]]; then
+    opt_dep libressl       '$'
+    opt_dep openssl        bin
+    opt_dep readline
+    #opt_dep libgit2        '$'
+    #opt_dep postgresql-9.5 bin
+    #opt_dep gpg-agent      bin
 
-# NOTE: these break curl, homebrew, etc
-#opt_dep llvm       bin:libexec
-#opt_dep curl       bin:libexec
+    opt_dep opencv@2       bin
 
-export OPENSSL_ROOT_DIR="$BREW"/opt/openssl
-export OPENSSL_INCLUDE_DIR="$OPENSSL_ROOT_DIR"/include
+    # NOTE: these break curl, homebrew, etc
+    #opt_dep llvm       bin:libexec
+    #opt_dep curl       bin:libexec
 
-cflags="$cppflags"
+    export OPENSSL_ROOT_DIR="$BREW"/opt/openssl
+    export OPENSSL_INCLUDE_DIR="$OPENSSL_ROOT_DIR"/include
 
-library_path=(
-    "$BREW"/lib
-    $library_path)
-# }}}
+    cflags="$cppflags"
+
+    library_path=(
+        "$BREW"/lib
+        $library_path)
+fi
+# compilation }}}

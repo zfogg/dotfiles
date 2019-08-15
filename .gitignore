@@ -2,3 +2,7 @@
 /.vim/bundle
 /.zsh/complete
 /tmp
+/.antigen-hs
+
+stack.yaml.lock
+.stack-work
