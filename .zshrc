@@ -11,16 +11,17 @@ function alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
 
 # zsh modules {{{
 zmodload zsh/zpty
+
 autoload -Uz          \
     url-quote-magic   \
     colors            \
     select-word-style \
-    zsh-mime-setup    \
-    predict-on        \
+    zsh-mime-setup
+    #predict-on
 colors
 select-word-style normal
 zsh-mime-setup
-predict-on
+#predict-on
 # }}}
 
 
@@ -76,12 +77,12 @@ zstyle ':omz:plugins:ssh-agent'      agent-forwarding  on
 
 
 # terminal - terminfo, base16 colors, iterm integration {{{
-local dot_ti=~/.terminfo/"$TERM".ti
-[[ -f "$dot_ti" ]] \
-    || infocmp "$TERM" \
-    | sed 's/kbs=^[hh]/kbs=\\177/' \
-    > "$dot_ti"
-tic "$dot_ti"
+#local dot_ti=~/.terminfo/"$TERM".ti
+#[[ -f "$dot_ti" ]] \
+#    || infocmp "$TERM" \
+#    | sed 's/kbs=^[hh]/kbs=\\177/' \
+#    > "$dot_ti"
+#tic "$dot_ti"
 
 if [[ "$OSX" == "$TRUE" ]]; then
     # base16-shell
@@ -103,13 +104,17 @@ fi
 
 
 # depends on `coreutils` {{{
-export DOTFILES="`dirname "$(/usr/local/bin/grealpath "$ZSHRC")"`"
-export   DOTVIM="$DOTFILES/.vim"
-[[ ! -f ~/.LS_COLORS ]] && \
-    gdircolors ~/.dircolors > ~/.LS_COLORS
-source ~/.LS_COLORS
-export CLICOLOR=true
-export LSCOLORS=gxbxhxdxfxhxhxhxhxcxcx
+if [[ "$OSX" == "$TRUE" ]]; then
+  export DOTFILES="`dirname "$(/usr/local/bin/grealpath "$ZSHRC")"`"
+  [[ ! -f ~/.LS_COLORS ]] && \
+      gdircolors ~/.dircolors > ~/.LS_COLORS
+  source ~/.LS_COLORS
+  export CLICOLOR=true
+  export LSCOLORS=gxbxhxdxfxhxhxhxhxcxcx
+else
+  export DOTFILES="$(dirname `realpath "$ZSHRC"`)"
+fi
+export DOTVIM="$DOTFILES/.vim"
 # }}}
 
 
@@ -129,21 +134,22 @@ command_exists z   || [ -f "$BREW"/etc/profile.d/z.sh ] \
 command_exists fzf || [ -f "$DOTFILES/.fzf.zsh" ] \
     && source ~/.fzf.zsh
 
-#   zsh-users/zsh-autosuggestions {{{
-    bindkey -M viins '^ '   autosuggest-accept
-    bindkey -M vicmd '^ '   autosuggest-accept
-    bindkey -M viins '^[[c' autosuggest-execute
-    # edit-command-line
-    function _autosuggest-accept-and-edit-command-line {
-        zle autosuggest-accept
-        zle edit-command-line
-    }
-    zle -N autosuggest-accept-and-edit-command-line _autosuggest-accept-and-edit-command-line
-    autoload -Uz edit-command-line
-    zle -N edit-command-line
-    bindkey '^[[v' edit-command-line
-    bindkey '^[[v' autosuggest-accept-and-edit-command-line
-#   }}}
+# zsh-users/zsh-autosuggestions {{{
+  source ~/.zsh/zsh-autosuggestions.config.zsh
+  bindkey -M viins '^ '   autosuggest-accept
+  bindkey -M vicmd '^ '   autosuggest-accept
+  bindkey -M viins '^[[c' autosuggest-execute
+  # edit-command-line
+  function _autosuggest-accept-and-edit-command-line {
+      zle autosuggest-accept
+      zle edit-command-line
+  }
+  zle -N autosuggest-accept-and-edit-command-line _autosuggest-accept-and-edit-command-line
+  autoload -Uz edit-command-line
+  zle -N edit-command-line
+  bindkey '^[[v' edit-command-line
+  bindkey '^[[v' autosuggest-accept-and-edit-command-line
+# zsh-users/zsh-autosuggestions }}}
 
 # }}} plugins
 
@@ -165,10 +171,10 @@ bindkey -rM vicmd ':'
 bindkey  -M vicmd ':' execute-named-cmd # ; line vim
 
 # useful motion shortcuts
-bindkey -M viins 'HH'    beginning-of-line
-bindkey -M viins 'LL'          end-of-line
-bindkey -M vicmd 'HH' vi-beginning-of-line
-bindkey -M vicmd 'LL'       vi-end-of-line
+bindkey -M viins 'hH'    beginning-of-line
+bindkey -M viins 'lL'          end-of-line
+bindkey -M vicmd 'hH' vi-beginning-of-line
+bindkey -M vicmd 'lL'       vi-end-of-line
 
 bindkey -r        '^H'
 bindkey -rM viins '^H'
@@ -213,6 +219,7 @@ bindkey          '^[[A' history-substring-search-up
 bindkey          '^[[B' history-substring-search-down
 bindkey          '^[[a' history-beginning-search-backward
 bindkey          '^[[b' history-beginning-search-forward
+# FIXME
 
 # <Home>, <End>
 bindkey '^[[H'  beginning-of-line
@@ -227,7 +234,7 @@ bindkey -M vicmd '^[b' vi-backward-word
 bindkey -M vicmd '^[f'  vi-forward-word
 
 # zsh vi-mode fixes
-zle -N self-insert url-quote-magic
+#zle -N self-insert url-quote-magic
 #bindkey -M viins ' '   magic-space
 
 function _last-cmd-and-vi-cmd-mode {
@@ -319,11 +326,11 @@ export WORKON_HOME=~/.virtualenvs
 
 # brew install pyenv \
 #   pyenv-ccache pyenv-default-packages pyenv-virtualenv pyenv-virtualenvwrapper pyenv-which-ext
-#if command_exists pyenv; then
-#    #eval "$(pyenv            init -)"
-#    #eval "$(pyenv virtualenv-init -)"
-#    export POWERLINE_CONFIG_COMMAND="`which powerline-config`"
-#fi
+if command_exists pyenv; then
+   #eval "$(pyenv            init -)"
+   #eval "$(pyenv virtualenv-init -)"
+   #export POWERLINE_CONFIG_COMMAND="`which powerline-config`"
+fi
 
 #if command_exists pipenv; then
     #eval "$(env _PIPENV_COMPLETE=source-zsh pipenv)"
@@ -335,27 +342,31 @@ export WORKON_HOME=~/.virtualenvs
 # }}}
 
 
-# nvm {{{
+# npm, nvm {{{
+[ -d ~/.local ] \
+  && export npm_config_prefix=~/.local \
+  || export npm_config_prefix=~/.npm
+
 #source /usr/local/opt/nvm/nvm.sh
 #if command_exists nvm; then
-    #autoload -U add-zsh-hook
-    #function load-nvmrc() {
-        #local node_version="$(nvm version)"
-        #local nvmrc_path="$(nvm_find_nvmrc)"
-        #if [ -n "$nvmrc_path" ]; then
-            #local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-            #if [ "$nvmrc_node_version" = "N/A" ]; then
-                #nvm install
-            #elif [ "$nvmrc_node_version" != "$node_version" ]; then
-                #nvm use
-            #fi
-        #elif [ "$node_version" != "$(nvm version default)" ]; then
-            #echo "Reverting to nvm default version"
-            #nvm use default
-        #fi
-    #}
-    #add-zsh-hook chpwd load-nvmrc
-    #load-nvmrc
+#    autoload -U add-zsh-hook
+#    function load-nvmrc() {
+#        local node_version="$(nvm version)"
+#        local nvmrc_path="$(nvm_find_nvmrc)"
+#        if [ -n "$nvmrc_path" ]; then
+#            local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+#            if [ "$nvmrc_node_version" = "N/A" ]; then
+#                nvm install
+#            elif [ "$nvmrc_node_version" != "$node_version" ]; then
+#                nvm use
+#            fi
+#        elif [ "$node_version" != "$(nvm version default)" ]; then
+#            echo "Reverting to nvm default version"
+#            nvm use default
+#        fi
+#    }
+#    add-zsh-hook chpwd load-nvmrc
+#    load-nvmrc
 #fi
 # }}}
 
@@ -366,9 +377,13 @@ export WORKON_HOME=~/.virtualenvs
 # }}}
 
 # direnv {{{
-#if command_exists direnv; then
-  #eval "$(direnv hook zsh)"
-#fi
+export AUTOENV_DISABLED=0
+export AUTOENV_FILE_ENTER=.env
+export AUTOENV_HANDLE_LEAVE=0
+export AUTOENV_LOOK_UPWARDS=0
+if command_exists direnv; then
+  eval "$(direnv hook zsh)"
+fi
 # }}}
 
 # rust {{{
@@ -399,18 +414,18 @@ export LESSOPEN='| vimcat -o - %s'
 
 
 # pager {{{
-if command_exists vimpager; then
-    export VIMPAGER_VIM="`which vim`"
-    export VIMPAGER_RC=~/.vimpagerrc
-    export PAGER='vimpager'
+if command_exists nvimpager; then
+  export PAGER='nvimpager'
+elif command_exists nvim; then
+  export PAGER='nvim -R'
 else
-    export PAGER='less -rfx'
+  export PAGER='less'
 fi
 # }}}
 
 
 # aliases {{{
-. "$DOTFILES"/.aliases
+. ~/.aliases
 aliasof() {
     local args="$([[ "$OSX" == "$TRUE" ]] \
         && printf '-e' \
