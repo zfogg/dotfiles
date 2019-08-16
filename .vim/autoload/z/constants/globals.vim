@@ -67,25 +67,23 @@ func! z#constants#globals#Python() abort
 endfunc
 
 func! z#constants#globals#Nodejs() abort
-  " FIXME
-  return
-  " FIXME
   let l:node_host = "neovim-node-host"
   try
-    "let g:node_host_prog = systemlist("which ".l:node_host)[0]
-    "if v:shell_error != 0
-      "throw "Z:NotFound '".l:node_host."'"
-    "endif
-    let l:host_path = $NVM_DIR."/versions/node/v11.1.0/bin/".l:node_host
-    if exists("$NVM_DIR") && filereadable(l:host_path)
+    let g:node_host_prog = systemlist("which ".l:node_host)[0]
+    if v:shell_error != 0
+      throw "Z:NotFound '".l:node_host."'"
+    endif
+    let l:host_path = $HOME."/.local/bin/".l:node_host
+    if filereadable(l:host_path)
       let g:node_host_prog = l:host_path
     else
       throw "Z:NotFound '$NVM_DIR' missing" | endif
   catch | echomsg v:exception
   finally
-    if exists("g:node_host_prog") &&
-      \!filereadable(g:node_host_prog)
-      unlet g:node_host_prog | endif
+    if exists("g:node_host_prog") && !filereadable(g:node_host_prog)
+      throw "Z:Err ''neovim-node-host' ".g:node_host_prog
+      unlet g:node_host_prog
+    endif
   endtry
 endfunc
 
