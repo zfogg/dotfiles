@@ -80,7 +80,7 @@ function() { # OS package manager
         local pamac_reqs=(
             neovim-nightly)
         for r in ${pamac_reqs};
-            pamac install "$r"
+            pacman -Q "$r" || pamac install "$r"
     fi
 }
 
