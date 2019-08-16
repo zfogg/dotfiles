@@ -27,10 +27,10 @@ call plug#begin('~/.vim/bundle')
 
 " Add features and functionality. {{{
     " fzf
-    Plug $BREW.'/opt/fzf', PIf(executable('fzf') && isdirectory($BREW.'/opt/fzf'),
-            \{'dir': $BREW.'/opt/fzf', 'do': './install --all'}) |
-        \Plug 'junegunn/fzf.vim'
-    Plug 'easymotion/vim-easymotion'
+    "Plug $BREW.'/opt/fzf', PIf(executable('fzf') && isdirectory($BREW.'/opt/fzf'),
+            "\{'dir': $BREW.'/opt/fzf', 'do': './install --all'}) |
+        "\Plug 'junegunn/fzf.vim'
+    "Plug 'easymotion/vim-easymotion'
     " nerdtree
     Plug 'scrooloose/nerdtree'              |
         \Plug 'Xuyuanp/nerdtree-git-plugin' |
@@ -44,12 +44,12 @@ call plug#begin('~/.vim/bundle')
     Plug 'Shougo/neoinclude.vim' |
         \Plug 'neomake/neomake', PIf(has('nvim'))
     " completion
-    Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'}) |
+    " Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'}) |
         \Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'}) |
         \Plug 'Shougo/denite.nvim', PIf(has('nvim')) |
         \Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
     Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'}) |
-        \Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))     |
+        " \Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))     |
         \Plug 'Shougo/echodoc.vim'                                  |
         \Plug 'Shougo/neco-syntax'                                  |
         \Plug 'Shougo/neco-vim',     {'for': ['vim']}               |
@@ -68,7 +68,7 @@ call plug#begin('~/.vim/bundle')
     " etc
     Plug 'ervandew/supertab'
     Plug 'tpope/vim-rsi'
-    Plug 'miya0001/vim-dict-wordpress',   {'for': ft['php']}
+    "Plug 'miya0001/vim-dict-wordpress',   {'for': ft['php']}
     Plug 'MarcWeber/vim-addon-local-vimrc'
 " }}}
 
@@ -79,7 +79,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'lumiliet/vim-twig',             {'for': ft['twig']}
     Plug 'joonty/vdebug',                 {'for': ft['php']}
     "Plug 'StanAngeloff/php.vim',          {'for': ft['php']}
-    Plug '2072/PHP-Indenting-for-VIm',    {'for': ft['php']}
+    "Plug '2072/PHP-Indenting-for-VIm',    {'for': ft['php']}
     Plug 'lvht/phpfold.vim',              {'for': ft['php']}
     Plug 'othree/html5.vim'
     Plug 'lifepillar/pgsql.vim',          {'for': ft['sql']}
@@ -177,9 +177,9 @@ call plug#begin('~/.vim/bundle')
 " Silent enhancements. {{{
     Plug 'editorconfig/editorconfig-vim'
     Plug 'kana/vim-niceblock'
-    Plug 'tpope/vim-repeat' |
-        \Plug 'junegunn/vim-easy-align'
-    Plug 'vim-scripts/visualrepeat'
+    "Plug 'tpope/vim-repeat' |
+        "\Plug 'vim-scripts/visualrepeat'
+    Plug 'junegunn/vim-easy-align'
     Plug 'tpope/vim-sleuth'
     Plug 'sickill/vim-pasta'
     "Plug 'unblevable/quick-scope'

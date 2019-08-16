@@ -25,15 +25,10 @@ set viewoptions+=cursor,curdir,folds
 
 
 " {{{ 'path'  'cdpath'  file-searching
-    set path=
-    set path+=.
-    set path+=,
-    "set path+=**3
+    set path=.,,**
 
     let &cdpath = ','.substitute(substitute($CDPATH, '[, ]', '\\\0', 'g'), ':', ',', 'g')
-    set cdpath+=.
-    set cdpath+=,
-    "set cdpath+=**3
+    set cdpath+=.,,**
 " }}} 'path'  'cdpath'  file-searching
 
 
@@ -54,36 +49,31 @@ set viewoptions+=cursor,curdir,folds
     set wildmode=longest:full,full
     " NOTE: 'wildignore'  (default: v:null)
     set wildignore=
-    set wildignore+=*.o,*.obj,*.so,,*.exe,*.dll,*.manifest,*.dmg
+    set wildignore+=*.o,*.obj,*.so,*.exe,*.dll,*.manifest,*.dmg
     set wildignore+=*.swp,*.pyc,*.class
     set wildignore+=*.tar,*.bz,*.gz,*.xz,*.zip,*.7z,*.rar
+    set wildignore+=*/.git/*,*/node_modules/*
     set wildignore+=*~,~*
 
     set pumheight=8
     set completeopt=menu,menuone,preview,noinsert,noselect
     set conceallevel=1 concealcursor=nvic
 
-    if !has('nvim') " {un,re}do history
-        set undofile
-        if has('persistent_undo')
-            let &undodir = z#util#TempDirs('/', '', s:dotvim_dotdirs['undo'])
-        endif
+    set undofile
+    if has('persistent_undo')
+        let &undodir = z#util#TempDirs('/', '', s:dotvim_dotdirs['undo'])
     endif
 
-    if !has('nvim') " swapfiles
-        let &directory = z#util#TempDirs('/', '//', s:dotvim_dotdirs['swap'])
-        set swapfile
-    endif
+    let &directory = z#util#TempDirs('/', '//', s:dotvim_dotdirs['swap'])
+    set swapfile
 
-    if !has('nvim') " backup-table
-        let &backupdir = z#util#TempDirs('/', '', s:dotvim_dotdirs['backup'])
-        if has('wildignore')
-            let &backupskip = z#util#TempDirs('/', '/*',
-                \ s:dotvim_dotdirs['undo'],
-                \ s:dotvim_dotdirs['swap'],
-                \ s:dotvim_dotdirs['backup'],
-            \ )
-        endif
+    let &backupdir = z#util#TempDirs('/', '', s:dotvim_dotdirs['backup'])
+    if has('wildignore')
+        let &backupskip = z#util#TempDirs('/', '/*',
+            \ s:dotvim_dotdirs['undo'],
+            \ s:dotvim_dotdirs['swap'],
+            \ s:dotvim_dotdirs['backup'],
+        \ )
     endif
 
     let g:omni_sql_no_default_maps = 1

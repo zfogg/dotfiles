@@ -26,7 +26,7 @@
       max_line_length: 140
     rust:
       beautify_on_save: true
-      rustfmt_path: "/Users/zfogg/.cargo/bin/rustfmt"
+      rustfmt_path: "~/zfogg/.cargo/bin/rustfmt"
     sql:
       beautify_on_save: true
       identifiers: "lower"
@@ -95,7 +95,7 @@
       ".clang_complete"
       ".gcc-flags.json"
     ]
-    projectHome: "/Users/zfogg/src"
+    projectHome: "~/zfogg/src"
     reopenProjectMenuCount: 7
     telemetryConsent: "no"
     themes: [
@@ -156,8 +156,8 @@
   "platformio-ide":
     advanced:
       checkAuthOnStartup: false
-      customLibraryStorages: "/Users/zfogg/src/arduino/libraries"
-      customPATH: "/Users/zfogg/.platformio/penv/bin"
+      customLibraryStorages: "~/zfogg/src/arduino/libraries"
+      customPATH: "~/zfogg/.platformio/penv/bin"
     autoUpdateIDE: false
     highlightActiveProject: false
   "platformio-ide-terminal":
