@@ -34,11 +34,3 @@ let g:deoplete#enable_at_startup = 1  " just work
 let g:deoplete#enable_smart_case = 1  " smartcase
 let g:deoplete#max_list          = 65 " default=100
 
-
-"" deoplete-padawan
-"command! PadawanStart call deoplete#sources#padawan#StartServer()
-"command! PadawanStop call deoplete#sources#padawan#StopServer()
-"command! PadawanRestart call deoplete#sources#padawan#RestartServer()
-"command! PadawanInstall call deoplete#sources#padawan#InstallServer()
-"command! PadawanUpdate call deoplete#sources#padawan#UpdatePadawan()
-"command! -bang PadawanGenerate call deoplete#sources#padawan#Generate(<bang>0)

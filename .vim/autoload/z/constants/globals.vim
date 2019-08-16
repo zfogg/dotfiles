@@ -66,14 +66,10 @@ func! z#constants#globals#Python() abort
     let g:python_host_prog  = l:py_root .'/bin/python2'
 endfunc
 
-func! z#constants#globals#Ruby() abort
-    let g:ruby_host_prog = $HOME.'/bin/neovim-ruby-host'
-endfunc
-
-
-
 func! z#constants#globals#Nodejs() abort
+  " FIXME
   return
+  " FIXME
   let l:node_host = "neovim-node-host"
   try
     "let g:node_host_prog = systemlist("which ".l:node_host)[0]
@@ -97,7 +93,7 @@ endfunc
 func! z#constants#globals#Ruby() abort
   let l:ruby_host = "neovim-ruby-host"
   try
-    let l:host_path = $BREW."/bin/".l:ruby_host
+    let l:host_path = $HOME."/.gem/bin/".l:ruby_host
     if exists("$BREW") && filereadable(l:host_path)
       let g:ruby_host_prog = l:host_path
     else
