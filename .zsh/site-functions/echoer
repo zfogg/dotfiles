@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# joopal-echo-error (echoer)
+#   prints messages to stderr
+#
+#   NOTE: $0 = ~/.zsh/site-functions/echoer
+
+
+# cute lil helper funcs
+echoer() {
+    >&2 printf "%s\n" "$*"
+}
+
+echoer "$@"
+

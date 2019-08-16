@@ -7,4 +7,8 @@ if (&filetype !=? 'c')
 endif
 
 
-syn region foldPreprocessorIf start="^\#if" end="^\#endif" transparent fold
+syn region foldPreprocessorIf
+            \ start="^\#if"
+            \ end="^\#endif"
+            \ transparent
+            \ fold

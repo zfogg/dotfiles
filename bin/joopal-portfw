@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh -e
+
+
+source ~/.zsh/site-functions/bin-abort
+trap 'bin-abort' ERR
+
+
+zparseopts -D -E -M -A zopts -a _zopts -- \
+    h=_zopts -help=h \
+    l=_zopts -list=l \
+    s=_zopts -set=s \
+    d=_zopts -delete=d
+
+
+zo_usage() {
+    >&2 echo "joopal-portfw\n" \
+        "\n  example usage" \
+            "\n\tjoopal-portfw [-hsld] [opt [...]]" \
+        "\n  command line arguments" \
+            "\n\t" "-h, --help"   "\tprint this text ;p" \
+            "\n\t" "-l, --list"   "\tdisplay current entries"\
+            "\n\t" "-s, --set "    "\tcreate a new entry" \
+                "\n\t\t" "\$1={i:-8080}" \
+                "\n\t\t" "\$2={o:-80}" \
+            "\n\t" "-d, --delete" "\tdelete all entries"
+}
+
+
+zo_list() {
+    echo "joopal-portfw\n\tcommand: list"
+    sudo pfctl -s nat
+}
+
+zo_set() {
+    echo "joopal-portfw\n\tcommand: set"
+    echo "rdr pass inet proto tcp from any to any port" \
+        "${2:-80} -> 127.0.0.1 port ${1:-8080}" \
+        | sudo pfctl -ef -
+}
+
+zo_delete() {
+    echo "joopal-portfw\n\tcommand: delete"
+    sudo pfctl -F all -f /etc/pf.conf
+}
+
+
+if [[ "${#zopts}" -eq 0 ]]; then
+    zo_usage
+    exit 1
+elif [[ "${#zopts}" -gt 1 ]]; then
+    zo_usage
+    >&2 echo "\nERROR: use one command at a time"
+    exit 2
+else
+    for zopti in `seq 1 "${#zopts}"`
+        case "$_zopts[$zopti]" in
+            -l || --list)   zo_list   "$@" ;;
+            -s || --set)    zo_set    "$@" ;;
+            -d || --delete) zo_delete "$@" ;;
+            -h || --help)   zo_usage       ;;
+        esac
+    exit 0
+fi
+

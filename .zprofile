@@ -3,34 +3,28 @@
 
 
 # zsh {{{
-export ZDOTDIR="$HOME"
-export   ZSHRC="$ZDOTDIR/.zshrc"
-# }}}
+#export ZDOTDIR="$HOME"
+#export   ZSHRC="${ZDOTDIR}/.zshrc"
+# zsh }}}
 
 
-# $SHELL config {{{
+# $SHELL {{{
+export CORES="4"
 export OSX="$(
     [[ "`uname`" == "Darwin" ]]
     [[ "$?" == "0" ]] \
         && echo "$TRUE" \
         || echo "$FALSE")"
-export SHELL_NAME="$(
-    [[ "$OSX" == "$TRUE" ]] \
-        && ps -p$$ -ocommand= | tr -d '-' \
-        || ps -p$$ -ocmd=)"
-# }}}
-
-
-# $SHELL help {{{
-export HELPDIR="${BREW}/share/zsh/help"
-unalias run-help 2>/dev/null
-autoload -U run-help
-# }}}
+#export SHELL_NAME="$(
+    #[[ "$OSX" == "$TRUE" ]] \
+        #&& ps -p$$ -ocommand= | tr -d '-' \
+        #|| ps -p$$ -ocmd=)"
+# $SHELL }}}
 
 
 # terminal {{{
 #export TERM="xterm-256color"
-export COLORTERM="$TERM"
+#export COLORTERM="$TERM"
 if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
     export TERMINAL_DOTAPP="true"
     # Correctly display UTF-8 with combining characters:
@@ -38,62 +32,88 @@ if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
 elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
     export ITERM_DOTAPP="true"
 fi
-# }}}
+# terminal }}}
+
+
+# $SHELL help {{{
+#export HELPDIR="${BREW}/share/zsh/help"
+unalias run-help 2>/dev/null
+autoload -U run-help
+# $SHELL help }}}
 
 
 # groovy {{{
-export GROOVY_HOME="$BREW/opt/groovy/libexec"
-# }}}
+#export GROOVY_HOME="$BREW/opt/groovy/libexec"
+# groovy }}}
 
 
 # golang {{{
-export GOPATH=~/src/go
-export GOROOT="$BREW/opt/go/libexec"
-# }}}
+#export GOPATH="${HOME}/src/go"
+#export GOROOT="${BREW}/opt/go/libexec"
+# golang }}}
 
 # mono {{{
-export MONO_GAC_PREFIX="$BREW"
-# }}}
+#export MONO_GAC_PREFIX="$BREW"
+# mono }}}
 
 # node {{{
-export NVM_DIR=~/.nvm
-# }}}
+#export NVM_DIR="${HOME}/.nvm"
+# node }}}
+
+
+# antigen {{{
+[ -d "${HOME}/.zsh/complete" ] \
+    && export GENCOMPL_FPATH="${HOME}/.zsh/complete"
+# antigen }}}
 
 
 # python {{{
-#export PIP_REQUIRE_VIRTUALENV=true
+    # pip {{{
+    export PIP_REQUIRE_VIRTUALENV=true
+    # pip }}}
+
     # pyenv {{{
-    export PYENV_SHELL="$SHELL_NAME"
+    #export PYENV_SHELL="$SHELL_NAME"
     export PYENV_ROOT="${HOME}/.pyenv"
     export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
     export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
-    export PYTHON_CONFIGURE_OPTS=$(echo \
-        "--enable-framework"    \
-        "--enable-ipv6"         \
-        "--enable-toolbox-glue" \
-        "--enable-big-digits"   \
-        "--enable-unicode"      \
-        "--with-thread"         \
-        "cc=clang")
-    # }}}
+    #export PYTHON_CONFIGURE_OPTS="$(echo \
+        #'--enable-framework'    \
+        #'--enable-ipv6'         \
+        #'--enable-toolbox-glue' \
+        #'--enable-big-digits'   \
+        #'--enable-unicode'      \
+        #'--with-thread'         \
+        #"cc=clang")"
+    # pyenv }}}
 
     # pipenv {{{
-    export PIPENV_SHELL_COMPAT="$TRUE"
-    export PIPENV_VENV_IN_PROJECT="$TRUE"
-    export PIPENV_MAX_DEPTH='4'
-    # }}}
-# }}}
+    #export PIPENV_SHELL_COMPAT="$TRUE"
+    #export PIPENV_VENV_IN_PROJECT="$TRUE"
+    #export PIPENV_MAX_DEPTH='4'
+    # pipenv }}}
+# python }}}
+
+
+# iOSOpenDev {{{
+#export iOSOpenDevPath=/opt/iOSOpenDev
+#export iOSOpenDevDevice=
+#export iOSOpenDevDevicePort=
+#export THEOS=/opt/theos
+#export THEOS_DEVICE_IP=10.0.0.71
+#export THEOS_DEVICE_PORT=22
+#iOSOpenDev }}}
 
 
 # compilers {{{
 export  CC='clang'
 export CXX='clang++'
-# }}}
+# compilers }}}
 
 
 # path, manpath, fpath {{{
 typeset -U path
-typeset -U fpath
+#typeset -U fpath
 typeset -U manpath
 
 # new vars
@@ -104,24 +124,22 @@ typeset -xT INFOPATH infopath
 
 path=(
     ~/bin
-    ~/.config/composer/vendor/bin
-    #~/.platformio/penv/bin
-    "$BREW"/opt/php71/bin
     "$BREW"/opt/node/bin
     "$PYENV_ROOT"/shims
     ~/.jenv/shims
-    ~/{.cabal,.cargo}/bin
+    ~/.rbenv/shims
+    #~/.cabal/bin
+    ~/.cargo/bin
     "$GOPATH"/bin
     "$GOROOT"/bin
     "$BREW"/sbin
-    "$BREW"/MacGPG2/bin
     "$BREW"/bin
+    "$(xcode-select -p)/usr/bin"
+    /Library/Developer/CommandLineTools/usr/bin
     $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r))
 
-fpath=(
-    ~/.zsh/site-functions
-    ~/.zsh/.oh-my-zsh/plugins/*/_*(.:h)
-    ~/.zsh/complete)
+#fpath=(
+    #"${fpath[@]}")
 
 manpath=(
     /usr/share/man)
@@ -129,35 +147,39 @@ manpath=(
 infopath=()
 
 classpath=(
-    "$GROOVY_HOME"/embeddable
-    "$GROOVY_HOME"/embeddable/groovy-all-2.4.7.jar
+    #"$GROOVY_HOME"/embeddable
+    #"$GROOVY_HOME"/embeddable/groovy-all-2.4.7.jar
     $classpath)
 
 if [[ "$OSX" == "$TRUE" ]]; then
     local brew_gnu_progs=(
         coreutils
         findutils
-        gnu-sed
-        gnu-tar)
+        #gnu-sed
         #gnu-which
+        gnu-tar)
     path=(
-        "$BREW"/opt/${^brew_gnu_progs}/libexec/gnubin
-        "$BREW"/opt/ccache/libexec
+        #"${BREW}/opt/${^brew_gnu_progs}/libexec/gnubin"
+        "${BREW}/opt/coreutils/libexec/gnubin"
+        "${BREW}/opt/findutils/libexec/gnubin"
+        "${BREW}/opt/gnu-tar/libexec/gnubin"
+        "${BREW}/opt/ccache/libexec"
+        #"$iOSOpenDevPath"/bin
+        #"$THEOS"/bin
+        "${BREW}/MacGPG2/bin"
         $path)
-    fpath=(
-        "$BREW"/share/zsh-completions
-        "$BREW"/share/zsh/{site-functions,functions}
-        $fpath)
+    #fpath=(
+        #"${fpath[@]}")
     manpath=(
-        "$BREW"/opt/${^brew_gnu_progs}/libexec/gnuman
-        "$BREW"/share/man
-        $manpath
-    )
+        "${BREW}/Cellar/*/*/{share/man,libexec/gnuman}"
+        "${BREW}/opt/"${^brew_gnu_progs}"/libexec/gnuman"
+        "${BREW}/share/man"
+        $manpath)
     infopath=(
-        "$BREW"/opt/${^brew_gnu_progs}/share/info
+        "${BREW}/opt/${^brew_gnu_progs}/share/info"
         $infopath)
 fi
-# }}}
+# path, manpath, fpath }}}
 
 
 # compilation {{{
@@ -179,63 +201,80 @@ typeset -xT LDFLAGS           ldflags           ' '
 typeset -aU pkg_config_path
 typeset -xT PKG_CONFIG_PATH pkg_config_path     ':'
 
-cppflags+=( '-O2' )
-
 function opt_dep() {
-    local opt_root=$BREW/opt
-    local dep_root=${opt_root}/${1:-\$}
+    local opt_root="${BREW}/opt"
+    local dep_root="${opt_root}/${1:-\$}"
     if [ ! -d $dep_root ]; then
-        >&2 echo "$0() - err\n\tdep_root $dep_root"
+        >&2 echo "${0}() - err\n\tdep_root ${dep_root}"
         return 1
     fi
 
     if [ ${2:-$} != '$' ]; then
         local -aU bin_dirs
         local -T BIN_DIRS bin_dirs
-        BIN_DIRS=${2:-bin}
-        bin_dirs=(${dep_root}/${^bin_dirs})
-        path=($bin_dirs $path)
+        BIN_DIRS="${2:-bin}"
+        bin_dirs=("${dep_root}/${^bin_dirs}")
+        path=("$bin_dirs" $path)
     fi
 
-    local manpath_dir=${dep_root}/${3:-share/man}
+    local manpath_dir="${dep_root}/${3:-share/man}"
     if [ -d $manpath_dir ]; then
-        manpath=($manpath_dir $manpath)
+        manpath=("$manpath_dir" $manpath)
     fi
-    local sharedlib_dir=${dep_root}/${4:-lib}
+    local sharedlib_dir="${dep_root}/${4:-lib}"
     if [ -d $sharedlib_dir ]; then
-        dyld_library_path+=(  $sharedlib_dir )
-        ldflags+=(          -L$sharedlib_dir )
-        #ldflags+=( -Wl,-rpath,$sharedlib_dir )
+        dyld_library_path+=( "${sharedlib_dir}")
+        ldflags+=(         "-L${sharedlib_dir}")
+        #ldflags+=("-Wl,-rpath,${sharedlib_dir}")
     fi
-    local headers_dir=${dep_root}/${5:-include}
+    local headers_dir="${dep_root}/${5:-include}"
     if [ -d $headers_dir ]; then
-        cppflags+=( -I$headers_dir )
+        cppflags+=("-I${headers_dir}")
     fi
-    local pkgconfig_dir=${sharedlib_dir}/${6:-pkgconfig}
+    local pkgconfig_dir="${sharedlib_dir}/${6:-pkgconfig}"
     if [ -d $pkgconfig_dir ]; then
-        pkg_config_path=($pkgconfig_dir $pkg_config_path)
+        pkg_config_path=("$pkgconfig_dir" $pkg_config_path)
     fi
 }
 
-opt_dep libressl       '$'
+#opt_dep libressl       '$'
 opt_dep openssl        bin
+opt_dep gcc            bin share/man lib/gcc/8
+#opt_dep llvm           bin
 opt_dep readline
 #opt_dep libgit2        '$'
 #opt_dep postgresql-9.5 bin
 #opt_dep gpg-agent      bin
 
-opt_dep opencv@2       bin
+#opt_dep opencv@2       bin
 
 # NOTE: these break curl, homebrew, etc
 #opt_dep llvm       bin:libexec
 #opt_dep curl       bin:libexec
 
-export OPENSSL_ROOT_DIR="$BREW"/opt/openssl
-export OPENSSL_INCLUDE_DIR="$OPENSSL_ROOT_DIR"/include
+if [[ "$OSX" == "$TRUE" ]]; then
+    dyld_library_path=(
+        $dyld_library_path
+        #"${BREW}/opt/gcc/lib/gcc/8"
+        "${BREW}/lib"
+        /usr/lib)
+    cppflags+=(
+        '-O2'
+        $cppflags)
+fi
+
+export DISABLE_MAGIC_FUNCTIONS=true
+
+
+export OPENSSL_ROOT_DIR="${BREW}/opt/openssl"
+export OPENSSL_INCLUDE_DIR="${OPENSSL_ROOT_DIR}/include"
 
 cflags="$cppflags"
 
 library_path=(
-    "$BREW"/lib
+    "${BREW}/lib"
     $library_path)
-# }}}
+# compilation }}}
+
+
+export KUBE_DRIVER=hyperkit

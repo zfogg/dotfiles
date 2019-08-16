@@ -8,14 +8,13 @@
 #LP_PS1_FILE=~/.config/liquidprompt/nojhan.ps1
 
 LP_PS1_PREFIX=''
+LP_PS1_POSTFIX=$'\n'
 
 if [[ "$ITERM_SHELL_INTEGRATION_INSTALLED" == "Yes" ]]; then
     # https://www.iterm2.com/documentation-shell-integration.html
-    #   (newline then caret)
-    LP_PS1_POSTFIX=$'\n'"%{$(iterm2_prompt_mark)%}"
-else
-    LP_PS1_POSTFIX=$'\n'"> "
+    LP_PS1_POSTFIX="${LP_PS1_POSTFIX}%{$(iterm2_prompt_mark)%}"
 fi
+LP_PS1_POSTFIX="${LP_PS1_POSTFIX}> "
 
 
 #############
@@ -151,7 +150,7 @@ LP_ENABLE_SSH_COLORS=1
 
 # Specify a list of complete and colon (":") separated paths in which, all vcs
 # will be disabled
-LP_DISABLED_VCS_PATH="/usr/local/Homebrew"
+LP_DISABLED_VCS_PATH='/usr/local/Homebrew'
 
 #  Make the prompt change color during password-less root access
 LP_ENABLE_SUDO=1

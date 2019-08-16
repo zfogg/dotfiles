@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh -e
+# joopal-echo-eval (echoeval)
+#   prints a command and then runs it
+#
+#   NOTE: $0 = ~/.zsh/site-functions/echoeval
+
+
+# INFO: https://stackoverflow.com/a/20082653/672346
+echoeval() { echo "$@"; $@ }
+
+echoeval "$@"
+

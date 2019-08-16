@@ -36,17 +36,17 @@ let g:deoplete#max_list          = 65 " default=100
 
 
 " :help 'deoplete-filters' {{{
-call deoplete#custom#set('_', 'matchers', [
+call deoplete#custom#source('_', 'matchers', [
         \ 'matcher_head',
         \ 'matcher_length',
         \ 'matcher_fuzzy',
     \ ])
 
-call deoplete#custom#set('_', 'sorters', [
+call deoplete#custom#source('_', 'sorters', [
         \ 'sorter_rank',
     \ ])
 
-call deoplete#custom#set('_', 'converters', [
+call deoplete#custom#source('_', 'converters', [
         \'converter_remove_overlap',
         \'converter_truncate_abbr',
         \'converter_truncate_menu',
@@ -54,12 +54,12 @@ call deoplete#custom#set('_', 'converters', [
         \'converter_auto_delimiter',
     \])
 
-call deoplete#custom#set('_',
+call deoplete#custom#source('_',
     \ 'disabled_syntaxes', ['Comment'])
 " :help 'deoplete-filters' }}}
 
-call deoplete#custom#set('_', 'libclang_path', s:libclang_path)
-call deoplete#custom#set('_', 'clang_header',  s:clang_header)
+call deoplete#custom#source('_', 'libclang_path', s:libclang_path)
+call deoplete#custom#source('_', 'clang_header',  s:clang_header)
 
 " deoplete#{sources,omni#functions} {{{
 " NOTE: import at the top
@@ -94,7 +94,7 @@ let g:deoplete#sources#jedi#enable_cache     = 1
 let g:deoplete#sources#jedi#show_docstring   = 1
 " NOTE: how to debug
 "let g:deoplete#enable_profile = 0
-"call deoplete#custom#set('jedi', 'debug_enabled', 0)
+"call deoplete#custom#source('jedi', 'debug_enabled', 0)
 "call deoplete#enable_logging('DEBUG', '/tmp/deoplete.log')
 
 " vim
@@ -124,7 +124,7 @@ let g:deoplete#sources#go#json_directory = $HOME.'/tmp'
 
 
 " emoji
-call deoplete#custom#set('emoji', 'filetypes', ['rst'])
+call deoplete#custom#source('emoji', 'filetypes', ['rst'])
 
 
 " NOTE: export to global at the BOTTOM

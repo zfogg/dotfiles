@@ -97,7 +97,6 @@ set viewoptions+=cursor,curdir,folds
     set autoindent                 " Always set autoindenting on.
     set lazyredraw                 " For better macro performance.
     set synmaxcol=128
-    syntax sync minlines=256
     set  timeoutlen=700            " Time (ms) for a mapped sequence to complete.
     set ttimeoutlen=30             " Time (ms) for a key code sequence to complete.
 " }}} Moving around and editing
@@ -132,7 +131,7 @@ set viewoptions+=cursor,curdir,folds
     set cpo-=! cpo-=$  " cpo-! cpo-$
     set cpo-=% cpo+=+  " cpo-% cpo-+
     set cpo-=> cpo+=;  " cpo-> cpo-;
-    set cpo+=_         " cpo-_
+    "set cpo+=_         " cpo-_
 " }}} 'cpoptions'
 
 
@@ -257,4 +256,7 @@ set viewoptions+=cursor,curdir,folds
     "   default: @,48-57,_
     set iskeyword+=@,48-57,_,192-255
 " }}} Searching and Patterns
-
+"
+" {{{ Syntax
+    syntax sync minlines=256 linebreaks=1
+" }}} Syntax

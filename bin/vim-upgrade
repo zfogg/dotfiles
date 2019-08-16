@@ -1,50 +1,93 @@
 #!/usr/bin/env zsh -e
+# ~/bin/vim-upgrade
+#   upgrades editor binaries, dependencies, and plugins
+#
+#   NOTE: $0 = ~/bin/vim-upgrade
 
 
-source ~/.zsh/site-functions/bin-abort
+autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
 
 
-eval "$(pyenv init -)"
-local pip_reqs="`pyenv root`"'/neovim-packages'
-#for py_v in 2 3; do
-for py_v in 3; do
-    pyenv activate neovim"$py_v"
-    pyenv exec pip install --quiet wheel setuptools pip
-    pyenv exec pip install --quiet --requirement "${pip_reqs}${py_v}"
-done
+function() { # Python
+    local pip_reqs="${PYENV_ROOT}/neovim-packages"
+    eval "$(pyenv init -)"
+
+    for py_v in 2 3; do
+    #for py_v in 3; do
+        pyenv activate "neovim${py_v}"
+        pip install -U wheel setuptools pip
+        pip install -U -r "${pip_reqs}${py_v}"
+    done
+
+    pyenv deactivate
+}
 
 
-local cargo_reqs=(
-    racer
-    clippy
-)
-for p in $cargo_reqs; do
-    cargo install --quiet "$p" 2>/dev/null || true
-done
+function() { # Rust
+    local cargo_rels=(
+        stable
+        nightly
+    )
+
+    local cargo_reqs=(
+        racer
+        clippy
+    )
+
+    for rel in $cargo_rels; do
+        rustup update "$rel"
+        for req in $cargo_reqs; do
+            cargo +"$rel" install "$req" \
+                2>/dev/null || true
+        done
+    done
+}
 
 
-local npm_reqs=(
-    jsonlint
-    tern
-)
-npm --silent install --global ${npm_reqs}
+function() { # Node.js
+    local npm_reqs=(
+        jsonlint
+        tern
+    )
+    . "${BREW}/opt/nvm/nvm.sh"
+
+    nvm install stable \
+        --latest-npm
+    nvm alias default stable
+}
 
 
-local goget_reqs=(
-    github.com/nsf/gocode
-)
-for r in ${goget_reqs}; do
-    go get -u "$r"
-done
+function() { # Golang
+    local goget_reqs=(
+        github.com/nsf/gocode
+    )
+
+    for r in ${goget_reqs}; do
+        go get -u "$r"
+    done
+}
 
 
-# compile editor binaries last
-brew update
-brew upgrade vim    || true
-brew upgrade neovim || true
+function() { # Editor
+    # NOTE: build/install editor binaries last
+    local brew_reqs=(
+        #vim
+        neovim
+    )
+    brew update
+
+    for r in ${brew_reqs}; do
+        brew upgrade "$r" || true
+    done
+}
 
 
-$EDITOR +PlugUpgrade +qall
-$EDITOR +PlugClean +PlugInstall +qall
-$EDITOR +PlugUpdate
+function() { # Editor Plugins
+    local editor="${EDITOR:-nvim}"
+
+    $editor +PlugUpgrade +qall
+    $editor +PlugClean +PlugInstall +qall
+    $editor +PlugUpdate
+}
+

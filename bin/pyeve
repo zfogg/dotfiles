@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+
+#>&2 echo
+#>&2 basename "$0"
+#>&2 echo '  --help,-h  →  dot-slash me and eval my and-1 (e.g. eval "`$0 myenv`")'
+#>&2 echo
+
+[[ "${1:-';'}" = ';' ]] && \
+	>&2 echo 'Error::Arity - args[0]: missing "env name" arg' && \
+	exit 1
+
+[[ "$PYENV_VERSION" = "$1" ]] && \
+	>&2 echo 'Warning::Redundant - given env already active' && \
+	exit 0
+
+
+>&2 echo '\n(pre)activate'
+[[ -v PYENV_ACTIVATE_SHELL ]] || (\
+	pyenv init - && \
+	echo ';' && \
+	pyenv virtualenv-init -
+);
+
+>&2 echo '\n(de!)activate'
+[[ -v VIRTUAL_ENV ]] && \
+	echo 'pyenv deactivate'
+
+>&2 echo '\n(re?)activate'
+true && \
+	echo 'pyenv activate '"${1}"
+

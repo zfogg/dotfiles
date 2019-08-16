@@ -1,17 +1,17 @@
 #!/usr/bin/env zsh -e
 
 
-#source ~/.zsh/site-functions/bin-abort
-#trap 'bin-abort' ERR
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
 
-
-local filetype="${:-wav}"
 
 local to_convert="${1:-/dev/null}"
-if [[ "$1" == "/dev/null" ]]; then
+if [[ "$to_convert" == "/dev/null" ]]; then
     echo "ERROR: no input files lol" \
         && exit -420
 fi
+
+local filetype="${2:-${1:e}}"
 
 
 while [ $# -gt 0 ]; do
@@ -20,7 +20,7 @@ while [ $# -gt 0 ]; do
             -codec:v copy \
             -codec:a libmp3lame \
             -qscale:a 0 \
-            "${1%."$filetype"}.mp3"
+            "${1%."$filetype"}.v0.mp3"
     else
         echo "ERROR: bad input file: '$1'" \
             && exit -520

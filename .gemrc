@@ -4,5 +4,5 @@
 - https://rubygems.org
 :benchmark: false
 :backtrace: false
-:verbose: true
-gem: --no-document --user-install -n /usr/local/bin
+:verbose: false
+gem: --no-document -n /usr/local/bin
