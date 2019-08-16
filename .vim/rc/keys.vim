@@ -13,14 +13,14 @@ noremap ; :
  
 " Don't jump cursor when using * to search for word under cursor
 nnoremap * *``
-nnoremap # #``
+"nnoremap # #``
 
 " Reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
 
 " Opposite of J. Split line at current point.
-nmap <M-j> i<CR><Esc>d^==kg_lD
+nnoremap <M-j> i<CR><Esc>d^==kg_lD
 
 " Keep cursor in centre of screen after motions
 nnoremap n nzz
@@ -40,7 +40,7 @@ nnoremap <Leader>q :q<CR>
 
 " vimrc
 exe 'nn <silent> <Leader>v :'
-    \.'silent! $tabe! '.g:myvimrc_f                .' <Bar> '
+    \.'silent! $tabe! '.g:myvimrc_f        .' <Bar> '
     \.'silent! NERDTreeFromBookmark vimrc' .' <Bar> '
     \.'wincmd p'                           .' <Bar> '
     \.'<CR>'
@@ -168,4 +168,8 @@ exe 'nn <silent> <Leader>V :'
     " Change to the directory of the current buffer's file.
     nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
     nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
+
+    if exists('&inccommand')
+        set inccommand=nosplit
+    endif
 " }}}

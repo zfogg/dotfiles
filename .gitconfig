@@ -16,11 +16,15 @@
     ui    = true
     pager = no
 
+[fetch]
+    prune     = true
+    pruneTags = true
+    output    = compact
 
-;[url "git@github.com:"]
-    ;insteadOf = https://github.com/
-;[url "ssh://git@github.com/"]
-    ;insteadOf = https://github.com/
+[log]
+    decorate = true
+    abbrevCommit = true
+
 
 [filter "media"]
     clean  = git-media-clean %f
@@ -28,14 +32,27 @@
 
 
 [merge]
-    tool = vimdiff
-[mergetool]
-    prompt = true
+    tool          = vimdiff
 [mergetool "vimdiff"]
-    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    cmd           = $EDITOR -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'
+    trustExitCode = true
+[mergetool]
+    prompt        = true
+    keepBackup    = false
+
+;[merge]
+	;tool          = diffconflicts
+;[mergetool "diffconflicts"]
+	;cmd           = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+	;trustExitCode = true
+;[mergetool]
+	;prompt        = true
+	;keepBackup    = false
 
 [diff]
     tool = vimdiff
+[difftool "vimdiff"]
+    cmd = \"$EDITOR\" -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'
 [difftool]
     prompt = false
 [difftool "vimdiff"]
@@ -47,10 +64,24 @@
     mybranch = rev-parse --abbrev-ref HEAD
     up       = pull --rebase --autostash
     gh       = joopal-clone git github.com
+
     l        = log -18 --color=always --all --topo-order --pretty='format:%Cgreen%h%Creset %s%Cred%d%Creset %C(black bold)(by %an)%Creset'
     ll       = log     --color=always --all --topo-order --pretty='format:%Cgreen%h%Creset %s%Cred%d%Creset %C(black bold)(by %an)%Creset'
     gl       = log -12 --color=always --all --graph --topo-order --pretty='format:%Cgreen%h%Creset %s %C(black bold)(by %an)%Creset%C(yellow bold)%d%Creset%n'
     gll      = log     --color=always --all --graph --topo-order --pretty='format:%Cgreen%h%Creset %s %C(black bold)(%cr by %an)%Creset%C(yellow bold)%d%Creset%n'
+
+    unshallow = "!:; \
+    	git fetch --unshallow 2>/dev/null; \
+    	git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'; \
+    	git fetch -v origin; "
+
+    pruner = "!:; \
+    	git prune --expire=now; \
+    	git reflog expire --expire-unreachable=now --rewrite --all; "
+
+    fetch-branch = "!:; \
+    	git remote set-branches --add origin $1; \
+    	git fetch -v origin $1:$1; "
 
 
 [ghq]

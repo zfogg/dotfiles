@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh -e
 
 
-source ~/.zsh/site-functions/bin-abort
+autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
 
 
@@ -31,3 +31,4 @@ echo '. . . du'; echo
 echo 'rm '"$f"
 rm "$f"
 echo
+

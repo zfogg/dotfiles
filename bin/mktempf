@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh -e
+#    ~/.dotfiles/bin/mktempf
+
+
+autoload -Uz bin-abort ba-err
+trap 'bin-abort' ERR
+
+
+local  tempd="${${TMPDIR:-/tmp}%/}"
+local  tempf="`basename ${1:-$0}`"
+local  tempp="${tempd}/${tempf}.XXXX"
+
+
+command -p mktemp -q "${tempp}" 2>/dev/null || (
+    read -rd':' errmsg <<-'EOF'
+	ERROR - %s
+	    $TMPDIR = '%s'
+	    $tempf  = '%s'
+EOF
+    ba-err '12' "$errmsg" "${0:t}" "$tempf" "$TMPDIR"
+)
+
