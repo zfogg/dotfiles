@@ -3,6 +3,7 @@
 /autoload/plug.vim.old
 /bundle/
 /sessions/
+/.undo/
 
 # {{{ defaults
 #
