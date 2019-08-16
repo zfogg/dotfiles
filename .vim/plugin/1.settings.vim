@@ -246,7 +246,26 @@ set viewoptions+=cursor,curdir,folds
     "   default: @,48-57,_
     set iskeyword+=@,48-57,_,192-255
 " }}} Searching and Patterns
-"
+
+
 " {{{ Syntax
     syntax sync minlines=256 linebreaks=1
+" }}} Syntax
+
+
+" {{{ Clipboard
+if has('osx')
+    let g:clipboard = {
+        \ 'name': 'pbcopy',
+        \ 'copy': {
+        \    '+': 'pbcopy',
+        \    '*': 'pbcopy',
+        \  },
+        \ 'paste': {
+        \    '+': 'pbpaste',
+        \    '*': 'pbpaste',
+        \ },
+        \ 'cache_enabled': 0,
+    \ }
+endif
 " }}} Syntax
