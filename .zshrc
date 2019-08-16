@@ -443,22 +443,22 @@ unset MAILCHECK
 [[ -z "$HISTFILE" ]] && \
     export HISTFILE=~/.zsh_history
 
-export HISTSIZE=16384   # == 128**2
-export SAVEHIST=2097152 # == 128**3
+export HISTSIZE=65536 # == 256**2
+export SAVEHIST=65536 # == 256**3
 
-set +o histexpand
-setopt APPEND_HISTORY
+#set +o histexpand
+setopt BANG_HIST
 setopt EXTENDED_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_SAVE_NO_DUPS
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+unsetopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+unsetopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
-# unset
-unsetopt HIST_REDUCE_BLANKS
 # }}}
 
 

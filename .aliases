@@ -5,18 +5,21 @@
 alias rm='trash'
 
 alias vim='$EDITOR'
-alias  vi="$EDITOR"
-alias   v="$EDITOR"
+alias  vi='$EDITOR'
+alias   v='$EDITOR'
 
-alias python3="python3.6.2"
+[[ "$OSX" == "$TRUE" ]] \
+    && alias python3="python3.6.2" \
+    || alias python3="python3.7.4"
 
 alias zshrc='$EDITOR '"$DOTFILES"'/.zshrc'
 alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 
 alias ql='quick-look'
  
-alias ls="ls --color=auto --group-directories-first"
-#alias ls="${BREW}/bin/gls --color=auto --group-directories-first"
+[[ "$OSX" == "$TRUE" ]] \
+    && alias ls="${BREW}/bin/gls --color=auto --group-directories-first" \
+    || alias ls="ls --color=auto --group-directories-first"
 alias  k='ls -LhGstcr'
 alias  l='k -1'
 alias ll='l -A'
@@ -45,7 +48,10 @@ alias rg="${RG_PRG:-rg} ${RG_ARGS}"
 alias ccat='pygmentize -O style=monokai -f 256 -g'
 alias c='ccat'
 
-alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q'
+
+[[ "$OSX" == "$TRUE" ]] \
+    && alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q' \
+    || alias     ping='ping    -c 3'
 
 alias fs='du -shL'
 
@@ -147,5 +153,3 @@ function gpip2() {PIP_REQUIRE_VIRTUALENV='' pip2 "$@"}
 function gpip3() {PIP_REQUIRE_VIRTUALENV='' pip3 "$@"}
 
 alias pyenv-init='eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)"'
-
-function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
