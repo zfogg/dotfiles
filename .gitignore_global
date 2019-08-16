@@ -48,3 +48,5 @@ package-lock.json
 
 .zsh/.oh-my-zsh/
 .zsh/zsh-autosuggestions/
+
+doc/tags
