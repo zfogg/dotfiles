@@ -16,60 +16,55 @@ import Antigen (
     )
 
 
-bundles =
-    [ (bundle "robbyrussell/oh-my-zsh")
-        { fpathLocations    = [ ]
-        , sourcingStrategy  = antigenSourcingStrategy
-        , sourcingLocations =
-            [
-            --  "plugins/battery"
-            --, "plugins/branch"
-              "plugins/brew"
-            , "plugins/compleat"
-            , "plugins/extract"
-            --, "plugins/emoji"
-            , "plugins/git"
-            --, "plugins/gitfast"
-            --, "plugins/gitignore"
-            --, "plugins/git-extras"
-            , "plugins/gnu-utils"
-            --, "plugins/golang"
-            , "plugins/node"
-            , "plugins/osx"
-            --, "plugins/ruby"
-            , "plugins/ssh-agent"
-            --, "plugins/sudo"
-            , "plugins/tmux"
-            , "plugins/vi-mode"
-            , "plugins/xcode"
+bundles = [
+        (bundle "robbyrussell/oh-my-zsh")
+            { sourcingStrategy  = antigenSourcingStrategy
+            , sourcingLocations = [
+                --  "plugins/battery"
+                --, "plugins/branch"
+                  "plugins/brew"
+                , "plugins/compleat"
+                --, "plugins/extract"
+                --, "plugins/emoji"
+                , "plugins/git"
+                --, "plugins/gitfast"
+                --, "plugins/gitignore"
+                --, "plugins/git-extras"
+                , "plugins/gnu-utils"
+                --, "plugins/golang"
+                --, "plugins/node"
+                --, "plugins/osx"
+                --, "plugins/ruby"
+                --, "plugins/ssh-agent"
+                --, "plugins/sudo"
+                --, "plugins/tmux"
+                , "plugins/vi-mode"
+                --, "plugins/xcode"
             ] }
 
-    , (bundle "zsh-users/zsh-syntax-highlighting")
-        { fpathLocations = [] }
-    , (bundle "zsh-users/zsh-history-substring-search")
-        { fpathLocations = []
-        , sourcingStrategy = filePathsSourcingStrategy
-            [ "zsh-history-substring-search.zsh" ] }
+        , (bundle "zsh-users/zsh-syntax-highlighting")
 
-    , (bundle "zsh-users/zsh-autosuggestions")
-        { fpathLocations = [] }
+        , (bundle "zsh-users/zsh-history-substring-search")
 
-    , (bundle "nojhan/liquidprompt")
-        { fpathLocations = [] }
+        , (bundle "zsh-users/zsh-autosuggestions")
 
-    --, (bundle "supercrabtree/k")
-        --{ fpathLocations = [] }
+        , (bundle "RobSis/zsh-completion-generator")
 
-    , (bundle "willghatch/zsh-hooks")
-        { fpathLocations = [] }
-    , (bundle "sharat87/zsh-vim-mode")
-        { fpathLocations = [] }
+        , (bundle "nojhan/liquidprompt")
 
-    --, (bundle "djui/alias-tips")
-        --{ fpathLocations = [] }
+        --, (bundle "supercrabtree/k")
 
-    --, (bundle "Tarrasch/zsh-autoenv")
-        --{ fpathLocations = [] }
+        -- FIXME: update to a newer fork
+        --, (bundle "willghatch/zsh-hooks")
+        , (bundle "RobertAudi/zsh-hooks")
+
+        , (bundle "sharat87/zsh-vim-mode")
+
+        --, (bundle "djui/alias-tips")
+
+        --, (bundle "Tarrasch/zsh-autoenv")
+
+        , (bundle "lukechilds/zsh-nvm")
     ]
 
 

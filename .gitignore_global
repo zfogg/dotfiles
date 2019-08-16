@@ -47,3 +47,5 @@ composer.lock
 
 .zsh/.oh-my-zsh/
 .zsh/zsh-autosuggestions/
+
+doc/tags

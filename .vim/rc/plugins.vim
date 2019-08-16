@@ -12,12 +12,18 @@ endfunc
 let ft = copy(z#constants#globals#Ft())
 
 
-call plug#begin('~/.vim/bundle')
+if !empty($XDG_DATA_HOME) && isdirectory($XDG_DATA_HOME)
+    call plug#begin($XDG_DATA_HOME.'/'.(has('nvim')?'n':'').'vim/bundle')
+else
+    call plug#begin('~/.vim/bundle')
+endif
+
 
 " integrate with other programs {{{
     Plug 'Shougo/vimproc.vim', { 'do': 'make' }
     Plug 'rizzatti/dash.vim'
     Plug 'tpope/vim-fugitive'
+    Plug 'whiteinge/diffconflicts'
     Plug 'airblade/vim-gitgutter'
     Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
     Plug 'tmux-plugins/vim-tmux-focus-events', PIf(executable('tmux') && !empty($TMUX))
@@ -30,7 +36,7 @@ call plug#begin('~/.vim/bundle')
     Plug $BREW.'/opt/fzf', PIf(executable('fzf') && isdirectory($BREW.'/opt/fzf'),
             \{'dir': $BREW.'/opt/fzf', 'do': './install --all'}) |
         \Plug 'junegunn/fzf.vim'
-    Plug 'easymotion/vim-easymotion'
+    "Plug 'easymotion/vim-easymotion'
     " nerdtree
     Plug 'scrooloose/nerdtree'              |
         \Plug 'Xuyuanp/nerdtree-git-plugin' |
@@ -45,8 +51,8 @@ call plug#begin('~/.vim/bundle')
         \Plug 'neomake/neomake', PIf(has('nvim'))
     " completion
     Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'}) |
-        \Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'}) |
         \Plug 'Shougo/denite.nvim', PIf(has('nvim')) |
+        \Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'}) |
         \Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
     Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'}) |
         \Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))     |
@@ -80,7 +86,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'joonty/vdebug',                 {'for': ft['php']}
     "Plug 'StanAngeloff/php.vim',          {'for': ft['php']}
     Plug '2072/PHP-Indenting-for-VIm',    {'for': ft['php']}
-    Plug 'lvht/phpfold.vim',              {'for': ft['php']}
+    "Plug 'lvht/phpfold.vim',              {'for': ft['php']}
     Plug 'othree/html5.vim'
     Plug 'lifepillar/pgsql.vim',          {'for': ft['sql']}
     "Plug 'sheerun/vim-polyglot'
@@ -90,6 +96,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'rust-lang/rust.vim',            {'for': ft['rs'], }
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
     Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
+    Plug 'mzlogin/vim-smali',             {'for': ft['smali']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']} |
         \Plug 'Wolfy87/vim-syntax-expand'
     Plug 'ternjs/tern_for_vim',           {'for': ft['js'],
@@ -106,16 +113,16 @@ call plug#begin('~/.vim/bundle')
     " clang
     Plug 'justmao945/vim-clang',      {'for': ft['cx']} |
     Plug 'libclang-vim/libclang-vim', {'for': ft['cx']} |
-        \Plug 'kana/vim-textobj-user'                                          |
-        \Plug 'libclang-vim/vim-textobj-clang', {'for': ft['cx']}
-    "\Plug 'libclang-vim/vim-textobj-function-clang', {'for': ft['cx']}
+        \Plug 'kana/vim-textobj-user' |
+        \Plug 'libclang-vim/vim-textobj-clang', {'for': ft['cx']} |
+        \Plug 'libclang-vim/vim-textobj-function-clang', {'for': ft['cx']}
     Plug 'kchmck/vim-coffee-script', {'for': ['coffee']}
     Plug 'tweekmonster/braceless.vim',
         \{'for': ft['py'] + ft['jade'] + ['coffee',
             \'yaml', 'haml',
         \]}
     Plug 'vim-scripts/openvpn'
-    "Plug 'vim-utils/vim-man'
+    Plug 'vim-utils/vim-man'
     Plug 'chrisbra/csv.vim',    {'for': ['csv']}
     Plug 'cespare/vim-toml',    {'for': ['toml']}
     Plug 'digitaltoad/vim-pug', {'for': ft['jade']}
@@ -132,7 +139,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'luochen1990/rainbow'
     Plug 'ap/vim-css-color',          { 'for': ft['styles'] }
     Plug 'arakashic/chromatica.nvim', { 'for': ft['cx']  }
-    "Plug 'qstrahl/vim-matchmaker'
+    Plug 'qstrahl/vim-matchmaker'
     "Plug 'machakann/vim-highlightedyank', { 'on': '<Plug>(highlightedyank)' }
     Plug 'ryanoasis/vim-devicons'
     Plug 'haya14busa/incsearch.vim' |
@@ -145,7 +152,7 @@ call plug#begin('~/.vim/bundle')
 " Direct text manipulation. {{{
     Plug 'b4winckler/vim-angry'
     Plug 'tommcdo/vim-exchange'
-    "Plug 'cohama/lexima.vim'
+    Plug 'cohama/lexima.vim'
     "Plug 'Raimondi/delimitMate'
     Plug 'jiangmiao/auto-pairs'
     Plug 'scrooloose/nerdcommenter'
@@ -182,7 +189,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'vim-scripts/visualrepeat'
     Plug 'tpope/vim-sleuth'
     Plug 'sickill/vim-pasta'
-    "Plug 'unblevable/quick-scope'
+    Plug 'unblevable/quick-scope'
     Plug 'kana/vim-operator-user' |
         Plug 'haya14busa/vim-operator-flashy'
     Plug 'itchyny/vim-cursorword'
@@ -192,5 +199,6 @@ call plug#begin('~/.vim/bundle')
     Plug 'AndrewRadev/switch.vim'
     Plug 'bruno-/vim-vertical-move'
 " }}}
+
 
 call plug#end()
