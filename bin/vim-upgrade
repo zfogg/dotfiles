@@ -1,7 +1,7 @@
 #!/usr/bin/zsh -e
 
 
-source ~/.zsh/site-functions/bin-abort
+autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
 
 
@@ -13,14 +13,15 @@ for py_v in 2 3; do
     pyenv exec pip install --quiet --requirement "${pip_reqs}${py_v}"
 done
 
+    for py_v in 2 3; do
+    #for py_v in 3; do
+        pyenv activate "neovim${py_v}"
+        pip install -U wheel setuptools pip
+        pip install -U -r "${pip_reqs}${py_v}"
+    done
 
-local cargo_reqs=(
-    racer
-    clippy
-)
-for p in $cargo_reqs; do
-    cargo install --quiet "$p" 2>/dev/null || true
-done
+    pyenv deactivate
+}
 
 
 local npm_reqs=(
@@ -30,13 +31,19 @@ local npm_reqs=(
 )
 npm --silent install --global ${npm_reqs}
 
+    local cargo_reqs=(
+        racer
+        clippy
+    )
 
-local goget_reqs=(
-    github.com/nsf/gocode
-)
-for r in ${goget_reqs}; do
-    go get -u "$r"
-done
+    for rel in $cargo_rels; do
+        rustup update "$rel"
+        for req in $cargo_reqs; do
+            cargo +"$rel" install "$req" \
+                2>/dev/null || true
+        done
+    done
+}
 
 
 local gem_reqs=(
@@ -52,7 +59,42 @@ done
 #brew upgrade vim    || true
 #brew upgrade neovim || true
 
+    nvm install stable \
+        --latest-npm
+    nvm alias default stable
+}
 
-$EDITOR +PlugUpgrade +qall
-$EDITOR +PlugClean +PlugInstall +qall
-$EDITOR +PlugUpdate
+
+function() { # Golang
+    local goget_reqs=(
+        github.com/nsf/gocode
+    )
+
+    for r in ${goget_reqs}; do
+        go get -u "$r"
+    done
+}
+
+
+function() { # Editor
+    # NOTE: build/install editor binaries last
+    local brew_reqs=(
+        #vim
+        neovim
+    )
+    brew update
+
+    for r in ${brew_reqs}; do
+        brew upgrade "$r" || true
+    done
+}
+
+
+function() { # Editor Plugins
+    local editor="${EDITOR:-nvim}"
+
+    $editor +PlugUpgrade +qall
+    $editor +PlugClean +PlugInstall +qall
+    $editor +PlugUpdate
+}
+

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+
+source ~/.aliases
+
+
+pyeve selfspy && \
+	sleep 0.2 && \
+	selfspy
+

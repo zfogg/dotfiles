@@ -28,22 +28,26 @@ bundles = [
     , (bundle "zsh-users/zsh-autosuggestions")
        { fpathLocations = [] }
 
-    , (bundle "nojhan/liquidprompt")
-        { fpathLocations = [] }
+        , (bundle "zsh-users/zsh-autosuggestions")
 
-    --, (bundle "supercrabtree/k")
-        --{ fpathLocations = [] }
+        , (bundle "RobSis/zsh-completion-generator")
 
-    , (bundle "willghatch/zsh-hooks")
-        { fpathLocations = [] }
-    , (bundle "sharat87/zsh-vim-mode")
-        { fpathLocations = [] }
+        , (bundle "nojhan/liquidprompt")
 
     , (bundle "djui/alias-tips")
         { fpathLocations = [] }
 
-    --, (bundle "Tarrasch/zsh-autoenv")
-        --{ fpathLocations = [] }
+        -- FIXME: update to a newer fork
+        --, (bundle "willghatch/zsh-hooks")
+        , (bundle "RobertAudi/zsh-hooks")
+
+        , (bundle "sharat87/zsh-vim-mode")
+
+        --, (bundle "djui/alias-tips")
+
+        --, (bundle "Tarrasch/zsh-autoenv")
+
+        , (bundle "lukechilds/zsh-nvm")
     ]
 
 

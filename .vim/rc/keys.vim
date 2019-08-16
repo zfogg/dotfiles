@@ -13,7 +13,7 @@ noremap ; :
  
 " Don't jump cursor when using * to search for word under cursor
 nnoremap * *``
-nnoremap # #``
+"nnoremap # #``
 
 " Reselect visual block after indent/outdent
 vnoremap < <gv
@@ -168,4 +168,8 @@ exe 'nn <silent> <Leader>V :'
     " Change to the directory of the current buffer's file.
     nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
     nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
+
+    if exists('&inccommand')
+        set inccommand=nosplit
+    endif
 " }}}
