@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh -e
+#!/usr/bin/zsh -e
 
 
 source ~/.zsh/site-functions/bin-abort
@@ -6,11 +6,10 @@ trap 'bin-abort' ERR
 
 
 eval "$(pyenv init -)"
-local pip_reqs="`pyenv root`"'/neovim-packages'
-#for py_v in 2 3; do
-for py_v in 3; do
+local pip_reqs="${PYENV_ROOT}/neovim-packages"
+for py_v in 2 3; do
+#for py_v in 3; do
     pyenv activate neovim"$py_v"
-    pyenv exec pip install --quiet wheel setuptools pip
     pyenv exec pip install --quiet --requirement "${pip_reqs}${py_v}"
 done
 
@@ -27,6 +26,7 @@ done
 local npm_reqs=(
     jsonlint
     tern
+    neovim
 )
 npm --silent install --global ${npm_reqs}
 
@@ -39,10 +39,18 @@ for r in ${goget_reqs}; do
 done
 
 
+local gem_reqs=(
+    neovim
+)
+for r in ${gem_reqs}; do
+    gem install "$r"
+done
+
+
 # compile editor binaries last
-brew update
-brew upgrade vim    || true
-brew upgrade neovim || true
+#brew update
+#brew upgrade vim    || true
+#brew upgrade neovim || true
 
 
 $EDITOR +PlugUpgrade +qall

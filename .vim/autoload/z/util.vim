@@ -7,15 +7,20 @@ endfunc
 
 
 func! z#util#TempDirs(pree, post, ...) abort
-    let s:mytmpdir = get(s:, 'mytmpdir', system('echo -n "${TMPDIR%/}"'))
     let l:pree = exists('a:pree') ? a:pree : ''
     let l:post = exists('a:post') ? a:post : ''
     let l:pre_dirs = a:0 > 0
         \ ? map(copy(a:000), 'l:pree . v:val . l:post')
         \ : []
-    let l:std_dirs = [
-        \          s:mytmpdir    . l:post,
-        \ l:pree . 'private/tmp' . l:post,
+    let l:std_dirs = []
+    if has('osx')
+        let s:osxtmp = get(s:, 'mytmpdir', system('echo -n "${TMPDIR%/}"'))
+        let l:std_dirs += [
+            \ s:osxtmp .                 l:post,
+            \ l:pree   . 'private/tmp' . l:post,
+        \ ]
+    endif
+    let l:std_dirs += [
         \ l:pree . 'var/tmp'     . l:post,
         \ l:pree . 'tmp'         . l:post,
     \ ]

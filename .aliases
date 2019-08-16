@@ -14,14 +14,15 @@ alias zshrc='$EDITOR '"$DOTFILES"'/.zshrc'
 alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 
 alias ql='quick-look'
-
-alias ls="${BREW}/bin/gls --color=auto --group-directories-first"
+ 
+alias ls="ls --color=auto --group-directories-first"
+#alias ls="${BREW}/bin/gls --color=auto --group-directories-first"
 alias  k='ls -LhGstcr'
 alias  l='k -1'
 alias ll='l -A'
 alias la='ll -g'
 
-alias sudo='nocorrect sudo '
+alias sudo='nocorrect sudo -E '
 
 alias   s='sudo'
 
@@ -145,5 +146,6 @@ function gpip()  {PIP_REQUIRE_VIRTUALENV='' pip  "$@"}
 function gpip2() {PIP_REQUIRE_VIRTUALENV='' pip2 "$@"}
 function gpip3() {PIP_REQUIRE_VIRTUALENV='' pip3 "$@"}
 
+alias pyenv-init='eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)"'
 
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }

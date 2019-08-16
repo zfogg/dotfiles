@@ -26,11 +26,12 @@ Library/
 *.old
 *.plist
 *.pdf
-*.md
 
 yarn.lock
 Gemfile.lock
 composer.lock
+stack.yaml.lock
+package-lock.json
 
 .tern-port
 

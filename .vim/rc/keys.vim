@@ -92,7 +92,7 @@ exe 'nn <silent> <Leader>V :'
     inoremap JJ <C-o>J<C-o>==
     inoremap KK <C-o>k<C-o>J<C-o>==
     inoremap uu <C-o>u
-    inoremap <C-r><C-r> <C-o><C-r>
+    "inoremap <C-r><C-r> <C-o><C-r>
 
     " think of your left pinky
     inoremap jj <Esc>
