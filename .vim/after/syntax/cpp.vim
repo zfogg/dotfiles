@@ -2,4 +2,13 @@
 scriptencoding utf-8
 
 
-syn region foldPreprocessorIf start="^\#if" end="^\#endif" transparent fold
+if (&filetype !=? 'cpp')
+    finish
+endif
+
+
+syn region foldPreprocessorIf
+            \ start="^\#if"
+            \ end="^\#endif"
+            \ transparent
+            \ fold
