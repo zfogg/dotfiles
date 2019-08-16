@@ -11,10 +11,10 @@ scriptencoding utf-8
 
 call z#rc#Init()
 
-let s:rcfiles = z#constants#rc#RcFiles()
+"let s:rcfiles = z#constants#rc#RcFiles()
 
-exe 'so '.s:rcfiles.plugins
-exe 'so '.s:rcfiles.settings
-exe 'so '.s:rcfiles.statusline
-exe 'so '.s:rcfiles.keys
-exe 'so '.s:rcfiles.colorsc
+"exe 'so '.s:rcfiles.plugins
+"exe 'so '.s:rcfiles.settings
+"exe 'so '.s:rcfiles.statusline
+"exe 'so '.s:rcfiles.keys
+"exe 'so '.s:rcfiles.colorsc

@@ -3,8 +3,8 @@
 
 
 # zsh {{{
-#export ZDOTDIR="$HOME"
-#export   ZSHRC="${ZDOTDIR}/.zshrc"
+export ZDOTDIR="$HOME"
+export   ZSHRC="${ZDOTDIR}/.zshrc"
 # zsh }}}
 
 
