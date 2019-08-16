@@ -1,20 +1,15 @@
-#!/usr/bin/zsh -e
+#!/usr/bin/env zsh
 
 
 autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
 
 
-eval "$(pyenv init -)"
-local pip_reqs="${PYENV_ROOT}/neovim-packages"
-for py_v in 2 3; do
-#for py_v in 3; do
-    pyenv activate neovim"$py_v"
-    pyenv exec pip install --quiet --requirement "${pip_reqs}${py_v}"
-done
+function() { # Python, Pyenv, pip
+    eval "$(pyenv init -)"
+    local pip_reqs="${PYENV_ROOT}/neovim-packages"
 
     for py_v in 2 3; do
-    #for py_v in 3; do
         pyenv activate "neovim${py_v}"
         pip install -U wheel setuptools pip
         pip install -U -r "${pip_reqs}${py_v}"
@@ -24,69 +19,69 @@ done
 }
 
 
-local npm_reqs=(
-    jsonlint
-    tern
-    neovim
-)
-npm --silent install --global ${npm_reqs}
+function() { # Node.js, npm, nvm
+    local npm_reqs=(
+        jsonlint
+        tern
+        neovim)
+    npm --silent install --global ${npm_reqs}
 
+    #nvm install stable \
+        #--latest-npm
+    #nvm alias default stable
+}
+
+
+function() { # Rust, rustup, Cargo
     local cargo_reqs=(
         racer
-        clippy
-    )
-
+        clippy)
     for rel in $cargo_rels; do
         rustup update "$rel"
-        for req in $cargo_reqs; do
+        for req in $cargo_reqs;
             cargo +"$rel" install "$req" \
                 2>/dev/null || true
-        done
     done
 }
 
 
-local gem_reqs=(
-    neovim
-)
-for r in ${gem_reqs}; do
-    gem install "$r"
-done
-
-
-# compile editor binaries last
-#brew update
-#brew upgrade vim    || true
-#brew upgrade neovim || true
-
-    nvm install stable \
-        --latest-npm
-    nvm alias default stable
+function() { # Ruby, Gem
+    local gem_reqs=(
+        neovim
+    )
+    for r in ${gem_reqs};
+        gem install "$r"
 }
+
 
 
 function() { # Golang
     local goget_reqs=(
         github.com/nsf/gocode
     )
-
-    for r in ${goget_reqs}; do
+    for r in ${goget_reqs};
         go get -u "$r"
-    done
 }
 
 
-function() { # Editor
-    # NOTE: build/install editor binaries last
-    local brew_reqs=(
-        #vim
-        neovim
-    )
-    brew update
+# NOTE: build/install editor binaries last
+function() { # OS package manager
+    # OSX
+    if [[ $OSTYPE =~ "darwin" ]]; then
+        local brew_reqs=(
+            #vim
+            neovim)
+        for r in ${brew_reqs};
+            brew ls --versions "$r" > /dev/null \
+                || brew install "$r"
 
-    for r in ${brew_reqs}; do
-        brew upgrade "$r" || true
-    done
+    # Manjaro (Arch-based)
+    elif [[ -f /etc/manjaro-release ]]; then
+        local pamac_reqs=(
+            neovim-nightly)
+        for r in ${pamac_reqs};
+            pamac install "$r"
+    fi
 }
 
 

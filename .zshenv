@@ -17,12 +17,11 @@ fi
 
 typeset -U fpath
 fpath=(
-  #~/.zsh/complete
-  #"$BREW"/share/zsh-completions
+  ~/.zsh/complete
+  "$BREW"/share/zsh-completions
   ~/.zsh/site-functions
-  ~/.zsh/.oh-my-zsh/plugins/*/_*(.:h)
   "${BREW}/share/zsh/"{site-functions,functions}
-  #"${fpath[@]}"
+  "${fpath[@]}"
 )
 
 

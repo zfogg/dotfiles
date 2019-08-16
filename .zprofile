@@ -118,13 +118,14 @@ typeset -xT INFOPATH infopath
 if [[ "$OSX" == "$TRUE" ]]; then
    path=(
       ~/bin
-      ~/.config/composer/vendor/bin
+      #~/.config/composer/vendor/bin
       #~/.platformio/penv/bin
-      "$BREW"/opt/php71/bin
+      #"$BREW"/opt/php71/bin
       "$BREW"/opt/node/bin
       "$PYENV_ROOT"/shims
-      ~/.jenv/shims
-      ~/{.cabal,.cargo}/bin
+      #~/.jenv/shims
+      ~/.local/bin
+      ~/.{cabal,cargo,gem}/bin
       "$GOPATH"/bin
       "$GOROOT"/bin
       "$BREW"/sbin
@@ -246,14 +247,14 @@ function opt_dep() {
 
 
 if [[ "$OSX" == "$TRUE" ]]; then
-    opt_dep libressl       '$'
-    opt_dep openssl        bin
-    opt_dep readline
+    #opt_dep libressl       '$'
+    #opt_dep openssl        bin
+    #opt_dep readline
     #opt_dep libgit2        '$'
     #opt_dep postgresql-9.5 bin
     #opt_dep gpg-agent      bin
 
-    opt_dep opencv@2       bin
+    #opt_dep opencv@2       bin
 
     # NOTE: these break curl, homebrew, etc
     #opt_dep llvm       bin:libexec
