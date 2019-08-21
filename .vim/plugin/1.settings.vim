@@ -86,9 +86,14 @@ set viewoptions+=cursor,curdir,folds
     set backspace=indent,eol,start " Allow backspacing over autoindent, EOL, and BOL.
     set autoindent                 " Always set autoindenting on.
     set lazyredraw                 " For better macro performance.
-    set synmaxcol=128
-    set  timeoutlen=700            " Time (ms) for a mapped sequence to complete.
+    set synmaxcol=180
     set ttimeoutlen=30             " Time (ms) for a key code sequence to complete.
+    augroup RcSettings_timeoutlen
+        au!
+        " The time (ms) for a mapped sequence to complete.
+        autocmd InsertEnter * set timeoutlen=170
+        autocmd InsertLeave * set timeoutlen=700
+    augroup END
 " }}} Moving around and editing
 
 

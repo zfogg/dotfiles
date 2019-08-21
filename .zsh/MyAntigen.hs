@@ -25,17 +25,14 @@ bundles = [
         , sourcingStrategy = filePathsSourcingStrategy
             [ "zsh-history-substring-search.zsh" ] }
 
-    , (bundle "zsh-users/zsh-autosuggestions")
-       { fpathLocations = [] }
-
         , (bundle "zsh-users/zsh-autosuggestions")
 
         , (bundle "RobSis/zsh-completion-generator")
 
         , (bundle "nojhan/liquidprompt")
 
-    , (bundle "djui/alias-tips")
-        { fpathLocations = [] }
+        , (bundle "djui/alias-tips")
+            { fpathLocations = [] }
 
         -- FIXME: update to a newer fork
         --, (bundle "willghatch/zsh-hooks")
@@ -43,11 +40,9 @@ bundles = [
 
         , (bundle "sharat87/zsh-vim-mode")
 
-        --, (bundle "djui/alias-tips")
-
         --, (bundle "Tarrasch/zsh-autoenv")
 
-        , (bundle "lukechilds/zsh-nvm")
+        --, (bundle "lukechilds/zsh-nvm")
     ]
 
 
