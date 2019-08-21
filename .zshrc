@@ -3,11 +3,6 @@
 # ~/.zshrc
 
 
-# note: meta helpers {{{
-command_exists() { command -v "$1" 2>/dev/null 1>&2 }
-alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
-# }}}
-
 
 # zsh modules {{{
 zmodload zsh/zpty
@@ -240,7 +235,7 @@ bindkey -M vicmd '^[f'  vi-forward-word
 
 # zsh vi-mode fixes
 #zle -N self-insert url-quote-magic
-#bindkey -M viins ' '   magic-space
+bindkey -M viins ' '   magic-space
 
 function _last-cmd-and-vi-cmd-mode {
     zle vi-cmd-mode
@@ -349,10 +344,6 @@ fi
 
 
 # npm, nvm {{{
-[ -d ~/.local ] \
-  && export npm_config_prefix=~/.local \
-  || export npm_config_prefix=~/.npm
-
 #source /usr/local/opt/nvm/nvm.sh
 #if command_exists nvm; then
 #    autoload -U add-zsh-hook
@@ -408,25 +399,6 @@ export PGHOSTADDR="127.0.0.1"
 export     PGPORT="5432"
 # }}}
 
-
-# vim {{{
-export EDITOR='nvim'
-export VISUAL="${EDITOR}"
-export MANPAGER="${EDITOR} -c 'set ft=man' -"
-export LESS='-R'
-export LESSOPEN='| vimcat -o - %s'
-#}}}
-
-
-# pager {{{
-if command_exists nvimpager; then
-  export PAGER='nvimpager'
-elif command_exists nvim; then
-  export PAGER='nvim -R'
-else
-  export PAGER='less'
-fi
-# }}}
 
 
 # aliases {{{
@@ -504,3 +476,12 @@ unsetopt LIST_AMBIGUOUS
 
 setopt   INTERACTIVE_COMMENTS
 # }}}
+
+
+# zsh startup debug (BOTTOM of ~/.zshrc) {{{
+#   https://kev.inburke.com/kevin/profiling-zsh-startup-time
+if [[ ! -z "$SHELL_DEBUG" ]]; then
+  unsetopt xtrace
+  exec 2>&3 3>&-
+fi
+# zsh startup debug (BOTTOM of ~/.zshrc) }}}
