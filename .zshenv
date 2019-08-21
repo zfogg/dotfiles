@@ -38,10 +38,7 @@ export OSX="$(
     && echo "${TRUE:-1}" \
     || echo "${FALSE-0}")"
 
-export SHELL_NAME="$(
-  [[ "${OSX:-0}" == "${TRUE:-1}" ]] \
-    && ps -p$$ -ocommand= | tr -d '-' \
-    || ps -p$$ -ocmd=)"
+export SHELL_NAME="`basename ${SHELL}`"
 # $SHELL }}}
 
 
