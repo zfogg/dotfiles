@@ -122,7 +122,7 @@ export DOTVIM="$DOTFILES/.vim"
 [ -d "$DOTFILES/.zsh/complete" ] \
     && export GENCOMPL_FPATH="$DOTFILES/.zsh/complete"
 
-export ZCOMPDUMP=~/.zcompdump."$USER"."$SHELL_NAME"
+export ZCOMPDUMP=~/.zcompdump."${SHELL:-zsh}"
 autoload -U compaudit compinit \
   && compinit -i -d "$ZCOMPDUMP"
 
@@ -388,7 +388,6 @@ export RUSTUP_HOME=~/.multirust
 export RUST_SRC_PATH="$RUSTUP_HOME"/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
 export CARGO_INCREMENTAL=1
 export CARGO_BUILD_JOBS=$((${CORES:-4} - 1))
-
 # }}}
 
 
