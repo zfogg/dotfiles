@@ -2,6 +2,8 @@
 scriptencoding utf-8
 
 
+if !has('nvim') | finish | endif
+
 " deoplete#{sources,omni#functions} {{{
 " NOTE: import at the top
 let s:sources = get(g:, 'deoplete#sources',        {})
