@@ -33,17 +33,6 @@ set viewoptions+=cursor,curdir,folds
 
 
 " {{{ undo / redo, swap, backup
-    let s:dotvim_dotdirs = {}
-    for [s:dir_name, s:dir_path] in items({
-        \ 'undo'   : '.undo',
-        \ 'swap'   : '.swap',
-        \ 'backup' : '.backup',
-    \ })
-        let s:dir = g:dotvim_f.'/'.s:dir_path
-        if !isdirectory(s:dir) | call mkdir(s:dir) | endif
-        let s:dotvim_dotdirs[s:dir_name] = s:dir[1:]
-    endfor
-
     set wildmenu wildignorecase
     set wildchar=<Tab>
     set wildmode=longest:full,full
@@ -53,6 +42,7 @@ set viewoptions+=cursor,curdir,folds
     set wildignore+=*.swp,*.pyc,*.class
     set wildignore+=*.tar,*.bz,*.gz,*.xz,*.zip,*.7z,*.rar
     set wildignore+=*/.git/*,*/node_modules/*
+    set wildignore+=*.swc,*.swc.old
     set wildignore+=*~,~*
 
     set pumheight=8
@@ -60,21 +50,8 @@ set viewoptions+=cursor,curdir,folds
     set conceallevel=1 concealcursor=nvic
 
     set undofile
-    if has('persistent_undo')
-        let &undodir = z#util#TempDirs('/', '', s:dotvim_dotdirs['undo'])
-    endif
 
-    let &directory = z#util#TempDirs('/', '//', s:dotvim_dotdirs['swap'])
     set swapfile
-
-    let &backupdir = z#util#TempDirs('/', '', s:dotvim_dotdirs['backup'])
-    if has('wildignore')
-        let &backupskip = z#util#TempDirs('/', '/*',
-            \ s:dotvim_dotdirs['undo'],
-            \ s:dotvim_dotdirs['swap'],
-            \ s:dotvim_dotdirs['backup'],
-        \ )
-    endif
 
     let g:omni_sql_no_default_maps = 1
 " }}} undo / redo, swap, backup

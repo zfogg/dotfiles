@@ -18,8 +18,8 @@ alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
 alias ql='quick-look'
  
 [[ "$OSX" == "$TRUE" ]] \
-    && alias ls="${BREW}/bin/gls --color=auto --group-directories-first" \
-    || alias ls="ls --color=auto --group-directories-first"
+    && alias ls='gls --color=auto --group-directories-first --human-readable --reverse --classify --quoting-style=shell-always' \
+    || alias ls='ls --color=auto --group-directories-first'
 alias  k='ls -LhGstcr'
 alias  l='k -1'
 alias ll='l -A'
@@ -39,9 +39,9 @@ alias htop='htop -u $USER'
 
 alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 
-alias grep="${GREP_PRG:-grep} ${GREP_ARGS}"
-alias ag="${AG_PRG:-ag} ${AG_ARGS}"
-alias rg="${RG_PRG:-rg} ${RG_ARGS}"
+alias  rg='command $GREPPRG'
+alias grep='command $GREPPRG'
+#alias ag="$GREPPRG"
 
 # pip2 install pygments
 #alias ccat='pygmentize -O style=base16-default.dark -f 256 -g'
@@ -105,7 +105,7 @@ function echoer() {
 
 
 function gencomp_all() {
-    for p in $path; do ls $p; done |\
+    for p in $path; do command -p ls $p; done |\
         uniq |\
         { while read c; do gencomp $c; done }
 }

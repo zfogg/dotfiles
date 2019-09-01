@@ -3,11 +3,12 @@
     name  = Zachary Fogg
 
 [core]
-    ;editor   = $EDITOR
-    ;pager    = $PAGER
+    editor   = $EDITOR
+    pager    = $PAGER
     eol      = lf
     autocrlf = input
-    excludesfile = ~/.gitignore_global
+    ;excludesfile = ~/.gitignore_global
+    excludesfile = ~/.config/git/ignore
 
 [push]
     default = simple
@@ -85,7 +86,7 @@
 
 
 [ghq]
-    root = ~/zfogg/src
+    root = /Users/zfogg/src
 [ghq "https://bitbucket.org/"]
     vcs = git
 [filter "lfs"]
