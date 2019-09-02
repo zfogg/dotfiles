@@ -6,23 +6,21 @@ func! z#util#globpathL(path, glob) abort
 endfunc
 
 
-func! z#util#TempDirs(pree, post, ...) abort
-    let l:pree = exists('a:pree') ? a:pree : ''
+func! z#util#TempDirs(post, ...) abort
     let l:post = exists('a:post') ? a:post : ''
     let l:pre_dirs = a:0 > 0
-        \ ? map(copy(a:000), 'l:pree . v:val . l:post')
+        \ ? map(copy(a:000), 'v:val . l:post')
         \ : []
     let l:std_dirs = []
     if has('osx')
         let s:osxtmp = get(s:, 'mytmpdir', system('echo -n "${TMPDIR%/}"'))
         let l:std_dirs += [
             \ s:osxtmp .                 l:post,
-            \ l:pree   . 'private/tmp' . l:post,
         \ ]
     endif
     let l:std_dirs += [
-        \ l:pree . 'var/tmp'     . l:post,
-        \ l:pree . 'tmp'         . l:post,
+        \ '/var/tmp'     . l:post,
+        \ '/tmp'         . l:post,
     \ ]
     let l:out_dirty = join(l:pre_dirs + l:std_dirs, ',')
     return escape(l:out_dirty, '\')
