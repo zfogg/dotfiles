@@ -57,7 +57,11 @@ set viewoptions+=cursor,curdir,folds
         \ 'backup' : 'backup',
     \ })
         "let s:dir = g:dotvim_f.'/'.s:dir_path
-        let s:dir = $XDG_DATA_HOME.'/'.s:editor_name.'/'.s:dir_path
+        if has('unix')
+            let s:dir = $XDG_DATA_HOME.'/'.s:editor_name.'/'.s:dir_path
+        elseif has('win32')
+            let s:dir = $LOCALAPPDATA.'/'.s:editor_name.'-data'.'/'.s:dir_path
+        endif
         if !isdirectory(s:dir) | call mkdir(s:dir) | endif
         let s:vim_data_dirs[s:dir_name] = s:dir
     endfor
@@ -86,13 +90,12 @@ set viewoptions+=cursor,curdir,folds
     set virtualedit=all            " Let cursor move past $ in command mode.
     set backspace=indent,eol,start " Allow backspacing over autoindent, EOL, and BOL.
     set autoindent                 " Always set autoindenting on.
-    set lazyredraw                 " For better macro performance.
-    set synmaxcol=180
-    set ttimeoutlen=30             " Time (ms) for a key code sequence to complete.
+    "set lazyredraw                 " For better macro performance.
+    set ttimeoutlen=35             " Time (ms) for a key code sequence to complete.
     augroup RcSettings_timeoutlen
         au!
         " The time (ms) for a mapped sequence to complete.
-        autocmd InsertEnter * set timeoutlen=170
+        autocmd InsertEnter * set timeoutlen=200
         autocmd InsertLeave * set timeoutlen=700
     augroup END
 " }}} Moving around and editing
@@ -100,6 +103,7 @@ set viewoptions+=cursor,curdir,folds
 
 " {{{ 'cpoptions'
     "   default:aABceFs
+    "   mine: _aAcbdEefFIMnoPqRstWXZ+;
     set cpo+=aA        " cpo-a cpo-A
     set cpo+=c cpo-=C  " cpo-c cpo-C
     set cpo+=b cpo-=B  " cpo-b cpo-B
@@ -127,13 +131,14 @@ set viewoptions+=cursor,curdir,folds
     set cpo-=! cpo-=$  " cpo-! cpo-$
     set cpo-=% cpo+=+  " cpo-% cpo-+
     set cpo-=> cpo+=;  " cpo-> cpo-;
-    "set cpo+=_         " cpo-_
+    set cpo+=_         " cpo-_
 " }}} 'cpoptions'
 
 
 " {{{ Tiny aesthetic tweaks
     set cul cuc         " A horizontal line for the cursor location.
     set ruler           " Show the cursor position all the time.
+    set scrolljump=4    " Scroll n lines at a time at bottom/top
     set scrolloff=3     " Keep n context lines above and below the cursor.
     set sidescrolloff=4 " FIXME
     set sidescroll=2    " FIXME
@@ -153,9 +158,9 @@ set viewoptions+=cursor,curdir,folds
     set expandtab       " Use spaces, not tabs, for autoindent/tab key.
     set copyindent
     set preserveindent
-    set tabstop=4       " <Tab> inserts n spaces.
-    set softtabstop=0   " <BS> over an autoindent deletes both spaces.
-    set shiftwidth=0    " An indent level is n spaces.
+    set tabstop=2       " <Tab> inserts n spaces.
+    set softtabstop=2   " <BS> over an autoindent deletes both spaces.
+    set shiftwidth=2    " An indent level is n spaces.
     set shiftround      " Rounds indent to a multiple of shiftwidth.
     set nowrap          " Don't wrap text.
     set linebreak       " Don't wrap textin the middle of a word.
@@ -241,21 +246,25 @@ set viewoptions+=cursor,curdir,folds
 
     " 'isfname' 'isf'  string
     "   default: @,48-57,/,.,-,_,+,,,#,$,%,~,=
-    set  isfname=@,48-57,_,#,~,$,-,/,\\,.,+,,,%,=
+    if has('unix')
+        set  isfname=@,48-57,_,#,~,$,-,/,\\,.,+,,,%,=
+    endif
     "set isfname+=@,48-57,_,#,~,$,-,/,.,+,,,%,=
 
     " 'isident' 'isi'  string
     "   default: @,48-57,_,192-255
     set isident+=@,48-57,_,192-255
-
     " 'iskeyword' 'isk'  string
     "   default: @,48-57,_
+    "   custom:  @,48-57,_,192-255,:
+    "   ft=help: !-~,^*,^|,^",192-255
     set iskeyword+=@,48-57,_,192-255
 " }}} Searching and Patterns
 
 
 " {{{ Syntax
-    syntax sync minlines=256 linebreaks=1
+    syntax sync minlines=16 maxlines=512 linebreaks=1
+    set synmaxcol=220
 " }}} Syntax
 
 

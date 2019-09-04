@@ -1,4 +1,4 @@
-" deoplete
+" plugin/rc/deoplete
 scriptencoding utf-8
 
 

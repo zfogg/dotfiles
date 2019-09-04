@@ -17,11 +17,18 @@ func! z#util#TempDirs(post, ...) abort
         let l:std_dirs += [
             \ s:osxtmp .                 l:post,
         \ ]
+    elseif has('win32')
+        let s:wintmp = expand($TEMP)
+        let l:std_dirs += [
+            \ s:wintmp .                 l:post,
+        \ ]
     endif
-    let l:std_dirs += [
-        \ '/var/tmp'     . l:post,
-        \ '/tmp'         . l:post,
-    \ ]
+    if has('unix')
+        let l:std_dirs += [
+            \ '/var/tmp'     . l:post,
+            \ '/tmp'         . l:post,
+        \ ]
+    endif
     let l:out_dirty = join(l:pre_dirs + l:std_dirs, ',')
     return escape(l:out_dirty, '\')
 endfunc
@@ -34,3 +41,17 @@ func! z#util#Opts(defaults, ...) abort
     endfor
     return l:opts
 endfunc
+
+
+fun! z#util#TrimWhitespace() abort
+    let l:save = winsaveview()
+    keepjumps keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+
+fun! z#util#HasPlugin(name) abort
+    let l:name  = get(a:, 'name', '')
+    let l:plugs = get(g:, 'plugs', {})
+    return has_key(l:plugs, l:name)
+endfun

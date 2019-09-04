@@ -1,8 +1,12 @@
-" deoplete
+" after/plugin/deoplete
 scriptencoding utf-8
 
 
-if !has('nvim') | finish | endif
+if !has('nvim') ||
+      \ !z#util#HasPlugin('deoplete.nvim') ||
+      \ !get(g:, 'deoplete#enable_at_startup', v:false)
+  finish | endif
+
 
 " deoplete#{sources,omni#functions} {{{
 " NOTE: import at the top
@@ -67,7 +71,9 @@ let g:deoplete#sources#go#json_directory = $HOME.'/tmp'
 
 
 " emoji
-call deoplete#custom#source('emoji', 'filetypes', ['rst'])
+if has('mac') && z#util#HasPlugin('deoplete-emoji')
+  call deoplete#custom#source('emoji', 'filetypes', ['rst'])
+endif
 
 
 " NOTE: export to global at the BOTTOM

@@ -4,13 +4,14 @@ scriptencoding utf-8
 
 let g:mapleader=','
 
+
 inoremap <C-c> <Esc>
 
 noremap : <Nop>
 noremap ; :
 " and if you ever wanna map to ;
 "noremap ;; ;
- 
+
 " Don't jump cursor when using * to search for word under cursor
 nnoremap * *``
 "nnoremap # #``
@@ -25,7 +26,7 @@ nnoremap <M-j> i<CR><Esc>d^==kg_lD
 " Keep cursor in centre of screen after motions
 nnoremap n nzz
 nnoremap <C-d> <C-d>zz
-nnoremap <C-u> <C-u>zz
+"nnoremap <C-u> <C-u>zz
 nnoremap { {zz
 nnoremap } }zz
 nnoremap gd gdzz
@@ -156,7 +157,7 @@ exe 'nn <silent> <Leader>V :'
     "map . .`[
 
     " Delete trailing whitespace.
-    nnoremap <Leader>S :%s/\s\+$//<CR>:let @/=''<CR><c-o>
+    nnoremap <Leader>S :call z#util#TrimWhitespace()<CR>
 
     " Fixes for display glitches.
     nnoremap <silent> <Leader><Space> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>,<Space>
