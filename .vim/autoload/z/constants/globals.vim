@@ -54,10 +54,8 @@ endfunc
 
 func! z#constants#globals#Python() abort
   if has('win32')
-    return
-    " FIXME
     let l:py3_prog = 'python3.exe'
-    let l:py2_prog = 'python.exe'
+    let l:py2_prog = 'python2.exe'
     let l:py3_root = $USERPROFILE.'/scoop/shims'
     let l:py2_root = $USERPROFILE.'/scoop/shims'
   elseif has('unix')
