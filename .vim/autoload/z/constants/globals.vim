@@ -99,7 +99,7 @@ func! z#constants#globals#Ruby() abort
       if v:shell_error != 0 | throw "Z:NotFound ".l:ruby_host | endif
       let l:host_path = fnamemodify(l:which_prog, ':p:h')
     elseif has('win32')
-      let l:ruby_host = "neovim-ruby-host.cmd"
+      let l:ruby_host = "neovim-ruby-host.bat"
       let l:host_path = expand($USERPROFILE).'/scoop/apps/ruby/current/gems/bin'
     endif
     let g:ruby_host_prog = l:host_path.'/'.l:ruby_host
