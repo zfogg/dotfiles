@@ -9,7 +9,9 @@ set showtabline=1           " show buffer tabs when more than `n`
 set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
 set history=2048            " persist mode-cmdline history
 set noerrorbells visualbell " no system bell, no screen blink on error
-set shell=$SHELL
+if exists('$SHELL')
+    set shell=$SHELL
+endif
 
 set updatetime=250        " for CursorHold autocmd (milliseconds)
 let g:netrw_dirhistmax=0  " http://www.vim.org/scripts/script.php?script_id=1075
