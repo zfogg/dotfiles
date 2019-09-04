@@ -91,8 +91,8 @@ let g:deoplete#omni#functions = s:omnifns
 "command! -bang PadawanGenerate call deoplete#sources#padawan#Generate(<bang>0)
 
 
-aug RcPlugin__deoplete
-    au!
-    au CompleteDone * pclose!
-    au VimEnter     * call deoplete#initialize()
-aug END
+"aug RcPlugin__deoplete
+    "au!
+    "au CompleteDone * pclose!
+    ""au VimEnter     * call deoplete#initialize()
+"aug END
