@@ -64,11 +64,11 @@ func! z#constants#globals#Python() abort
     let l:py3_prog = 'python3'
     let l:py2_prog = 'python'
     if exists('$PYENV_ROOT')
-      let l:py3_root = $PYENV_ROOT.'/versions/neovim3'
-      let l:py2_root = $PYENV_ROOT.'/versions/neovim2'
+      let l:py3_root = $PYENV_ROOT.'/versions/neovim3/bin'
+      let l:py2_root = $PYENV_ROOT.'/versions/neovim2/bin'
     elseif exists('$BREW')
-      let l:py3_root = $BREW
-      let l:py2_root = $BREW
+      let l:py3_root = $BREW.'/bin'
+      let l:py2_root = $BREW.'/bin'
     endif
   endif
   let g:python3_host_prog = l:py3_root.'/'.l:py3_prog
