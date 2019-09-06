@@ -18,6 +18,12 @@ hi NeomakeErrorSign   term=bold gui=bold ctermfg=red    guifg=red
 hi NeomakeWarningSign term=bold gui=bold ctermfg=yellow guifg=yellow
 
 
+aug RcPlugin__neomake
+    au!
+    au BufEnter *.js let b:neomake_javascript_eslint_exe = nrun#Which('eslint')
+aug END
+
+
 " vimscript
 "call neomakeft#SetupFt('vim', {
     "\ 'makers':    ['vint'],
