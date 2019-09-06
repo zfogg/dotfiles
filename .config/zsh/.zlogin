@@ -24,7 +24,7 @@
 
   for a in $fpath; do
     #/bin/rm -f "${a}.zwc"
-    if [ -d $a ]; then
+    if [[ -d "$a" && -w "$a" ]]; then
       zrecompile -p "${a}.zwc" "$a"/_*~"$a"/__*
     fi
   done
