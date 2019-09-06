@@ -1,9 +1,8 @@
-" deoplete
+" plugin/rc/deoplete
 scriptencoding utf-8
 
 
-if !has('nvim')         | finish | endif
-if exists('g:vimpager') | finish | endif
+if !has('nvim') | finish | endif
 
 
 let g:deoplete#max_menu_width = 85

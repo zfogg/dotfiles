@@ -9,7 +9,9 @@ set showtabline=1           " show buffer tabs when more than `n`
 set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
 set history=2048            " persist mode-cmdline history
 set noerrorbells visualbell " no system bell, no screen blink on error
-set shell=$SHELL
+if exists('$SHELL')
+    set shell=$SHELL
+endif
 
 set updatetime=250        " for CursorHold autocmd (milliseconds)
 let g:netrw_dirhistmax=0  " http://www.vim.org/scripts/script.php?script_id=1075
@@ -32,18 +34,7 @@ set viewoptions+=cursor,curdir,folds
 " }}} 'path'  'cdpath'  file-searching
 
 
-" {{{ undo / redo, swap, backup
-    let s:dotvim_dotdirs = {}
-    for [s:dir_name, s:dir_path] in items({
-        \ 'undo'   : '.undo',
-        \ 'swap'   : '.swap',
-        \ 'backup' : '.backup',
-    \ })
-        let s:dir = g:dotvim_f.'/'.s:dir_path
-        if !isdirectory(s:dir) | call mkdir(s:dir) | endif
-        let s:dotvim_dotdirs[s:dir_name] = s:dir[1:]
-    endfor
-
+" {{{ wild, undo, swap, backup
     set wildmenu wildignorecase
     set wildchar=<Tab>
     set wildmode=longest:full,full
@@ -53,30 +44,46 @@ set viewoptions+=cursor,curdir,folds
     set wildignore+=*.swp,*.pyc,*.class
     set wildignore+=*.tar,*.bz,*.gz,*.xz,*.zip,*.7z,*.rar
     set wildignore+=*/.git/*,*/node_modules/*
+    set wildignore+=*.swc,*.swc.old
     set wildignore+=*~,~*
 
     set pumheight=8
     set completeopt=menu,menuone,preview,noinsert,noselect
     set conceallevel=1 concealcursor=nvic
 
-    set undofile
+    let s:vim_data_dirs = {}
+    let s:editor_name = fnamemodify($VIM, ':t')
+    for [s:dir_name, s:dir_path] in items({
+        \ 'undo'   : 'undo',
+        \ 'swap'   : 'swap',
+        \ 'backup' : 'backup',
+    \ })
+        "let s:dir = g:dotvim_f.'/'.s:dir_path
+        if has('unix')
+            let s:dir = $XDG_DATA_HOME.'/'.s:editor_name.'/'.s:dir_path
+        elseif has('win32')
+            let s:dir = $LOCALAPPDATA.'/'.s:editor_name.'-data'.'/'.s:dir_path
+        endif
+        if !isdirectory(s:dir) | call mkdir(s:dir) | endif
+        let s:vim_data_dirs[s:dir_name] = s:dir
+    endfor
+
     if has('persistent_undo')
-        let &undodir = z#util#TempDirs('/', '', s:dotvim_dotdirs['undo'])
+        set undofile
+        let &undodir = z#util#TempDirs('', s:vim_data_dirs['undo'])
     endif
 
-    let &directory = z#util#TempDirs('/', '//', s:dotvim_dotdirs['swap'])
+    let &directory = z#util#TempDirs('//', s:vim_data_dirs['swap'])
     set swapfile
 
-    let &backupdir = z#util#TempDirs('/', '', s:dotvim_dotdirs['backup'])
-    if has('wildignore')
-        let &backupskip = z#util#TempDirs('/', '/*',
-            \ s:dotvim_dotdirs['undo'],
-            \ s:dotvim_dotdirs['swap'],
-            \ s:dotvim_dotdirs['backup'],
-        \ )
-    endif
-
     let g:omni_sql_no_default_maps = 1
+
+    let &backupdir = z#util#TempDirs('', s:vim_data_dirs['backup'])
+    if has('wildignore')
+        let &backupskip = &backupskip.','.s:vim_data_dirs['undo']  .'/*'
+        let &backupskip = &backupskip.','.s:vim_data_dirs['swap']  .'/*'
+        let &backupskip = &backupskip.','.s:vim_data_dirs['backup'].'/*'
+    endif
 " }}} undo / redo, swap, backup
 
 
@@ -85,13 +92,12 @@ set viewoptions+=cursor,curdir,folds
     set virtualedit=all            " Let cursor move past $ in command mode.
     set backspace=indent,eol,start " Allow backspacing over autoindent, EOL, and BOL.
     set autoindent                 " Always set autoindenting on.
-    set lazyredraw                 " For better macro performance.
-    set synmaxcol=180
-    set ttimeoutlen=30             " Time (ms) for a key code sequence to complete.
+    "set lazyredraw                 " For better macro performance.
+    set ttimeoutlen=35             " Time (ms) for a key code sequence to complete.
     augroup RcSettings_timeoutlen
         au!
         " The time (ms) for a mapped sequence to complete.
-        autocmd InsertEnter * set timeoutlen=170
+        autocmd InsertEnter * set timeoutlen=200
         autocmd InsertLeave * set timeoutlen=700
     augroup END
 " }}} Moving around and editing
@@ -99,6 +105,7 @@ set viewoptions+=cursor,curdir,folds
 
 " {{{ 'cpoptions'
     "   default:aABceFs
+    "   mine: _aAcbdEefFIMnoPqRstWXZ+;
     set cpo+=aA        " cpo-a cpo-A
     set cpo+=c cpo-=C  " cpo-c cpo-C
     set cpo+=b cpo-=B  " cpo-b cpo-B
@@ -126,13 +133,14 @@ set viewoptions+=cursor,curdir,folds
     set cpo-=! cpo-=$  " cpo-! cpo-$
     set cpo-=% cpo+=+  " cpo-% cpo-+
     set cpo-=> cpo+=;  " cpo-> cpo-;
-    "set cpo+=_         " cpo-_
+    set cpo+=_         " cpo-_
 " }}} 'cpoptions'
 
 
 " {{{ Tiny aesthetic tweaks
     set cul cuc         " A horizontal line for the cursor location.
     set ruler           " Show the cursor position all the time.
+    set scrolljump=4    " Scroll n lines at a time at bottom/top
     set scrolloff=3     " Keep n context lines above and below the cursor.
     set sidescrolloff=4 " FIXME
     set sidescroll=2    " FIXME
@@ -152,9 +160,9 @@ set viewoptions+=cursor,curdir,folds
     set expandtab       " Use spaces, not tabs, for autoindent/tab key.
     set copyindent
     set preserveindent
-    set tabstop=4       " <Tab> inserts n spaces.
-    set softtabstop=0   " <BS> over an autoindent deletes both spaces.
-    set shiftwidth=0    " An indent level is n spaces.
+    set tabstop=2       " <Tab> inserts n spaces.
+    set softtabstop=2   " <BS> over an autoindent deletes both spaces.
+    set shiftwidth=2    " An indent level is n spaces.
     set shiftround      " Rounds indent to a multiple of shiftwidth.
     set nowrap          " Don't wrap text.
     set linebreak       " Don't wrap textin the middle of a word.
@@ -240,21 +248,25 @@ set viewoptions+=cursor,curdir,folds
 
     " 'isfname' 'isf'  string
     "   default: @,48-57,/,.,-,_,+,,,#,$,%,~,=
-    set  isfname=@,48-57,_,#,~,$,-,/,\\,.,+,,,%,=
+    if has('unix')
+        set  isfname=@,48-57,_,#,~,$,-,/,\\,.,+,,,%,=
+    endif
     "set isfname+=@,48-57,_,#,~,$,-,/,.,+,,,%,=
 
     " 'isident' 'isi'  string
     "   default: @,48-57,_,192-255
     set isident+=@,48-57,_,192-255
-
     " 'iskeyword' 'isk'  string
     "   default: @,48-57,_
+    "   custom:  @,48-57,_,192-255,:
+    "   ft=help: !-~,^*,^|,^",192-255
     set iskeyword+=@,48-57,_,192-255
 " }}} Searching and Patterns
 
 
 " {{{ Syntax
-    syntax sync minlines=256 linebreaks=1
+    syntax sync minlines=16 maxlines=512 linebreaks=1
+    set synmaxcol=220
 " }}} Syntax
 
 

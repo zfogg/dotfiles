@@ -28,7 +28,9 @@ augroup PluginConfig_numberline
         \,BufWinEnter
             \ *
         \ call numberline#On()
-    exe 'au SourceCmd '.$MYVIMRC.' call numberline#On()'
+
+    let s:myvimrc = escape(expand($MYVIMRC), '\')
+    exe 'au SourceCmd '.s:myvimrc.' call numberline#On()'
 
     " except
     au    BufEnter
