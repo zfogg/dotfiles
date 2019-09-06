@@ -44,6 +44,7 @@ call plug#begin('~/.vim/bundle')
     " making / linting
     Plug 'Shougo/neoinclude.vim'
     Plug 'neomake/neomake', PIf(has('nvim'))
+    Plug 'jaawerth/nrun.vim'
 
     " completion
     "Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})

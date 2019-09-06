@@ -4,6 +4,8 @@
 /bundle/
 /sessions/
 /.undo/
+/.swap/
+/.cache/
 
 # {{{ defaults
 #
