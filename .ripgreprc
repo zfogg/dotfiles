@@ -1,0 +1,17 @@
+# Don't let ripgrep vomit really long lines to my terminal, and show a preview.
+--max-columns=150
+--max-columns-preview
+
+# Add my 'web' type.
+--type-add
+web:*.{html,css,js,jsx}*
+
+
+--follow
+--hidden
+--pretty
+
+--smart-case
+
+--before-context=1
+--after-context=1
