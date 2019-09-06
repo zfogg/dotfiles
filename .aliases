@@ -82,12 +82,13 @@ alias  wrapon='tput smam'
 
 
 # git
-alias gst='git status'
 alias gca='git commit -a'
+alias gc='git commit'
 alias gd='git diff'
 alias gl='git log'
-alias grv='git remote -v'
 alias gp='git push'
+alias grv='git remote -v'
+alias gst='git status'
 
 
 alias get='ghq get -u -p --shallow `"pbpaste"`; echo'
