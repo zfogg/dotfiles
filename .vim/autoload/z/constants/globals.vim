@@ -53,35 +53,54 @@ endfunc
 
 
 func! z#constants#globals#Python() abort
+  if has('win32')
+    let l:py3_prog = 'python3.exe'
+    let l:py2_prog = 'python2.exe'
+    let l:py3_root = $USERPROFILE.'/scoop/shims'
+    let l:py2_root = $USERPROFILE.'/scoop/shims'
+  elseif has('unix')
+    let l:py3_prog = 'python3'
+    let l:py2_prog = 'python'
     if exists('$PYENV_ROOT')
-        let l:py3_root = $PYENV_ROOT.'/versions/neovim3'
-        let l:py_root  = $PYENV_ROOT.'/versions/neovim2'
+      let l:py3_root = $PYENV_ROOT.'/versions/neovim3/bin'
+      let l:py2_root = $PYENV_ROOT.'/versions/neovim2/bin'
     elseif exists('$BREW')
-        let l:py3_root = $BREW
-        let l:py_root  = $BREW
-    else
-	throw "error with PYENV_ROOT"
+      let l:py3_root = $BREW.'/bin'
+      let l:py2_root = $BREW.'/bin'
     endif
-    let g:python3_host_prog = l:py3_root.'/bin/python3'
-    let g:python_host_prog  = l:py_root .'/bin/python2'
+  endif
+  let g:python3_host_prog = l:py3_root.'/'.l:py3_prog
+  let g:python_host_prog  = l:py2_root.'/'.l:py2_prog
+  if !filereadable(g:python3_host_prog)
+    throw "Z:NotFound python3-host-prog ".g:python3_host_prog
+  endif
+  if !filereadable(g:python_host_prog)
+    throw "Z:NotFound python-host-prog ".g:python_host_prog
+  endif
+  if has('win32')
+    let g:python3_host_prog = fnamemodify(g:python3_host_prog, ':r')
+    let g:python_host_prog  = fnamemodify(g:python_host_prog,  ':r')
+  endif
 endfunc
 
+
 func! z#constants#globals#Nodejs() abort
-  let l:node_host = "neovim-node-host"
   try
-    let g:node_host_prog = systemlist("which ".l:node_host)[0]
-    if v:shell_error != 0
-      throw "Z:NotFound '".l:node_host."'"
+    if has('unix')
+      let l:node_host = "neovim-node-host"
+      let l:which_prog = systemlist("which ".l:node_host)[0]
+      if v:shell_error != 0 | throw "Z:NotFound ".l:node_host | endif
+      let l:host_path = fnamemodify(l:which_prog, ':p:h')
+    elseif has('win32')
+      " FIXME
+      return
+      let l:node_host = "neovim-node-host.cmd"
+      let l:host_path = expand($USERPROFILE).'/scoop/persist/nodejs/bin'
     endif
-    let l:host_path = $HOME."/.local/bin/".l:node_host
-    if filereadable(l:host_path)
-      let g:node_host_prog = l:host_path
-    else
-      throw "Z:NotFound '$NVM_DIR' missing" | endif
-  catch | echomsg v:exception
+    let g:node_host_prog = l:host_path.'/'.l:node_host
   finally
     if exists("g:node_host_prog") && !filereadable(g:node_host_prog)
-      throw "Z:Err ''neovim-node-host' ".g:node_host_prog
+      throw "Z:NotFound neovim-node-host ".g:node_host_prog
       unlet g:node_host_prog
     endif
   endtry
@@ -89,18 +108,22 @@ endfunc
 
 
 func! z#constants#globals#Ruby() abort
-  let l:ruby_host = "neovim-ruby-host"
   try
-    let l:host_path = $HOME."/.gem/bin/".l:ruby_host
-    if exists("$BREW") && filereadable(l:host_path)
-      let g:ruby_host_prog = l:host_path
-    else
-      throw "Z:NotFound 'neovim-ruby-host' missing" | endif
-  catch | echomsg v:exception
+    if has('unix')
+      let l:ruby_host = "neovim-ruby-host"
+      let l:which_prog = systemlist("which ".l:ruby_host)[0]
+      if v:shell_error != 0 | throw "Z:NotFound ".l:ruby_host | endif
+      let l:host_path = fnamemodify(l:which_prog, ':p:h')
+    elseif has('win32')
+      let l:ruby_host = "neovim-ruby-host.bat"
+      let l:host_path = expand($USERPROFILE).'/scoop/apps/ruby/current/gems/bin'
+    endif
+    let g:ruby_host_prog = l:host_path.'/'.l:ruby_host
   finally
-    if exists("g:ruby_host_prog") &&
-      \!filereadable(g:ruby_host_prog)
-      unlet g:ruby_host_prog | endif
+    if exists('g:ruby_host_prog') && !filereadable(g:ruby_host_prog)
+      throw "Z:NotFound neovim-ruby-host".g:ruby_host_prog
+      unlet g:ruby_host_prog
+    endif
   endtry
 endfunc
 

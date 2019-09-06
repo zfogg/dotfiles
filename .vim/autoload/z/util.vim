@@ -6,24 +6,29 @@ func! z#util#globpathL(path, glob) abort
 endfunc
 
 
-func! z#util#TempDirs(pree, post, ...) abort
-    let l:pree = exists('a:pree') ? a:pree : ''
+func! z#util#TempDirs(post, ...) abort
     let l:post = exists('a:post') ? a:post : ''
     let l:pre_dirs = a:0 > 0
-        \ ? map(copy(a:000), 'l:pree . v:val . l:post')
+        \ ? map(copy(a:000), 'v:val . l:post')
         \ : []
     let l:std_dirs = []
     if has('osx')
         let s:osxtmp = get(s:, 'mytmpdir', system('echo -n "${TMPDIR%/}"'))
         let l:std_dirs += [
             \ s:osxtmp .                 l:post,
-            \ l:pree   . 'private/tmp' . l:post,
+        \ ]
+    elseif has('win32')
+        let s:wintmp = expand($TEMP)
+        let l:std_dirs += [
+            \ s:wintmp .                 l:post,
         \ ]
     endif
-    let l:std_dirs += [
-        \ l:pree . 'var/tmp'     . l:post,
-        \ l:pree . 'tmp'         . l:post,
-    \ ]
+    if has('unix')
+        let l:std_dirs += [
+            \ '/var/tmp'     . l:post,
+            \ '/tmp'         . l:post,
+        \ ]
+    endif
     let l:out_dirty = join(l:pre_dirs + l:std_dirs, ',')
     return escape(l:out_dirty, '\')
 endfunc
@@ -36,3 +41,17 @@ func! z#util#Opts(defaults, ...) abort
     endfor
     return l:opts
 endfunc
+
+
+fun! z#util#TrimWhitespace() abort
+    let l:save = winsaveview()
+    keepjumps keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+
+fun! z#util#HasPlugin(name) abort
+    let l:name  = get(a:, 'name', '')
+    let l:plugs = get(g:, 'plugs', {})
+    return has_key(l:plugs, l:name)
+endfun

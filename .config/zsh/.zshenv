@@ -2,20 +2,46 @@
 # vim: set fdm=marker:
 
 
+zmodload zsh/zprof
+
 # note: meta helpers {{{
 command_exists() { command -v "$1" 2>/dev/null 1>&2 }
 # alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
+export DISABLE_UPDATE_PROMPT=true
 # }}}
 
 
 # $SHELL {{{
-export ZDOTDIR="$HOME"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_DATA_HOME="${HOME}/.local/share"
+
+export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig"
+
+export SHELL_NAME="`basename ${SHELL}`"
+export OSX="$(
+  [[ "`uname`" == "Darwin" ]]
+  [[ "$?" == "0" ]] \
+    && echo "${TRUE:-1}" \
+    || echo "${FALSE-0}")"
+
+export DOTFILES=~/.dotfiles
+export DOTVIM=~/.vim
+# $SHELL }}}
+
+#if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+  #export DOTFILES="`dirname "$(/usr/local/bin/grealpath "$ZSHRC")"`"
+#else
+  #export DOTFILES="$(dirname `realpath "$ZSHRC"`)"
+#fi
+
+export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh"
 export   ZSHRC="${ZDOTDIR}/.zshrc"
 
-export BREW=/usr/local
+export BREW='/usr/local'
 
-export   TRUE="1"
-export  FALSE="0"
+export   TRUE='1'
+export  FALSE='0'
 
 # editor, pager {{{
 export EDITOR='nvim'
@@ -23,63 +49,33 @@ export VISUAL="${EDITOR}"
 export MANPAGER="${EDITOR} -c 'set ft=man' -"
 export LESS='-R'
 
-if command_exists nvimpager; then
-  export PAGER='nvimpager'
-elif command_exists nvim; then
-  export PAGER='nvim -R'
-else
-  export PAGER='less'
-fi
+export PAGER='nvimpager'
+#export PAGER='nvim -R'
+#export PAGER='less'
 # }}}
-
-export OSX="$(
-  [[ "`uname`" == "Darwin" ]]
-  [[ "$?" == "0" ]] \
-    && echo "${TRUE:-1}" \
-    || echo "${FALSE-0}")"
-
-export SHELL_NAME="`basename ${SHELL}`"
-# $SHELL }}}
 
 
 # zsh startup debug (TOP of ~/.zshenv) {{{
 #   https://kev.inburke.com/kevin/profiling-zsh-startup-time
 if [[ ! -z "$SHELL_DEBUG" ]]; then
-  local zsh_debug_log=`~/bin/mktempf "${ZSH_NAME}-${ZSH_VERSION}.${$}.zsh"`
+  local zsh_debug_log="`mktemp`"
   SHELL_DEBUG_LOG=`grealpath "$zsh_debug_log"`
-  echo "# vim: fdm=marker fen:" > "$SHELL_DEBUG_LOG"
-  printf "#{{{" >> "$SHELL_DEBUG_LOG"
   function shell-debug-log {
+    $EDITOR -u NONE +'1d' +'x' "$SHELL_DEBUG_LOG"
+    (echo "# vim: fdm=marker fen:"; cat "$SHELL_DEBUG_LOG") > "$SHELL_DEBUG_LOG".tmp
+    mv "$SHELL_DEBUG_LOG".tmp "$SHELL_DEBUG_LOG"
     echo "#}}}" >> "$SHELL_DEBUG_LOG"
-    echo "$SHELL_DEBUG_LOG"
-    sed -i 's|^#{{{#}}}$||'  "$SHELL_DEBUG_LOG"
-    sed -i 's|'"$HOME"'|~/|' "$SHELL_DEBUG_LOG"
+    #sed -i 's|^#{{{#}}}$||'  "$SHELL_DEBUG_LOG"
+    #sed -i 's|'"$HOME"'|~/|' "$SHELL_DEBUG_LOG"
     $EDITOR "$SHELL_DEBUG_LOG"
-    exit
   }
-  zmodload zsh/datetime; setopt promptsubst
+  zmodload zsh/datetime
+  setopt PROMPT_SUBST
   PS4=$'#}}}\012\012\012# %x:%I {{{\012# %N:i \012# +$EPOCHREALTIME\012  '
-  setopt xtrace
   exec 3>&2 2>$SHELL_DEBUG_LOG
+  setopt XTRACE
 fi
 # zsh startup debug (TOP of ~/.zshenv) }}}
-
-
-# launchd env init {{{
-if [[ -o interactive ]]; then
-  if [[ "${OSX:-0}" == "${TRUE:-1}" && ! -v DOTFILES_SETENV ]]; then
-    echo 'eval "`~/bin/local.launchd`"'
-    eval "`~/bin/local.launchd`"
-    echo "DOTFILES_SETENV=$DOTFILES_SETENV"
-    echo "exiting.."
-    sleep 5
-    exit
-  else
-    echo "> source ~/.launchd.conf"
-    source ~/.launchd.conf
-  fi
-fi
-# launchd env init }}}
 
 
 # terminal {{{
@@ -93,6 +89,38 @@ elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
     export ITERM_DOTAPP="true"
 fi
 # terminal }}}
+
+
+# launchd env init {{{
+#if [[ -o interactive && "${OSX:-0}" == "${TRUE:-1}" && ! -v DOTFILES_SETENV ]]; then
+  #fpath+=(~/.zsh/site-functions)
+  #export FPATH
+  #echo 'eval "`~/bin/local.launchd`"'
+  #eval "`~/bin/local.launchd`"
+  #if   [ -v ITERM_DOTAPP ];    then echo "exiting.." && sleep 5 && pkill -fla iTerm.app
+  #elif [ -v TERMINAL_DOTAPP ]; then echo "exiting.." && sleep 5 && pkill -fla Terminal.app
+  #fi
+#fi
+
+export               LANG=en_US.UTF-8
+export           LC_CTYPE=en_US.UTF-8
+export         LC_NUMERIC=en_US.UTF-8
+export            LC_TIME=en_US.UTF-8
+export         LC_COLLATE=en_US.UTF-8
+export        LC_MONETARY=en_US.UTF-8
+export        LC_MESSAGES=en_US.UTF-8
+export           LC_PAPER=en_US.UTF-8
+export            LC_NAME=en_US.UTF-8
+export         LC_ADDRESS=en_US.UTF-8
+export       LC_TELEPHONE=en_US.UTF-8
+export     LC_MEASUREMENT=en_US.UTF-8
+export  LC_IDENTIFICATION=en_US.UTF-8
+export             LC_ALL=en_US.UTF-8
+
+export PACKAGE_PREFIX="gg.zfo"
+
+export  DOTFILES_SETENV="1"
+# launchd env init }}}
 
 
 # $SHELL help {{{
@@ -109,9 +137,9 @@ autoload -U run-help
 
 
 # golang {{{
-export GOPATH=~/src/go
+export GOPATH="${HOME}/src/go"
 if [[ "$OSX" == "$TRUE" ]]; then
-    export GOROOT="$BREW/opt/go/libexec"
+    export GOROOT="${BREW}/opt/go/libexec"
 else
     export GOROOT="/usr/lib/go"
 fi
@@ -175,97 +203,11 @@ fi
 # }}}
 
 
-# path, manpath, fpath {{{
-typeset -U path
-#typeset -U fpath
-typeset -U manpath
-
-# new vars
-typeset -aU classpath
-typeset -xT CLASSPATH classpath
-typeset -aU infopath
-typeset -xT INFOPATH infopath
-
-if [[ "$OSX" == "$TRUE" ]]; then
-   path=(
-      ~/bin
-      #~/.config/composer/vendor/bin
-      #~/.platformio/penv/bin
-      #"$BREW"/opt/php71/bin
-      "$BREW"/opt/node/bin
-      "$PYENV_ROOT"/shims
-      #~/.jenv/shims
-      ~/.local/bin
-      ~/.{cabal,cargo,gem}/bin
-      "$GOPATH"/bin
-      "$GOROOT"/bin
-      "$BREW"/sbin
-      "$BREW"/MacGPG2/bin
-      "$BREW"/bin
-      $(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r))
-
-else
-   path=(
-      ~/bin
-      ~/.local/bin
-      ~/.{cabal,cargo,gem}/bin
-      "$PYENV_ROOT"/shims
-      "$GOPATH"/bin
-      "$GOROOT"/bin
-      $path)
-      #$(echo $PATH | tr ':' '\n' | tac)
-      #$(getconf PATH | tr ':' '\n' | tac))
-fi
-
-fpath=(
-  ~/.zsh/complete
-  "$BREW"/share/zsh-completions
-  ~/.zsh/site-functions
-  "${BREW}/share/zsh/"{site-functions,functions}
-  "${fpath[@]}"
-)
-
-manpath=(
-    /usr/share/man)
-
-infopath=()
-
-classpath=(
-    $classpath)
-
-if [[ "$OSX" == "$TRUE" ]]; then
-    local brew_gnu_progs=(
-        coreutils
-        findutils
-        #gnu-sed
-        #gnu-which
-        gnu-tar)
-    path=(
-        #"${BREW}/opt/${^brew_gnu_progs}/libexec/gnubin"
-        "${BREW}/opt/coreutils/libexec/gnubin"
-        "${BREW}/opt/findutils/libexec/gnubin"
-        "${BREW}/opt/gnu-tar/libexec/gnubin"
-        "${BREW}/opt/ccache/libexec"
-        #"$iOSOpenDevPath"/bin
-        #"$THEOS"/bin
-        "${BREW}/MacGPG2/bin"
-        $path)
-    #fpath=(
-        #"${fpath[@]}")
-    manpath=(
-        "${BREW}/Cellar/*/*/{share/man,libexec/gnuman}"
-        "${BREW}/opt/"${^brew_gnu_progs}"/libexec/gnuman"
-        "${BREW}/share/man"
-        $manpath)
-    infopath=(
-        "${BREW}/opt/${^brew_gnu_progs}/share/info"
-        $infopath)
-fi
-# path, manpath, fpath }}}
 
 
 # compilation {{{
 if [[ "$OSX" == "$TRUE" ]]; then
+  # new vars
   typeset -aU dyld_library_path
   typeset -xT DYLD_LIBRARY_PATH dyld_library_path ':'
 
@@ -341,5 +283,3 @@ if [[ "$OSX" == "$TRUE" ]]; then
     "$BREW"/lib
     $library_path)
 fi
-# compilation }}}
-

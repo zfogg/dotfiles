@@ -1,5 +1,11 @@
-" deoplete
+" after/plugin/deoplete
 scriptencoding utf-8
+
+
+if !has('nvim') ||
+      \ !z#util#HasPlugin('deoplete.nvim') ||
+      \ !get(g:, 'deoplete#enable_at_startup', v:false)
+  finish | endif
 
 
 " deoplete#{sources,omni#functions} {{{
@@ -65,7 +71,9 @@ let g:deoplete#sources#go#json_directory = $HOME.'/tmp'
 
 
 " emoji
-call deoplete#custom#source('emoji', 'filetypes', ['rst'])
+if has('mac') && z#util#HasPlugin('deoplete-emoji')
+  call deoplete#custom#source('emoji', 'filetypes', ['rst'])
+endif
 
 
 " NOTE: export to global at the BOTTOM
@@ -83,8 +91,8 @@ let g:deoplete#omni#functions = s:omnifns
 "command! -bang PadawanGenerate call deoplete#sources#padawan#Generate(<bang>0)
 
 
-aug RcPlugin__deoplete
-    au!
-    au CompleteDone * pclose!
-    au VimEnter     * call deoplete#initialize()
-aug END
+"aug RcPlugin__deoplete
+    "au!
+    "au CompleteDone * pclose!
+    ""au VimEnter     * call deoplete#initialize()
+"aug END

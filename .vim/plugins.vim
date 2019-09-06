@@ -29,7 +29,7 @@ call plug#begin('~/.vim/bundle')
     " fzf
     "Plug $BREW.'/opt/fzf', PIf(executable('fzf') && isdirectory($BREW.'/opt/fzf'),
             "\{'dir': $BREW.'/opt/fzf', 'do': './install --all'})
-	"Plug 'junegunn/fzf.vim'
+    "Plug 'junegunn/fzf.vim'
     "Plug 'easymotion/vim-easymotion'
     " nerdtree
     Plug 'scrooloose/nerdtree'
@@ -50,7 +50,7 @@ call plug#begin('~/.vim/bundle')
     "Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
     "Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'})
     "Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
-    Plug 'Shougo/denite.nvim', PIf(has('nvim'))
+    Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
 
 	" deoplete
     Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
@@ -58,8 +58,8 @@ call plug#begin('~/.vim/bundle')
     Plug 'Shougo/echodoc.vim'
     Plug 'zchee/deoplete-zsh',  {'for': ['zsh']}
     Plug 'zchee/deoplete-go',   {'for': ['go'], 'do': 'make'}
-    Plug 'zchee/deoplete-jedi', {'for': ft['py']}
-    Plug 'zchee/deoplete-clang', {'for': ft['cx'], }
+    Plug 'zchee/deoplete-jedi', PIf(has('python3'), {'for': ft['py']})
+    Plug 'zchee/deoplete-clang', PIf(has('unix'), {'for': ft['cx'], })
     Plug 'racer-rust/vim-racer', {'for': ['rust'], }
     Plug 'carlitux/deoplete-ternjs', {'for': ft['js'], }
     Plug 'fszymanski/deoplete-emoji', PIf(has('mac'))
@@ -135,7 +135,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'chriskempson/base16-vim'
     Plug 'vim-scripts/AfterColors.vim'
     Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'luochen1990/rainbow'
+    Plug 'luochen1990/rainbow', PIf(v:false, {})
     Plug 'ap/vim-css-color',          { 'for': ft['styles'] }
     Plug 'arakashic/chromatica.nvim', { 'for': ft['cx']  }
     "Plug 'qstrahl/vim-matchmaker'
