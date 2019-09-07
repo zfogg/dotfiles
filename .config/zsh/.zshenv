@@ -2,7 +2,7 @@
 # vim: set fdm=marker:
 
 
-zmodload zsh/zprof
+#zmodload zsh/zprof
 
 # note: meta helpers {{{
 command_exists() { command -v "$1" 2>/dev/null 1>&2 }
@@ -16,32 +16,51 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
 
-export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig"
+export  TRUE='1'
+export FALSE='0'
 
-export SHELL_NAME="`basename ${SHELL}`"
 export OSX="$(
-  [[ "`uname`" == "Darwin" ]]
+  [[ "${OSTYPE}" =~ "darwin" ]]
+  [[ "$?" == "0" ]] \
+    && echo "${TRUE:-1}" \
+    || echo "${FALSE-0}")"
+
+export LINUX="$(
+  [[ "${OSTYPE}" =~ "linux" ]]
   [[ "$?" == "0" ]] \
     && echo "${TRUE:-1}" \
     || echo "${FALSE-0}")"
 
 export DOTFILES=~/.dotfiles
 export DOTVIM=~/.vim
-# $SHELL }}}
 
-#if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
-  #export DOTFILES="`dirname "$(/usr/local/bin/grealpath "$ZSHRC")"`"
-#else
-  #export DOTFILES="$(dirname `realpath "$ZSHRC"`)"
-#fi
+export CORES="`nproc`"
+
+unset MAILCHECK
+
+export PACKAGE_PREFIX="gg.zfo"
+
+export  DOTFILES_SETENV="1"
 
 export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh"
 export   ZSHRC="${ZDOTDIR}/.zshrc"
 
-export BREW='/usr/local'
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig"
+if [[ "$OSX" == "$TRUE" ]]; then
+  export PKG_CONFIG_PATH="${BREW}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+fi
 
-export   TRUE='1'
-export  FALSE='0'
+if [[ "$OSX" == "$TRUE" ]]; then
+  export BREW='/usr/local'
+elif [[ "$LINUX" == "$TRUE" ]]; then
+  export BREW='/usr'
+else
+  export BREW='/usr/local'
+fi
+
+export SHELL_NAME="`basename ${SHELL}`"
+# $SHELL }}}
+
 
 # editor, pager {{{
 export EDITOR='nvim'
@@ -52,7 +71,7 @@ export LESS='-R'
 export PAGER='nvimpager'
 #export PAGER='nvim -R'
 #export PAGER='less'
-# }}}
+# editor, pager }}}
 
 
 # zsh startup debug (TOP of ~/.zshenv) {{{
@@ -91,17 +110,7 @@ fi
 # terminal }}}
 
 
-# launchd env init {{{
-#if [[ -o interactive && "${OSX:-0}" == "${TRUE:-1}" && ! -v DOTFILES_SETENV ]]; then
-  #fpath+=(~/.zsh/site-functions)
-  #export FPATH
-  #echo 'eval "`~/bin/local.launchd`"'
-  #eval "`~/bin/local.launchd`"
-  #if   [ -v ITERM_DOTAPP ];    then echo "exiting.." && sleep 5 && pkill -fla iTerm.app
-  #elif [ -v TERMINAL_DOTAPP ]; then echo "exiting.." && sleep 5 && pkill -fla Terminal.app
-  #fi
-#fi
-
+# LC_ {{{
 export               LANG=en_US.UTF-8
 export           LC_CTYPE=en_US.UTF-8
 export         LC_NUMERIC=en_US.UTF-8
@@ -116,17 +125,14 @@ export       LC_TELEPHONE=en_US.UTF-8
 export     LC_MEASUREMENT=en_US.UTF-8
 export  LC_IDENTIFICATION=en_US.UTF-8
 export             LC_ALL=en_US.UTF-8
-
-export PACKAGE_PREFIX="gg.zfo"
-
-export  DOTFILES_SETENV="1"
-# launchd env init }}}
+# LC_ }}}
 
 
 # $SHELL help {{{
 #export HELPDIR="${BREW}/share/zsh/help"
-unalias run-help 2>/dev/null
-autoload -U run-help
+unalias    run-help 2>/dev/null
+unfunction run-help 2>/dev/null
+#autoload -Uz run-help
 # $SHELL help }}}
 
 
@@ -161,48 +167,30 @@ fi
 # node }}}
 
 
-# antigen {{{
-[ -d "${HOME}/.zsh/complete" ] \
-    && export GENCOMPL_FPATH="${HOME}/.zsh/complete"
-# antigen }}}
-
-
 # python {{{
-    export PIP_REQUIRE_VIRTUALENV=true
-    # pyenv {{{
-    #export PYENV_SHELL="$SHELL_NAME"
-    export PYENV_ROOT="${HOME}/.pyenv"
-    export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
-    export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
-    # }}}
+#export PIP_REQUIRE_VIRTUALENV=true
+#if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then;
+  #source "${VIRTUAL_ENV}/bin/activate"; fi
 
-    #if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then;
-      #source "${VIRTUAL_ENV}/bin/activate"; fi
+# pyenv {{{
+  #export PYENV_SHELL="$SHELL_NAME"
+  export PYENV_ROOT="${HOME}/.pyenv"
+  export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
+  export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
+# }}}
 
-    # pipenv {{{
-    #export PIPENV_SHELL_COMPAT="$TRUE"
-    #export PIPENV_VENV_IN_PROJECT="$TRUE"
-    #export PIPENV_MAX_DEPTH='4'
-    # pipenv }}}
+# pipenv {{{
+  #export PIPENV_SHELL_COMPAT="$TRUE"
+  #export PIPENV_VENV_IN_PROJECT="$TRUE"
+  #export PIPENV_MAX_DEPTH='4'
+# pipenv }}}
 # python }}}
-
-
-# iOSOpenDev {{{
-#export iOSOpenDevPath=/opt/iOSOpenDev
-#export iOSOpenDevDevice=
-#export iOSOpenDevDevicePort=
-#export THEOS=/opt/theos
-#export THEOS_DEVICE_IP=10.0.0.71
-#export THEOS_DEVICE_PORT=22
-#iOSOpenDev }}}
 
 
 # compilers {{{
   export  CC='clang'
   export CXX='clang++'
 # }}}
-
-
 
 
 # compilation {{{

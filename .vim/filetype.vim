@@ -21,8 +21,4 @@ aug rc_filetype_omnicomplete
         \ if &ofu == '' |  setl ofu=syntaxcomplete#Complete | endif
 
     au FileType crontab setlocal nobackup nowritebackup
-
-    if has('nvim')
-        au InsertChange,TextChanged * silent! update | Neomake
-    endif
 aug END

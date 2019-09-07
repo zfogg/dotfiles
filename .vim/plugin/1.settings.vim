@@ -190,7 +190,7 @@ set viewoptions+=cursor,curdir,folds
 
 
 " Reading and writing. {{{
-    set noautowrite      " Never write a file unless I request it.
+    set   autowrite      " Never write a file unless I request it.
     set noautowriteall   " NEVER.
     set noautoread       " Don't automatically re-read changed files.
     set modeline         " Allow vim options to be embedded in files.

@@ -91,7 +91,11 @@ alias grv='git remote -v'
 alias gst='git status'
 
 
-alias get='ghq get -u -p --shallow `"pbpaste"`; echo'
+if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+    alias get='ghq get -u -p --shallow "`pbpaste`"; echo'
+else
+    alias get='ghq get -u -p --shallow "`xclip -out`"; echo'
+fi
 
 
 alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public" -L 5'
