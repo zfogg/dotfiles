@@ -1,27 +1,18 @@
-" neomake
+" plugin/rc/neomake
 scriptencoding utf-8
-
-
-if exists('g:vimpager') | finish | endif
-if !has('nvim')         | finish | endif
 
 
 let g:neomake_open_list                       = 0
 let g:neomake_list_height                     = 5
 let g:neomake_verbose                         = 0
 let g:neomake_airline                         = 0
-"let g:neomake_ft_maker_remove_invalid_entries = 1
+let g:neomake_ft_maker_remove_invalid_entries = 1
 let g:neomake_place_signs                     = 1
 
 
 hi NeomakeErrorSign   term=bold gui=bold ctermfg=red    guifg=red
 hi NeomakeWarningSign term=bold gui=bold ctermfg=yellow guifg=yellow
 
-
-aug RcPlugin__neomake
-    au!
-    au BufEnter *.js let b:neomake_javascript_eslint_exe = nrun#Which('eslint')
-aug END
 
 
 " vimscript
@@ -59,11 +50,6 @@ aug END
 "call neomakeft#SetupFt('javascript', {
     "\ 'makers':    ['eslint'],
     "\ 'neomakers': ['eslint'],
-"\ })
-
-"" rust
-"call neomakeft#SetupFt('rust', {
-    "\ 'neomakers': ['rustc'],
 "\ })
 
 "" json

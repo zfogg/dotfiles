@@ -14,6 +14,8 @@ let ft = copy(z#constants#globals#Ft())
 
 call plug#begin('~/.vim/bundle')
 
+Plug 'junegunn/vim-plug'
+
 " integrate with other programs {{{
     Plug 'Shougo/vimproc.vim', { 'do': 'make' }
     Plug 'rizzatti/dash.vim'
@@ -27,10 +29,16 @@ call plug#begin('~/.vim/bundle')
 
 " Add features and functionality. {{{
     " fzf
-    "Plug $BREW.'/opt/fzf', PIf(executable('fzf') && isdirectory($BREW.'/opt/fzf'),
-            "\{'dir': $BREW.'/opt/fzf', 'do': './install --all'})
-    "Plug 'junegunn/fzf.vim'
+    if has('mac')
+        let s:fzfd = expand("$BREW/opt/fzf")
+        if !isdirectory(s:fzfd) | throw 'Z:NotFound fzf_dir: '.s:fzfd | endif
+        Plug s:fzfd, PIf(executable('fzf'))
+    elseif has('unix') || has('win32')
+        Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
+    endif
+
     "Plug 'easymotion/vim-easymotion'
+
     " nerdtree
     Plug 'scrooloose/nerdtree'
     Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -47,22 +55,25 @@ call plug#begin('~/.vim/bundle')
     Plug 'jaawerth/nrun.vim'
 
     " completion
-    "Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
-    "Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'})
-    "Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
+    Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+        \ 'branch': 'next',
+        \ 'do':     'bash install.sh',
+    \ })
     Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
-
-	" deoplete
-    Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
+    " deoplete
     "Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))
-    Plug 'Shougo/echodoc.vim'
+    Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
     Plug 'zchee/deoplete-zsh',  {'for': ['zsh']}
     Plug 'zchee/deoplete-go',   {'for': ['go'], 'do': 'make'}
     Plug 'zchee/deoplete-jedi', PIf(has('python3'), {'for': ft['py']})
     Plug 'zchee/deoplete-clang', PIf(has('unix'), {'for': ft['cx'], })
-    Plug 'racer-rust/vim-racer', {'for': ['rust'], }
     Plug 'carlitux/deoplete-ternjs', {'for': ft['js'], }
     Plug 'fszymanski/deoplete-emoji', PIf(has('mac'))
+
+    Plug 'racer-rust/vim-racer', { 'for': ['rust'], }
+
+    Plug 'Shougo/echodoc.vim'
+
     Plug 'Shougo/context_filetype.vim'
     Plug 'Shougo/neco-syntax'
     Plug 'Shougo/neco-vim',     {'for': ['vim']}
@@ -75,7 +86,6 @@ call plug#begin('~/.vim/bundle')
     " etc
     Plug 'ervandew/supertab'
     Plug 'tpope/vim-rsi'
-    "Plug 'miya0001/vim-dict-wordpress',   {'for': ft['php']}
     Plug 'MarcWeber/vim-addon-local-vimrc'
 " }}}
 
@@ -88,23 +98,32 @@ call plug#begin('~/.vim/bundle')
     "Plug 'StanAngeloff/php.vim',          {'for': ft['php']}
     "Plug '2072/PHP-Indenting-for-VIm',    {'for': ft['php']}
     Plug 'lvht/phpfold.vim',              {'for': ft['php']}
+    "Plug 'miya0001/vim-dict-wordpress',   {'for': ft['php']}
+    "Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'})
+    "Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
     Plug 'othree/html5.vim'
     Plug 'lifepillar/pgsql.vim',          {'for': ft['sql']}
     "Plug 'sheerun/vim-polyglot'
     Plug 'lambdalisue/vim-pyenv',         {'for': ft['py']}
     "Plug 'python-mode/python-mode',       {'for': ft['py']}
     Plug 'gisphm/vim-gitignore'
-    Plug 'rust-lang/rust.vim',            {'for': ft['rs'], }
+    Plug 'rust-lang/rust.vim', PIf(v:false, {
+        \ 'for': ft['rs'],
+        \ 'do': shellescape(join([
+            \ 'cd ~; for x in clippy rustfmt rls rust-src rust-analysis;',
+                \ 'do rustup component add $x \|\| rustup component add $x-preview;',
+            \ 'done'], ' ')),
+    \ })
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
     Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
-	Plug 'Wolfy87/vim-syntax-expand'
+    Plug 'Wolfy87/vim-syntax-expand'
     Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
     Plug 'othree/jspc.vim',               {'for': ft['js']}
     Plug 'itchyny/vim-haskell-indent',    {'for': ['haskell'] }
     " markdown
     Plug 'plasticboy/vim-markdown',            {'for': ['markdown']}
-	Plug 'nelstrom/vim-markdown-folding', {'for': ['markdown']}
+    Plug 'nelstrom/vim-markdown-folding', {'for': ['markdown']}
     " web
     Plug 'saltstack/salt-vim', {'for': ['sls']}
     Plug 'lepture/vim-jinja',  {'for': ft['jinja']}
@@ -158,7 +177,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'wellle/targets.vim'
     Plug 'tpope/vim-surround'
 
-	" textobj
+    " textobj
     Plug 'kana/vim-textobj-user'
     Plug 'kana/vim-textobj-indent'
     Plug 'kana/vim-textobj-line'

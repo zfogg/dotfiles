@@ -2,8 +2,12 @@
 scriptencoding utf-8
 
 
-let g:neomake_javascript_enabled_makers = ['eslint']
-
-
 setl fdm=syntax
     \ iskeyword+=$
+
+
+aug RcPlugin__neomake
+    au!
+    au BufEnter *.js let b:neomake_javascript_eslint_exe = nrun#Which('eslint')
+aug END
+

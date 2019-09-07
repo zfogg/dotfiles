@@ -6,12 +6,13 @@ trap 'bin-abort' ERR
 
 
 function() { # Python, Pyenv, pip
-    eval "$(pyenv init -)"
+    eval "$(pyenv init -)" #; eval "$(pyenv virtualenv-init -)"
     local pip_reqs="${PYENV_ROOT}/neovim-packages"
 
     for py_v in 2 3; do
         pyenv activate "neovim${py_v}"
-        pip install -U wheel setuptools pip
+        pip install -U wheel setuptools
+        pip install -U pip
         pip install -U -r "${pip_reqs}${py_v}"
     done
 
@@ -80,7 +81,8 @@ function() { # OS package manager
         local pamac_reqs=(
             neovim-nightly)
         for r in ${pamac_reqs};
-            pacman -Q "$r" || pamac install "$r"
+            echo "> pamac reinstall ${r}"
+            #pacman -Q "$r" || pamac reinstall "$r"
     fi
 }
 

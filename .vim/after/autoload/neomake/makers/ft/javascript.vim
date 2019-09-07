@@ -1,4 +1,4 @@
-" autoload/neomake/ft/javascript
+" autoload/neomake/makers/ft/javascript
 scriptencoding utf-8
 
 

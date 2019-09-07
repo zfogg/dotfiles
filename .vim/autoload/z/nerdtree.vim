@@ -3,12 +3,18 @@ scriptencoding utf-8
 
 
 func! z#nerdtree#AutoCwd() abort
-    if exists('b:noNERDTreeAutoCWD')
+    if !&modifiable && exists('b:noNERDTreeAutoCWD')
         return
-    elseif exists('g:zNTOn')
-        "cd %:p:h
-        NERDTreeMirror
-        "wincmd p
+    else
+        if z#nerdtree#isNERDTreeOpen()
+            NERDTree %:p:h
+            wincmd p
+            NERDTreeTabsFind
+        else
+            NERDTreeCWD
+            wincmd p
+            NERDTreeTabsFind
+        endif
     endif
 endfunc
 
