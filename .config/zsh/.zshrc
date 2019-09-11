@@ -234,6 +234,8 @@ compinit -C
 
 export ANTIGEN_HS_SANDBOX='stack'
 source ~/.zsh/antigen-hs/init.zsh
+
+export CORES="`nproc`"
 # }}}
 
 
@@ -627,3 +629,5 @@ function() {
 }
 # }}}
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

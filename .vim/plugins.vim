@@ -29,11 +29,12 @@ Plug 'junegunn/vim-plug'
 
 " Add features and functionality. {{{
     " fzf
-    if has('mac')
-        let s:fzfd = expand("$BREW/opt/fzf")
-        if !isdirectory(s:fzfd) | throw 'Z:NotFound fzf_dir: '.s:fzfd | endif
-        Plug s:fzfd, PIf(executable('fzf'))
-    elseif has('unix') || has('win32')
+    "if has('mac')
+        "let s:fzfd = expand("$BREW/opt/fzf")
+        "if !isdirectory(s:fzfd) | throw 'Z:NotFound fzf_dir: '.s:fzfd | endif
+        "exe "Plug '".s:fzfd."', PIf(executable('fzf'))"
+    "elseif has('unix') || has('win32')
+    if has('unix') || has('win32')
         Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
     endif
 
