@@ -128,6 +128,8 @@ call plug#begin('~/.vim/bundle')
     Plug 'tpope/vim-afterimage', {'for': ft['image']}
     Plug 'kylef/apiblueprint.vim', {'for': ['apiblueprint']}
     Plug 'darfink/vim-plist'
+
+    Plug 'PProvost/vim-ps1'
 " }}}
 
 
@@ -198,7 +200,7 @@ call plug#begin('~/.vim/bundle')
     Plug 'kopischke/vim-fetch'
     Plug 'pbrisbin/vim-mkdir'
     Plug 'AndrewRadev/switch.vim'
-    Plug 'bruno-/vim-vertical-move'
+    Plug 'vim-utils/vim-vertical-move'
 " }}}
 
 call plug#end()
