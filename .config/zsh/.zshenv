@@ -138,7 +138,8 @@ autoload -U run-help
 
 # golang {{{
 export GOPATH="${HOME}/src/go"
-if [[ "$OSX" == "$TRUE" ]]; then
+export GO111MODULES='on'
+if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
     export GOROOT="${BREW}/opt/go/libexec"
 else
     export GOROOT="/usr/lib/go"

@@ -71,9 +71,9 @@ alias colortest='~/.config/base16-shell/colortest'
 
 function pyeve() { eval "`~/bin/pyeve ${1:-';'}`" }
 
-alias chmod='command -p chmod'
-alias chown='command -p chown'
-alias chgrp='command -p chgrp'
+#alias chmod='command -p chmod'
+#alias chown='command -p chown'
+#alias chgrp='command -p chgrp'
 
 
 # shell output line wrapping
