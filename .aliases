@@ -85,13 +85,15 @@ alias  wrapon='tput smam'
 
 
 # git
-alias gca='git commit -a'
 alias gc='git commit'
+alias gca='git commit -a'
 alias gd='git diff'
 alias gl='git log'
 alias gp='git push'
 alias grv='git remote -v'
 alias gst='git status'
+alias ga='git add'
+alias gco='git checkout'
 
 
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
@@ -100,9 +102,7 @@ else
     alias get='ghq get -u -p --shallow "`xclip -out`"; echo'
 fi
 
-
 alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public" -L 5'
-
 
 alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
