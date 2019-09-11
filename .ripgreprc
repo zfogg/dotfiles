@@ -3,11 +3,11 @@
 --max-columns-preview
 
 # Add my 'web' type.
---type-add
-web:*.{html,css,js,jsx}*
+#--type-add
+#web:*.{html,css,js,jsx}*
 
 
---follow
+#--follow
 --hidden
 --pretty
 
@@ -15,3 +15,9 @@ web:*.{html,css,js,jsx}*
 
 --before-context=1
 --after-context=1
+
+--ignore
+--ignore-dot
+--ignore-parent
+--ignore-global
+--ignore-vcs

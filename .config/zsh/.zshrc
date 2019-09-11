@@ -3,7 +3,6 @@
 # ~/.zshrc
 
 
-
 # zsh modules {{{
 zmodload zsh/zpty
 
@@ -12,7 +11,6 @@ zmodload zsh/zpty
 #colors
 
 autoload -Uz          \
-    url-quote-magic   \
     select-word-style \
     zsh-mime-setup
     #predict-on
@@ -63,24 +61,19 @@ else
     "$PYENV_ROOT"/shims
     "$GOPATH"/bin
     "$GOROOT"/bin
-    $path
-  )
-    #$(echo $PATH | tr ':' '\n' | tac)
-    #$(getconf PATH | tr ':' '\n' | tac))
+    "$path[@]")
 fi
 
+fpath_rm=('/usr/local/share/zsh/site-functions')
+
 fpath=(
-  ~/.zsh/site-functions
-  ~/.zsh/complete
-  #$BREW/share/zsh-completions
-  $BREW/share/zsh/{site-functions,functions}
-  $fpath
-)
+  "${HOME}/.zsh/"{site-functions,complete}
+  "${BREW}/share/zsh/"{site-functions,functions}
+  ${fpath[@]/$fpath_rm})
 
 manpath=(
   /usr/share/man
-  $manpath
-)
+  "$manpath[@]")
 
 if [[ "$OSX" == "$TRUE" ]]; then
   local brew_gnu_progs=(
@@ -124,8 +117,8 @@ export INFOPATH
 
 
 # depends on `coreutils` {{{
+[ -f ~/.LS_COLORS ] && source ~/.LS_COLORS
 if [[ "$OSX" == "$TRUE" ]]; then
-  source ~/.LS_COLORS
   export CLICOLOR=true
   #export LSCOLORS=gxbxhxdxfxhxhxhxhxcxcx
   export LSCOLORS=GxFxCxDxBxegedabagaced
@@ -134,95 +127,107 @@ fi
 
 
 # autocomplete {{{
-source ~/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
+set completion-ignore-case on
+set show-all-if-ambiguous on
 
-_force_rehash() {
-  (( CURRENT == 1 )) && rehash
-  return 1  # Because we didn't really complete anything
-}
+export GENCOMPL_FPATH="${HOME}/.zsh/complete"
+if [[ -d "$GENCOMPL_FPATH" ]]; then
+  source ~/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
+else
+  unset GENCOMPL_FPATH
+fi
 
-zstyle ':completion:*'           special-dirs   true
-zstyle ':completion::complete:*' use-cache      1
-zstyle ':completion:*'           cache-path     "${ZDOTDIR:-~}/history"
+zstyle ':completion:*'           special-dirs  true
+zstyle ':completion:*'           accept-exact  '*(N)'
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
+zstyle ':completion:*'           use-cache on
+zstyle ':completion:*'           cache-path "${ZDOTDIR:-$HOME}/.cache"
 zstyle ':completion:*'           show-completer true
-zstyle :predict                  verbose        true
+zstyle ':predict'                verbose        true
 zstyle ':completion:*'           verbose        yes
 
-zstyle ':completion:::::'            completer          _complete _approximate # enable approximate matches for completion
+#zstyle ':completion:::::'        completer          _complete _approximate # enable approximate matches for completion
 
 # case insensitive completion
+
 zstyle ':completion:*'               matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 #zstyle ':completion:*'               matcher-list       'm:{a-z}={a-z}'
 zstyle ':completion:*'               verbose            yes
-zstyle ':completion:*:descriptions'  format             '%b%d%b'
-zstyle ':completion:*:messages'      format             '%d'
 zstyle ':completion:*'               group-name         ''
-#zstyle ':completion:*'               completer          _complete _approximate _list _match _files _prefix _ignored
+zstyle ':completion:*'               completer          _expand _complete _approximate _list _match _files _prefix _ignored
 #zstyle ':completion:*'               completer          _oldlist _expand _force_rehash _complete
 #zstyle ':completion:*'               completer          _oldlist _expand _force_rehash _complete _list _match _approximate
-zstyle ':completion:*'               completer          _expand _complete _correct _approximate
+#zstyle ':completion:*'               completer          _expand _complete _correct _approximate
 zstyle ':completion:*'               rehash             true
 
 zstyle ':completion:*:approximate:*' max-errors        'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
 
 # generate descriptions with magic.
 zstyle ':completion:*'               auto-description  'specify: %d'
-# don't prompt for a huge list, page it!
-zstyle ':completion:*:default'       list-prompt       '%s%m matches%s'
-# don't prompt for a huge list, menu it!
-zstyle ':completion:*:*:*:*:*'       menu              'select'
-# have the newer files last so i see them first
-zstyle ':completion:*'               file-sort         modification
-# color code completion!!!!  wohoo!
-#zstyle ':completion:*:default'       list-colors       ${(s.:.)LS_COLORS}
-# separate man page sections. neat.
-zstyle ':completion:*:manuals'       separate-sections true
-# choose something pretty
 zstyle ':completion:*'               list-separator    ' → '
+zstyle ':completion:*:default'       list-prompt       '%s%m matches%s'
+zstyle ':completion:*:*:*:*:*'       menu              'select'
+zstyle ':completion:*'               file-sort         modification
+zstyle ':completion:*'               ignore-parents    parent       pwd
+zstyle ':completion:*'               squeeze-slashes   true
+
+zstyle ':completion:*:manuals'       separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+
 
 # complete with a menu for xwindow ids
 zstyle ':completion:*:windows'       menu              on=0
 zstyle ':completion:*:expand:*'      tag-order         all-expansions
 # more errors allowed for large words and fewer for small words
-# errors format
-zstyle ':completion:*:corrections'   format            '%b%d (errors %e)%b'
 
 # don't complete stuff already on the line
 zstyle ':completion::*:(rm|v):*'     ignore-line       true
-# don't complete directory we are already in (../here)
-zstyle ':completion:*'               ignore-parents    parent       pwd
 zstyle ':completion::approximate*:*' prefix-needed     false
-# NOTE: https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/ssh-agent/ssh-agent.plugin.zsh
 zstyle ':omz:plugins:ssh-agent'      agent-forwarding  on
 
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
 
-zstyle ':completion:*:functions'    ignored-patterns '_*'
-zstyle ':completion:*:*:zcompile:*' ignored-patterns '(*~|.*zwc)'
+zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+
+zstyle ':completion:*:functions'    ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*:*:zcompile:*' ignored-patterns '(*~|*.zwc|*.zwc.old)'
 zstyle ':completion:*:sudo:*'       command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
+zstyle ':completion::complete:*'    gain-privileges 1
 
 
-if [[ "$CLICOLOR" = 1 ]]; then
-  zstyle    ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
-  zstyle    ':completion:*:warnings'           format $'%{\e[0;31m%}No matches for:%{\e[0m%} %d'
-  zstyle -e ':completion:*:default'            list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==36=36}:${(s.:.)LS_COLORS}")';
-  zstyle    ':completion:*'                    list-colors ${(s.:.)LS_COLORS} 'ma=7;33'
-else
-  zstyle ':completion:*:warnings' format $'No matches for: %d'
-fi
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
-#export DISABLE_MAGIC_FUNCTIONS=true # github.com/robbyrussell/oh-my-zsh/issues/5569
+zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
 
-#zstyle ':completion:*:*:*:*:*'       menu               yes select
+# formats
+zstyle ':completion:*:*:*:*:*'      menu             yes select
+zstyle ':completion:*:matches'      group            'yes'
+zstyle ':completion:*:options'      description      'yes'
+zstyle ':completion:*:options'      auto-description '%d'
+zstyle ':completion:*:corrections'  format           ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format           ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages'     format           ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings'     format           ' %F{red}-- no matches found --%f'
+zstyle ':completion:*'              format           ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:default'      list-prompt      '%S%M matches%s'
 
-zstyle ':completion:*' squeeze-slashes true
+# Array completion element sorting.
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
+zstyle ':completion:*:history-words' stop yes
+zstyle ':completion:*:history-words' remove-all-dups yes
+zstyle ':completion:*:history-words' list false
+zstyle ':completion:*:history-words' menu yes
 # }}}
 
 
 # antigen-hs {{{
 zmodload zsh/complist
 autoload -Uz compinit
-for dump in "${ZDOTDIR:-~}"/.zcompdump(N.mh+24); do
+for dump in "${ZDOTDIR:-$HOME}"/.zcompdump(N.mh+24); do
   compinit
 done
 compinit -C
@@ -261,6 +266,11 @@ if [[ "$OSX" == "$TRUE" ]]; then
       [[ -f "$iterm2_integration" ]] && source "$iterm2_integration"
     }
   fi
+
+  # grc - generic colorizer {{{
+    # INFO: github.com/garabik/grc
+    [[ -f "$iterm2_integration" ]] && source "${BREW}/etc/grc.bashrc"
+  # }}} grc - generic colorizer
 fi
 # }}}
 
@@ -268,8 +278,10 @@ fi
 # plugins {{{
 command_exists z   || [ -f "${BREW}/etc/profile.d/z.sh" ] \
     && source "${BREW}/etc/profile.d/z.sh"
-command_exists fzf || [ -f "${DOTFILES}/.fzf.zsh" ] \
-    && source ~/.fzf.zsh
+command_exists fzf \
+  && [ -f "/usr/share/fzf/key-bindings.zsh" ] \
+  && [ -f "/usr/share/fzf/completion.zsh" ] \
+    && source /usr/share/fzf/{key-bindings,completion}.zsh
 
 # zsh-users/zsh-autosuggestions {{{
   source ~/.zsh/zsh-autosuggestions.config.zsh
@@ -289,12 +301,6 @@ command_exists fzf || [ -f "${DOTFILES}/.fzf.zsh" ] \
 # zsh-users/zsh-autosuggestions }}}
 
 # }}} plugins
-
-
-# grc - generic colorizer {{{
-# github.com/garabik/grc
-[[ -f "$iterm2_integration" ]] && source $BREW/etc/grc.bashrc
-# }}} grc - generic colorizer
 
 
 # key bindings {{{
@@ -372,7 +378,8 @@ bindkey -M vicmd '^[b' vi-backward-word
 bindkey -M vicmd '^[f'  vi-forward-word
 
 # zsh vi-mode fixes
-#zle -N self-insert url-quote-magic
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
 bindkey -M viins ' '   magic-space
 
 function _last-cmd-and-vi-cmd-mode {
@@ -504,40 +511,31 @@ export AUTOENV_DISABLED=0
 export AUTOENV_FILE_ENTER=.env
 export AUTOENV_HANDLE_LEAVE=0
 export AUTOENV_LOOK_UPWARDS=0
-if command_exists direnv; then
-  eval "$(direnv hook zsh)"
-fi
+#if command_exists direnv; then
+  #eval "$(direnv hook zsh)"
+#fi
 # }}}
 
+
 # rust {{{
-export RUSTUP_HOME=~/.multirust
-export RUST_SRC_PATH="$RUSTUP_HOME"/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
+export RUSTUP_HOME=~/.rustup
+if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+  export RUST_SRC_PATH="${RUSTUP_HOME:-~/.rustup}/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
+elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
+  export RUST_SRC_PATH="${RUSTUP_HOME:-~/.rustup}/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
+fi
 export CARGO_INCREMENTAL=1
-export CARGO_BUILD_JOBS=$((${CORES:-4} - 1))
+export CARGO_BUILD_JOBS="$((${CORES:-2} - 1))"
 # }}}
 
 
 # postgres {{{
-export     PGDATA="$BREW/var/postgres"
-export     PGHOST="localhost"
-export PGHOSTADDR="127.0.0.1"
-export     PGPORT="5432"
-# }}}
-
-
-
-# aliases {{{
-. ~/.aliases
-aliasof() {
-    local args="$([[ "$OSX" == "$TRUE" ]] \
-        && printf '-e' \
-        || printf '-r')"
-    alias "$1" |\
-        command -p sed "$args" 's|'"$1"'=(.*)|\1|' |\
-        command -p sed "$args" "s|'||g"
-}
-
-unset MAILCHECK
+if [[ "$OSX" == "$TRUE" ]]; then
+  export     PGDATA="$BREW/var/postgres"
+  export     PGHOST="localhost"
+  export PGHOSTADDR="127.0.0.1"
+  export     PGPORT="5432"
+fi
 # }}}
 
 
@@ -558,63 +556,74 @@ export HISTSIZE=16384   # == 128**2
 export SAVEHIST=65536   # == 256**2
 
 set +o histexpand
+
+setopt   ALWAYS_TO_END
 setopt   APPEND_HISTORY
-setopt EXTENDED_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-unsetopt HIST_SAVE_NO_DUPS
-setopt HIST_REDUCE_BLANKS
-setopt HIST_VERIFY
-setopt BANG_HIST
-setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
-
-# unset
-unsetopt HIST_REDUCE_BLANKS
-
-
-setopt MULTIOS
-setopt CDABLEVARS
-
-set      completion-ignore-case on
-setopt   COMPLETE_ALIASES
-setopt   COMPLETE_IN_WORD
-setopt   MENU_COMPLETE
-#setopt   FLOWCONTROL
-setopt   COMPLETE_IN_WORD
-
-setopt   PROMPT_SUBST
-setopt   TRANSIENT_RPROMPT
-
-setopt   IGNORE_EOF
-
-setopt   GLOB_COMPLETE
-setopt   EXTENDEDGLOB
-setopt   NO_CASE_GLOB
-setopt   NUMERIC_GLOB_SORT
-
+setopt   AUTOLIST
 setopt   AUTO_PUSHD
+setopt   BANG_HIST
+unsetopt BEEP
+unsetopt CASE_GLOB
+setopt   CDABLEVARS
+unsetopt COMPLETE_ALIASES
+setopt   COMPLETE_IN_WORD
+setopt   COMPLETE_IN_WORD
+setopt   EXTENDEDGLOB
+setopt   EXTENDED_HISTORY
+unsetopt FLOW_CONTROL
+setopt   GLOB_COMPLETE
+setopt   HIST_EXPIRE_DUPS_FIRST
+setopt   HIST_IGNORE_ALL_DUPS
+setopt   HIST_IGNORE_DUPS
+setopt   HIST_IGNORE_SPACE
+setopt   HIST_REDUCE_BLANKS
+unsetopt HIST_SAVE_NO_DUPS
+setopt   HIST_VERIFY
+setopt   IGNORE_EOF
+setopt   INC_APPEND_HISTORY
+setopt   INTERACTIVE_COMMENTS
+unsetopt LIST_AMBIGUOUS
+setopt   MENU_COMPLETE
+setopt   MULTIOS
+unsetopt NOMATCH
+unsetopt NOTIFY
+setopt   NUMERIC_GLOB_SORT
+setopt   PROMPT_SUBST
 setopt   PUSHD_IGNORE_DUPS
 setopt   PUSHDMINUS
 setopt   PUSHD_TO_HOME
-
 setopt   RC_EXPAND_PARAM
-
 setopt   RM_STAR_WAIT
-
-
-set show-all-if-ambiguous on
-unsetopt LIST_AMBIGUOUS
-
-setopt   INTERACTIVE_COMMENTS
-
-unsetopt NOMATCH
-unsetopt NOTIFY
-
-unsetopt BEEP
-
-setopt AUTOLIST
-setopt ALWAYS_TO_END
+setopt   SHARE_HISTORY
+setopt   TRANSIENT_RPROMPT
 # }}}
+
+
+# aliases {{{
+source ~/.aliases
+function aliasof() {
+  local args="$([[ "$OSX" == "$TRUE" ]] \
+    && printf '-e' \
+    || printf '-r')"
+  alias "$1" |\
+    command -p sed "$args" 's|'"$1"'=(.*)|\1|' |\
+    command -p sed "$args" "s|'||g"
+}
+
+
+function() {
+  autoload -Uz add-zsh-hook
+  zshcache_time="$(date +%s%N)"
+  function rehash_precmd() {
+    if [[ -a /var/cache/zsh/pacman ]]; then
+      local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
+      if (( zshcache_time < paccache_time )); then
+        rehash
+        zshcache_time="$paccache_time"
+      fi
+    fi
+  }
+  add-zsh-hook -Uz precmd rehash_precmd
+}
+# }}}
+
