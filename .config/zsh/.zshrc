@@ -452,7 +452,7 @@ export WORKON_HOME=~/.virtualenvs
 
 # brew install pyenv \
 #   pyenv-ccache pyenv-default-packages pyenv-virtualenv pyenv-virtualenvwrapper pyenv-which-ext
-export ZSH_PYENV_LAZY_VIRTUALENV=true
+export ZSH_PYENV_LAZY_VIRTUALENV=false
 if command_exists pyenv; then
    #eval "$(pyenv            init -)"
    #eval "$(pyenv virtualenv-init -)"
