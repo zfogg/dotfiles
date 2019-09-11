@@ -1,4 +1,4 @@
-" autoload/neomake/makers/ft/rust
+" after/autoload/neomake/makers/ft/rust
 scriptencoding utf-8
 
 

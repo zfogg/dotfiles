@@ -12,14 +12,17 @@ alias   v='$EDITOR'
     && alias python3="python3.6.2" \
     || alias python3="python3.7.4"
 
-alias zshrc='$EDITOR '"$DOTFILES"'/.zshrc'
-alias vimrc='$EDITOR '"$DOTFILES"'/.vim/vimrc'
+alias  zshrc='$EDITOR ${ZDOTDIR:-$HOME}/.zshrc'
+alias zshenv='$EDITOR ${ZDOTDIR:-$HOME}/.zshenv'
+alias zlogin='$EDITOR ${ZDOTDIR:-$HOME}/.zlogin'
+alias zlogin='$EDITOR ${ZDOTDIR:-$HOME}/.zprofile'
+alias vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
 
 alias ql='quick-look'
  
-[[ "$OSX" == "$TRUE" ]] \
-    && alias ls='gls --color=auto --group-directories-first --human-readable --reverse --classify --quoting-style=shell-always' \
-    || alias ls='ls --color=auto --group-directories-first'
+#[[ "$OSX" == "$TRUE" ]] \
+    #&& alias ls='gls --color=auto --group-directories-first --human-readable --reverse --classify --quoting-style=shell-always' \
+    #|| alias ls='ls --color=auto --group-directories-first'
 alias  k='ls -LhGstcr'
 alias  l='k -1'
 alias ll='l -A'

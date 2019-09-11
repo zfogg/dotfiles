@@ -208,7 +208,8 @@ Plug 'junegunn/vim-plug'
 " Silent enhancements. {{{
     Plug 'editorconfig/editorconfig-vim'
     Plug 'kana/vim-niceblock'
-    "Plug 'tpope/vim-repeat' | Plug 'vim-scripts/visualrepeat'
+    Plug 'tpope/vim-repeat'
+    Plug 'vim-scripts/visualrepeat'
     Plug 'junegunn/vim-easy-align'
     Plug 'tpope/vim-sleuth'
     Plug 'sickill/vim-pasta'
@@ -222,5 +223,6 @@ Plug 'junegunn/vim-plug'
     Plug 'AndrewRadev/switch.vim'
     Plug 'vim-utils/vim-vertical-move'
 " }}}
+
 
 call plug#end()
