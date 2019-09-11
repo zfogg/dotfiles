@@ -17,10 +17,10 @@ let g:gitgutter_preview_win_floating = 1
 
 nnoremap <Leader>gg<Space>  :GitGutterToggle<CR>
 nnoremap <Leader>ggl<Space> :GitGutterLineHighlightsToggle<CR>
-nmap             -          <Plug>GitGutterPrevHunk<Bar><Plug>GitGutterPreviewHunk
-nmap             =          <Plug>GitGutterNextHunk<Bar><Plug>GitGutterPreviewHunk
-nmap     <Leader>ggw        <Plug>GitGutterStageHunk
-nmap     <Leader>ggu        <Plug>GitGutterUndoHunk
-nmap     <Leader>ggd        <Plug>GitGutterPreviewHunk
+nmap             -          <Plug>(GitGutterPrevHunk)<Bar><Plug>(GitGutterPreviewHunk)
+nmap             =          <Plug>(GitGutterNextHunk)<Bar><Plug>(GitGutterPreviewHunk)
+nmap     <Leader>ggw        <Plug>(GitGutterStageHunk)
+nmap     <Leader>ggu        <Plug>(GitGutterUndoHunk)
+nmap     <Leader>ggd        <Plug>(GitGutterPreviewHunk)
 " replace the `=` mapping
 nnoremap <Leader>=          =
