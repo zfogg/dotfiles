@@ -52,7 +52,10 @@ let g:NERDTreeIgnore            = [
     \ '' . '.bz'              . '$' . '[[file]]' ,
     \ '' . '.gz'              . '$' . '[[file]]' ,
     \ '' . '.xz'              . '$' . '[[file]]' ,
+    \ '' . '.rustfmt'         . '$' . '[[file]]' ,
     \ '' . '.zip'             . '$' . '[[file]]' ,
+    \ '' . '.zwc'             . '$' . '[[file]]' ,
+    \ '' . '.zwc.old'         . '$' . '[[file]]' ,
     \ '' . '.git'             . '$' . '[[dir]]'  ,
     \ '' . '.hg'              . '$' . '[[dir]]'  ,
     \ '' . '.svn'             . '$' . '[[dir]]'  ,
@@ -64,6 +67,6 @@ let g:NERDTreeIgnore            = [
 \ ]
 
 
-map <Leader><S-n><Space> <Plug>NERDTreeTabsToggle<CR>
-map <Leader>n<Space>     <Plug>NERDTreeMirrorToggle<CR>
-map <Leader>nn           <Plug>NERDTreeTabsFind<CR>
+"nnoremap <Leader><S-n><Space> <Plug>NERDTreeTabsToggle<CR>
+nnoremap <Leader>n<Space>     :NERDTreeToggle<CR>:wincmd p<CR>
+nnoremap <Leader>nn           :call z#nerdtree#AutoCwd()<CR>

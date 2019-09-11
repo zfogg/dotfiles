@@ -128,32 +128,15 @@ func! z#constants#globals#Ruby() abort
 endfunc
 
 
-func! z#constants#globals#Vimpager() abort
-    " V1
-    let g:vimpager = {
-        \ 'enabled'     : 1,
-        \ 'X11'         : 0,
-        \ 'ansiesc'     : 1,
-        \ 'passthrough' : 1,
-    \ }
-    let g:less     = {
-        \ 'enabled'     : 1,
-        \ 'number'      : 1,
-        \ 'hlsearch'    : 1,
-        \ 'scrolloff'   : 5,
-    \ }
-    " V2
-    let g:vimpager_use_gvim        = 0
-    let g:vimpager_passthrough     = 1
-    let g:vimpager_disable_x11     = 1
-    let g:vimpager_scrolloff       = 5
-    let g:vimpager_disable_ansiesc = 0
-endfunc
-
-
 func! z#constants#globals#Rustc_path() abort
-    if !executable('rustup') || !executable('rustc')
-      throw 'missing binaries from $PATH: rustup or rustc'
-    endif
-    return system("rustup which rustc | xargs printf '%s'")
+  if executable('rustup')
+    let s:rustc_path = system("rustup which rustc | xargs printf")
+  else
+    let s:rustc_path = exepath("rustc")
+  endif
+  if !executable(s:rustc_path)
+    throw 'Z:NotFound rustup|rustc - '.s:rustc_path
+  endif
+  return s:rustc_path
 endfunc
+
