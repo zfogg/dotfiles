@@ -34,8 +34,6 @@ export LINUX="$(
 export DOTFILES=~/.dotfiles
 export DOTVIM=~/.vim
 
-export CORES="`nproc`"
-
 unset MAILCHECK
 
 export PACKAGE_PREFIX="gg.zfo"
