@@ -66,8 +66,8 @@ export VISUAL="${EDITOR}"
 export MANPAGER="${EDITOR} -c 'set ft=man' -"
 export LESS='-R'
 
-export PAGER='nvimpager'
-#export PAGER='nvim -R'
+#export PAGER='nvimpager'
+export PAGER='nvim -R'
 #export PAGER='less'
 # editor, pager }}}
 
