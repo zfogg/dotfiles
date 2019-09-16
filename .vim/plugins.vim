@@ -19,8 +19,10 @@ Plug 'junegunn/vim-plug'
 " integrate with other programs {{{
     Plug 'Shougo/vimproc.vim', { 'do': 'make' }
     Plug 'rizzatti/dash.vim'
+    Plug 'tpope/vim-git'
     Plug 'tpope/vim-fugitive'
     Plug 'airblade/vim-gitgutter'
+    Plug 'whiteinge/diffconflicts'
     Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
     Plug 'tmux-plugins/vim-tmux-focus-events', PIf(executable('tmux') && !empty($TMUX))
     Plug 'christoomey/vim-tmux-navigator',     PIf(executable('tmux') && !empty($TMUX))

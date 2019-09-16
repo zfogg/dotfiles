@@ -105,10 +105,10 @@ set viewoptions+=cursor,curdir,folds
 
 " {{{ 'cpoptions'
     "   default:aABceFs
-    "   mine: _aAcbdEefFIMnoPqRstWXZ+;
+    "   mine:   aABcdEefFIMnoPqRstWXZ+;_
     set cpo+=aA        " cpo-a cpo-A
+    set cpo-=b cpo+=B  " cpo-b cpo-B
     set cpo+=c cpo-=C  " cpo-c cpo-C
-    set cpo+=b cpo-=B  " cpo-b cpo-B
     set cpo+=d cpo-=D  " cpo-d cpo-D
     set cpo+=Ee        " cpo-E cpo-e
     set cpo+=fF        " cpo-f cpo-F

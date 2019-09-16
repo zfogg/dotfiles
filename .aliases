@@ -19,10 +19,10 @@ alias zlogin='$EDITOR ${ZDOTDIR:-$HOME}/.zprofile'
 alias vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
 
 alias ql='quick-look'
- 
-#[[ "$OSX" == "$TRUE" ]] \
-    #&& alias ls='gls --color=auto --group-directories-first --human-readable --reverse --classify --quoting-style=shell-always' \
-    #|| alias ls='ls --color=auto --group-directories-first'
+
+[[ "$OSX" == "$TRUE" ]] \
+    && alias ls='gls --color=auto --group-directories-first --human-readable --reverse --classify --quoting-style=shell-always' \
+    || alias ls='ls  --color=auto --group-directories-first --human-readable --reverse --classify --quoting-style=shell-always'
 alias  k='ls -LhGstcr'
 alias  l='k -1'
 alias ll='l -A'

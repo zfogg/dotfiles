@@ -3,11 +3,11 @@
     name  = Zachary Fogg
 
 [core]
-    editor   = $EDITOR
-    pager    = $PAGER
-    eol      = lf
-    autocrlf = input
-    ;excludesfile = ~/.gitignore_global
+    editor       = $EDITOR
+    pager        = $PAGER
+    ;pager = diff-so-fancy | less --tabs=4 -RFX
+    eol          = lf
+    autocrlf     = input
     excludesfile = ~/.config/git/ignore
 
 [push]
@@ -15,7 +15,7 @@
 
 [color]
     ui    = true
-    pager = no
+    pager = false
 
 [fetch]
     prune     = true
@@ -23,41 +23,31 @@
     output    = compact
 
 [log]
-    decorate = true
+    decorate     = true
     abbrevCommit = true
 
-
-[filter "media"]
-    clean  = git-media-clean %f
-    smudge = git-media-smudge %f
-
+[grep]
+    lineNumber = true
 
 [merge]
-    tool          = vimdiff
-[mergetool "vimdiff"]
-    cmd           = $EDITOR -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'
-    trustExitCode = true
+    tool = vimdiff
 [mergetool]
     prompt        = true
     keepBackup    = false
-
-;[merge]
-	;tool          = diffconflicts
-;[mergetool "diffconflicts"]
-	;cmd           = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
-	;trustExitCode = true
-;[mergetool]
-	;prompt        = true
-	;keepBackup    = false
+[mergetool "vimdiff"]
+    ;cmd           = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    ;cmd           = nvim -f -c \"Gdiff\" \"$MERGED\"
+    cmd            = $EDITOR -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    trustExitCode  = true
 
 [diff]
-    tool = vimdiff
+    tool = vimdiff3
+[difftool "vimdiff3"]
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+    trustExitCode = true
 [difftool "vimdiff"]
-    cmd = \"$EDITOR\" -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c '$wincmd w' -c 'wincmd J'
-[difftool]
-    prompt = false
-[difftool "vimdiff"]
-    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    ;cmd = \"$EDITOR\" -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c  'set ft=git' -c '$wincmd w' -c 'wincmd J'
+    trustExitCode = true
 
 
 [alias]
@@ -66,34 +56,36 @@
     up       = pull --rebase --autostash
     gh       = joopal-clone git github.com
 
-    l        = log -18 --color=always --all --topo-order --pretty='format:%Cgreen%h%Creset %s%Cred%d%Creset %C(black bold)(by %an)%Creset'
-    ll       = log     --color=always --all --topo-order --pretty='format:%Cgreen%h%Creset %s%Cred%d%Creset %C(black bold)(by %an)%Creset'
-    gl       = log -12 --color=always --all --graph --topo-order --pretty='format:%Cgreen%h%Creset %s %C(black bold)(by %an)%Creset%C(yellow bold)%d%Creset%n'
-    gll      = log     --color=always --all --graph --topo-order --pretty='format:%Cgreen%h%Creset %s %C(black bold)(%cr by %an)%Creset%C(yellow bold)%d%Creset%n'
+    l        = log -18 --all --topo-order
+    ll       = log     --all --topo-order
+    gl       = log -12 --all --graph --topo-order
+    gll      = log     --all --graph --topo-order
 
     unshallow = "!:; \
-    	git fetch --unshallow 2>/dev/null; \
-    	git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'; \
-    	git fetch -v origin; "
+    git fetch --unshallow 2>/dev/null; \
+    git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'; \
+    git fetch -v origin; "
 
     pruner = "!:; \
-    	git prune --expire=now; \
-    	git reflog expire --expire-unreachable=now --rewrite --all; "
+    git prune --expire=now; \
+    git reflog expire --expire-unreachable=now --rewrite --all; "
 
     fetch-branch = "!:; \
-    	git remote set-branches --add origin $1; \
-    	git fetch -v origin $1:$1; "
+    git remote set-branches --add origin $1; \
+    git fetch -v origin $1:$1; "
 
 
 [ghq]
     root = /Users/zfogg/src
 [ghq "https://bitbucket.org/"]
     vcs = git
+
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
-[grep]
-    lineNumber = true
 
+[filter "media"]
+    clean  = git-media-clean %f
+    smudge = git-media-smudge %f

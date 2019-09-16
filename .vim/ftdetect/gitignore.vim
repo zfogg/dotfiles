@@ -1,4 +1,5 @@
 " ftdetect/gitignore
+scriptencoding utf-8
 
 
 au BufRead,BufNewFile

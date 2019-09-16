@@ -29,7 +29,7 @@ nnoremap <C-d> <C-d>zz
 "nnoremap <C-u> <C-u>zz
 nnoremap { {zz
 nnoremap } }zz
-nnoremap gd gdzz
+"nnoremap gd gdzz
 
 " write
 nnoremap <Leader>w :w<CR>
