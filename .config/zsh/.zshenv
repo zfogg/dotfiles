@@ -3,6 +3,29 @@
 
 
 #zmodload zsh/zprof
+# zsh startup debug (TOP of ~/.zshenv) {{{
+#   https://kev.inburke.com/kevin/profiling-zsh-startup-time
+if [[ ! -z "$SHELL_DEBUG" ]]; then
+  local zsh_debug_log="`mktemp`"
+  SHELL_DEBUG_LOG=`grealpath "$zsh_debug_log"`
+  function shell-debug-log {
+    $EDITOR -u NONE +'1d' +'x' "$SHELL_DEBUG_LOG"
+    (echo "# vim: fdm=marker fen:"; cat "$SHELL_DEBUG_LOG") > "$SHELL_DEBUG_LOG".tmp
+    mv "$SHELL_DEBUG_LOG".tmp "$SHELL_DEBUG_LOG"
+    echo "#}}}" >> "$SHELL_DEBUG_LOG"
+    #sed -i 's|^#{{{#}}}$||'  "$SHELL_DEBUG_LOG"
+    #sed -i 's|'"$HOME"'|~/|' "$SHELL_DEBUG_LOG"
+    $EDITOR "$SHELL_DEBUG_LOG"
+  }
+  zmodload zsh/datetime
+  setopt PROMPT_SUBST
+  PS4=$'#}}}\012\012\012# %x:%I {{{\012# %N:i \012# +$EPOCHREALTIME\012  '
+  exec 3>&2 2>$SHELL_DEBUG_LOG
+  setopt XTRACE
+fi
+# zsh startup debug (TOP of ~/.zshenv) }}}
+
+
 
 # note: meta helpers {{{
 command_exists() { command -v "$1" 2>/dev/null 1>&2 }
@@ -43,11 +66,6 @@ export  DOTFILES_SETENV="1"
 export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh"
 export   ZSHRC="${ZDOTDIR}/.zshrc"
 
-export PKG_CONFIG_PATH="/usr/lib/pkgconfig"
-if [[ "$OSX" == "$TRUE" ]]; then
-  export PKG_CONFIG_PATH="${BREW}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-fi
-
 if [[ "$OSX" == "$TRUE" ]]; then
   export BREW='/usr/local'
 elif [[ "$LINUX" == "$TRUE" ]]; then
@@ -56,8 +74,19 @@ else
   export BREW='/usr/local'
 fi
 
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig"
+if [[ "$OSX" == "$TRUE" ]]; then
+  export PKG_CONFIG_PATH="${BREW}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+fi
+
 export SHELL_NAME="`basename ${SHELL}`"
+
+export CORES="`nproc`"
 # $SHELL }}}
+
+
+# path, manpath, fpath
+source "$ZDOTDIR/z/path.zsh"
 
 
 # editor, pager {{{
@@ -67,32 +96,9 @@ export MANPAGER="${EDITOR} -c 'set ft=man' -"
 export LESS='-R'
 
 #export PAGER='nvimpager'
-export PAGER='nvim -R'
+export PAGER='nvim -R +AnsiEsc'
 #export PAGER='less'
 # editor, pager }}}
-
-
-# zsh startup debug (TOP of ~/.zshenv) {{{
-#   https://kev.inburke.com/kevin/profiling-zsh-startup-time
-if [[ ! -z "$SHELL_DEBUG" ]]; then
-  local zsh_debug_log="`mktemp`"
-  SHELL_DEBUG_LOG=`grealpath "$zsh_debug_log"`
-  function shell-debug-log {
-    $EDITOR -u NONE +'1d' +'x' "$SHELL_DEBUG_LOG"
-    (echo "# vim: fdm=marker fen:"; cat "$SHELL_DEBUG_LOG") > "$SHELL_DEBUG_LOG".tmp
-    mv "$SHELL_DEBUG_LOG".tmp "$SHELL_DEBUG_LOG"
-    echo "#}}}" >> "$SHELL_DEBUG_LOG"
-    #sed -i 's|^#{{{#}}}$||'  "$SHELL_DEBUG_LOG"
-    #sed -i 's|'"$HOME"'|~/|' "$SHELL_DEBUG_LOG"
-    $EDITOR "$SHELL_DEBUG_LOG"
-  }
-  zmodload zsh/datetime
-  setopt PROMPT_SUBST
-  PS4=$'#}}}\012\012\012# %x:%I {{{\012# %N:i \012# +$EPOCHREALTIME\012  '
-  exec 3>&2 2>$SHELL_DEBUG_LOG
-  setopt XTRACE
-fi
-# zsh startup debug (TOP of ~/.zshenv) }}}
 
 
 # terminal {{{
@@ -171,11 +177,14 @@ fi
 #if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then;
   #source "${VIRTUAL_ENV}/bin/activate"; fi
 
+export WORKON_HOME=~/.virtualenvs
+
 # pyenv {{{
   #export PYENV_SHELL="$SHELL_NAME"
   export PYENV_ROOT="${HOME}/.pyenv"
   export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
   export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
+  export ZSH_PYENV_LAZY_VIRTUALENV=true
 # }}}
 
 # pipenv {{{
@@ -186,9 +195,21 @@ fi
 # python }}}
 
 
+# rust {{{
+export RUSTUP_HOME=~/.rustup
+if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+  export RUST_SRC_PATH="${RUSTUP_HOME:-~/.rustup}/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
+elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
+  export RUST_SRC_PATH="${RUSTUP_HOME:-~/.rustup}/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
+fi
+export CARGO_INCREMENTAL=1
+export CARGO_BUILD_JOBS="$((${CORES:-2} - 1))"
+# }}}
+
+
 # compilers {{{
-  export  CC='clang'
-  export CXX='clang++'
+export  CC='clang'
+export CXX='clang++'
 # }}}
 
 

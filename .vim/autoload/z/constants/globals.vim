@@ -70,18 +70,25 @@ func! z#constants#globals#Python() abort
       let l:py2_root = $BREW.'/bin'
     endif
   endif
-  let g:python3_host_prog = l:py3_root.'/'.l:py3_prog
-  let g:python_host_prog  = l:py2_root.'/'.l:py2_prog
-  if !filereadable(g:python3_host_prog)
-    throw 'Z:NotFound python3-host-prog '.g:python3_host_prog
-  endif
-  if !filereadable(g:python_host_prog)
-    throw 'Z:NotFound python-host-prog '.g:python_host_prog
-  endif
-  if has('win32')
-    let g:python3_host_prog = fnamemodify(g:python3_host_prog, ':r')
-    let g:python_host_prog  = fnamemodify(g:python_host_prog,  ':r')
-  endif
+  try
+    let g:python3_host_prog = l:py3_root.'/'.l:py3_prog
+    let g:python_host_prog  = l:py2_root.'/'.l:py2_prog
+  catch /^Vim(\a\+):E121:/
+    echoerr 'Z:NotFound l:py(2|3)_root | l:py(2|3)_prog'
+    if !filereadable(g:python3_host_prog)
+      echoerr 'Z:NotFound python3-host-prog '.g:python3_host_prog
+      unlet g:python3_host_prog
+    endif
+    if !filereadable(g:python_host_prog)
+      echoerr 'Z:NotFound python-host-prog '.g:python_host_prog
+      unlet g:python_host_prog
+    endif
+  finally
+    if has('win32')
+      let g:python3_host_prog = fnamemodify(g:python3_host_prog, ':r')
+      let g:python_host_prog  = fnamemodify(g:python_host_prog,  ':r')
+    endif
+  endtry
 endfunc
 
 

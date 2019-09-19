@@ -2,11 +2,6 @@
 --max-columns=150
 --max-columns-preview
 
-# Add my 'web' type.
-#--type-add
-#web:*.{html,css,js,jsx}*
-
-
 #--follow
 --hidden
 --pretty
@@ -16,8 +11,8 @@
 --before-context=1
 --after-context=1
 
---ignore
---ignore-dot
---ignore-parent
---ignore-global
---ignore-vcs
+#--ignore
+#--ignore-dot
+#--ignore-parent
+#--ignore-global
+#--ignore-vcs

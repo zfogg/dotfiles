@@ -17,6 +17,7 @@ set updatetime=250        " for CursorHold autocmd (milliseconds)
 let g:netrw_dirhistmax=0  " http://www.vim.org/scripts/script.php?script_id=1075
 
 
+
 " for :mksession
 set sessionoptions-=blank,buffers,localoptions,help
 set sessionoptions+=curdir,globals,options,tabpages
@@ -261,6 +262,13 @@ set viewoptions+=cursor,curdir,folds
     "   custom:  @,48-57,_,192-255,:
     "   ft=help: !-~,^*,^|,^",192-255
     set iskeyword+=@,48-57,_,192-255
+
+    if executable('rg')
+        let &grepprg    = 'rg --vimgrep --context=0'
+        let &grepformat = '%f:%l:%c:%m'
+    else
+        let &grepprg = 'grep --color=never -e --exclude-dir .git -nrI $* . /dev/null'
+    endif
 " }}} Searching and Patterns
 
 
