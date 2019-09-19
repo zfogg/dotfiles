@@ -54,7 +54,7 @@ function() {
       #> "$dot_ti"
     infocmp "$TERM" > "$dot_ti"
   fi
-  tic "$dot_ti"
+  tic "$dot_ti" 2>/dev/null
 }
 
 if [[ "${OSX:-0}" == "${TRUE:-1}" && -v ITERM_SESSION_ID ]]; then
