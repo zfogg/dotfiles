@@ -45,13 +45,17 @@ source "$HOME/.aliases"
 
 
 
-# terminfo, iterm integration {{{
-#local dot_ti=~/.terminfo/"$TERM".ti
-#[[ -f "$dot_ti" ]] \
-#    || infocmp "$TERM" \
-#    | sed 's/kbs=^[hh]/kbs=\\177/' \
-#    > "$dot_ti"
-#tic "$dot_ti"
+# terminfo, iTerm2 integration {{{
+function() {
+  local dot_ti=~/.terminfo/"$TERM".ti
+  if [[ ! -f "$dot_ti" ]]; then
+    #infocmp "$TERM" \
+      #| sed 's/kbs=^[hH]/kbs=\\177/' \
+      #> "$dot_ti"
+    infocmp "$TERM" > "$dot_ti"
+  fi
+  tic "$dot_ti"
+}
 
 if [[ "${OSX:-0}" == "${TRUE:-1}" && -v ITERM_SESSION_ID ]]; then
   function() {
