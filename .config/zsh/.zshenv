@@ -80,8 +80,6 @@ if [[ "$OSX" == "$TRUE" ]]; then
 fi
 
 export SHELL_NAME="`basename ${SHELL}`"
-
-export CORES="`nproc`"
 # $SHELL }}}
 
 
@@ -96,8 +94,10 @@ export MANPAGER="${EDITOR} -c 'set ft=man' -"
 export LESS='-R'
 
 #export PAGER='nvimpager'
-export PAGER='nvim -R +AnsiEsc'
+export PAGER='nvim -R +AnsiEsc -'
 #export PAGER='less'
+
+export CORES="`nproc`"
 # editor, pager }}}
 
 
