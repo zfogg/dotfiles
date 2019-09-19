@@ -2,16 +2,16 @@
 # vim:syntax=zsh
 # vim:filetype=zsh
 
+
 (
   autoload -U zrecompile
 
   setopt EXTENDEDGLOB
 
   local zfiles=(
-    "${ZDOTDIR}/.zcompdump"
-    "${ZDOTDIR}/.zshrc"
-    "${ZDOTDIR}/.zprofile"
-    "${ZDOTDIR}/.zshenv"
+    "$ZDOTDIR/.zcompdump"
+    "$ZDOTDIR"/.{zshrc,zshenv,zprofile,zlogin}
+    "$ZDOTDIR"/z/*.zsh
   )
 
   for zf in $zfiles; do
@@ -25,8 +25,8 @@
   for a in $fpath; do
     #/bin/rm -f "${a}.zwc"
     if [[ -d "$a" && -w "$a" ]]; then
-      echo "zrecompile ${a}.zwc"
-      zrecompile -p "${a}.zwc" "$a"/_*~"$a"/__*
+      #echo "zrecompile ${a}.zwc"
+      #zrecompile -p "${a}.zwc" "$a"/_*~"$a"/__*
     fi
   done
 

@@ -1,3 +1,6 @@
-/.cabal-sandbox
-/dist
-/dist-newstyle
+/.cabal-sandbox/
+/dist/
+/dist-newstyle/
+/complete/
+/.stack-work/
+/stack.yaml.lock

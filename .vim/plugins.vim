@@ -110,13 +110,7 @@ Plug 'junegunn/vim-plug'
     Plug 'lambdalisue/vim-pyenv',         {'for': ft['py']}
     "Plug 'python-mode/python-mode',       {'for': ft['py']}
     Plug 'gisphm/vim-gitignore'
-    Plug 'rust-lang/rust.vim', PIf(v:false, {
-        \ 'for': ft['rs'],
-        \ 'do': shellescape(join([
-            \ 'cd ~; for x in clippy rustfmt rls rust-src rust-analysis;',
-                \ 'do rustup component add $x \|\| rustup component add $x-preview;',
-            \ 'done'], ' ')),
-    \ })
+    Plug 'rust-lang/rust.vim', { 'for': ft['rs'] }
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
     Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
@@ -158,6 +152,7 @@ Plug 'junegunn/vim-plug'
 " Beautify Vim. {{{
     Plug 'chriskempson/base16-vim'
     Plug 'vim-scripts/AfterColors.vim'
+    Plug 'fedorenchik/AnsiEsc'
     Plug 'nathanaelkane/vim-indent-guides'
     Plug 'luochen1990/rainbow', PIf(v:false, {})
     Plug 'ap/vim-css-color',          { 'for': ft['styles'] }

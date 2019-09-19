@@ -35,13 +35,19 @@ function() { # Node.js, npm, nvm
 
 function() { # Rust, rustup, Cargo
     local cargo_reqs=(
-        racer
-        clippy)
+        racer clippy)
     for rel in $cargo_rels; do
         rustup update "$rel"
-        for req in $cargo_reqs;
+        for req in $cargo_reqs; do
             cargo +"$rel" install "$req" \
                 2>/dev/null || true
+        done
+    done
+
+    local ru_comps=(
+        clippy rustfmt rls rust-src rust-analysis)
+    for x in $ru_comps; do
+        rustup component add $x || rustup component add $x-preview
     done
 }
 

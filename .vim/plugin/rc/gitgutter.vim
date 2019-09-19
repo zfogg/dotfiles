@@ -12,13 +12,13 @@ let g:gitgutter_max_signs            = 1024
 let g:gitgutter_preview_win_floating = 1
 "let g:gitgutter_diff_relative_to     = 'working_tree'
 
-"let g:gitgutter_grep_command    = &grepprg
-if executable('/usr/bin/rg')
-    let g:gitgutter_grep = '/usr/bin/rg --no-config --no-heading --color=never --no-line-number --ignore'
-else
-    let g:gitgutter_grep = '/usr/bin/grep --color=never'
-endif
-
+"if executable('rg')
+    "let s:rg_prog = systemlist('command -p which rg')[0]
+    "let g:gitgutter_grep = s:rg_prog.' --vimgrep --no-line-number --no-column --context=0'
+"elseif executable('grep')
+    "let s:grep_prog = systemlist('command -p which grep')[0]
+    "let g:gitgutter_grep = s:grep_prog.' --color=never'
+"endif
 
 nnoremap <Leader>gg<Space>  :GitGutterToggle<CR>
 nnoremap <Leader>ggl<Space> :GitGutterLineHighlightsToggle<CR>

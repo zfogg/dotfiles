@@ -12,11 +12,11 @@ alias   v='$EDITOR'
     && alias python3="python3.6.2" \
     || alias python3="python3.7.4"
 
-alias  zshrc='$EDITOR ${ZDOTDIR:-$HOME}/.zshrc'
-alias zshenv='$EDITOR ${ZDOTDIR:-$HOME}/.zshenv'
-alias zlogin='$EDITOR ${ZDOTDIR:-$HOME}/.zlogin'
-alias zlogin='$EDITOR ${ZDOTDIR:-$HOME}/.zprofile'
-alias vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
+alias    zshrc='$EDITOR $ZDOTDIR/.zshrc'
+alias   zshenv='$EDITOR $ZDOTDIR/.zshenv'
+alias   zlogin='$EDITOR $ZDOTDIR/.zlogin'
+alias zprofile='$EDITOR $ZDOTDIR/.zprofile'
+alias    vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
 
 alias ql='quick-look'
 
@@ -31,6 +31,7 @@ alias la='ll -g'
 alias sudo='nocorrect sudo -E '
 
 alias   s='sudo'
+compdef s=sudo
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -87,18 +88,19 @@ alias  wrapon='tput smam'
 # git
 alias gc='git commit'
 alias gca='git commit -a'
-alias gd='git diff'
+alias gd='git diff --color-words'
 alias gl='git log'
 alias gp='git push'
 alias grv='git remote -v'
 alias gst='git status'
 alias ga='git add'
 alias gco='git checkout'
+alias gcm='git checkout master'
 
 
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
     alias get='ghq get -u -p --shallow "`pbpaste`"; echo'
-else
+elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
     alias get='ghq get -u -p --shallow "`xclip -out`"; echo'
 fi
 
@@ -152,6 +154,16 @@ function ppvar() {
 
 function npm-do {
     (PATH=$(npm bin):$PATH; eval $@;)
+}
+
+
+function aliasof() {
+  local args="$([[ "$OSX" == "$TRUE" ]] \
+    && printf '-e' \
+    || printf '-r')"
+  alias "$1" |\
+    command -p sed "$args" 's|'"$1"'=(.*)|\1|' |\
+    command -p sed "$args" "s|'||g"
 }
 
 
