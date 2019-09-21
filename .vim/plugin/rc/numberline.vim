@@ -4,6 +4,10 @@ scriptencoding utf-8
 "       autoload/numberline
 
 
+" FIXME: do i event want this?
+if v:true | finish | endif
+
+
 augroup PluginConfig_numberline
     autocmd!
 

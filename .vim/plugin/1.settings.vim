@@ -3,7 +3,8 @@
 scriptencoding utf-8
 
 
-set nonumber numberwidth=2  " hybrid line numbers - relative & static
+"set nonumber numberwidth=2  " hybrid line numbers - relative & static
+set number numberwidth=2  " hybrid line numbers - relative & static
 set title                   " file title in the $TERM titlebar
 set showtabline=1           " show buffer tabs when more than `n`
 set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
@@ -48,9 +49,10 @@ set viewoptions+=cursor,curdir,folds
     set wildignore+=*.swc,*.swc.old
     set wildignore+=*~,~*
 
-    set pumheight=8
-    set completeopt=menu,menuone,preview,noinsert,noselect
-    set conceallevel=1 concealcursor=nvic
+    setglobal pumheight=8
+    setglobal complete-=i
+    setglobal completeopt=menu,menuone,preview,noinsert,noselect
+    setglobal conceallevel=1 concealcursor=nvic
 
     let s:vim_data_dirs = {}
     let s:editor_name = fnamemodify($VIM, ':t')
@@ -154,6 +156,10 @@ set viewoptions+=cursor,curdir,folds
         \extends:⟩,
         \precedes:⟨,
         \nbsp:␣
+    set fillchars=
+        \vert:\ ,
+        \stl:\ ,
+        \stlnc:\ 
 " }}} Tiny aesthetic tweaks
 
 
@@ -219,9 +225,9 @@ set viewoptions+=cursor,curdir,folds
 
 
 " Messages, info, and statuses. {{{
-    set laststatus=2     " allways show status line
     set confirm          " Y-N-C prompt if closing with unsaved changes.
-    set noshowcmd        " Show incomplete normal mode commands as I type.
+    set showcmd          " Show incomplete normal mode commands as I type.
+    set noshowmode       " Don't show the current editor mode in the cmd line.
     set report=0         " : commands always print changed line count.
     set ruler            " Show some info, even without statuslines.
     set laststatus=2     " Always show statusline, even if only 1 window.

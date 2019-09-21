@@ -10,3 +10,6 @@ scriptencoding utf-8
 call z#rc#Init()
 
 runtime plugins.vim
+
+packloadall
+silent! helptags ALL
