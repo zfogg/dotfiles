@@ -49,6 +49,8 @@ bundles = [
         , (bundle "davidparsson/zsh-pyenv-lazy")
             { fpathLocations = [] }
 
+        , (bundle "agkozak/zsh-z")
+
         --, (bundle "Tarrasch/zsh-autoenv")
             --{ fpathLocations = [] }
 

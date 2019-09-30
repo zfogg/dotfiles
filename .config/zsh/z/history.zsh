@@ -3,10 +3,11 @@
 
 
 [[ -z "$HISTFILE" ]] && \
-  export HISTFILE="${ZDOTDIR:-~/.config/zsh}/.zsh_history"
+  export HISTFILE="${ZDOTDIR:-~/.config/zsh}/history"
 
-export HISTSIZE=16384   # == 128**2
-export SAVEHIST=65536   # == 256**2
+# NOTE: you should set $SAVEHIST to be no more than $HISTSIZE
+export HISTSIZE=65536       # == 256**2
+export SAVEHIST=$HISTSIZE
 
 set +o histexpand
 
@@ -33,6 +34,7 @@ setopt   HIST_IGNORE_DUPS
 setopt   HIST_IGNORE_SPACE
 setopt   HIST_REDUCE_BLANKS
 unsetopt HIST_SAVE_NO_DUPS
+setopt   HIST_FIND_NO_DUPS
 setopt   HIST_VERIFY
 setopt   IGNORE_EOF
 setopt   INC_APPEND_HISTORY

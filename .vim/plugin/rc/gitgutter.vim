@@ -2,6 +2,9 @@
 scriptencoding utf-8
 
 
+if ! z#util#HasPlugin('vim-gitgutter') | finish | endif
+
+
 let g:gitgutter_enabled              = 1
 let g:gitgutter_map_keys             = 1
 let g:gitgutter_highlight_lines      = 1

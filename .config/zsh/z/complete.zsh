@@ -2,6 +2,13 @@
 # vim: set fdm=marker:
 
 
+fignore+=(
+  .zwc
+  .old
+  .tmp
+  .bak
+)
+
 zstyle ':completion:*'           special-dirs  true
 zstyle ':completion:*'           accept-exact  '*(N)'
 zstyle ':completion:*'           accept-exact-dirs  true
@@ -78,8 +85,9 @@ zstyle ':completion:*:-tilde-:*'              group-order \
 zstyle ':completion::*:(-command-|export):*' fake-parameters \
   ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
 
-zstyle ':completion:*:functions'    ignored-patterns '(_*|pre(cmd|exec))'
-zstyle ':completion:*:*:zcompile:*' ignored-patterns '(*~|*.zwc|*.zwc.old)'
+zstyle ':completion:*:functions'        ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*:*:zcompile:*'     ignored-patterns '(*~|*.zwc|*.zwc.old)'
+zstyle ':completion::complete:ls(d|):*' ignored-patterns '(*.zwc|*.zwc.old)'
 zstyle ':completion:*:sudo:*'       command-path \
   /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 zstyle ':completion::complete:*'    gain-privileges 1
@@ -109,7 +117,9 @@ zstyle ':completion:*:default'      select-prompt    '%p%s'
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
 zstyle ':completion:*:*:-command-:*:*' file-patterns \
- '*(#q-*):executables:Executables *(-/):directories:Directories'
+  '*(#q-*):executables:Executables' \
+  '*(-/):directories:Directories' \
+  '*:all-files'
 
 zstyle -e ':completion:*:*:-command-:*:*' tag-order '
   reply=(

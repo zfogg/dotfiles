@@ -14,13 +14,13 @@ let s:sources = get(g:, 'deoplete#sources',        {})
 let s:omnifns = get(g:, 'deoplete#omni#functions', {})
 
 let s:sources._ = [
-        \'omni',
-        \'member',
-        \'around',
-        \'syntax',
-        \'buffer',
-        \'file/include',
-        \'neosnippet', ]
+      \'omni',
+      \'member',
+      \'around',
+      \'syntax',
+      \'buffer',
+      \'file/include',
+  \]
 let s:omnifns._ = [ ]
 
 " javascript
@@ -62,37 +62,23 @@ endfor
 let g:deoplete#ignore_sources     = get(g:, 'deoplete#ignore_sources', {})
 let g:deoplete#ignore_sources.php = ['omni']
 
-
 " golang
 let g:deoplete#sources#go#gocode_binary  = exepath('gocode')
 let g:deoplete#sources#go#sort_class     = ['package', 'func', 'type', 'var', 'const']
 let g:deoplete#sources#go#use_cache      = 1
 let g:deoplete#sources#go#json_directory = $HOME.'/tmp'
 
-
 " emoji
 if has('mac') && z#util#HasPlugin('deoplete-emoji')
   call deoplete#custom#source('emoji', 'filetypes', ['rst'])
 endif
 
+" neosnippet
+if z#util#HasPlugin('neosnippet')
+  call add(s:sources, 'neosnippet')
+endif
 
 " NOTE: export to global at the BOTTOM
 let g:deoplete#sources        = s:sources
 let g:deoplete#omni#functions = s:omnifns
 " }}}
-
-
-"" deoplete-padawan
-"command! PadawanStart call deoplete#sources#padawan#StartServer()
-"command! PadawanStop call deoplete#sources#padawan#StopServer()
-"command! PadawanRestart call deoplete#sources#padawan#RestartServer()
-"command! PadawanInstall call deoplete#sources#padawan#InstallServer()
-"command! PadawanUpdate call deoplete#sources#padawan#UpdatePadawan()
-"command! -bang PadawanGenerate call deoplete#sources#padawan#Generate(<bang>0)
-
-
-"aug RcPlugin__deoplete
-    "au!
-    "au CompleteDone * pclose!
-    ""au VimEnter     * call deoplete#initialize()
-"aug END

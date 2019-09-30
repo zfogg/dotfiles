@@ -2,10 +2,13 @@
 
 !/.gitignore
 
+!/asciinema/
 !/base16-iterm2/
 !/base16-shell/
-!/base16-shell/
+!/dash/
 !/git/
+!/htop/
+!/kitty/
 !/nvim/
 !/vim/
 !/zsh/

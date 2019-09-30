@@ -3,6 +3,7 @@ scriptencoding utf-8
 
 
 if !has('nvim') | finish | endif
+if !z#util#HasPlugin('neosnippet') | finish | endif
 
 
 set completeopt=menuone,noinsert,noselect

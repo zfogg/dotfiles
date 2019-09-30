@@ -7,7 +7,7 @@ let g:mapleader=','
 
 inoremap <C-c> <Esc>
 
-noremap : <Nop>
+"noremap : <Nop>
 noremap ; :
 " and if you ever wanna map to ;
 "noremap ;; ;

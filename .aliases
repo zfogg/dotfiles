@@ -4,9 +4,9 @@
 
 alias rm='trash'
 
-alias vim='$EDITOR'
-alias  vi='$EDITOR'
-alias   v='$EDITOR'
+alias vim="$EDITOR"
+alias  vi="$EDITOR"
+alias   v="$EDITOR"
 
 [[ "$OSX" == "$TRUE" ]] \
     && alias python3="python3.6.2" \
@@ -18,20 +18,45 @@ alias   zlogin='$EDITOR $ZDOTDIR/.zlogin'
 alias zprofile='$EDITOR $ZDOTDIR/.zprofile'
 alias    vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
 
+if command_exists zshz; then
+  compdef _zshz z=zshz
+fi
+
 alias ql='quick-look'
 
-[[ "$OSX" == "$TRUE" ]] \
-    && alias ls='gls --color=auto --group-directories-first --human-readable --reverse --classify --quoting-style=shell-always' \
-    || alias ls='ls  --color=auto --group-directories-first --human-readable --reverse --classify --quoting-style=shell-always'
-alias  k='ls -LhGstcr'
-alias  l='k -1'
-alias ll='l -A'
-alias la='ll -g'
+function() { # ls
+  if command_exists lsd; then
+    alias lsd >/dev/null && unalias lsd
+    local LSPRG_PRG='lsd'
+    local LSPRG_ARGS="`
+      printf ' --blocks=date,size,user,name'
+      printf ' --human-readable --size=short'
+      printf ' --timesort --date=relative --reverse'
+      printf ' --group-dirs=first --classify' `"
+  else
+    local LSPRG_PRG="`which -p gls ls | head -n1 | xargs basename`"
+    local LSPRG_ARGS='-LhHGstc'
+    if [[ "$LSPRG_PRG" == 'gls' ]]; then
+      LSPRG_ARGS+="`
+        printf ' --color=auto'
+        printf ' --group-directories-first'
+        printf ' --quoting-style=shell-always' `"
+    fi
+  fi
+
+  alias ls="${LSPRG_PRG} ${LSPRG_ARGS}"
+  alias  l='ls -1'
+  alias ll='ls -1l'
+  alias la='nowrap ls -1lA'
+  alias lt='ls -1Al --tree --depth=2'
+}
 
 alias sudo='nocorrect sudo -E '
 
 alias   s='sudo'
 compdef s=sudo
+
+alias llog='command -p log'
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -41,33 +66,23 @@ alias zless='$PAGER'
 
 alias htop='htop -u $USER'
 
-alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
-
-alias  rg='command $GREPPRG'
-alias grep='command $GREPPRG'
-#alias ag="$GREPPRG"
+alias   rg="${GREPPRG}"      ; compdef   rg="${GREPPRG}"
+alias  rgg="${GREPPRG} -C=0" ; compdef  rgg="${GREPPRG}"
+alias grep="${GREPPRG} -C=0" ; compdef grep="${GREPPRG}"
 
 # pip2 install pygments
-#alias ccat='pygmentize -O style=base16-default.dark -f 256 -g'
-alias ccat='pygmentize -O style=monokai -f 256 -g'
-alias c='ccat'
+#alias pcat='pygmentize -O style=monokai -f 256 -g'
+alias pcat='pygmentize -O style=base16-default-dark -f 256 -g'
+alias c='pcat'
+compdef pcat=pygmentize
+compdef    c=pygmentize
 
 
 [[ "$OSX" == "$TRUE" ]] \
-    && alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q' \
-    || alias     ping='ping    -c 3'
+  && alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q' \
+  || alias     ping='ping    -c 3'
 
 alias fs='du -shL'
-
-#alias make_='/usr/bin/make -j`sysctl -n hw.ncpu`'
-#alias makefast='colormake-short -j`sysctl -n hw.ncpu`'
-#alias make='colormake-short'
-#
-#alias m='make'
-#alias mc='make clean'
-#alias mt='make test'
-#alias M='make clean && make all'
-#alias MM='make clean && make test'
 
 alias idea='$EDITOR ~/Dropbox/ideas.md'
 
@@ -83,12 +98,20 @@ function pyeve() { eval "`~/bin/pyeve ${1:-';'}`" }
 # shell output line wrapping
 alias wrapoff='tput rmam'
 alias  wrapon='tput smam'
+function nowrap() {
+  [ -t 1 ] && tput rmam
+  "$@"; local ret="$?"
+  [ -t 1 ] && tput smam
+  return "$ret"
+}
+alias nowrap='nowrap '
 
 
 # git
 alias gc='git commit'
 alias gca='git commit -a'
-alias gd='git diff --color-words'
+alias  gd='git diff'
+alias gdd='git diff --color-words'
 alias gl='git log'
 alias gp='git push'
 alias grv='git remote -v'
@@ -96,6 +119,8 @@ alias gst='git status'
 alias ga='git add'
 alias gco='git checkout'
 alias gcm='git checkout master'
+
+alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 
 
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
@@ -110,14 +135,14 @@ alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules
 
 
 function echoer() {
-    printf "%s\n" "$*" >&2;
+  printf "%s\n" "$*" >&2;
 }
 
 
 function gencomp_all() {
-    for p in $path; do command -p ls $p; done |\
-        uniq |\
-        { while read c; do gencomp $c; done }
+  for p in $path; do command -p ls $p; done |\
+    uniq |\
+    { while read c; do gencomp $c; done }
 }
 
 
@@ -158,12 +183,8 @@ function npm-do {
 
 
 function aliasof() {
-  local args="$([[ "$OSX" == "$TRUE" ]] \
-    && printf '-e' \
-    || printf '-r')"
   alias "$1" |\
-    command -p sed "$args" 's|'"$1"'=(.*)|\1|' |\
-    command -p sed "$args" "s|'||g"
+    sed -E "s|vim='?(.*)'?|\1|"
 }
 
 

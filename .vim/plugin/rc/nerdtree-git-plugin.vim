@@ -1,4 +1,4 @@
-" nerdtree-git-plugin
+" plugin/rc/nerdtree-git-plugin
 scriptencoding utf-8
 
 
