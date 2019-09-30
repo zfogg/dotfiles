@@ -34,7 +34,7 @@ function() { # ls
       printf ' --timesort --date=relative --reverse'
       printf ' --group-dirs=first --classify' `"
   else
-    local LSPRG_PRG="`which -p gls ls | head -n1 | xargs basename`"
+    local LSPRG_PRG="`command_exists gls && echo gls || echo ls`"
     local LSPRG_ARGS='-LhHGstc'
     if [[ "$LSPRG_PRG" == 'gls' ]]; then
       LSPRG_ARGS+="`
