@@ -141,7 +141,7 @@ set viewoptions+=cursor,curdir,folds
 
 
 " {{{ Tiny aesthetic tweaks
-    set cul cuc         " A horizontal line for the cursor location.
+    set cul nocuc       " A horizontal line for the cursor location.
     set ruler           " Show the cursor position all the time.
     set scrolljump=4    " Scroll n lines at a time at bottom/top
     set scrolloff=3     " Keep n context lines above and below the cursor.

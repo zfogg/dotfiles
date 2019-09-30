@@ -97,7 +97,7 @@ func! z#constants#globals#Nodejs() abort
     if has('unix')
       let l:node_host = 'neovim-node-host'
       let l:which_prog = systemlist('which '.l:node_host)[0]
-      if v:shell_error != 0 | throw 'Z:NotFound '.l:node_host | endif
+      if v:shell_error != 0 | throw 'Z:NotFound 1 '.l:node_host | endif
       let l:host_path = fnamemodify(l:which_prog, ':p:h')
     elseif has('win32')
       " FIXME
@@ -109,7 +109,7 @@ func! z#constants#globals#Nodejs() abort
     let g:node_host_prog = l:host_path.'/'.l:node_host
   finally
     if exists('g:node_host_prog') && !filereadable(g:node_host_prog)
-      throw 'Z:NotFound neovim-node-host '.g:node_host_prog
+      throw 'Z:NotFound 2 neovim-node-host '.g:node_host_prog
       unlet g:node_host_prog
     endif
   endtry

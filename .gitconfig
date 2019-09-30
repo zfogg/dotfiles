@@ -14,8 +14,12 @@
     default = simple
 
 [color]
-    ui    = true
-    pager = false
+    diff        = auto
+    status      = auto
+    branch      = auto
+    interactive = auto
+    ui          = auto
+    pager       = true
 
 [fetch]
     prune     = true

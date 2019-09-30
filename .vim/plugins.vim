@@ -8,6 +8,10 @@ func! PIf(cond, ...) abort
     return l:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
 endfunc
 
+func! PHas(...) abort
+    return call(function('z#util#HasPlugin'), a:000)
+endfunc
+
 
 let ft = copy(z#constants#globals#Ft())
 
@@ -20,12 +24,14 @@ Plug 'junegunn/vim-plug'
     Plug 'Shougo/vimproc.vim', { 'do': 'make' }
     Plug 'rizzatti/dash.vim'
     Plug 'tpope/vim-git'
-    Plug 'tpope/vim-fugitive'
-    Plug 'airblade/vim-gitgutter'
+    Plug 'tpope/vim-fugitive', PIf(executable('git'), {})
+    "Plug 'airblade/vim-gitgutter'
+    Plug 'mhinz/vim-signify'
     Plug 'whiteinge/diffconflicts'
-    Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
-    Plug 'tmux-plugins/vim-tmux-focus-events', PIf(executable('tmux') && !empty($TMUX))
-    Plug 'christoomey/vim-tmux-navigator',     PIf(executable('tmux') && !empty($TMUX))
+
+    Plug 'tmux-plugins/vim-tmux', PIf(executable('tmux'), { 'for': 'tmux' })
+    Plug 'tmux-plugins/vim-tmux-focus-events', PIf(exists('$TMUX'))
+    Plug 'christoomey/vim-tmux-navigator',     PIf(exists('$TMUX'))
 " }}}
 
 
@@ -42,12 +48,14 @@ Plug 'junegunn/vim-plug'
 
     "Plug 'easymotion/vim-easymotion'
 
+    Plug 'ryanoasis/vim-devicons'
     " nerdtree
     Plug 'scrooloose/nerdtree'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
-    Plug 'taiansu/nerdtree-ag'
-    Plug 'jistr/vim-nerdtree-tabs'
-    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    Plug 'jistr/vim-nerdtree-tabs',     PIf(PHas('nerdtree'), {})
+    Plug 'taiansu/nerdtree-ag',         PIf(PHas('nerdtree') && executable('ag'), {})
+    Plug 'Xuyuanp/nerdtree-git-plugin', PIf(PHas('nerdtree') && executable('git'), {})
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight', PIf(
+                \PHas('nerdtree') && PHas('vim-devicons'), {})
 
     " sessions
     Plug 'xolox/vim-misc'
@@ -63,15 +71,16 @@ Plug 'junegunn/vim-plug'
         \ 'do':     'bash install.sh',
     \ })
     Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
+
     " deoplete
     "Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))
-    Plug 'Shougo/deoplete.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
-    Plug 'zchee/deoplete-zsh',  {'for': ['zsh']}
-    Plug 'zchee/deoplete-go',   {'for': ['go'], 'do': 'make'}
-    Plug 'zchee/deoplete-jedi', PIf(has('python3'), {'for': ft['py']})
-    Plug 'zchee/deoplete-clang', PIf(has('unix'), {'for': ft['cx'], })
-    Plug 'carlitux/deoplete-ternjs', {'for': ft['js'], }
-    Plug 'fszymanski/deoplete-emoji', PIf(has('mac'))
+    Plug 'Shougo/deoplete.nvim',      PIf(has('nvim'),                              {'do': ':UpdateRemotePlugins'})
+    Plug 'zchee/deoplete-zsh',        PIf(PHas('deoplete.nvim'),                    {'for': ['zsh']})
+    Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
+    Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
+    Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
+    Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
+    Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
 
     Plug 'racer-rust/vim-racer', { 'for': ['rust'], }
 
@@ -80,11 +89,11 @@ Plug 'junegunn/vim-plug'
     Plug 'Shougo/context_filetype.vim'
     Plug 'Shougo/neco-syntax'
     Plug 'Shougo/neco-vim',     {'for': ['vim']}
-    Plug 'eagletmt/neco-ghc',  {'for' : ['haskell'], }
+    Plug 'eagletmt/neco-ghc',  {'for' : ['haskell']}
 
     " snippets
-    Plug 'Shougo/neosnippet', PIf(has('nvim'))
-    Plug 'Shougo/neosnippet-snippets', PIf(has('nvim'))
+    "Plug 'Shougo/neosnippet', PIf(has('nvim'))
+    "Plug 'Shougo/neosnippet-snippets', PIf(has('nvim') && PHas('neosnippet'))
 
     " etc
     Plug 'ervandew/supertab'
@@ -129,9 +138,6 @@ Plug 'junegunn/vim-plug'
     " clang
     Plug 'libclang-vim/libclang-vim', {'for': ft['cx']}
     Plug 'justmao945/vim-clang',      {'for': ft['cx']}
-    Plug 'kana/vim-textobj-user'
-    Plug 'libclang-vim/vim-textobj-clang', {'for': ft['cx']}
-    "Plug 'libclang-vim/vim-textobj-function-clang', {'for': ft['cx']}
 
     Plug 'kchmck/vim-coffee-script', {'for': ['coffee']}
     Plug 'tweekmonster/braceless.vim',
@@ -159,10 +165,11 @@ Plug 'junegunn/vim-plug'
     Plug 'arakashic/chromatica.nvim', { 'for': ft['cx']  }
     "Plug 'qstrahl/vim-matchmaker'
     "Plug 'machakann/vim-highlightedyank', { 'on': '<Plug>(highlightedyank)' }
-    Plug 'ryanoasis/vim-devicons'
-    Plug 'haya14busa/incsearch.vim'
-    Plug 'haya14busa/incsearch-easymotion.vim'
-    Plug 'haya14busa/incsearch-fuzzy.vim'
+
+    Plug 'haya14busa/incsearch.vim',            PIf(v:true, {})
+    Plug 'haya14busa/incsearch-easymotion.vim', PIf(PHas('incsearch.vim'), {})
+    Plug 'haya14busa/incsearch-fuzzy.vim',      PIf(PHas('incsearch.vim'), {})
+
     Plug 'haya14busa/vim-keeppad'
 " }}}
 
@@ -187,14 +194,16 @@ Plug 'junegunn/vim-plug'
     Plug 'kana/vim-textobj-function'
     Plug 'thinca/vim-textobj-between'
     Plug 'glts/vim-textobj-comment'
-    Plug 'gilligan/textobj-gitgutter'
     Plug 'saaguero/vim-textobj-pastedtext'
     Plug 'paulhybryant/vim-textobj-path'
     Plug 'beloglazov/vim-textobj-quotes'
     Plug 'saihoooooooo/vim-textobj-space'
     Plug 'jceb/vim-textobj-uri'
     Plug 'Julian/vim-textobj-variable-segment'
-    " //textobj
+    Plug 'libclang-vim/vim-textobj-clang', {'for': ft['cx']}
+    "Plug 'libclang-vim/vim-textobj-function-clang', {'for': ft['cx']}
+    "Plug 'gilligan/textobj-gitgutter', PIf(PHas('vim-gitgutter') && PHas('vim-textobj-user'), {})
+
     Plug 'bruno-/vim-space'
     Plug 'Konfekt/FastFold'
     Plug 'Konfekt/FoldText'

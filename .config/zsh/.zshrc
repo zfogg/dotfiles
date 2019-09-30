@@ -38,23 +38,18 @@ for dump in "$ZDOTDIR"/.zcompdump(N.mh+24); do
 done
 compinit -C
 # completions, listings }}}
-
-# aliases, functions
-source "$HOME/.aliases"
 # $ZDOTDIR/z/ }}}
-
 
 
 # terminfo, iTerm2 integration {{{
 function() {
-  local dot_ti=~/.terminfo/"$TERM".ti
-  if [[ ! -f "$dot_ti" ]]; then
-    #infocmp "$TERM" \
-      #| sed 's/kbs=^[hH]/kbs=\\177/' \
-      #> "$dot_ti"
-    infocmp "$TERM" > "$dot_ti"
+  if [[ -v TERM ]]; then
+    local dot_ti=~/.terminfo/"$TERM".ti
+    [[ ! -f "$dot_ti" ]] && \
+      infocmp "$TERM" > "$dot_ti"
+    [[ -f "$dot_ti" ]] && \
+      tic "$dot_ti" 2>/dev/null
   fi
-  tic "$dot_ti" 2>/dev/null
 }
 
 if [[ "${OSX:-0}" == "${TRUE:-1}" && -v ITERM_SESSION_ID ]]; then
@@ -63,7 +58,7 @@ if [[ "${OSX:-0}" == "${TRUE:-1}" && -v ITERM_SESSION_ID ]]; then
     if [ -f "$iterm2_integration" ]; then
       source "$iterm2_integration"
       # INFO: github.com/garabik/grc
-      source "${BREW}/etc/grc.bashrc"
+      source $BREW/etc/grc.bashrc
     fi
   }
 fi
@@ -79,8 +74,8 @@ fi
   #eval "$(direnv hook zsh)"
 #fi
 
-command_exists z || [ -f "${BREW}/etc/profile.d/z.sh" ] \
-    && source "${BREW}/etc/profile.d/z.sh"
+command_exists z && [ -f "$BREW/etc/profile.d/z.sh" ] \
+    && source "$BREW/etc/profile.d/z.sh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 command_exists fzf \
@@ -91,7 +86,7 @@ command_exists fzf \
 function() {
   # grep, rg
   if command_exists rg; then
-    export RIPGREP_CONFIG_PATH="${HOME}/.ripgreprc"
+    export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
     local RG_PRG='rg'
     local GREPPRG_PRG="$RG_PRG"
     local GREPPRG_ARGS="$RG_ARGS"
@@ -111,14 +106,29 @@ function() {
   && -v GREPPRG_ARGS ]] \
       && export GREPPRG="${GREPPRG_PRG}${GREPPRG_ARGS}" \
       || export GREPPRG="${GREPPRG:-command -p grep}"
+
+  export GENCOMPL_FPATH="${HOME}/.zsh/complete"
+  if [[ -d "$GENCOMPL_FPATH" ]]; then
+    source ~/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
+  else
+    unset GENCOMPL_FPATH
+  fi
 }
 
-export GENCOMPL_FPATH="${HOME}/.zsh/complete"
-if [[ -d "$GENCOMPL_FPATH" ]]; then
-  source ~/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
-else
-  unset GENCOMPL_FPATH
-fi
+
+# node, npm, nvm {{{
+function nvmRC() {
+  unset -f "$1"
+  unset npm_config_prefix
+  export NVM_DIR=~/.nvm
+  [[ -s "$NVM_DIR/nvm.sh" && ! -v NVM_CD_FLAGS ]] \
+    && source "$NVM_DIR/nvm.sh" 
+}
+function node() { nvmRC node; node "$@"; }
+function npm()  { nvmRC npm;  npm  "$@"; }
+function nvm()  { nvmRC nvm;  nvm  "$@"; }
+# node, npm, nvm }}}
+
 # plugins }}}
 
 
@@ -139,6 +149,10 @@ if [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
 fi
 # }}}
 
+
+# aliases, functions {{{
+source "$HOME/.aliases"
+# }}}
 
 # zsh startup debug (BOTTOM of ~/.zshrc) {{{
 #   https://kev.inburke.com/kevin/profiling-zsh-startup-time
