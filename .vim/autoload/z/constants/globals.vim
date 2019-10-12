@@ -2,7 +2,7 @@
 scriptencoding utf-8
 
 
-func! z#constants#globals#Ft() abort
+func! z#constants#globals#Ft()
   let g:zft = {
       \'py':     ['python', 'python3'],
       \'js':     ['javascript', 'javascript.jsx'],
@@ -26,7 +26,7 @@ func! z#constants#globals#Ft() abort
   return g:zft
 endfunc
 
-func! z#constants#globals#ConfigPaths() abort
+func! z#constants#globals#ConfigPaths()
     " g:mvvar =~# escape('s:\i+(_(l|f|r))?', '+()|?')
         " g:myvar_l  (l)ocal path basename
         " g:myvar_f  (f)ully resolved links (expanded vars)
@@ -52,7 +52,7 @@ func! z#constants#globals#ConfigPaths() abort
 endfunc
 
 
-func! z#constants#globals#Python() abort
+func! z#constants#globals#Python()
   if has('win32')
     let l:py3_prog = 'python3.exe'
     let l:py3_root = $USERPROFILE.'/scoop/shims'
@@ -80,12 +80,12 @@ func! z#constants#globals#Python() abort
 endfunc
 
 
-func! z#constants#globals#Nodejs() abort
+func! z#constants#globals#Nodejs()
   try
     if has('unix')
       let l:node_host = 'neovim-node-host'
       let l:which_prog = systemlist('which '.l:node_host)[0]
-      if v:shell_error != 0 | throw 'Z:NotFound 1 '.l:node_host | endif
+      if v:shell_error != 0 | echom 'Z:NotFound 1 '.l:node_host | endif
       let l:host_path = fnamemodify(l:which_prog, ':p:h')
     elseif has('win32')
       " FIXME
@@ -97,19 +97,19 @@ func! z#constants#globals#Nodejs() abort
     let g:node_host_prog = l:host_path.'/'.l:node_host
   finally
     if exists('g:node_host_prog') && !filereadable(g:node_host_prog)
-      throw 'Z:NotFound 2 neovim-node-host '.g:node_host_prog
+      echom 'Z:NotFound 2 neovim-node-host '.g:node_host_prog
       unlet g:node_host_prog
     endif
   endtry
 endfunc
 
 
-func! z#constants#globals#Ruby() abort
+func! z#constants#globals#Ruby()
   try
     if has('unix')
       let l:ruby_host = 'neovim-ruby-host'
       let l:which_prog = systemlist('which '.l:ruby_host)[0]
-      if v:shell_error != 0 | throw 'Z:NotFound '.l:ruby_host | endif
+      if v:shell_error != 0 | echom 'Z:NotFound '.l:ruby_host | endif
       let l:host_path = fnamemodify(l:which_prog, ':p:h')
     elseif has('win32')
       let l:ruby_host = 'neovim-ruby-host.bat'
@@ -118,21 +118,21 @@ func! z#constants#globals#Ruby() abort
     let g:ruby_host_prog = l:host_path.'/'.l:ruby_host
   finally
     if exists('g:ruby_host_prog') && !filereadable(g:ruby_host_prog)
-      throw 'Z:NotFound neovim-ruby-host'.g:ruby_host_prog
+      echom 'Z:NotFound neovim-ruby-host'.g:ruby_host_prog
       unlet g:ruby_host_prog
     endif
   endtry
 endfunc
 
 
-func! z#constants#globals#Rustc_path() abort
+func! z#constants#globals#Rustc_path()
   if executable('rustup')
     let s:rustc_path = system('rustup which rustc | xargs printf')
   else
     let s:rustc_path = exepath('rustc')
   endif
   if !executable(s:rustc_path)
-    throw 'Z:NotFound rustup|rustc - '.s:rustc_path
+    echom 'Z:NotFound rustup|rustc - '.s:rustc_path
   endif
   return s:rustc_path
 endfunc

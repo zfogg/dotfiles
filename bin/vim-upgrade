@@ -59,7 +59,6 @@ function() { # Ruby, Gem
 }
 
 
-
 function() { # Golang
     local goget_reqs=(
         github.com/nsf/gocode

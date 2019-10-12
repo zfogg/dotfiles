@@ -7,9 +7,14 @@ scriptencoding utf-8
 "   NEOVIM: >= 0.4
 
 
-call z#rc#Init()
+try
+    call z#rc#Init()
+catch
+    echom 'z#rc#Init() error :/'
+    echom v:errmsg
+finally
+    runtime plugins.vim
+    packloadall
+endtry
 
-runtime plugins.vim
-
-packloadall
 silent! helptags ALL

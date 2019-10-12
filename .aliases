@@ -86,9 +86,16 @@ alias zless='$PAGER'
 
 alias htop='htop -u $USER'
 
-alias   rg="${GREPPRG}"      ; compdef   rg="${GREPPRG}"
-alias  rgg="${GREPPRG} -C=0" ; compdef  rgg="${GREPPRG}"
-alias grep="${GREPPRG} -C=0" ; compdef grep="${GREPPRG}"
+_grep_prg=$(echo "${GREPPRG:-grep}" | cut -d' ' -f1)
+if command_exists rg; then
+  alias   rg="$_grep_prg"      ; compdef   rg="$_grep_prg"
+  alias  rgg="$_grep_prg -C=0" ; compdef  rgg="$_grep_prg"
+  #alias grep="$_grep_prg -C=0" ; compdef grep="$_grep_prg"
+else
+  alias   rg="$_grep_prg"      ; compdef   rg="$_grep_prg"
+  alias  rgg="$_grep_prg"      ; compdef  rgg="$_grep_prg"
+  #alias grep="$_grep_prg"      ; compdef grep="$_grep_prg"
+fi
 
 # pip2 install pygments
 #alias pcat='pygmentize -O style=monokai -f 256 -g'
