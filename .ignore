@@ -1,0 +1,15 @@
+/.cabal/
+/.cargo/
+/.ccache/
+/.gem/
+/.nix-defexpr/
+/.nix-profile/
+/.now/
+/.npm/
+/.nvm/
+/.pyenv/
+/.rbenv/
+/.rustup/
+/.terminfo/
+/.stack/
+/Pictures/

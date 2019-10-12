@@ -47,12 +47,19 @@ set viewoptions+=cursor,curdir,folds
     set wildignore+=*.tar,*.bz,*.gz,*.xz,*.zip,*.7z,*.rar
     set wildignore+=*/.git/*,*/node_modules/*
     set wildignore+=*.swc,*.swc.old
+    set wildignore+=*.DS_Store
     set wildignore+=*~,~*
 
-    setglobal pumheight=8
-    setglobal complete-=i
-    setglobal completeopt=menu,menuone,preview,noinsert,noselect
-    setglobal conceallevel=1 concealcursor=nvic
+    set wildoptions=pum
+
+    set pumheight=12
+    set pumblend=35
+
+    set complete-=i
+    set complete-=t
+    "set completeopt=menu,menuone,preview,noinsert,noselect
+    set completeopt=menu,menuone,preview,noinsert,noselect
+    set conceallevel=1 concealcursor=nvic
 
     let s:vim_data_dirs = {}
     let s:editor_name = fnamemodify($VIM, ':t')
@@ -96,11 +103,11 @@ set viewoptions+=cursor,curdir,folds
     set backspace=indent,eol,start " Allow backspacing over autoindent, EOL, and BOL.
     set autoindent                 " Always set autoindenting on.
     "set lazyredraw                 " For better macro performance.
-    set ttimeoutlen=35             " Time (ms) for a key code sequence to complete.
+    set ttimeoutlen=10             " Time (ms) for a key code sequence to complete.
     augroup RcSettings_timeoutlen
         au!
         " The time (ms) for a mapped sequence to complete.
-        autocmd InsertEnter * set timeoutlen=200
+        autocmd InsertEnter * set timeoutlen=300
         autocmd InsertLeave * set timeoutlen=700
     augroup END
 " }}} Moving around and editing
@@ -140,13 +147,28 @@ set viewoptions+=cursor,curdir,folds
 " }}} 'cpoptions'
 
 
+" {{{ 'formatoptions'
+    "   default: "tcqj"
+    "   mine: "cjlnqrwo"
+    set formatoptions+=c  " Autowrap comments using textwidth - :help fo-table
+    set formatoptions+=j  " Delete comment character when joining commented lines
+    set formatoptions+=l  " do not wrap lines that have been longer when starting insert mode already
+    set formatoptions+=n  " Recognize numbered lists
+    set formatoptions+=q  " Allow formatting of comments with "gq"
+    set formatoptions+=r  " Insert comment leader after hitting <Enter>
+    set formatoptions+=w  " A whitespace line ending indicates a continued paragraph.
+    set formatoptions-=t  " Don't wrap text using textwidth
+    set formatoptions+=o  " Insert the current comment leader 'o' or 'O' in Normal mode.
+" }}} 'formatoptions'
+
+
 " {{{ Tiny aesthetic tweaks
     set cul nocuc       " A horizontal line for the cursor location.
     set ruler           " Show the cursor position all the time.
     set scrolljump=4    " Scroll n lines at a time at bottom/top
-    set scrolloff=3     " Keep n context lines above and below the cursor.
-    set sidescrolloff=4 " FIXME
-    set sidescroll=2    " FIXME
+    set scrolloff=4     " Keep n context lines above and below the cursor.
+    set sidescroll=1    " FIXME
+    set sidescrolloff=8 " FIXME
     set showmatch       " Briefly jump to a paren once it's balanced.
     set list            " Visually display tabs and trailing whitespace.
     set listchars=
@@ -169,7 +191,7 @@ set viewoptions+=cursor,curdir,folds
     set preserveindent
     set tabstop=2       " <Tab> inserts n spaces.
     set softtabstop=2   " <BS> over an autoindent deletes both spaces.
-    set shiftwidth=2    " An indent level is n spaces.
+    set shiftwidth=0    " An indent level is n spaces.
     set shiftround      " Rounds indent to a multiple of shiftwidth.
     set nowrap          " Don't wrap text.
     set linebreak       " Don't wrap textin the middle of a word.
@@ -183,7 +205,7 @@ set viewoptions+=cursor,curdir,folds
     set foldenable
     set foldmethod=syntax
     set foldopen+=percent,quickfix,tag,undo
-    set foldnestmax=2
+    set foldnestmax=3
     set foldminlines=3
 
     "let g:vimsyn_folding='afp'
@@ -207,7 +229,7 @@ set viewoptions+=cursor,curdir,folds
 
 
 " shortmess {{{
-    " NOTE: default  ->  set shortmess=filnxtToO
+    " NOTE: Vim default "filnxtToOF"
     "set shortmess=aOstTI " :help 'shortmess'
     set shm+=a  " shortcut for shm+=ailmnrwx
     set shm-=O
@@ -270,7 +292,7 @@ set viewoptions+=cursor,curdir,folds
     set iskeyword+=@,48-57,_,192-255
 
     if executable('rg')
-        let &grepprg    = 'rg --vimgrep --context=0'
+        let &grepprg    = '/usr/bin/env rg -H --vimgrep --context=0'
         let &grepformat = '%f:%l:%c:%m'
     else
         let &grepprg = 'grep --color=never -e --exclude-dir .git -nrI $* . /dev/null'
@@ -280,7 +302,7 @@ set viewoptions+=cursor,curdir,folds
 
 " {{{ Syntax
     syntax sync minlines=16 maxlines=512 linebreaks=1
-    set synmaxcol=220
+    set synmaxcol=700
 " }}} Syntax
 
 

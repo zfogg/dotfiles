@@ -2,80 +2,105 @@
 # vim: set fdm=marker:
 
 
-typeset -U path
-typeset -U fpath
-typeset -U manpath
+# {{{ Typeset: path | fpath | manpath | classpath | infopath
+  # NOTE: these typesets need to appear first
+  typeset -U path
+  typeset -U fpath
+  typeset -U manpath
 
-typeset -aU classpath
-typeset -xT CLASSPATH classpath
-typeset -aU infopath
-typeset -xT INFOPATH infopath
+  typeset -aU classpath
+  typeset -xT CLASSPATH classpath
+  typeset -aU infopath
+  typeset -xT INFOPATH infopath
+# }}}
 
-if [[ "$OSX" == "$TRUE" ]]; then
+
+function() { # BEFORE platform-specific paths
   path=(
-    ~/bin
-    ~/.local/bin
-    ~/.{cargo,gem}/bin
-    #~/.cabal/bin
-    #~/.platformio/penv/bin
-    $PYENV_ROOT/{bin,shims}
-    {$GOPATH,$GOROOT}/bin
-    $BREW/MacGPG2/bin
-    $BREW/opt/fzf/bin
-    $BREW/{sbin,bin}
-    "$path[@]"
-    #$(/usr/bin/getconf PATH | /usr/bin/tr ':' '\n' | /usr/bin/tail -r)
-  )
-
-else
-  path=(
-    ~/bin
-    ~/.local/bin
-    ~/.{cabal,cargo,gem}/bin
-    $PYENV_ROOT/shims
-    $GOPATH/bin
-    $GOROOT/bin
     "$path[@]")
-fi
 
-fpath_rm=('/usr/local/share/zsh/site-functions')
+  fpath=(
+    /usr/share/zsh/site-functions
+    "$fpath[@]")
 
-fpath=(
-  $HOME/.zsh/{site-functions,complete}
-  $BREW/share/zsh/{site-functions,functions}
-  ${fpath[@]/$fpath_rm})
+  manpath=(
+    /usr/share/man
+    "$manpath[@]")
 
-manpath=(
-  /usr/share/man
-  "$manpath[@]")
+  infopath=(
+    /usr/share/info
+    "$infopath[@]")
+}
 
-#if [[ "$OSX" == "$TRUE" ]]; then
-  #path=(
-    #$BREW/opt/coreutils/libexec/gnubin
-    #$BREW/opt/findutils/libexec/gnubin
-    #$BREW/opt/gnu-tar/libexec/gnubin
-    #$BREW/opt/ccache/libexec
-    #$BREW/MacGPG2/bin
-    #"$path[@]"
-  #)
 
-  ##fpath=(
-  ##  $fpath
-  ##)
+function () { # platform-specific paths
+  if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+    path=(
+      $BREW/opt/fzf/bin
+      $BREW/{sbin,bin}
+      "$path[@]"
+      $(getconf PATH | command -p tr ':' '\n' | command -p tail -r))
 
-  #manpath=(
-    ##${BREW}/Cellar/*/*/{share/man,libexec/gnuman}
-    #${BREW}/share/man
-    #$manpath
-  #)
+    fpath=(
+      $BREW/share/zsh/{site-functions,functions}
+      "$fpath[@]")
 
-  #infopath=(
-    #$infopath
-  #)
-#fi
+    manpath=(
+      $BREW/share/man
+      "$manpath[@]")
 
-#export PATH
-#export MANPATH
-#export FPATH
-#export CLASSPATH
-#export INFOPATH
+    infopath=(
+      $BREW/share/info
+      "$infopath[@]")
+
+  elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
+    #path=(
+      #"$path[@]")
+
+    #fpath=(
+      #"$fpath[@]")
+
+    #manpath=(
+      #"$manpath[@]")
+
+    #infopath=(
+      #"$infopath[@]")
+  fi
+}
+
+
+function() { # AFTER platform-specific paths
+  path=(
+    $HOME/bin
+    $HOME/.local/bin
+    $HOME/.{cabal,cargo,gem}/bin
+    # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
+    #$PYENV_ROOT/{bin,shims}
+    {$GOPATH,$GOROOT}/bin
+    "$path[@]")
+
+  fpath=(
+    $HOME/.zsh/{site-functions,complete}
+    "$fpath[@]")
+
+  manpath=(
+    $HOME/.nix-profile/share/man
+    $XDG_DATA_HOME/man
+    "$manpath[@]")
+
+  infopath=(
+    $HOME/.nix-profile/share/man
+    $XDG_DATA_HOME/info
+    "$infopath[@]")
+}
+
+
+# {{{ Export: PATH | FPATH | MANPATH | CLASSPATH | INFOPATH
+  # FIXME: do i even need these exports?
+  #export PATH
+  #export FPATH
+  #export MANPATH
+  #export CLASSPATH
+  #export INFOPATH
+# }}}
+
