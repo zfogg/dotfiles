@@ -55,37 +55,26 @@ endfunc
 func! z#constants#globals#Python() abort
   if has('win32')
     let l:py3_prog = 'python3.exe'
-    let l:py2_prog = 'python2.exe'
     let l:py3_root = $USERPROFILE.'/scoop/shims'
-    let l:py2_root = $USERPROFILE.'/scoop/shims'
   elseif has('unix')
     let l:py3_prog = 'python3'
-    let l:py2_prog = 'python'
     if exists('$PYENV_ROOT')
-      let l:py3_root = $PYENV_ROOT.'/versions/neovim3/bin'
-      let l:py2_root = $PYENV_ROOT.'/versions/neovim2/bin'
+      let l:py3_root = $PYENV_ROOT.'/versions/neovim/bin'
     elseif exists('$BREW')
       let l:py3_root = $BREW.'/bin'
-      let l:py2_root = $BREW.'/bin'
     endif
   endif
   try
     let g:python3_host_prog = l:py3_root.'/'.l:py3_prog
-    let g:python_host_prog  = l:py2_root.'/'.l:py2_prog
   catch /^Vim(\a\+):E121:/
-    echoerr 'Z:NotFound l:py(2|3)_root | l:py(2|3)_prog'
+    echoerr 'Z:NotFound l:py3_root | l:py3_prog'
     if !filereadable(g:python3_host_prog)
       echoerr 'Z:NotFound python3-host-prog '.g:python3_host_prog
       unlet g:python3_host_prog
     endif
-    if !filereadable(g:python_host_prog)
-      echoerr 'Z:NotFound python-host-prog '.g:python_host_prog
-      unlet g:python_host_prog
-    endif
   finally
     if has('win32')
       let g:python3_host_prog = fnamemodify(g:python3_host_prog, ':r')
-      let g:python_host_prog  = fnamemodify(g:python_host_prog,  ':r')
     endif
   endtry
 endfunc
