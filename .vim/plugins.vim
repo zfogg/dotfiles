@@ -97,7 +97,7 @@ Plug 'junegunn/vim-plug'
 
     " etc
     Plug 'ervandew/supertab'
-    Plug 'tpope/vim-rsi'
+    Plug 'tpope/vim-rsi', PIf(v:false)
     Plug 'MarcWeber/vim-addon-local-vimrc'
 " }}}
 

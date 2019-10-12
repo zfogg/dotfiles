@@ -2,11 +2,15 @@
 --max-columns=150
 --max-columns-preview
 
+#--column
+
 #--follow
 --hidden
 --pretty
 
 --smart-case
+
+--max-depth=6
 
 --before-context=1
 --after-context=1

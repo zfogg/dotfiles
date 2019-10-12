@@ -12,6 +12,15 @@ alias   v="$EDITOR"
     && alias python3="python3.6.2" \
     || alias python3="python3.7.4"
 
+function aliasof() {
+  local a1=$(alias "$1")
+  [[ $a1 == "" ]] && return 1
+  echo "$a1" | \grep -qo "^${1}='.*'"
+  [[ $? == "0" ]] \
+    && echo "$a1" | \sed -E "s|^${1}='(.+)'$|\1|" \
+    || echo "$a1" | \sed -E "s|^${1}=(.+)$|\1|"
+}
+
 alias    zshrc='$EDITOR $ZDOTDIR/.zshrc'
 alias   zshenv='$EDITOR $ZDOTDIR/.zshenv'
 alias   zlogin='$EDITOR $ZDOTDIR/.zlogin'
@@ -25,26 +34,37 @@ fi
 alias ql='quick-look'
 
 function() { # ls
+  local  LSPRG_PRG='ls'
+  local LSPRG_ARGS=' -LhHGstc'
+
+  if command_exists gls; then
+    #local LSPRG_PRG="`which -p gls ls | head -n1 | xargs basename`"
+    #if [[ "$LSPRG_PRG" == 'gls' ]]; then echo 'has gls'; fi
+    local GLSPRG_PRG='gls'
+    local GLSPRG_ARGS="`
+      printf ' -LhHGstc'
+      printf ' --color=auto'
+      printf ' --group-directories-first'
+      printf ' --quoting-style=shell-always' `"
+    alias gls="${GLSPRG_PRG} ${GLSPRG_ARGS}"
+    LSPRG_PRG="$GLSPRG_PRG"
+    LSPRG_ARGS="$GLSPRG_ARGS"
+  fi
+
   if command_exists lsd; then
     alias lsd >/dev/null && unalias lsd
-    local LSPRG_PRG='lsd'
-    local LSPRG_ARGS="`
+    local LSDPRG_PRG='lsd'
+    local LSDPRG_ARGS="`
       printf ' --blocks=date,size,user,name'
       printf ' --human-readable --size=short'
       printf ' --timesort --date=relative --reverse'
       printf ' --group-dirs=first --classify' `"
-  else
-    local LSPRG_PRG="`which -p gls ls | head -n1 | xargs basename`"
-    local LSPRG_ARGS='-LhHGstc'
-    if [[ "$LSPRG_PRG" == 'gls' ]]; then
-      LSPRG_ARGS+="`
-        printf ' --color=auto'
-        printf ' --group-directories-first'
-        printf ' --quoting-style=shell-always' `"
-    fi
+    alias lsd="${LSDPRG_PRG} ${LSDPRG_ARGS}"
+    LSPRG_PRG="$LSDPRG_PRG"
+    LSPRG_ARGS="$LSDPRG_ARGS"
   fi
 
-  alias ls="${LSPRG_PRG} ${LSPRG_ARGS}"
+  alias ls='\'"${LSPRG_PRG} ${LSPRG_ARGS}"
   alias  l='ls -1'
   alias ll='ls -1l'
   alias la='nowrap ls -1lA'
@@ -95,6 +115,18 @@ function pyeve() { eval "`~/bin/pyeve ${1:-';'}`" }
 #alias chgrp='command -p chgrp'
 
 
+alias info='command -p info --vi-keys'
+
+function ifs-reset() {
+  local _ifs_default=$'\ \t\n\0'
+  if [[ ! $IFS = $_ifs_default ]]; then
+    printf '👴🏽 _old_ IFS=%q\n' "$IFS"
+    IFS=$_ifs_default
+    printf '👶🏽 ~new~ IFS=%q\n' "$IFS"
+  fi
+  echo '✅ IFS reset!'
+}
+
 # shell output line wrapping
 alias wrapoff='tput rmam'
 alias  wrapon='tput smam'
@@ -129,7 +161,18 @@ elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
     alias get='ghq get -u -p --shallow "`xclip -out`"; echo'
 fi
 
-alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public" -L 5'
+function tree() {
+  #-D -c \
+  /usr/bin/env tree \
+    --du \
+    --filelimit 512 \
+    --prune \
+    -F -L 4 \
+    -h \
+    -I "node_modules|bower_components|vendor|bundle|target|build|public|.git" \
+    "$@"
+}
+#alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git" -L 5'
 
 alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
@@ -164,13 +207,13 @@ function mktempf() {
 }
 
 function ppvar() {
-    tempf=`mktempf`
+    local tempf=`mktempf`
     exec 3>&2 2>$tempf
-    var_name=`echo "${1:-PATH}" | tr -d '$'`
-    echoer "$0"' - pretty print shell env vars'
+    local var_name=`echo "${1:-PATH}" | tr -d '$'`
+    echoer "$0"' - pretty print env vars'
     echoer $'\tvar name\t-> '"$var_name"''
-    plines=$(eval echo \${$var_name} | trnl "${2:-':'}")
-    echoer $'\titem count\t-> '"$(echo "$plines" | wc -l)"
+    local plines=$(eval echo \${$var_name} | trnl "${2:-':'}")
+    echoer $'\titem count\t-> '"$(echo "$plines" | wc -l | xargs)"
     echo "$plines"
     exec 2>&3 3>&-
     xargs -0 printf '\n%s\n' >&2 < $tempf
@@ -179,12 +222,6 @@ function ppvar() {
 
 function npm-do {
     (PATH=$(npm bin):$PATH; eval $@;)
-}
-
-
-function aliasof() {
-  alias "$1" |\
-    sed -E "s|vim='?(.*)'?|\1|"
 }
 
 

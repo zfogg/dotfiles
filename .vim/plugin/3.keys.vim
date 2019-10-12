@@ -1,8 +1,8 @@
-" rc/keys
+" rc/3.keys
 scriptencoding utf-8
 
 
-let g:mapleader=','
+let mapleader = ','
 
 
 inoremap <C-c> <Esc>
@@ -13,27 +13,28 @@ noremap ; :
 "noremap ;; ;
 
 " Don't jump cursor when using * to search for word under cursor
-nnoremap * *``
-"nnoremap # #``
+noremap * *``
+"noremap # #``
 
 " Reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
 
 " Opposite of J. Split line at current point.
-nnoremap <M-j> i<CR><Esc>d^==kg_lD
+"nnoremap <M-j> i<CR><Esc>d^==kg_lD
+noremap <A-S-j> a<CR><Esc>k$
 
 " Keep cursor in centre of screen after motions
-nnoremap n nzz
-nnoremap <C-d> <C-d>zz
-"nnoremap <C-u> <C-u>zz
-nnoremap { {zz
-nnoremap } }zz
-"nnoremap gd gdzz
+noremap n nzz
+noremap <C-d> <C-d>zz
+noremap <C-u> <C-u>zz
+noremap { {zz
+noremap } }zz
+noremap gd gdzz
 
 " write
 nnoremap <Leader>w :w<CR>
-nnoremap <Leader>W :sil! w<CR>
+"nnoremap <Leader>W :sil! w<CR>
 cnoremap w! w !sudo tee % >/dev/null
 
 " quit
@@ -48,9 +49,10 @@ if exists('g:myvimrc_f') && filereadable(g:myvimrc_f)
         \.'<CR>'
     exe 'nn <silent> <Leader>V :'
         \.'so '.g:myvimrc_f                    .' <Bar> '
+        \.'redraw!'                            .' <Bar> '
+        \.'echom "⚠️  vimrc reloaded ‼️"'         .' <Bar> '
         \.'<CR>'
 endif
-
 " Disabled default commands. {{{
     nnoremap Q       <Nop>
     noremap  <Up>    <Nop>
@@ -63,23 +65,32 @@ endif
     inoremap <Right> <Nop>
 " }}}
 
+
 " Yanking and pasting. {{{
+    " Easily yank from cursor to EOL.
+    noremap Y y$
+
     " Copy to system clipboard.
     noremap <Leader>y "+y
+    " Copy short filename to system clipboard.
+    nnoremap <Leader>y% :let @*=expand("%")<Bar>echo getreg('*')<CR>
+    " Copy full filepath to system clipboard.
+    nnoremap <Leader>Y% :let @*=expand("%:p")<Bar>echo getreg('*')<CR>
+
     " Paste from system clipboard.
     noremap <Leader>p "+p
-    " Easily yank from cursor to EOL.
-    nnoremap Y y$
+
     " Retain " register after pasting.
     xnoremap <expr> p v:register=='"'?'pgvy':'p'
 " }}}
+
 
 " Cursor motion. {{{
     call z#keys#Tmux()
 
     " j and k just work on long wrapped lines.
-    nnoremap j gj
-    nnoremap k gk
+    noremap j gj
+    noremap k gk
 
     " Scroll through items in the locations list.
     nmap <Leader>< <Plug>LocationPrevious
@@ -87,15 +98,23 @@ endif
 
     " A 'scrolling' effect.
     " FIXME: doesn't really work with in my iTerm+tmux setup.
-    " nnoremap <a-j> <c-e>j
-    " nnoremap <a-k> <c-y>k
-    " nnoremap <a-l> zll
-    " nnoremap <a-h> zhh
+    noremap <a-j> <c-e>j
+    noremap <a-k> <c-y>k
+    noremap <a-l> zll
+    noremap <a-h> zhh
 
+
+    " join lines: next to this
     inoremap JJ <C-o>J<C-o>==
+
+    " join lines: this to prev
     inoremap KK <C-o>k<C-o>J<C-o>==
+
+    " undo changes since InsertEnter
     inoremap uu <C-o>u
+
     "inoremap <C-r><C-r> <C-o><C-r>
+
 
     " think of your left pinky
     inoremap jj <Esc>
@@ -103,10 +122,10 @@ endif
     cnoremap kk <Up>
     cnoremap jj <Down>
 
-    inoremap HH <Home>
-    inoremap LL <End>
-    cnoremap HH <Home>
-    cnoremap LL <End>
+    inoremap hH <Home>
+    inoremap lL <End>
+    cnoremap hH <Home>
+    cnoremap lL <End>
 
     noremap  <PageUp>    <S-h>zz<S-l>
     inoremap <PageUp>    <C-o>zt
@@ -175,4 +194,8 @@ endif
     if exists('&inccommand')
         set inccommand=nosplit
     endif
+" }}}
+
+
+" files - search, sort, find, open {{{
 " }}}

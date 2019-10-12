@@ -7,9 +7,10 @@ trap 'bin-abort' ERR
 
 function() { # Python, Pyenv, pip
     eval "$(pyenv init -)" #; eval "$(pyenv virtualenv-init -)"
-    local pip_reqs="${PYENV_ROOT}/neovim-packages"
+    local pip_reqs="$PYENV_ROOT/neovim-packages"
 
-    for py_v in 2 3; do
+    #for py_v in 2 3; do
+    for py_v in 3; do
         pyenv activate "neovim${py_v}"
         pip install -U wheel setuptools
         pip install -U pip

@@ -1,4 +1,4 @@
-" nerdtree
+" plugin/rc/nerdtree
 scriptencoding utf-8
 
 

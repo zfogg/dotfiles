@@ -53,7 +53,6 @@ endfunc
 
 
 func! z#constants#globals#Python() abort
-  let g:loaded_python_provider = 0
   if has('win32')
     let l:py3_prog = 'python3.exe'
     let l:py2_prog = 'python2.exe'

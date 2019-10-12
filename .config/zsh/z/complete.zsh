@@ -48,7 +48,7 @@ zstyle ':completion:*'               list-separator    ' → '
 zstyle ':completion:*:default'       list-prompt       '%s%m matches%s'
 zstyle ':completion:*:*:*:*:*'       menu              'select'
 zstyle ':completion:*'               file-sort         modification
-zstyle ':completion:*'               ignore-parents    parent pwd ..
+zstyle ':completion:*'               ignore-parents    parent pwd
 zstyle ':completion:*'               squeeze-slashes   true
 
 zstyle ':completion::*:(ls|cd):*'    list-dirs-first   true
@@ -70,9 +70,11 @@ zstyle ':completion::*:(rm|kill|diff):*' ignore-line       true
 zstyle ':completion::approximate*:*'     prefix-needed     false
 zstyle ':omz:plugins:ssh-agent'          agent-forwarding  on
 
-zstyle ':completion:*:*:cd:*'                 tag-order \
-  'local-directories directory-stack path-directories'
-zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*:cd:*' tag-order \
+  local-directories directory-stack path-directories
+zstyle ':completion:*:directory-stack' list-colors \
+  '=(#b) #([0-9]#)*( *)==95=38;5;12'
 
 zstyle ':completion:*'              group-order \
   builtins expansions aliases functions commands globbed-files \
@@ -101,7 +103,8 @@ zstyle ':completion:*:*:kill:*' force-list always
 zstyle ':completion:*:*:kill:*' insert-ids single
 
 # formats
-zstyle ':completion:*:*:*:*:*'      menu             yes select
+#zstyle ':completion:*:*:*:*:*'      menu             yes select
+zstyle ':completion:*:*:*:*:*'      menu             select
 zstyle ':completion:*:matches'      group            'yes'
 zstyle ':completion:*:options'      description      'yes'
 zstyle ':completion:*:options'      auto-description '%d'
