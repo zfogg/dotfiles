@@ -866,6 +866,16 @@
 	<dict>
 		<key>installed</key>
 		<dict>
+			<key>http://kapeli.com/feeds/Python_3.xml</key>
+			<dict>
+				<key>date</key>
+				<date>2019-10-13T22:01:47Z</date>
+			</dict>
+			<key>http://kapeli.com/feeds/Rust.xml</key>
+			<dict>
+				<key>date</key>
+				<date>2019-10-13T22:02:36Z</date>
+			</dict>
 			<key>http://kapeli.com/feeds/Vim.xml</key>
 			<dict>
 				<key>date</key>
@@ -1039,11 +1049,6 @@
 				<key>date</key>
 				<date>2019-09-15T23:15:38Z</date>
 			</dict>
-			<key>http://kapeli.com/feeds/Python_3.xml</key>
-			<dict>
-				<key>date</key>
-				<date>2019-09-15T23:15:39Z</date>
-			</dict>
 			<key>http://kapeli.com/feeds/React.xml</key>
 			<dict>
 				<key>date</key>
@@ -1063,11 +1068,6 @@
 			<dict>
 				<key>date</key>
 				<date>2017-11-20T05:00:45Z</date>
-			</dict>
-			<key>http://kapeli.com/feeds/Rust.xml</key>
-			<dict>
-				<key>date</key>
-				<date>2019-09-15T23:15:42Z</date>
 			</dict>
 			<key>http://kapeli.com/feeds/SaltStack.xml</key>
 			<dict>
