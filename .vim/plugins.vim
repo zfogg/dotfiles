@@ -66,10 +66,17 @@ Plug 'junegunn/vim-plug'
     Plug 'jaawerth/nrun.vim'
 
     " completion
-    Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
-        \ 'branch': 'next',
-        \ 'do':     'bash install.sh',
-    \ })
+    if has('unix')
+        Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+            \ 'branch': 'next',
+            \ 'do':     'bash install.sh',
+        \ })
+    elseif has('win32')
+        Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+            \ 'branch': 'next',
+            \ 'do':     'powershell -executionpolicy bypass -File install.ps1',
+        \ })
+    endif
     Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
 
     " deoplete
