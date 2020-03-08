@@ -130,6 +130,8 @@ Plug 'junegunn/vim-plug'
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
     Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
+    Plug 'yuezk/vim-js',                  {'for': ft['js']}
+    Plug 'maxmellon/vim-jsx-pretty',      {'for': ft['js']}
     Plug 'Wolfy87/vim-syntax-expand'
     Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
     Plug 'othree/jspc.vim',               {'for': ft['js']}
@@ -159,6 +161,7 @@ Plug 'junegunn/vim-plug'
     Plug 'darfink/vim-plist'
 
     Plug 'PProvost/vim-ps1'
+    Plug 'LnL7/vim-nix'
 " }}}
 
 
@@ -185,7 +188,7 @@ Plug 'junegunn/vim-plug'
     Plug 'b4winckler/vim-angry'
     Plug 'tommcdo/vim-exchange'
     "Plug 'cohama/lexima.vim'
-    "Plug 'Raimondi/delimitMate'
+    Plug 'Raimondi/delimitMate'
     Plug 'jiangmiao/auto-pairs'
     Plug 'scrooloose/nerdcommenter'
     Plug 'wellle/targets.vim'
@@ -235,6 +238,7 @@ Plug 'junegunn/vim-plug'
     Plug 'pbrisbin/vim-mkdir'
     Plug 'AndrewRadev/switch.vim'
     Plug 'vim-utils/vim-vertical-move'
+    Plug 'tpope/vim-unimpaired'
 " }}}
 
 

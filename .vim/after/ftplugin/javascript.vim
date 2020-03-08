@@ -1,4 +1,4 @@
-" ftplugin/javascript
+" after/ftplugin/javascript
 scriptencoding utf-8
 
 
