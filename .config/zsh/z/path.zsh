@@ -84,12 +84,10 @@ function() { # AFTER platform-specific paths
     "$fpath[@]")
 
   manpath=(
-    $HOME/.nix-profile/share/man
     $XDG_DATA_HOME/man
     "$manpath[@]")
 
   infopath=(
-    $HOME/.nix-profile/share/man
     $XDG_DATA_HOME/info
     "$infopath[@]")
 }

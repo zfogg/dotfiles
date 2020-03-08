@@ -5,7 +5,8 @@
         "shared-node-browser": true
     },
     "extends": [
-        "eslint:recommended"
+        "eslint:recommended",
+        "plugin:react/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -24,6 +25,13 @@
             "vars": "all",
             "args": "after-used",
             "ignoreRestSiblings": false
-        }]
-    }
+        }],
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error",
+        "react/react-in-jsx-scope": 0,
+        "react/display-name": 0
+    },
+    "plugins": [
+        "react"
+    ]
 }

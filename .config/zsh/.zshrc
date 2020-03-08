@@ -129,6 +129,7 @@ function npm()  { nvmRC npm;  npm  "$@"; }
 function nvm()  { nvmRC nvm;  nvm  "$@"; }
 # node, npm, nvm }}}
 
+source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 # plugins }}}
 
 
