@@ -43,14 +43,14 @@ Plug 'junegunn/vim-plug'
         "exe "Plug '".s:fzfd."', PIf(executable('fzf'))"
     "elseif has('unix') || has('win32')
     if has('unix') || has('win32')
-        Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
+        Plug 'junegunn/fzf', PIf(executable('fzf'), { 'do': { -> fzf#install() } })
     endif
 
     "Plug 'easymotion/vim-easymotion'
 
     Plug 'ryanoasis/vim-devicons'
     " nerdtree
-    Plug 'scrooloose/nerdtree'
+    Plug 'scrooloose/nerdtree',         { 'on': ['NERDTreeToggle', 'NERDTreeCWD', ], }
     Plug 'jistr/vim-nerdtree-tabs',     PIf(PHas('nerdtree'), {})
     Plug 'taiansu/nerdtree-ag',         PIf(PHas('nerdtree') && executable('ag'), {})
     Plug 'Xuyuanp/nerdtree-git-plugin', PIf(PHas('nerdtree') && executable('git'), {})
