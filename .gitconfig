@@ -3,13 +3,13 @@
     name  = Zachary Fogg
 
 [core]
-    editor       = $EDITOR
+    editor       = nvim
     pager        = $PAGER
     ;pager = diff-so-fancy | less --tabs=4 -RFX
     eol          = lf
     autocrlf     = input
     excludesfile = ~/.config/git/ignore
-
+    safecrlf = false
 [push]
     default = simple
 
@@ -39,9 +39,9 @@
     prompt        = true
     keepBackup    = false
 [mergetool "vimdiff"]
-    ;cmd           = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    ;cmd           = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
     ;cmd           = nvim -f -c \"Gdiff\" \"$MERGED\"
-    cmd            = $EDITOR -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    cmd            = nvim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
     trustExitCode  = true
 
 [diff]
@@ -50,7 +50,7 @@
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
     trustExitCode = true
 [difftool "vimdiff"]
-    ;cmd = \"$EDITOR\" -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c  'set ft=git' -c '$wincmd w' -c 'wincmd J'
+    ;cmd = nvim -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c  'set ft=git' -c '$wincmd w' -c 'wincmd J'
     trustExitCode = true
 
 
