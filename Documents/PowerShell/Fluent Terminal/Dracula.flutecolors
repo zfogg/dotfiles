@@ -1,0 +1,29 @@
+{
+  "Name": "Dracula",
+  "Author": "Dracula Theme",
+  "Colors": {
+    "Foreground": "#F8F8F2",
+    "Background": "#282A36",
+    "Cursor": "#F8F8F2",
+    "CursorAccent": "#44475A",
+    "Selection": "rgba(68, 71, 90, 0.5)",
+    "SelectionForeground": null,
+    "SelectionBackground": null,
+    "Black": "#000000",
+    "Red": "#FF5555",
+    "Green": "#50FA7B",
+    "Yellow": "#F1FA8C",
+    "Blue": "#6272A4",
+    "Magenta": "#FF79C6",
+    "Cyan": "#8BE9FD",
+    "White": "#D3D7CF",
+    "BrightBlack": "#555753",
+    "BrightRed": "#FF8888",
+    "BrightGreen": "#84FBA2",
+    "BrightYellow": "#F5FBAE",
+    "BrightBlue": "#919CBF",
+    "BrightMagenta": "#FFA1D7",
+    "BrightCyan": "#ADEFFD",
+    "BrightWhite": "#EEEEEC"
+  }
+}

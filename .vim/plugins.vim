@@ -162,6 +162,7 @@ Plug 'junegunn/vim-plug'
 
     Plug 'PProvost/vim-ps1'
     Plug 'LnL7/vim-nix'
+    "Plug 'benjie/local-npm-bin.vim'
 " }}}
 
 
