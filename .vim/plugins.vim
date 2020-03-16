@@ -132,7 +132,7 @@ Plug 'junegunn/vim-plug'
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
     Plug 'yuezk/vim-js',                  {'for': ft['js']}
     Plug 'maxmellon/vim-jsx-pretty',      {'for': ft['js']}
-    Plug 'Wolfy87/vim-syntax-expand'
+    Plug 'Olical/vim-syntax-expand',      {'for': ft['js']}
     Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
     Plug 'othree/jspc.vim',               {'for': ft['js']}
     Plug 'itchyny/vim-haskell-indent',    {'for': ['haskell'] }
@@ -153,16 +153,14 @@ Plug 'junegunn/vim-plug'
         \{'for': ft['py'] + ft['jade'] + ['coffee', 'yaml', 'haml']}
     Plug 'vim-scripts/openvpn'
     "Plug 'vim-utils/vim-man'
-    Plug 'chrisbra/csv.vim',    {'for': ['csv']}
-    Plug 'cespare/vim-toml',    {'for': ['toml']}
-    Plug 'digitaltoad/vim-pug', {'for': ft['jade']}
-    Plug 'tpope/vim-afterimage', {'for': ft['image']}
+    Plug 'chrisbra/csv.vim',       {'for': ['csv']}
+    Plug 'cespare/vim-toml',       {'for': ['toml']}
+    Plug 'digitaltoad/vim-pug',    {'for': ft['jade']}
+    Plug 'tpope/vim-afterimage',   {'for': ft['image']}
     Plug 'kylef/apiblueprint.vim', {'for': ['apiblueprint']}
-    Plug 'darfink/vim-plist'
-
-    Plug 'PProvost/vim-ps1'
+    Plug 'darfink/vim-plist',      {'for': ['plist']}
+    Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
     Plug 'LnL7/vim-nix'
-    "Plug 'benjie/local-npm-bin.vim'
 " }}}
 
 

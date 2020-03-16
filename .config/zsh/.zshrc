@@ -124,12 +124,12 @@ function nvmRC() {
   [[ -s "$NVM_DIR/nvm.sh" && ! -v NVM_CD_FLAGS ]] \
     && source "$NVM_DIR/nvm.sh" 
 }
-function node() { nvmRC node; node "$@"; }
-function npm()  { nvmRC npm;  npm  "$@"; }
-function nvm()  { nvmRC nvm;  nvm  "$@"; }
+#function node() { nvmRC node; node "$@"; }
+#function npm()  { nvmRC npm;  npm  "$@"; }
+#function nvm()  { nvmRC nvm;  nvm  "$@"; }
 # node, npm, nvm }}}
 
-source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+#source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 # plugins }}}
 
 

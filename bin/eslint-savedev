@@ -9,4 +9,5 @@ npm install --save-dev \
     eslint-plugin-import \
     eslint-plugin-node \
     eslint-plugin-react \
+    eslint-plugin-jest \
     babel-eslint
