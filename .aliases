@@ -8,8 +8,12 @@ alias vim="$EDITOR"
 alias  vi="$EDITOR"
 alias   v="$EDITOR"
 
+if [[ "$OSX" == "$TRUE" ]]; then
+  alias python="python3"
+  alias    pip="pip3"
+fi
 #[[ "$OSX" == "$TRUE" ]] \
-    #&& alias python3="python3.6.9" \
+    #&& alias python="python3.6.9" \
     #|| alias python3="python3.7.4"
 
 function aliasof() {
