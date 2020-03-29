@@ -166,11 +166,17 @@ alias gcm='git checkout master'
 alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 
 
-if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
-    alias get='ghq get -u -p --shallow "`pbpaste`"; echo'
-elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
-    alias get='ghq get -u -p --shallow "`xclip -out`"; echo'
-fi
+function ghq-get() {
+  local x="$(
+    if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
+      pbpaste
+    elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
+      xclip -out
+    fi)"
+  ghq get -u -p --shallow "$x" 1>&2
+  echo "$(ghq root)/$(ghq list "$x")"
+}
+alias get='cd "$(ghq-get)"'
 
 function tree() {
   #-D -c \
