@@ -43,14 +43,14 @@ Plug 'junegunn/vim-plug'
         "exe "Plug '".s:fzfd."', PIf(executable('fzf'))"
     "elseif has('unix') || has('win32')
     if has('unix') || has('win32')
-        Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
+        Plug 'junegunn/fzf', PIf(executable('fzf'), { 'do': { -> fzf#install() } })
     endif
 
     "Plug 'easymotion/vim-easymotion'
 
     Plug 'ryanoasis/vim-devicons'
     " nerdtree
-    Plug 'scrooloose/nerdtree'
+    Plug 'scrooloose/nerdtree',         { 'on': ['NERDTreeToggle', 'NERDTreeCWD', ], }
     Plug 'jistr/vim-nerdtree-tabs',     PIf(PHas('nerdtree'), {})
     Plug 'taiansu/nerdtree-ag',         PIf(PHas('nerdtree') && executable('ag'), {})
     Plug 'Xuyuanp/nerdtree-git-plugin', PIf(PHas('nerdtree') && executable('git'), {})
@@ -66,10 +66,17 @@ Plug 'junegunn/vim-plug'
     Plug 'jaawerth/nrun.vim'
 
     " completion
-    Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
-        \ 'branch': 'next',
-        \ 'do':     'bash install.sh',
-    \ })
+    if has('unix')
+        Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+            \ 'branch': 'next',
+            \ 'do':     'bash install.sh',
+        \ })
+    elseif has('win32')
+        Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+            \ 'branch': 'next',
+            \ 'do':     'powershell -executionpolicy bypass -File install.ps1',
+        \ })
+    endif
     Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
 
     " deoplete
@@ -119,11 +126,16 @@ Plug 'junegunn/vim-plug'
     Plug 'lambdalisue/vim-pyenv',         {'for': ft['py']}
     "Plug 'python-mode/python-mode',       {'for': ft['py']}
     Plug 'gisphm/vim-gitignore'
-    Plug 'rust-lang/rust.vim', { 'for': ft['rs'] }
+    Plug 'rust-lang/rust.vim',            {'for': ft['rs']}
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
     Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
-    Plug 'Wolfy87/vim-syntax-expand'
+    Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
+    Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
+    Plug 'Quramy/tsuquyomi'
+    Plug 'yuezk/vim-js',                  {'for': ft['js']}
+    Plug 'maxmellon/vim-jsx-pretty',      {'for': ft['js']}
+    Plug 'Olical/vim-syntax-expand',      {'for': ft['js']}
     Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
     Plug 'othree/jspc.vim',               {'for': ft['js']}
     Plug 'itchyny/vim-haskell-indent',    {'for': ['haskell'] }
@@ -144,15 +156,18 @@ Plug 'junegunn/vim-plug'
         \{'for': ft['py'] + ft['jade'] + ['coffee', 'yaml', 'haml']}
     Plug 'vim-scripts/openvpn'
     "Plug 'vim-utils/vim-man'
-    Plug 'chrisbra/csv.vim',    {'for': ['csv']}
-    Plug 'cespare/vim-toml',    {'for': ['toml']}
-    Plug 'digitaltoad/vim-pug', {'for': ft['jade']}
-    Plug 'tpope/vim-afterimage', {'for': ft['image']}
+    Plug 'chrisbra/csv.vim',       {'for': ['csv']}
+    Plug 'cespare/vim-toml',       {'for': ['toml']}
+    Plug 'digitaltoad/vim-pug',    {'for': ft['jade']}
+    Plug 'tpope/vim-afterimage',   {'for': ft['image']}
     Plug 'kylef/apiblueprint.vim', {'for': ['apiblueprint']}
     Plug 'darfink/vim-plist'
 
     Plug 'PProvost/vim-ps1'
     Plug 'PotatoesMaster/i3-vim-syntax', {'for': 'i3'}
+    Plug 'darfink/vim-plist',      {'for': ['plist']}
+    Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
+    Plug 'LnL7/vim-nix'
 " }}}
 
 
@@ -179,10 +194,10 @@ Plug 'junegunn/vim-plug'
     Plug 'b4winckler/vim-angry'
     Plug 'tommcdo/vim-exchange'
     "Plug 'cohama/lexima.vim'
-    "Plug 'Raimondi/delimitMate'
+    Plug 'Raimondi/delimitMate'
     Plug 'jiangmiao/auto-pairs'
     Plug 'scrooloose/nerdcommenter'
-    Plug 'wellle/targets.vim'
+    "Plug 'wellle/targets.vim'
     Plug 'tpope/vim-surround'
 
     " textobj
@@ -229,6 +244,7 @@ Plug 'junegunn/vim-plug'
     Plug 'pbrisbin/vim-mkdir'
     Plug 'AndrewRadev/switch.vim'
     Plug 'vim-utils/vim-vertical-move'
+    Plug 'tpope/vim-unimpaired'
 " }}}
 
 
