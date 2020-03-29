@@ -17,6 +17,7 @@ endif
 set updatetime=250        " for CursorHold autocmd (milliseconds)
 let g:netrw_dirhistmax=0  " http://www.vim.org/scripts/script.php?script_id=1075
 
+let g:localvimrc_sandbox=0 " .lvimrc
 
 
 " for :mksession

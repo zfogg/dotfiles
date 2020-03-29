@@ -3,8 +3,10 @@ scriptencoding utf-8
 
 
 func! z#colors#Init() abort
-    call z#colors#Guicolors()
     call z#colors#Colorsc()
+    if exists('$TERM') && expand('$TERM') != 'rxvt-unicode-256color'
+        call z#colors#Guicolors()
+    endif
 endfunc
 
 
