@@ -2,7 +2,7 @@
 # vim: set fdm=marker:
 
 
-# {{{ Typeset: path | fpath | manpath | classpath | infopath
+# {{{ variable typesets
   # NOTE: these typesets need to appear first
   typeset -U path
   typeset -U fpath
@@ -15,7 +15,7 @@
 # }}}
 
 
-function() { # BEFORE platform-specific paths
+function() { # {{{ BEFORE platform-specifics
   path=(
     "$path[@]")
 
@@ -30,11 +30,11 @@ function() { # BEFORE platform-specific paths
   infopath=(
     /usr/share/info
     "$infopath[@]")
-}
+} # }}}
 
 
-function () { # platform-specific paths
-  if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+function () { # {{{ platform-specifics
+  if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/opt/fzf/bin
       $BREW/{sbin,bin}
@@ -53,23 +53,26 @@ function () { # platform-specific paths
       $BREW/share/info
       "$infopath[@]")
 
-  elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
-    #path=(
-      #"$path[@]")
+  elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
+    path=(
+      "$path[@]")
 
-    #fpath=(
-      #"$fpath[@]")
+    fpath=(
+      $BREW/share/zsh/{site-functions,functions}
+      "$fpath[@]")
 
-    #manpath=(
-      #"$manpath[@]")
+    manpath=(
+    $BREW/share/man
+      "$manpath[@]")
 
-    #infopath=(
-      #"$infopath[@]")
+    infopath=(
+      $BREW/share/info
+      "$infopath[@]")
   fi
-}
+} # }}}
 
 
-function() { # AFTER platform-specific paths
+function() { # {{{ AFTER platform-specifics
   path=(
     $HOME/bin
     $HOME/.local/bin
@@ -92,10 +95,10 @@ function() { # AFTER platform-specific paths
     $HOME/.nix-profile/share/man
     $XDG_DATA_HOME/info
     "$infopath[@]")
-}
+} # }}}
 
 
-# {{{ Export: PATH | FPATH | MANPATH | CLASSPATH | INFOPATH
+# {{{ variables exports
   # FIXME: do i even need these exports?
   #export PATH
   #export FPATH
