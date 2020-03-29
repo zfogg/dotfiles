@@ -161,7 +161,6 @@ Plug 'junegunn/vim-plug'
     Plug 'digitaltoad/vim-pug',    {'for': ft['jade']}
     Plug 'tpope/vim-afterimage',   {'for': ft['image']}
     Plug 'kylef/apiblueprint.vim', {'for': ['apiblueprint']}
-    Plug 'darfink/vim-plist'
 
     Plug 'PProvost/vim-ps1'
     Plug 'PotatoesMaster/i3-vim-syntax', {'for': 'i3'}
