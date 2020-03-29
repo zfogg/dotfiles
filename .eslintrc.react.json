@@ -1,0 +1,37 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2020": true,
+        "shared-node-browser": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 11,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "rules": {
+        "semi": ["warn", "never"],
+        "no-unused-vars": ["warn", {
+            "vars": "all",
+            "args": "after-used",
+            "ignoreRestSiblings": false
+        }],
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error",
+        "react/react-in-jsx-scope": 0,
+        "react/display-name": 0
+    },
+    "plugins": [
+        "react"
+    ]
+}
