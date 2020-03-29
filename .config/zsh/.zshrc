@@ -27,39 +27,30 @@ source "$ZDOTDIR/z/history.zsh"
 # ls colors, highlighting
 source "$ZDOTDIR/z/theme.zsh"
 
-# completions, complist, compinit {{{
+# completions, complist, compinit, compdef
 source "$ZDOTDIR/z/complete.zsh"
-set completion-ignore-case on
-set show-all-if-ambiguous on
-zmodload zsh/complist
-autoload -Uz +X compinit
-for dump in "$ZDOTDIR"/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
-# completions, listings }}}
 # $ZDOTDIR/z/ }}}
 
 
 # terminfo, iTerm2 integration {{{
 function() {
-  if [[ -v TERM ]]; then
-    local dot_ti=~/.terminfo/"$TERM".ti
-    [[ ! -f "$dot_ti" ]] && \
+  if [[ -v TERM && $TERM != "" ]]; then
+    local dot_ti="$HOME/.terminfo/$TERM.ti"
+    if [[ ! -f $dot_ti ]]; then
       infocmp "$TERM" > "$dot_ti"
-    [[ -f "$dot_ti" ]] && \
-      tic "$dot_ti" 2>/dev/null
+      [[ $? == 0 ]] \
+        && 2>/dev/null tic "$dot_ti" \
+        || 1>&2 echo "tic error - \$TERM='$TERM'"
+    fi
   fi
 }
 
-if [[ "${OSX:-0}" == "${TRUE:-1}" && -v ITERM_SESSION_ID ]]; then
+if [[ ${OSX:-0} == ${TRUE:-1} && -v ITERM_SESSION_ID ]]; then
   function() {
-    local iterm2_integration=~/.iterm2_shell_integration."${SHELL_NAME:t}"
-    if [ -f "$iterm2_integration" ]; then
-      source "$iterm2_integration"
-      # INFO: github.com/garabik/grc
-      source $BREW/etc/grc.bashrc
-    fi
+    local iterm2_integration="$HOME/.iterm2_shell_integration.${SHELL_NAME:t}"
+    [[ -f $iterm2_integration  ]] && source "$iterm2_integration"
+    # INFO: github.com/garabik/grc
+    [[ -f $BREW/etc/grc.bashrc ]] && source "$BREW/etc/grc.bashrc"
   }
 fi
 # }}}
@@ -74,23 +65,25 @@ fi
   #eval "$(direnv hook zsh)"
 #fi
 
-command_exists z && [ -f "$BREW/etc/profile.d/z.sh" ] \
-    && source "$BREW/etc/profile.d/z.sh"
+[[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
+  && source "$BREW/etc/profile.d/z.sh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-command_exists fzf \
-  && [ -f "/usr/share/fzf/key-bindings.zsh" ] \
-  && [ -f "/usr/share/fzf/completion.zsh" ] \
-    && source /usr/share/fzf/{key-bindings,completion}.zsh
+if command_exists fzf; then
+  function() {
+    [[ -f $HOME/.fzf.zsh ]] && source "$HOME/.fzf.zsh"
+    local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
+    find "${fzfetc[@]}" &>/dev/null \
+      && source "${fzfetc[@]}"
+  }
+fi
 
-function() {
-  # grep, rg
+function() { # grep, rg
   if command_exists rg; then
     export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
     local RG_PRG='rg'
     local GREPPRG_PRG="$RG_PRG"
     local GREPPRG_ARGS="$RG_ARGS"
-    export FZF_DEFAULT_COMMAND="${RG_PRG} --vimgrep "
+    export FZF_DEFAULT_COMMAND="$RG_PRG --vimgrep "
 
   else # INFO: "command_exists grep; then"
     local GREP_PRG='grep'
@@ -99,16 +92,15 @@ function() {
     GREP_ARGS+=' --exclude-dir={.bzr,cvs,.git,.hg,.svn,node_modules}'
     local GREPPRG_PRG="$GREP_PRG"
     local GREPPRG_ARGS=" $GREP_ARGS"
-    export FZF_DEFAULT_COMMAND="${GREP_PRG} ${GREP_ARGS} -g "
+    export FZF_DEFAULT_COMMAND="$GREP_PRG $GREP_ARGS -g "
   fi
 
-  [[ -v GREPPRG_PRG \
-  && -v GREPPRG_ARGS ]] \
-      && export GREPPRG="${GREPPRG_PRG}${GREPPRG_ARGS}" \
-      || export GREPPRG="${GREPPRG:-command -p grep}"
+  [[ -v GREPPRG_PRG && -v GREPPRG_ARGS ]] \
+    && export GREPPRG="${GREPPRG_PRG}${GREPPRG_ARGS}" \
+    || export GREPPRG="${GREPPRG:-command -p grep}"
 
-  export GENCOMPL_FPATH="${HOME}/.zsh/complete"
-  if [[ -d "$GENCOMPL_FPATH" ]]; then
+  export GENCOMPL_FPATH="$HOME/.zsh/complete"
+  if [[ -d $GENCOMPL_FPATH ]]; then
     source ~/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
   else
     unset GENCOMPL_FPATH
@@ -120,8 +112,8 @@ function() {
 function nvmRC() {
   unset -f "$1"
   unset npm_config_prefix
-  export NVM_DIR=~/.nvm
-  [[ -s "$NVM_DIR/nvm.sh" && ! -v NVM_CD_FLAGS ]] \
+  export NVM_DIR="$HOME/.nvm"
+  [[ -s $NVM_DIR/nvm.sh && ! -v NVM_CD_FLAGS ]] \
     && source "$NVM_DIR/nvm.sh" 
 }
 #function node() { nvmRC node; node "$@"; }
@@ -129,17 +121,16 @@ function nvmRC() {
 #function nvm()  { nvmRC nvm;  nvm  "$@"; }
 # node, npm, nvm }}}
 
-#source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 # plugins }}}
 
 
 # arch, pacman, paccache {{{
-if [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
+if [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
   autoload -Uz add-zsh-hook
   zshcache_time="$(date +%s%N)"
   function rehash_precmd() {
     if [[ -a /var/cache/zsh/pacman ]]; then
-      local paccache_time="$(date -r /var/cache/zsh/pacman +%s%N)"
+      local paccache_time=$(date -r /var/cache/zsh/pacman +%s%N)
       if (( zshcache_time < paccache_time )); then
         rehash
         zshcache_time="$paccache_time"
@@ -155,9 +146,10 @@ fi
 source "$HOME/.aliases"
 # }}}
 
+
 # zsh startup debug (BOTTOM of ~/.zshrc) {{{
 #   https://kev.inburke.com/kevin/profiling-zsh-startup-time
-if [[ ! -z "$SHELL_DEBUG" ]]; then
+if [[ ! -z $SHELL_DEBUG ]]; then
   unsetopt xtrace
   exec 2>&3 3>&-
 fi
