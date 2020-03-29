@@ -3,7 +3,7 @@
     name  = Zachary Fogg
 
 [core]
-    editor       = nvim
+    editor       = $EDITOR
     pager        = $PAGER
     ;pager = diff-so-fancy | less --tabs=4 -RFX
     eol          = lf
@@ -39,9 +39,9 @@
     prompt        = true
     keepBackup    = false
 [mergetool "vimdiff"]
-    ;cmd           = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    ;cmd           = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
     ;cmd           = nvim -f -c \"Gdiff\" \"$MERGED\"
-    cmd            = nvim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    cmd            = $EDITOR -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
     trustExitCode  = true
 
 [diff]
@@ -50,7 +50,7 @@
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
     trustExitCode = true
 [difftool "vimdiff"]
-    ;cmd = nvim -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c  'set ft=git' -c '$wincmd w' -c 'wincmd J'
+    ;cmd = \"$EDITOR\" -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c  'set ft=git' -c '$wincmd w' -c 'wincmd J'
     trustExitCode = true
 
 
@@ -79,8 +79,6 @@
     git fetch -v origin $1:$1; "
 
 
-[ghq]
-    root = /Users/zfogg/src
 [ghq "https://bitbucket.org/"]
     vcs = git
 

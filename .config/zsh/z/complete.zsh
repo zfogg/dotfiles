@@ -2,24 +2,41 @@
 # vim: set fdm=marker:
 
 
+
+# NOTE: run this BEFORE sourcing 3rd-party completions
+# compinit {{{
+zmodload zsh/complist
+autoload -Uz +X compinit
+for dump in "$ZDOTDIR"/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
+
+set completion-ignore-case on
+set show-all-if-ambiguous on
+
+# INFO: do NOT complete these file extensions
 fignore+=(
   .zwc
   .old
   .tmp
-  .bak
-)
+  .bak)
+# compinit }}}
 
-zstyle ':completion:*'           special-dirs  true
-zstyle ':completion:*'           accept-exact  '*(N)'
-zstyle ':completion:*'           accept-exact-dirs  true
-zstyle ':completion:*'           path-completion true
+
+# zstyle {{{
+zstyle ':completion:*'           special-dirs      true
+zstyle ':completion:*'           accept-exact      '*(N)'
+zstyle ':completion:*'           accept-exact-dirs true
+zstyle ':completion:*'           path-completion   true
+zstyle ':completion:*'           show-completer    true
+zstyle ':predict'                verbose           true
+zstyle ':completion:*'           verbose           yes
+
 zstyle ':completion:*'           use-cache on
-zstyle ':completion:*'           show-completer true
-zstyle ':completion:*'           cache-path "${ZDOTDIR:-$HOME}/.cache"
+zstyle ':completion:*'           cache-path "$ZDOTDIR/.cache"
 zstyle ':completion::complete:*' use-cache on
-zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
-zstyle ':predict'                verbose        true
-zstyle ':completion:*'           verbose        yes
+zstyle ':completion::complete:*' cache-path "$ZDOTDIR/.zcompcache"
 
 #zstyle ':completion:::::'        completer          _complete _approximate # enable approximate matches for completion
 
@@ -144,3 +161,12 @@ zstyle ':completion:*:history-words' list false
 zstyle ':completion:*:history-words' menu yes
 
 zstyle :compinstall filename "${ZDOTDIR:-~/.config/zsh}/z/complete.zsh"
+# zstyle }}}
+
+
+# 3rd-party {{{
+if command_exists fzf; then
+  kitty + complete setup zsh | source /dev/stdin
+fi
+# 3rd-party }}}
+

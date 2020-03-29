@@ -176,7 +176,6 @@ export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
 
 # python {{{
 export PIP_REQUIRE_VIRTUALENV=true
-
 #if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then;
   #source "${VIRTUAL_ENV}/bin/activate"; fi
 
@@ -216,8 +215,15 @@ export CARGO_INCREMENTAL=1
 export CARGO_BUILD_JOBS="$((${CORES:-2} - 1))"
 # }}}
 
+
 # zsh-z {{{
 export ZSHZ_NO_RESOLVE_SYMLINKS="$TRUE"
+export ZSHZ_OWNER="$USER"
+# }}}
+
+
+# zsh-z {{{
+export GHQ_ROOT="$HOME/src"
 export ZSHZ_OWNER="$USER"
 # }}}
 
