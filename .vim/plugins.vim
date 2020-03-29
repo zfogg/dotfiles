@@ -98,7 +98,7 @@ Plug 'junegunn/vim-plug'
     " etc
     Plug 'ervandew/supertab'
     Plug 'tpope/vim-rsi', PIf(v:false)
-    Plug 'MarcWeber/vim-addon-local-vimrc'
+    Plug 'embear/vim-localvimrc'
 " }}}
 
 
@@ -152,6 +152,7 @@ Plug 'junegunn/vim-plug'
     Plug 'darfink/vim-plist'
 
     Plug 'PProvost/vim-ps1'
+    Plug 'PotatoesMaster/i3-vim-syntax', {'for': 'i3'}
 " }}}
 
 
