@@ -6,6 +6,7 @@ func! z#constants#globals#Ft()
   let g:zft = {
       \'py':     ['python', 'python3'],
       \'js':     ['javascript', 'javascript.jsx'],
+      \'ts':     ['typescript', 'typescript.tsx'],
       \'cx':     ['c', 'cpp', 'objc', 'objcpp', 'ch'],
       \'jinja':  ['jinja', 'jinja.html', 'sls'],
       \'markup': ['xml', 'html', 'jinja.html'],
