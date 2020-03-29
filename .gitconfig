@@ -79,8 +79,6 @@
     git fetch -v origin $1:$1; "
 
 
-[ghq]
-    root = /Users/zfogg/src
 [ghq "https://bitbucket.org/"]
     vcs = git
 
