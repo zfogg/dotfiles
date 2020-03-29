@@ -8,9 +8,13 @@ alias vim="$EDITOR"
 alias  vi="$EDITOR"
 alias   v="$EDITOR"
 
-[[ "$OSX" == "$TRUE" ]] \
-    && alias python3="python3.6.2" \
-    || alias python3="python3.7.4"
+if [[ "$OSX" == "$TRUE" ]]; then
+  alias python="python3"
+  alias    pip="pip3"
+fi
+#[[ "$OSX" == "$TRUE" ]] \
+    #&& alias python="python3.6.9" \
+    #|| alias python3="python3.7.4"
 
 function aliasof() {
   local a1=$(alias "$1")
@@ -88,9 +92,9 @@ alias htop='htop -u $USER'
 
 _grep_prg=$(echo "${GREPPRG:-grep}" | cut -d' ' -f1)
 if command_exists rg; then
-  #alias   rg="$_grep_prg"      ; compdef  rg="$_grep_prg"
+  alias   rg="$_grep_prg"      ; compdef   rg="$_grep_prg"
   alias  rgg="$_grep_prg -C=0" ; compdef  rgg="$_grep_prg"
-  alias grep="$_grep_prg -C=0" ; compdef grep="$_grep_prg"
+  #alias grep="$_grep_prg -C=0" ; compdef grep="$_grep_prg"
 else
   alias   rg="$_grep_prg"      ; compdef   rg="$_grep_prg"
   alias  rgg="$_grep_prg"      ; compdef  rgg="$_grep_prg"

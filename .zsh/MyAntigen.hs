@@ -54,8 +54,8 @@ bundles = [
         --, (bundle "Tarrasch/zsh-autoenv")
             --{ fpathLocations = [] }
 
-        --, (bundle "lukechilds/zsh-nvm")
-            --{ fpathLocations = [] }
+        , (bundle "lukechilds/zsh-nvm")
+            { fpathLocations = [] }
     ]
 
 
