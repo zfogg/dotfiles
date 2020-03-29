@@ -1,0 +1,13 @@
+#/usr/bin/env npm
+
+
+npm install --save-dev \
+    eslint \
+    eslint-config-standard \
+    eslint-plugin-standard \
+    eslint-plugin-promise \
+    eslint-plugin-import \
+    eslint-plugin-node \
+    eslint-plugin-react \
+    eslint-plugin-jest \
+    babel-eslint
