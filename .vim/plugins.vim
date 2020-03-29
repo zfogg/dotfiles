@@ -105,7 +105,7 @@ Plug 'junegunn/vim-plug'
     " etc
     Plug 'ervandew/supertab'
     Plug 'tpope/vim-rsi', PIf(v:false)
-    Plug 'MarcWeber/vim-addon-local-vimrc'
+    Plug 'embear/vim-localvimrc'
 " }}}
 
 
@@ -161,6 +161,9 @@ Plug 'junegunn/vim-plug'
     Plug 'digitaltoad/vim-pug',    {'for': ft['jade']}
     Plug 'tpope/vim-afterimage',   {'for': ft['image']}
     Plug 'kylef/apiblueprint.vim', {'for': ['apiblueprint']}
+
+    Plug 'PProvost/vim-ps1'
+    Plug 'PotatoesMaster/i3-vim-syntax', {'for': 'i3'}
     Plug 'darfink/vim-plist',      {'for': ['plist']}
     Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
     Plug 'LnL7/vim-nix'
