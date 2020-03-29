@@ -126,10 +126,13 @@ Plug 'junegunn/vim-plug'
     Plug 'lambdalisue/vim-pyenv',         {'for': ft['py']}
     "Plug 'python-mode/python-mode',       {'for': ft['py']}
     Plug 'gisphm/vim-gitignore'
-    Plug 'rust-lang/rust.vim', { 'for': ft['rs'] }
+    Plug 'rust-lang/rust.vim',            {'for': ft['rs']}
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
     Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
+    Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
+    Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
+    Plug 'Quramy/tsuquyomi'
     Plug 'yuezk/vim-js',                  {'for': ft['js']}
     Plug 'maxmellon/vim-jsx-pretty',      {'for': ft['js']}
     Plug 'Olical/vim-syntax-expand',      {'for': ft['js']}
@@ -190,7 +193,7 @@ Plug 'junegunn/vim-plug'
     Plug 'Raimondi/delimitMate'
     Plug 'jiangmiao/auto-pairs'
     Plug 'scrooloose/nerdcommenter'
-    Plug 'wellle/targets.vim'
+    "Plug 'wellle/targets.vim'
     Plug 'tpope/vim-surround'
 
     " textobj

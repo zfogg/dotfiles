@@ -91,9 +91,13 @@ export VISUAL="$EDITOR"
 export MANPAGER="$EDITOR -c 'set ft=man' -"
 export LESS='-R'
 
-#export PAGER='nvimpager'
-export PAGER='nvim -R +AnsiEsc'
-#export PAGER='less'
+if [[ "$OSX" == "$TRUE" ]]; then
+  export PAGER='nvimpager'
+elif [[ "$LINUX" == "$TRUE" ]]; then
+  export PAGER='nvim -R +AnsiEsc'
+else
+  export PAGER='less'
+fi
 # editor, pager }}}
 
 
