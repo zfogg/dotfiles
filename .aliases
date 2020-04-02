@@ -1,20 +1,25 @@
 #!/usr/bin/env zsh -e
 #   ~/.dotfiles/.aliases
 
+autoload -Uz bin-abort ba-err echoer
 
-alias rm='trash'
-
-alias vim="$EDITOR"
-alias  vi="$EDITOR"
-alias   v="$EDITOR"
-
-if [[ "$OSX" == "$TRUE" ]]; then
-  alias python="python3"
-  alias    pip="pip3"
-fi
-#[[ "$OSX" == "$TRUE" ]] \
-    #&& alias python="python3.6.9" \
-    #|| alias python3="python3.7.4"
+function alias-compdef() {
+  local toalias=$1
+  local prog="$2"
+  local args="$3"
+  local aliasto="$prog"
+  if [[ $# = 3 ]]; then
+    alias   $toalias="$aliasto $args"
+    compdef $toalias="$aliasto"
+  elif [[ $# = 2 ]]; then
+    alias   $toalias="$aliasto"
+    compdef $toalias="$aliasto"
+  else
+    ba-err 12 '' "\$${0:t}" 'bad arguments'
+    echoer 'wrong number of args'
+    echoer 'you need three alias, statement, statement_args'
+  fi
+}
 
 function aliasof() {
   local a1=$(alias "$1")
@@ -25,17 +30,32 @@ function aliasof() {
     || echo "$a1" | \sed -E "s|^${1}=(.+)$|\1|"
 }
 
-alias    zshrc='$EDITOR $ZDOTDIR/.zshrc'
-alias   zshenv='$EDITOR $ZDOTDIR/.zshenv'
-alias   zlogin='$EDITOR $ZDOTDIR/.zlogin'
-alias zprofile='$EDITOR $ZDOTDIR/.zprofile'
-alias    vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
+
+alias rm='trash'
+
+alias-compdef vim "$EDITOR"
+alias-compdef  vi "$EDITOR"
+alias-compdef   v "$EDITOR"
+
+if [[ "$OSX" == "$TRUE" ]]; then
+  alias-compdef python python3
+  alias-compdef    pip pip3
+fi
+#[[ "$OSX" == "$TRUE" ]] \
+    #&& alias python="python3.6.9" \
+    #|| alias python3="python3.7.4"
+
+alias-compdef    zshrc "$EDITOR" "$ZDOTDIR/.zshrc"
+alias-compdef   zshenv "$EDITOR" "$ZDOTDIR/.zshenv"
+alias-compdef   zlogin "$EDITOR" "$ZDOTDIR/.zlogin"
+alias-compdef zprofile "$EDITOR" "$ZDOTDIR/.zprofile"
+alias-compdef    vimrc "$EDITOR" "${DOTFILES:-$HOME}/.vim/vimrc"
 
 if command_exists zshz; then
   compdef _zshz z=zshz
 fi
 
-alias ql='quick-look'
+#alias-compdef ql 'quick-look'
 
 function() { # ls
   local  LSPRG_PRG='ls'
@@ -50,83 +70,78 @@ function() { # ls
       printf ' --color=auto'
       printf ' --group-directories-first'
       printf ' --quoting-style=shell-always' `"
-    alias gls="${GLSPRG_PRG} ${GLSPRG_ARGS}"
+    alias-compdef gls "$GLSPRG_PRG" "$GLSPRG_ARGS"
     LSPRG_PRG="$GLSPRG_PRG"
     LSPRG_ARGS="$GLSPRG_ARGS"
   fi
 
   if command_exists lsd; then
-    alias lsd >/dev/null && unalias lsd
+    unalias lsd 2>/dev/null
     local LSDPRG_PRG='lsd'
     local LSDPRG_ARGS="`
-      printf ' --blocks=date,size,user,name'
-      printf ' --human-readable --size=short'
-      printf ' --timesort --date=relative --reverse'
-      printf ' --group-dirs=first --classify' `"
+    printf ' --blocks=date,size,user,name'
+    printf ' --human-readable --size=short'
+    printf ' --timesort --date=relative --reverse'
+    printf ' --group-dirs=first --classify' `"
     alias lsd="${LSDPRG_PRG} ${LSDPRG_ARGS}"
     LSPRG_PRG="$LSDPRG_PRG"
     LSPRG_ARGS="$LSDPRG_ARGS"
   fi
 
-  alias ls='\'"${LSPRG_PRG} ${LSPRG_ARGS}"
-  alias  l='ls -1'
-  alias ll='ls -1l'
-  alias la='nowrap ls -1lA'
-  alias lt='ls -1Al --tree --depth=2'
+  alias ls="\\$LSPRG_PRG $LSPRG_ARGS"
+  alias-compdef l   'gls'         '-1'
+  alias-compdef ll  'gls'         '-1l'
+  alias la='nowrap   gls'; compdef la=ls
+  alias-compdef lt  'gls'         '-1Al --tree --depth=2'
 }
 
-alias sudo='nocorrect sudo -E '
+alias   sudo='nocorrect sudo -E '
+compdef sudo=sudo
 
-alias   s='sudo'
-compdef s=sudo
+alias-compdef   s 'sudo'
 
-alias llog='command -p log'
+alias-compdef llog 'command' '-p log'
 
-alias ..='cd ..'
-alias ...='cd ../..'
+alias-compdef .. 'cd' '..'
+alias-compdef ... 'cd' '../..'
 
-alias less='$PAGER'
-alias zless='$PAGER'
+#alias-compdef less  "$PAGER"
+#alias-compdef zless "$PAGER"
 
-alias htop='htop -u $USER'
+alias-compdef htop 'htop' '-u $USER'
 
 _grep_prg=$(echo "${GREPPRG:-grep}" | cut -d' ' -f1)
 if command_exists rg; then
-  alias   rg="$_grep_prg"      ; compdef   rg="$_grep_prg"
-  alias  rgg="$_grep_prg -C=0" ; compdef  rgg="$_grep_prg"
-  #alias grep="$_grep_prg -C=0" ; compdef grep="$_grep_prg"
-else
-  alias   rg="$_grep_prg"      ; compdef   rg="$_grep_prg"
-  alias  rgg="$_grep_prg"      ; compdef  rgg="$_grep_prg"
-  #alias grep="$_grep_prg"      ; compdef grep="$_grep_prg"
+  alias-compdef    rg "$_grep_prg"
+  alias-compdef   rgc "$_grep_prg" "-C=0"
+  alias-compdef   rgf "$_grep_prg" "--files | rg"
+  alias-compdef   rgg "$_grep_prg" "--glob"
+  alias-compdef  grep "$_grep_prg"
 fi
 
 # pip2 install pygments
 #alias pcat='pygmentize -O style=monokai -f 256 -g'
-alias pcat='pygmentize -O style=base16-default-dark -f 256 -g'
-alias c='pcat'
-compdef pcat=pygmentize
-compdef    c=pygmentize
-
+alias-compdef pcat 'pygmentize' '-O style=base16-default-dark -f 256 -g'
+alias-compdef c 'pcat'
 
 [[ "$OSX" == "$TRUE" ]] \
-  && alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q' \
-  || alias     ping='ping    -c 3'
+  && alias-compdef ping 'ping' '-C -c 3 -i 0.2 -W 5000 -t 5 -Q' \
+  || alias-compdef ping 'ping' '-c 3'
 
-alias fs='du -shL'
+alias-compdef fs 'du' '-shL'
 
-alias idea='$EDITOR ~/Dropbox/ideas.md'
+alias-compdef idea "$EDITOR" '~/Dropbox/ideas.md'
 
 alias colortest='~/.config/base16-shell/colortest'
 
 function pyeve() { eval "`~/bin/pyeve ${1:-';'}`" }
 
-#alias chmod='command -p chmod'
-#alias chown='command -p chown'
-#alias chgrp='command -p chgrp'
+#alias-compdef chmod 'command' '-p chmod'
+#alias-compdef chown 'command' '-p chown'
+#alias-compdef chgrp 'command' '-p chgrp'
 
 
-alias info='command -p info --vi-keys'
+alias-compdef info 'command' '-p info --vi-keys'
 
 function ifs-reset() {
   local _ifs_default=$'\ \t\n\0'
@@ -139,8 +154,8 @@ function ifs-reset() {
 }
 
 # shell output line wrapping
-alias wrapoff='tput rmam'
-alias  wrapon='tput smam'
+alias-compdef wrapoff 'tput' 'rmam'
+alias-compdef  wrapon 'tput' 'smam'
 function nowrap() {
   [ -t 1 ] && tput rmam
   "$@"; local ret="$?"
@@ -151,17 +166,17 @@ alias nowrap='nowrap '
 
 
 # git
-alias gc='git commit'
-alias gca='git commit -a'
-alias  gd='git diff'
-alias gdd='git diff --color-words'
-alias gl='git log'
-alias gp='git push'
-alias grv='git remote -v'
-alias gst='git status'
-alias ga='git add'
-alias gco='git checkout'
-alias gcm='git checkout master'
+alias-compdef gc  'git'  'commit'
+alias-compdef gca 'git' 'commit -a'
+alias-compdef  gd 'git' 'diff'
+alias-compdef gdd 'git' 'diff --color-words'
+alias-compdef gl  'git'  'log'
+alias-compdef gp  'git'  'push'
+alias-compdef grv 'git' 'remote -v'
+alias-compdef gst 'git' 'status'
+alias-compdef ga  'git'  'add'
+alias-compdef gco 'git' 'checkout'
+alias-compdef gcm 'git' 'checkout master'
 
 alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 
