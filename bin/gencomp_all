@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh -e
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+for p in $path; do command -p ls $p; done |\
+  uniq |\
+  { while read c; do gencomp $c; done }
