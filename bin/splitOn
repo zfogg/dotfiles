@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh -e
+#!/usr/bin/env zsh
 
 
 [[ $# -eq 1 ]] && sed "s/$1/\n/g"

@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh -e
+#!/usr/bin/env zsh
 
 
 source ~/.zsh/functions/bin-abort
