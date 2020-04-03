@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env zsh -e
 
 
 autoload -Uz bin-abort ba-err echoer

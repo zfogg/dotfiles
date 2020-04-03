@@ -1,4 +1,4 @@
-"  vim-jsw
+"  vim-jsx
 scriptencoding utf-8
 
 

@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh -e
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+[ -t 1 ] && tput rmam
+"$@"; local ret="$?"
+[ -t 1 ] && tput smam
+
+
+return "$ret"

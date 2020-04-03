@@ -2,9 +2,11 @@
 --max-columns=150
 --max-columns-preview
 
+--line-number
+
 #--column
 
-#--follow
+--follow
 --hidden
 --pretty
 
@@ -12,11 +14,11 @@
 
 --max-depth=6
 
---before-context=1
---after-context=1
+#--before-context=1
+#--after-context=1
 
-#--ignore
+--ignore
 #--ignore-dot
-#--ignore-parent
-#--ignore-global
-#--ignore-vcs
+--ignore-parent
+--ignore-global
+--ignore-vcs
