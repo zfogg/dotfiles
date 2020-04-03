@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh -e
+
+
+[ -t 1 ] && tput rmam
+"$@"; local ret="$?"
+[ -t 1 ] && tput smam
+
+return "$ret"
