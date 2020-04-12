@@ -5,9 +5,9 @@ autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
 
 
-[ -t 1 ] && tput rmam
+[[ "${OSX:-0}" == "${TRUE:-1}" ]] && [ -t 1 ] && tput rmam
 "$@"; local ret="$?"
-[ -t 1 ] && tput smam
+[[ "${OSX:-0}" == "${TRUE:-1}" ]] && [ -t 1 ] && tput smam
 
 
 return "$ret"
