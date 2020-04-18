@@ -31,9 +31,9 @@ alias   zlogin='$EDITOR $ZDOTDIR/.zlogin'
 alias zprofile='$EDITOR $ZDOTDIR/.zprofile'
 alias    vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
 
-if command_exists zshz; then
-  compdef _zshz z=zshz
-fi
+#if command_exists zshz; then
+  #compdef _zshz z=zshz
+#fi
 
 alias ql='quick-look'
 

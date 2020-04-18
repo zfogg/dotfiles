@@ -57,13 +57,13 @@ fi
 
 
 # plugins {{{
-#if command_exists direnv; then
-  #export AUTOENV_DISABLED=0
-  #export AUTOENV_FILE_ENTER=.env
-  #export AUTOENV_HANDLE_LEAVE=0
-  #export AUTOENV_LOOK_UPWARDS=0
-  #eval "$(direnv hook zsh)"
-#fi
+if command_exists direnv; then
+  export AUTOENV_DISABLED=0
+  export AUTOENV_FILE_ENTER=.env
+  export AUTOENV_HANDLE_LEAVE=0
+  export AUTOENV_LOOK_UPWARDS=0
+  eval "$(direnv hook zsh)"
+fi
 
 [[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
   && source "$BREW/etc/profile.d/z.sh"
