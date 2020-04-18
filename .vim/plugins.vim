@@ -69,7 +69,7 @@ Plug 'junegunn/vim-plug'
     if has('unix')
         Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
             \ 'branch': 'next',
-            \ 'do':     'bash install.sh',
+            \ 'do':     'bash install.sh && npm install -g flow-bin',
         \ })
     elseif has('win32')
         Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
@@ -88,6 +88,12 @@ Plug 'junegunn/vim-plug'
     Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
     Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
     Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
+    Plug 'codota/tabnine-vim'
+    if has('win32') || has('win64')
+        Plug 'tbodt/deoplete-tabnine', {'do': 'powershell.exe .\install.ps1'}
+    else
+        Plug 'tbodt/deoplete-tabnine', {'do': './install.sh'}
+    endif
 
     Plug 'racer-rust/vim-racer', { 'for': ['rust'], }
 
@@ -134,18 +140,22 @@ Plug 'junegunn/vim-plug'
     Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
     Plug 'Quramy/tsuquyomi'
     Plug 'yuezk/vim-js',                  {'for': ft['js']}
+    Plug 'HerringtonDarkholme/yats.vim'
     Plug 'maxmellon/vim-jsx-pretty',      {'for': ft['js']}
     Plug 'Olical/vim-syntax-expand',      {'for': ft['js']}
     Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
     Plug 'othree/jspc.vim',               {'for': ft['js']}
     Plug 'itchyny/vim-haskell-indent',    {'for': ['haskell'] }
+    Plug 'flowtype/vim-flow',             {'for': ft['js']}
     " markdown
     Plug 'plasticboy/vim-markdown',            {'for': ['markdown']}
     Plug 'nelstrom/vim-markdown-folding', {'for': ['markdown']}
     " web
     Plug 'saltstack/salt-vim', {'for': ['sls']}
     Plug 'lepture/vim-jinja',  {'for': ft['jinja']}
-    Plug 'mattn/emmet-vim',    {'for': ft['markup'] + ft['styles']}
+    "Plug 'mattn/emmet-vim',    {'for': ft['markup'] + ft['styles'] + ['jsx', 'tsx']}
+    Plug 'mattn/emmet-vim'
+    Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ft['js'] }
 
     " clang
     Plug 'libclang-vim/libclang-vim', {'for': ft['cx']}
