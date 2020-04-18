@@ -102,8 +102,10 @@ fi
 
 
 # terminal {{{
-export TERM="xterm-256color"
-export COLORTERM="$TERM"
+if [[ -v TMUX ]]; then
+  export TERM="xterm-256color"
+  export COLORTERM="$TERM"
+fi
 if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   export TERMINAL_DOTAPP="true"
   # Correctly display UTF-8 with combining characters:
