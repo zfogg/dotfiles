@@ -1,3 +1,3 @@
 pynvim
-git+git://github.com/palantir/python-language-server@e6421d9#egg=python-language-server[all]
+python-language-server[all]
 jedi

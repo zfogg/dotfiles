@@ -102,8 +102,8 @@ fi
 
 
 # terminal {{{
-#export TERM="xterm-256color"
-#export COLORTERM="$TERM"
+export TERM="xterm-256color"
+export COLORTERM="$TERM"
 if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   export TERMINAL_DOTAPP="true"
   # Correctly display UTF-8 with combining characters:
@@ -169,6 +169,9 @@ export GO111MODULE='auto' # on | off | auto
 export NVM_DIR="${HOME}/.nvm"
 export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
 export NVM_NO_USE=true    # lukechilds/zsh-nvm
+#unset NVM_LAZY_LOAD
+#unset NVM_NO_USE
+#export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 [ -d ~/.local ] \
   && export npm_config_prefix=~/.local \
   || export npm_config_prefix=~/.npm

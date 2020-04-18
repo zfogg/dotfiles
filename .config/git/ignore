@@ -11,6 +11,7 @@ plugins/
 *.log.*
 log/
 logs/
+.nvimlog
 
 tmp/
 dist/
@@ -20,17 +21,17 @@ build/
 compile_commands.json
 Library/
 
+.vscode/
+
 *.tags*
 *.gemtags*
 *.tmp*
 *.old
 *.pdf
 
-yarn.lock
 Gemfile.lock
 composer.lock
 stack.yaml.lock
-package-lock.json
 Cargo.lock
 
 *.rustfmt
@@ -52,5 +53,14 @@ Cargo.lock
 *.zwc.old
 
 .envrc
+.nvmrc
+.lvimrc
+
+.ignore
+*.js.map
+
+*@neomake_*.*
+
+*.svg
 
 doc/tags
