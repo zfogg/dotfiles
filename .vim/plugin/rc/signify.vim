@@ -14,19 +14,19 @@ nnoremap <Leader>gg<Space>  :SignifyToggle<CR>
 nnoremap <Leader>ggl<Space> :SignifyToggleHighlight<CR>
 
 nnoremap <Leader>ggd        :SignifyDiffPreview<CR>
-nnoremap <Leader>ggD        :SignifyDiff<CR>
+nnoremap <Leader>ggD        :SignifyDiff!<CR>
 
-nmap             -          <Plug>(signify-prev-hunk):SignifyDiffPreview<CR>
-nmap             =          <Plug>(signify-next-hunk):SignifyDiffPreview<CR>
+nmap == <plug>(signify-next-hunk)
+nmap -- <plug>(signify-prev-hunk)
 
 
 aug RcPlugin__signify
     au!
-    "au ColorScheme,VimEnter * highlight link SignifyLineAdd DiffAdded
-    "au ColorScheme,VimEnter * highlight SignifyLineAdd               ctermbg=18               guibg=#282a2e gui=bold
-    "au ColorScheme,VimEnter * highlight SignifyLineChange            ctermbg=18               guibg=#28322d gui=bold,italic,underline
-    "au ColorScheme,VimEnter * highlight SignifyLineDelete ctermfg=7  ctermbg=0  guifg=#773333 guibg=#e0e0e0 gui=italic,standout
-    "au ColorScheme,VimEnter * highlight link SignifyLineDelete DiffDelete
+    au ColorScheme,VimEnter * highlight link SignifyLineAdd DiffAdded
+    au ColorScheme,VimEnter * highlight SignifyLineAdd               ctermbg=18               guibg=#282a2e gui=bold
+    au ColorScheme,VimEnter * highlight SignifyLineChange            ctermbg=18               guibg=#28322d gui=bold,italic,underline
+    au ColorScheme,VimEnter * highlight SignifyLineDelete ctermfg=7  ctermbg=0  guifg=#773333 guibg=#e0e0e0 gui=italic,standout
+    au ColorScheme,VimEnter * highlight link SignifyLineDelete DiffDelete
 
     au ColorScheme,VimEnter * highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
     au ColorScheme,VimEnter * highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
