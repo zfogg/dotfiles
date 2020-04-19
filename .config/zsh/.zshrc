@@ -148,6 +148,11 @@ source "$HOME/.aliases"
 # }}}
 
 
+export HNS_REGTEST_COINBASE="rs1qzjc9mypdp7cxvpgtcpclsxxdlf8aa24yus0tyx"
+function mine-hns() {
+  ~/src/github.com/namebasehq/full-node/scripts/mine-block.sh "${HNS_REGTEST_COINBASE}" "a" "${1}"
+}
+
 # zsh startup debug (BOTTOM of ~/.zshrc) {{{
 #   https://kev.inburke.com/kevin/profiling-zsh-startup-time
 if [[ ! -z $SHELL_DEBUG ]]; then
