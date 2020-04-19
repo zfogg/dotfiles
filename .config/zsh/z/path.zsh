@@ -7,11 +7,9 @@
   typeset -U path
   typeset -U fpath
   typeset -U manpath
-
-  typeset -aU classpath
-  typeset -xT CLASSPATH classpath
   typeset -aU infopath
   typeset -xT INFOPATH infopath
+
 # }}}
 
 
@@ -28,10 +26,8 @@ function() { # {{{ BEFORE platform-specifics
     "$manpath[@]")
 
   infopath=(
-    /usr/share/info
     "$infopath[@]")
 } # }}}
-
 
 function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
@@ -51,23 +47,32 @@ function () { # {{{ platform-specifics
 
     infopath=(
       $BREW/share/info
-      "$infopath[@]")
+      /usr/share/info
+      #"$infopath[@]"
+    )
 
   elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
     path=(
-      "$path[@]")
+      $BREW/local/{sbin,bin}
+      $BREW/{sbin,bin}
+      "$path[@]"
+      /sbin
+      /bin
+    )
 
     fpath=(
       $BREW/share/zsh/{site-functions,functions}
       "$fpath[@]")
 
     manpath=(
-    $BREW/share/man
+      $BREW/share/man
       "$manpath[@]")
 
     infopath=(
       $BREW/share/info
-      "$infopath[@]")
+      $XDG_DATA_HOME/info
+      #"$infopath[@]"
+    )
   fi
 } # }}}
 
@@ -86,14 +91,13 @@ function() { # {{{ AFTER platform-specifics
     "$fpath[@]")
 
   manpath=(
-    $HOME/.nix-profile/share/man
     $XDG_DATA_HOME/man
     "$manpath[@]")
 
-  infopath=(
-    $HOME/.nix-profile/share/man
-    $XDG_DATA_HOME/info
-    "$infopath[@]")
+  #infopath=(
+    #$XDG_DATA_HOME/info
+    #$BREW/share/info
+    #"$infopath[@]")
 } # }}}
 
 
