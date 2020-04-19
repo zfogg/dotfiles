@@ -24,6 +24,13 @@ fignore+=(
 # compinit }}}
 
 
+# 3rd-party {{{
+if command_exists fzf; then
+  kitty + complete setup zsh | source /dev/stdin
+fi
+# 3rd-party }}}
+
+
 # zstyle {{{
 zstyle ':completion:*'           special-dirs      true
 zstyle ':completion:*'           accept-exact      '*(N)'
@@ -162,11 +169,3 @@ zstyle ':completion:*:history-words' menu yes
 
 zstyle :compinstall filename "${ZDOTDIR:-~/.config/zsh}/z/complete.zsh"
 # zstyle }}}
-
-
-# 3rd-party {{{
-if command_exists fzf; then
-  kitty + complete setup zsh | source /dev/stdin
-fi
-# 3rd-party }}}
-
