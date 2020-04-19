@@ -91,9 +91,11 @@ export VISUAL="$EDITOR"
 export MANPAGER="$EDITOR -c 'set ft=man' -"
 export LESS='-R'
 
-if [[ "$OSX" == "$TRUE" ]]; then
+if command_exists nvimpager; then
   export PAGER='nvimpager'
-elif [[ "$LINUX" == "$TRUE" ]]; then
+elif command_exists page; then
+  export PAGER="page -q 90000"
+elif command_exists nvim; then
   export PAGER='nvim -R +AnsiEsc'
 else
   export PAGER='less'
@@ -103,7 +105,7 @@ fi
 
 # terminal {{{
 if [[ -v TMUX ]]; then
-  export TERM="xterm-256color"
+  export TERM="screen-256color"
 fi
 if [[ -v TERM ]]; then
   export COLORTERM="TRUECOLOR"
