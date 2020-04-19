@@ -115,6 +115,9 @@ elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
 fi
 # terminal }}}
 
+# github FIXME: encrypt this {{{
+export HOMEBREW_GITHUB_API_TOKEN='11eae108a2ef6e16e4bc9a13d189949747282dc5'
+# }}}
 
 # LC_ {{{
 export               LANG=en_US.UTF-8
