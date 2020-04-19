@@ -104,7 +104,9 @@ fi
 # terminal {{{
 if [[ -v TMUX ]]; then
   export TERM="xterm-256color"
-  export COLORTERM="$TERM"
+fi
+if [[ -v TERM ]]; then
+  export COLORTERM="TRUECOLOR"
 fi
 if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   export TERMINAL_DOTAPP="true"
