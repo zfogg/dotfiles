@@ -81,10 +81,10 @@ function() { # OS package manager
 
     # Manjaro (Arch-based)
     elif [[ -f /etc/manjaro-release ]]; then
-        local pamac_reqs=(
-            neovim-nightly)
-        for r in ${pamac_reqs};
-            echo "> pamac reinstall ${r}"
+        #local pamac_reqs=(
+            #neovim-nightly)
+        #for r in ${pamac_reqs};
+            #echo "> pamac reinstall ${r}"
             #pacman -Q "$r" || pamac reinstall "$r"
     fi
 }
