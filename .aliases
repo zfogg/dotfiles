@@ -9,8 +9,8 @@ alias  vi="$EDITOR"
 alias   v="$EDITOR"
 
 if [[ "$OSX" == "$TRUE" ]]; then
-  alias python="python3"
-  alias    pip="pip3"
+  #alias python="python3"
+  #alias    pip="pip3"
 fi
 #[[ "$OSX" == "$TRUE" ]] \
     #&& alias python="python3.6.9" \
