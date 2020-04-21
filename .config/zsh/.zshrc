@@ -83,7 +83,8 @@ function() { # grep, rg
     local RG_PRG='rg'
     local GREPPRG_PRG="$RG_PRG"
     local GREPPRG_ARGS="$RG_ARGS"
-    export FZF_DEFAULT_COMMAND="$RG_PRG --vimgrep "
+    #export FZF_DEFAULT_COMMAND="$RG_PRG"
+    export FZF_DEFAULT_OPTS="--ansi"
 
   else # INFO: "command_exists grep; then"
     local GREP_PRG='grep'

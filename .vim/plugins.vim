@@ -22,7 +22,7 @@ Plug 'junegunn/vim-plug'
 
 " integrate with other programs {{{
     Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-    Plug 'rizzatti/dash.vim'
+    "Plug 'rizzatti/dash.vim'
     Plug 'tpope/vim-git'
     Plug 'tpope/vim-fugitive', PIf(executable('git'), {})
     "Plug 'airblade/vim-gitgutter'
@@ -44,6 +44,7 @@ Plug 'junegunn/vim-plug'
     "elseif has('unix') || has('win32')
     if has('unix') || has('win32')
         Plug 'junegunn/fzf', PIf(executable('fzf'), { 'do': { -> fzf#install() } })
+        Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
     endif
 
     "Plug 'easymotion/vim-easymotion'
@@ -66,28 +67,29 @@ Plug 'junegunn/vim-plug'
     Plug 'jaawerth/nrun.vim'
 
     " completion
-    if has('unix')
-        Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
-            \ 'branch': 'next',
-            \ 'do':     'bash install.sh && npm install -g flow-bin',
-        \ })
-    elseif has('win32')
-        Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
-            \ 'branch': 'next',
-            \ 'do':     'powershell -executionpolicy bypass -File install.ps1',
-        \ })
-    endif
-    Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
+    "if has('unix')
+        "Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+            "\ 'branch': 'next',
+            "\ 'do':     'bash install.sh && npm install -g flow-bin',
+        "\ })
+    "elseif has('win32')
+        "Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+            "\ 'branch': 'next',
+            "\ 'do':     'powershell -executionpolicy bypass -File install.ps1',
+        "\ })
+    "endif
+    ""Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
 
     " deoplete
     "Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))
     Plug 'Shougo/deoplete.nvim',      PIf(has('nvim'),                              {'do': ':UpdateRemotePlugins'})
     Plug 'zchee/deoplete-zsh',        PIf(PHas('deoplete.nvim'),                    {'for': ['zsh']})
-    Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
-    Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
-    Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
+    "Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
+    "Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
+    "Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
     Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
-    Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
+    "Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
+    Plug 'wokalski/autocomplete-flow', PIf(PHas('deoplete.nvim'))
     Plug 'codota/tabnine-vim'
     if has('win32') || has('win64')
         Plug 'tbodt/deoplete-tabnine', {'do': 'powershell.exe .\install.ps1'}
@@ -119,7 +121,7 @@ Plug 'junegunn/vim-plug'
     Plug 'chr4/nginx.vim'
     Plug 'wavded/vim-stylus',             {'for': ft['stylus']}
     Plug 'lumiliet/vim-twig',             {'for': ft['twig']}
-    Plug 'joonty/vdebug',                 {'for': ft['php']}
+    "Plug 'joonty/vdebug',                 {'for': ft['php']}
     "Plug 'StanAngeloff/php.vim',          {'for': ft['php']}
     "Plug '2072/PHP-Indenting-for-VIm',    {'for': ft['php']}
     Plug 'lvht/phpfold.vim',              {'for': ft['php']}
@@ -138,13 +140,13 @@ Plug 'junegunn/vim-plug'
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
     Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
     Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
-    Plug 'Quramy/tsuquyomi'
-    Plug 'yuezk/vim-js',                  {'for': ft['js']}
-    Plug 'HerringtonDarkholme/yats.vim'
+    "Plug 'Quramy/tsuquyomi'
+    "Plug 'yuezk/vim-js',                  {'for': ft['js']}
+    "Plug 'HerringtonDarkholme/yats.vim'
     Plug 'maxmellon/vim-jsx-pretty',      {'for': ft['js']}
-    Plug 'Olical/vim-syntax-expand',      {'for': ft['js']}
-    Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
-    Plug 'othree/jspc.vim',               {'for': ft['js']}
+    "Plug 'Olical/vim-syntax-expand',      {'for': ft['js']}
+    "Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
+    "Plug 'othree/jspc.vim',               {'for': ft['js']}
     Plug 'itchyny/vim-haskell-indent',    {'for': ['haskell'] }
     Plug 'flowtype/vim-flow',             {'for': ft['js']}
     " markdown
@@ -164,7 +166,7 @@ Plug 'junegunn/vim-plug'
     Plug 'kchmck/vim-coffee-script', {'for': ['coffee']}
     Plug 'tweekmonster/braceless.vim',
         \{'for': ft['py'] + ft['jade'] + ['coffee', 'yaml', 'haml']}
-    Plug 'vim-scripts/openvpn'
+    "Plug 'vim-scripts/openvpn'
     "Plug 'vim-utils/vim-man'
     Plug 'chrisbra/csv.vim',       {'for': ['csv']}
     Plug 'cespare/vim-toml',       {'for': ['toml']}
@@ -176,7 +178,7 @@ Plug 'junegunn/vim-plug'
     Plug 'PotatoesMaster/i3-vim-syntax', {'for': 'i3'}
     Plug 'darfink/vim-plist',      {'for': ['plist']}
     Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
-    Plug 'LnL7/vim-nix'
+    "Plug 'LnL7/vim-nix'
     Plug 'alvan/vim-closetag',     {'for': ['javascript.jsx', 'typescript.tsx', 'html']}
 " }}}
 

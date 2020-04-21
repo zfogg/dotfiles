@@ -33,7 +33,7 @@ function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/opt/fzf/bin
-      $BREW/{sbin,bin}
+      $BREW/{bin,sbin}
       "$path[@]"
       $(getconf PATH | command -p tr ':' '\n'))
 
@@ -53,11 +53,11 @@ function () { # {{{ platform-specifics
 
   elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
     path=(
-      $BREW/local/{sbin,bin}
-      $BREW/{sbin,bin}
+      $BREW/local/{bin,sbin}
+      $BREW/{bin,sbin}
       "$path[@]"
-      /sbin
       /bin
+      /sbin
     )
 
     fpath=(

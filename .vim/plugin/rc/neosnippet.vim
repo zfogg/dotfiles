@@ -6,7 +6,7 @@ if !has('nvim') | finish | endif
 if !z#util#HasPlugin('neosnippet') | finish | endif
 
 
-set completeopt=menuone,noinsert,noselect
+"set completeopt=menuone,noinsert,noselect
 let g:neosnippet#enable_completed_snippet = 1
 
 

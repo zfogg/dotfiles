@@ -38,7 +38,7 @@ set viewoptions+=cursor,curdir,folds
 " {{{ wild, undo, swap, backup
     set wildmenu wildignorecase
     set wildchar=<Tab>
-    set wildmode=longest:full,full
+    set wildmode=list:longest,full
     " NOTE: 'wildignore'  (default: v:null)
     set wildignore=
     set wildignore+=*.o,*.obj,*.so,*.exe,*.dll,*.manifest,*.dmg
@@ -54,9 +54,9 @@ set viewoptions+=cursor,curdir,folds
     set pumheight=7
     set pumblend=32
 
-    set complete-=i
-    set complete-=t
-    set completeopt=menu,menuone,preview,noinsert,noselect
+    set complete+=i
+    "set complete-=t
+    set completeopt=menuone,preview,noinsert,noselect
     set conceallevel=2 concealcursor=nvic
 
     let s:vim_data_dirs = {}
