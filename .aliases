@@ -8,8 +8,12 @@ alias vim="$EDITOR"
 alias  vi="$EDITOR"
 alias   v="$EDITOR"
 
+if [[ "$OSX" == "$TRUE" ]]; then
+  #alias python="python3"
+  #alias    pip="pip3"
+fi
 #[[ "$OSX" == "$TRUE" ]] \
-    #&& alias python3="python3.6.9" \
+    #&& alias python="python3.6.9" \
     #|| alias python3="python3.7.4"
 
 function aliasof() {
@@ -27,9 +31,9 @@ alias   zlogin='$EDITOR $ZDOTDIR/.zlogin'
 alias zprofile='$EDITOR $ZDOTDIR/.zprofile'
 alias    vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
 
-if command_exists zshz; then
-  compdef _zshz z=zshz
-fi
+#if command_exists zshz; then
+  #compdef _zshz z=zshz
+#fi
 
 alias ql='quick-look'
 
@@ -74,7 +78,6 @@ function() { # ls
 alias sudo='nocorrect sudo -E '
 
 alias   s='sudo'
-compdef s=sudo
 
 alias llog='command -p log'
 
@@ -88,21 +91,17 @@ alias htop='htop -u $USER'
 
 _grep_prg=$(echo "${GREPPRG:-grep}" | cut -d' ' -f1)
 if command_exists rg; then
-  alias   rg="$_grep_prg"      ; compdef   rg="$_grep_prg"
-  alias  rgg="$_grep_prg -C=0" ; compdef  rgg="$_grep_prg"
-  #alias grep="$_grep_prg -C=0" ; compdef grep="$_grep_prg"
-else
-  alias   rg="$_grep_prg"      ; compdef   rg="$_grep_prg"
-  alias  rgg="$_grep_prg"      ; compdef  rgg="$_grep_prg"
-  #alias grep="$_grep_prg"      ; compdef grep="$_grep_prg"
+  #alias   rg="$_grep_prg"
+  alias rgc="$_grep_prg --context=1";  compdef rgc=rg
+  alias rgf="$_grep_prg --files | rg"; compdef rgf=rg
+  alias rgg="$_grep_prg --glob";       compdef rgf=rg
+  alias grep="$_grep_prg";             compdef grep=rg
 fi
 
 # pip2 install pygments
 #alias pcat='pygmentize -O style=monokai -f 256 -g'
 alias pcat='pygmentize -O style=base16-default-dark -f 256 -g'
 alias c='pcat'
-compdef pcat=pygmentize
-compdef    c=pygmentize
 
 
 [[ "$OSX" == "$TRUE" ]] \
@@ -137,12 +136,6 @@ function ifs-reset() {
 # shell output line wrapping
 alias wrapoff='tput rmam'
 alias  wrapon='tput smam'
-function nowrap() {
-  [ -t 1 ] && tput rmam
-  "$@"; local ret="$?"
-  [ -t 1 ] && tput smam
-  return "$ret"
-}
 alias nowrap='nowrap '
 
 
@@ -160,13 +153,7 @@ alias gco='git checkout'
 alias gcm='git checkout master'
 
 alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
-
-
-if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
-    alias get='ghq get -u -p --shallow "`pbpaste`"; echo'
-elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
-    alias get='ghq get -u -p --shallow "`xclip -out`"; echo'
-fi
+alias get='cd "$(ghq-get)"'
 
 function tree() {
   #-D -c \
@@ -184,52 +171,10 @@ function tree() {
 alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
 
-function echoer() {
-  printf "%s\n" "$*" >&2;
-}
-
-
-function gencomp_all() {
-  for p in $path; do command -p ls $p; done |\
-    uniq |\
-    { while read c; do gencomp $c; done }
-}
-
-
-function trnl() {
-    tr "${1:-':'}" '\n'
-}
-
-function mktempf() {
-    fpref="${DOTFILES_PACKAGE:-"$USER"_`basename $SHELL`}"
-    tempf="${fpref}.${1:-$0}.XXXX"
-    mktemp -t "${tempf}" 2>/dev/null || (
-        read -d '' errmsg<<-"EOF"
-			%s - error
-			    \$TMPDIR = "%s"
-			    \$tempf  = "%s"
-		EOF
-        echo "$0" "$TMPDIR" "$tempf" | echoer
-    )
-}
-
-function ppvar() {
-    local tempf=`mktempf`
-    exec 3>&2 2>$tempf
-    local var_name=`echo "${1:-PATH}" | tr -d '$'`
-    echoer "$0"' - pretty print env vars'
-    echoer $'\tvar name\t-> '"$var_name"''
-    local plines=$(eval echo \${$var_name} | trnl "${2:-':'}")
-    echoer $'\titem count\t-> '"$(echo "$plines" | wc -l | xargs)"
-    echo "$plines"
-    exec 2>&3 3>&-
-    xargs -0 printf '\n%s\n' >&2 < $tempf
-}
-
-
-function npm-do {
-    (PATH=$(npm bin):$PATH; eval $@;)
-}
+#function npm-do {
+  # INFO: depracated; use `npx`
+  #(PATH=$(npm bin):$PATH; eval $@;)
+#}
 
 
 # pyenv

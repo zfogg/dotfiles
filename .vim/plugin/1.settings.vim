@@ -4,7 +4,7 @@ scriptencoding utf-8
 
 
 "set nonumber numberwidth=2  " hybrid line numbers - relative & static
-set number numberwidth=2  " hybrid line numbers - relative & static
+set number numberwidth=2     " hybrid line numbers - relative & static
 set title                   " file title in the $TERM titlebar
 set showtabline=1           " show buffer tabs when more than `n`
 set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
@@ -14,9 +14,8 @@ if exists('$SHELL')
     set shell=$SHELL
 endif
 
-set updatetime=250        " for CursorHold autocmd (milliseconds)
-let g:netrw_dirhistmax=0  " http://www.vim.org/scripts/script.php?script_id=1075
-
+set updatetime=220         " for CursorHold autocmd (milliseconds)
+let g:netrw_dirhistmax=0   " http://www.vim.org/scripts/script.php?script_id=1075
 
 
 " for :mksession
@@ -39,7 +38,7 @@ set viewoptions+=cursor,curdir,folds
 " {{{ wild, undo, swap, backup
     set wildmenu wildignorecase
     set wildchar=<Tab>
-    set wildmode=longest:full,full
+    set wildmode=list:longest,full
     " NOTE: 'wildignore'  (default: v:null)
     set wildignore=
     set wildignore+=*.o,*.obj,*.so,*.exe,*.dll,*.manifest,*.dmg
@@ -52,14 +51,13 @@ set viewoptions+=cursor,curdir,folds
 
     set wildoptions=pum
 
-    set pumheight=12
-    set pumblend=35
+    set pumheight=7
+    set pumblend=32
 
-    set complete-=i
-    set complete-=t
-    "set completeopt=menu,menuone,preview,noinsert,noselect
-    set completeopt=menu,menuone,preview,noinsert,noselect
-    set conceallevel=1 concealcursor=nvic
+    set complete+=i
+    "set complete-=t
+    set completeopt=menuone,preview,noinsert,noselect
+    set conceallevel=2 concealcursor=nvic
 
     let s:vim_data_dirs = {}
     let s:editor_name = fnamemodify($VIM, ':t')
@@ -102,13 +100,13 @@ set viewoptions+=cursor,curdir,folds
     set virtualedit=all            " Let cursor move past $ in command mode.
     set backspace=indent,eol,start " Allow backspacing over autoindent, EOL, and BOL.
     set autoindent                 " Always set autoindenting on.
-    "set lazyredraw                 " For better macro performance.
-    set ttimeoutlen=10             " Time (ms) for a key code sequence to complete.
+    set lazyredraw                 " For better macro performance.
+    set ttimeoutlen=100            " Time (ms) for a key code sequence to complete.
     augroup RcSettings_timeoutlen
         au!
         " The time (ms) for a mapped sequence to complete.
-        autocmd InsertEnter * set timeoutlen=300
-        autocmd InsertLeave * set timeoutlen=700
+        autocmd InsertEnter * set timeoutlen=400
+        autocmd InsertLeave * set timeoutlen=900
     augroup END
 " }}} Moving around and editing
 
@@ -263,7 +261,7 @@ set viewoptions+=cursor,curdir,folds
     set smartindent     " Indent intelligently.
     set hlsearch        " Highlight searches by default.
     set incsearch       " Incrementally search while typing a /regex.
-    set regexpengine=0  " Auto-switch regexp engines if workload hangs.
+    set regexpengine=1  " Auto-switch regexp engines if workload hangs.
 
     " http://www.ascii-code.com/
     "         '@'       == /[a-zA-Z]/ == filter(isalpha, $ascii_arr)
@@ -278,7 +276,7 @@ set viewoptions+=cursor,curdir,folds
     " 'isfname' 'isf'  string
     "   default: @,48-57,/,.,-,_,+,,,#,$,%,~,=
     if has('unix')
-        set  isfname=@,48-57,_,#,~,$,-,/,\\,.,+,,,%,=
+        set isfname=@,48-57,_,#,~,$,-,/,\\,.,+,,,%,=
     endif
     "set isfname+=@,48-57,_,#,~,$,-,/,.,+,,,%,=
 

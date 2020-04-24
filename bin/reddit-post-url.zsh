@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh -e
+#!/usr/bin/env zsh
 
 
 readonly url="${1:-"$(pbpaste)"}"
