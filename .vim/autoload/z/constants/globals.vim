@@ -54,8 +54,8 @@ endfunc
 
 func! z#constants#globals#Python()
   if has('win32')
-    let l:py3_prog = 'python3.exe'
-    let l:py3_root = $USERPROFILE.'/scoop/shims'
+    let l:py3_prog = 'python.exe'
+    let l:py3_root = $USERPROFILE.'/scoop/apps/python/current'
   elseif has('unix')
     let l:py3_prog = 'python3'
     if exists('$PYENV_ROOT')
