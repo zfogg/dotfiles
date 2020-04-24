@@ -1,0 +1,12 @@
+# vim: filetype=sh:
+
+use_nvm() {
+  local node_version=$1
+  unset npm_config_prefix
+
+  nvm_sh=~/.nvm/nvm.sh
+  if [[ -e $nvm_sh ]]; then
+    source $nvm_sh
+    nvm use $node_version
+  fi
+}

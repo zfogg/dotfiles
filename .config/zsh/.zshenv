@@ -91,15 +91,25 @@ export VISUAL="$EDITOR"
 export MANPAGER="$EDITOR -c 'set ft=man' -"
 export LESS='-R'
 
-#export PAGER='nvimpager'
-export PAGER='nvim -R +AnsiEsc'
-#export PAGER='less'
+if command_exists nvimpager; then
+  export PAGER='nvimpager'
+elif command_exists page; then
+  export PAGER="page -q 90000"
+elif command_exists nvim; then
+  export PAGER='nvim -R +AnsiEsc'
+else
+  export PAGER='less'
+fi
 # editor, pager }}}
 
 
 # terminal {{{
-#export TERM="xterm-256color"
-#export COLORTERM="$TERM"
+if [[ -v TMUX ]]; then
+  export TERM="screen-256color"
+fi
+if [[ -v TERM ]]; then
+  export COLORTERM="TRUECOLOR"
+fi
 if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   export TERMINAL_DOTAPP="true"
   # Correctly display UTF-8 with combining characters:
@@ -109,6 +119,9 @@ elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
 fi
 # terminal }}}
 
+# github FIXME: encrypt this {{{
+export HOMEBREW_GITHUB_API_TOKEN='11eae108a2ef6e16e4bc9a13d189949747282dc5'
+# }}}
 
 # LC_ {{{
 export               LANG=en_US.UTF-8
@@ -163,6 +176,11 @@ export GO111MODULE='auto' # on | off | auto
 
 # node {{{
 export NVM_DIR="${HOME}/.nvm"
+export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
+export NVM_NO_USE=true    # lukechilds/zsh-nvm
+#unset NVM_LAZY_LOAD
+#unset NVM_NO_USE
+#export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 [ -d ~/.local ] \
   && export npm_config_prefix=~/.local \
   || export npm_config_prefix=~/.npm
@@ -171,7 +189,6 @@ export NVM_DIR="${HOME}/.nvm"
 
 # python {{{
 export PIP_REQUIRE_VIRTUALENV=true
-
 #if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then;
   #source "${VIRTUAL_ENV}/bin/activate"; fi
 
@@ -211,8 +228,15 @@ export CARGO_INCREMENTAL=1
 export CARGO_BUILD_JOBS="$((${CORES:-2} - 1))"
 # }}}
 
+
 # zsh-z {{{
 export ZSHZ_NO_RESOLVE_SYMLINKS="$TRUE"
+export ZSHZ_OWNER="$USER"
+# }}}
+
+
+# zsh-z {{{
+export GHQ_ROOT="$HOME/src"
 export ZSHZ_OWNER="$USER"
 # }}}
 

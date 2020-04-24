@@ -1,6 +1,7 @@
 " after/plugin/neomake
 scriptencoding utf-8
 
+if !has('nvim') | finish | endif
 
 "\ 'TextChanged':  {'delay': 0},
 if has('win32')
@@ -10,10 +11,10 @@ if has('win32')
   \ })
 else
   call neomake#configure#automake({
-  \ 'TextChanged':  {'delay': 200},
-  \ 'InsertLeave':  {'delay': 130},
+  \ 'TextChanged':  {'delay': 700},
+  \ 'InsertLeave':  {'delay': 1000},
   \ 'BufWritePost': {'delay': 0},
-  \ 'BufWinEnter':  {'delay': 180},
+  \ 'BufWinEnter':  {'delay': 500},
   \ })
 endif
 

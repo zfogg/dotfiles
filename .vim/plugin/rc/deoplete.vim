@@ -9,7 +9,7 @@ let g:deoplete#enable_at_startup = 1  " just work
 
 call deoplete#custom#option('smart_case', v:true)
 call deoplete#custom#option('max_list', 65)
-call deoplete#custom#option('min_pattern_length', 2)
+call deoplete#custom#option('min_pattern_length', 1)
 
 call deoplete#custom#source('_', 'max_menu_width', 93)
 

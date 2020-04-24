@@ -75,7 +75,7 @@ endif
 
 " neosnippet
 if z#util#HasPlugin('neosnippet')
-  call add(s:sources, 'neosnippet')
+  "call add(s:sources, ['neosnippet'])
 endif
 
 " NOTE: export to global at the BOTTOM

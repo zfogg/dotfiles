@@ -21,7 +21,7 @@ setopt   BANG_HIST
 unsetopt BEEP
 unsetopt CASE_GLOB
 setopt   CDABLEVARS
-setopt   COMPLETE_ALIASES
+unsetopt COMPLETE_ALIASES
 setopt   COMPLETE_IN_WORD
 setopt   EXTENDED_GLOB
 setopt   EXTENDED_HISTORY

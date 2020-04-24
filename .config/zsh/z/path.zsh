@@ -2,20 +2,18 @@
 # vim: set fdm=marker:
 
 
-# {{{ Typeset: path | fpath | manpath | classpath | infopath
+# {{{ variable typesets
   # NOTE: these typesets need to appear first
   typeset -U path
   typeset -U fpath
   typeset -U manpath
-
-  typeset -aU classpath
-  typeset -xT CLASSPATH classpath
   typeset -aU infopath
   typeset -xT INFOPATH infopath
+
 # }}}
 
 
-function() { # BEFORE platform-specific paths
+function() { # {{{ BEFORE platform-specifics
   path=(
     "$path[@]")
 
@@ -28,18 +26,16 @@ function() { # BEFORE platform-specific paths
     "$manpath[@]")
 
   infopath=(
-    /usr/share/info
     "$infopath[@]")
-}
+} # }}}
 
-
-function () { # platform-specific paths
-  if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+function () { # {{{ platform-specifics
+  if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/opt/fzf/bin
-      $BREW/{sbin,bin}
+      $BREW/{bin,sbin}
       "$path[@]"
-      $(getconf PATH | command -p tr ':' '\n' | command -p tail -r))
+      $(getconf PATH | command -p tr ':' '\n'))
 
     fpath=(
       $BREW/share/zsh/{site-functions,functions}
@@ -51,32 +47,43 @@ function () { # platform-specific paths
 
     infopath=(
       $BREW/share/info
-      "$infopath[@]")
+      /usr/share/info
+      #"$infopath[@]"
+    )
 
-  elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
-    #path=(
-      #"$path[@]")
+  elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
+    path=(
+      $BREW/local/{bin,sbin}
+      $BREW/{bin,sbin}
+      "$path[@]"
+      /bin
+      /sbin
+    )
 
-    #fpath=(
-      #"$fpath[@]")
+    fpath=(
+      $BREW/share/zsh/{site-functions,functions}
+      "$fpath[@]")
 
-    #manpath=(
-      #"$manpath[@]")
+    manpath=(
+      $BREW/share/man
+      "$manpath[@]")
 
-    #infopath=(
-      #"$infopath[@]")
+    infopath=(
+      $BREW/share/info
+      $XDG_DATA_HOME/info
+      #"$infopath[@]"
+    )
   fi
-}
+} # }}}
 
-
-function() { # AFTER platform-specific paths
+function() { # {{{ AFTER platform-specifics
   path=(
     $HOME/bin
     $HOME/.local/bin
     $HOME/.{cabal,cargo,gem}/bin
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
     #$PYENV_ROOT/{bin,shims}
-    {$GOPATH,$GOROOT}/bin
+    $GOPATH/bin
     "$path[@]")
 
   fpath=(
@@ -87,13 +94,14 @@ function() { # AFTER platform-specific paths
     $XDG_DATA_HOME/man
     "$manpath[@]")
 
-  infopath=(
-    $XDG_DATA_HOME/info
-    "$infopath[@]")
-}
+  #infopath=(
+    #$XDG_DATA_HOME/info
+    #$BREW/share/info
+    #"$infopath[@]")
+} # }}}
 
 
-# {{{ Export: PATH | FPATH | MANPATH | CLASSPATH | INFOPATH
+# {{{ variables exports
   # FIXME: do i even need these exports?
   #export PATH
   #export FPATH

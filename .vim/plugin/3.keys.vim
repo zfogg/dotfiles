@@ -93,8 +93,8 @@ endif
     noremap k gk
 
     " Scroll through items in the locations list.
-    "nmap <Leader>< <Plug>LocationPrevious
-    "nmap <Leader>> <Plug>LocationNext
+    nmap <Leader>< <Plug>LocationPrevious
+    nmap <Leader>> <Plug>LocationNext
 
     " A 'scrolling' effect.
     " FIXME: doesn't really work with in my iTerm+tmux setup.
@@ -190,6 +190,12 @@ endif
     " Change to the directory of the current buffer's file.
     nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
     nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
+
+    if z#util#HasPlugin('fzf.vim')
+        nnoremap <C-f> :Rg<Cr>
+        nnoremap <C-g> :GFiles<Cr>
+        nnoremap <C-p> :Files<Cr>
+    endif
 
     if exists('&inccommand')
         set inccommand=nosplit
