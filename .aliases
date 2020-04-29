@@ -93,9 +93,11 @@ _grep_prg=$(echo "${GREPPRG:-grep}" | cut -d' ' -f1)
 if command_exists rg; then
   #alias   rg="$_grep_prg"
   alias rgc="$_grep_prg --context=1";  compdef rgc=rg
-  alias rgf="$_grep_prg --files | rg"; compdef rgf=rg
+  alias rgf="$_grep_prg --files";      compdef rgf=rg
   alias rgg="$_grep_prg --glob";       compdef rgf=rg
   alias grep="$_grep_prg";             compdef grep=rg
+  alias rgd='rgf --hidden -0 | xargs -0 gdirname | sort | uniq | ghead -n-2'; compdef rgd=head
+  alias rgdf='(rgd; rgf) | sort'; compdef rgdf=sort
 fi
 
 # pip2 install pygments

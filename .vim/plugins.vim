@@ -84,9 +84,9 @@ Plug 'junegunn/vim-plug'
     "Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))
     Plug 'Shougo/deoplete.nvim',      PIf(has('nvim'),                              {'do': ':UpdateRemotePlugins'})
     Plug 'zchee/deoplete-zsh',        PIf(PHas('deoplete.nvim'),                    {'for': ['zsh']})
-    "Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
+    Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
     "Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
-    "Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
+    Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
     Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
     "Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
     Plug 'wokalski/autocomplete-flow', PIf(PHas('deoplete.nvim'))
@@ -104,7 +104,7 @@ Plug 'junegunn/vim-plug'
     Plug 'Shougo/context_filetype.vim'
     Plug 'Shougo/neco-syntax'
     Plug 'Shougo/neco-vim',     {'for': ['vim']}
-    Plug 'eagletmt/neco-ghc',  {'for' : ['haskell']}
+    "Plug 'eagletmt/neco-ghc',  {'for' : ['haskell']}
 
     " snippets
     "Plug 'Shougo/neosnippet', PIf(has('nvim'))

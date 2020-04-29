@@ -32,7 +32,6 @@ function() { # {{{ BEFORE platform-specifics
 function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
-      $BREW/opt/fzf/bin
       $BREW/{bin,sbin}
       "$path[@]"
       $(getconf PATH | command -p tr ':' '\n'))
@@ -85,6 +84,15 @@ function() { # {{{ AFTER platform-specifics
     #$PYENV_ROOT/{bin,shims}
     $GOPATH/bin
     "$path[@]")
+
+    if [[ -v ANDROID_HOME ]]; then
+      path=(
+        $ANDROID_HOME/emulator
+        $ANDROID_HOME/tools/bin
+        $ANDROID_HOME/platform-tools
+        $ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*([-1])}
+        "$path[@]")
+    fi
 
   fpath=(
     $HOME/.zsh/{site-functions,complete}
