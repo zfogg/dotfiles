@@ -38,7 +38,8 @@ set viewoptions+=cursor,curdir,folds
 " {{{ wild, undo, swap, backup
     set wildmenu wildignorecase
     set wildchar=<Tab>
-    set wildmode=list:longest,full
+    "set wildmode=list:longest,full
+    set wildmode=longest:full,full
     " NOTE: 'wildignore'  (default: v:null)
     set wildignore=
     set wildignore+=*.o,*.obj,*.so,*.exe,*.dll,*.manifest,*.dmg
@@ -49,14 +50,16 @@ set viewoptions+=cursor,curdir,folds
     set wildignore+=*.DS_Store
     set wildignore+=*~,~*
 
-    set wildoptions=pum
+    if has('nvim')
+        set wildoptions=pum
+        set pumheight=7
+        set pumblend=32
+    endif
 
-    set pumheight=7
-    set pumblend=32
-
-    set complete+=i
-    "set complete-=t
-    set completeopt=menuone,preview,noinsert,noselect
+    set complete-=i
+    set complete-=t
+    "set completeopt=menuone,preview,noinsert,noselect
+    set completeopt=menu,menuone,preview,noinsert,noselect
     set conceallevel=2 concealcursor=nvic
 
     let s:vim_data_dirs = {}
@@ -72,7 +75,7 @@ set viewoptions+=cursor,curdir,folds
         elseif has('win32')
             let s:dir = $LOCALAPPDATA.'/'.s:editor_name.'-data'.'/'.s:dir_path
         endif
-        if !isdirectory(s:dir) | call mkdir(s:dir) | endif
+        if !isdirectory(s:dir) | call mkdir(s:dir, "p") | endif
         let s:vim_data_dirs[s:dir_name] = s:dir
     endfor
 
@@ -141,7 +144,9 @@ set viewoptions+=cursor,curdir,folds
     set cpo-=! cpo-=$  " cpo-! cpo-$
     set cpo-=% cpo+=+  " cpo-% cpo-+
     set cpo-=> cpo+=;  " cpo-> cpo-;
-    set cpo+=_         " cpo-_
+    if has('nvim')
+        set cpo+=_     " cpo-_
+    endif
 " }}} 'cpoptions'
 
 

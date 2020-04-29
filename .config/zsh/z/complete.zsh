@@ -5,12 +5,17 @@
 
 # NOTE: run this BEFORE sourcing 3rd-party completions
 # compinit {{{
-zmodload zsh/complist
-autoload -Uz +X compinit
-for dump in "$ZDOTDIR"/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
+function() {
+  autoload -Uz compinit
+  local dump="$ZDOTDIR"/.zcompdump
+  typeset -i updated_at=$(date +'%j' -r "$dump" 2>/dev/null || stat -f '%Sm' -t '%j' "$dump" 2>/dev/null)
+  if [ $(date +'%j') != $updated_at ]; then
+    compinit -i
+  else
+    compinit -C -i
+  fi
+  zmodload -i zsh/complist
+}
 
 set completion-ignore-case on
 set show-all-if-ambiguous on

@@ -34,6 +34,8 @@ composer.lock
 stack.yaml.lock
 Cargo.lock
 
+bundle/ruby
+
 *.rustfmt
 .cargo/
 *.rs.bk

@@ -65,6 +65,10 @@ if command_exists direnv; then
   eval "$(direnv hook zsh)"
 fi
 
+if command_exists jenv; then
+  eval "$(jenv init -)"
+fi
+
 [[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
   && source "$BREW/etc/profile.d/z.sh"
 
@@ -74,6 +78,20 @@ if command_exists fzf; then
     local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
     find "${fzfetc[@]}" &>/dev/null \
       && source "${fzfetc[@]}"
+    export FZF_DEFAULT_OPTS="
+      --ansi \
+      --layout=reverse \
+      --info=inline \
+      --extended-exact \
+      --height=100% \
+      --multi \
+      --preview '(bat --color=always {} || pcat {} || tree -C {}) 2> /dev/null | head -200'"
+    #if command_exists fd; then
+      #export FZF_DEFAULT_COMMAND='fd --type f'
+    #fi
+  }
+  function vo() {
+    $EDITOR -o `rgf | fzf`
   }
 fi
 
@@ -83,8 +101,7 @@ function() { # grep, rg
     local RG_PRG='rg'
     local GREPPRG_PRG="$RG_PRG"
     local GREPPRG_ARGS="$RG_ARGS"
-    #export FZF_DEFAULT_COMMAND="$RG_PRG"
-    export FZF_DEFAULT_OPTS="--ansi"
+    export FZF_DEFAULT_COMMAND="$RG_PRG --files --ignore --hidden"
 
   else # INFO: "command_exists grep; then"
     local GREP_PRG='grep'
@@ -117,10 +134,10 @@ function nvmRC() {
   [[ -s $NVM_DIR/nvm.sh && ! -v NVM_CD_FLAGS ]] \
     && source "$NVM_DIR/nvm.sh" 
 }
-#function node() { nvmRC node; node "$@"; }
-#function npm()  { nvmRC npm;  npm  "$@"; }
-#function nvm()  { nvmRC nvm;  nvm  "$@"; }
-#function npx()  { nvmRC npx;  npx  "$@"; }
+function node() { nvmRC node; node "$@"; }
+function npm()  { nvmRC npm;  npm  "$@"; }
+function nvm()  { nvmRC nvm;  nvm  "$@"; }
+function npx()  { nvmRC npx;  npx  "$@"; }
 # node, npm, nvm }}}
 
 # plugins }}}

@@ -27,13 +27,6 @@
 # }}} zsh startup debug (TOP of ~/.zshenv)
 
 
-# note: meta helpers {{{
-command_exists() { command -v "$1" 2>/dev/null 1>&2 }
-# alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
-export DISABLE_UPDATE_PROMPT=true
-# }}}
-
-
 # $SHELL {{{
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
@@ -85,24 +78,6 @@ export SHELL_NAME="$(basename "$SHELL")"
 # $SHELL }}}
 
 
-# editor, pager {{{
-export EDITOR='nvim'
-export VISUAL="$EDITOR"
-export MANPAGER="$EDITOR -c 'set ft=man' -"
-export LESS='-R'
-
-if command_exists nvimpager; then
-  export PAGER='nvimpager'
-elif command_exists page; then
-  export PAGER="page -q 90000"
-elif command_exists nvim; then
-  export PAGER='nvim -R +AnsiEsc'
-else
-  export PAGER='less'
-fi
-# editor, pager }}}
-
-
 # terminal {{{
 if [[ -v TMUX ]]; then
   export TERM="screen-256color"
@@ -119,9 +94,11 @@ elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
 fi
 # terminal }}}
 
+
 # github FIXME: encrypt this {{{
-export HOMEBREW_GITHUB_API_TOKEN='11eae108a2ef6e16e4bc9a13d189949747282dc5'
+export HOMEBREW_GITHUB_API_TOKEN='681bb1ecc1c1fdef3060092e730211e2455212fe'
 # }}}
+
 
 # LC_ {{{
 export               LANG=en_US.UTF-8
@@ -177,10 +154,10 @@ export GO111MODULE='auto' # on | off | auto
 # node {{{
 export NVM_DIR="${HOME}/.nvm"
 export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
-export NVM_NO_USE=true    # lukechilds/zsh-nvm
+#export NVM_NO_USE=true    # lukechilds/zsh-nvm
 #unset NVM_LAZY_LOAD
 #unset NVM_NO_USE
-#export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
+export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 [ -d ~/.local ] \
   && export npm_config_prefix=~/.local \
   || export npm_config_prefix=~/.npm
@@ -211,8 +188,61 @@ export WORKON_HOME=~/.virtualenvs
 # python }}}
 
 
-# path, manpath, fpath
+# android {{{
+if [ -d ~/Library/Android/sdk ]; then
+  export ANDROID_HOME=~/Library/Android/sdk
+  export ANDROID_SDK_ROOT="$ANDROID_HOME"
+  export ANDROID_SDK_VERSION="29.0.3"
+fi
+
+function() {
+  for jbt in ant maven gradle; do
+    local jbt_home="$BREW/opt/$jbt"
+    if [[ -d $jbt_home ]]; then
+      #export "${jbt:u}"_HOME="$jbt_home"
+    fi
+  done
+}
+# android }}}
+
+
+# path, manpath, fpath {{{
 source "$ZDOTDIR/z/path.zsh"
+  # note: meta helpers {{{
+  command_exists() { command -v "$1" 2>/dev/null 1>&2 }
+  # alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
+  # }}}
+# path, manpath, fpath }}}
+
+
+# editor, pager {{{
+if command_exists nvim; then
+  export NVIM='nvim'
+  export EDITOR="$NVIM"
+elif command_exists vim; then
+  export VIM='vim'
+  export EDITOR="$VIM"
+else
+  export EDITOR='nano'
+fi
+
+if [[ -v NVIM || -v VIM ]]; then
+  export MANPAGER="$EDITOR -c 'set ft=man' -"
+fi
+
+export VISUAL="$EDITOR"
+export LESS='-R'
+
+if command_exists nvimpager; then
+  export PAGER='nvimpager'
+elif command_exists page; then
+  export PAGER="page -q 90000"
+elif command_exists nvim; then
+  export PAGER='nvim -R +AnsiEsc'
+else
+  export PAGER='less'
+fi
+# editor, pager }}}
 
 
 # rust {{{
@@ -235,10 +265,9 @@ export ZSHZ_OWNER="$USER"
 # }}}
 
 
-# zsh-z {{{
+# ghq {{{
 export GHQ_ROOT="$HOME/src"
-export ZSHZ_OWNER="$USER"
-# }}}
+# ghq }}}
 
 
 # compilers {{{

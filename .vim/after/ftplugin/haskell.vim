@@ -2,4 +2,5 @@
 scriptencoding utf-8
 
 
-setl omnifunc=necoghc#omnifunc
+" NOTE: ghc-mod is deprecated
+"setl omnifunc=necoghc#omnifunc

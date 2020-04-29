@@ -1,4 +1,4 @@
-"  vim: filetype=vim:
+" vim: filetype=vim:
 scriptencoding utf-8
 
 

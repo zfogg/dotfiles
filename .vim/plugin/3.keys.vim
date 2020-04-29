@@ -191,12 +191,6 @@ endif
     nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
     nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
 
-    if z#util#HasPlugin('fzf.vim')
-        nnoremap <C-f> :Rg<Cr>
-        nnoremap <C-g> :GFiles<Cr>
-        nnoremap <C-p> :Files<Cr>
-    endif
-
     if exists('&inccommand')
         set inccommand=nosplit
     endif
@@ -204,4 +198,10 @@ endif
 
 
 " files - search, sort, find, open {{{
+    if z#util#HasPlugin('fzf.vim')
+        nnoremap <C-f>     :Rg!<Cr>
+        nnoremap <Leader>f :execute ':Rg! <C-r><C-w>'<Cr>
+        nnoremap <C-g>     :GFiles<Cr>
+        nnoremap <C-p>     :Files<Cr>
+    endif
 " }}}
