@@ -74,10 +74,12 @@ fi
 
 if command_exists fzf; then
   function() {
-    [[ -f $HOME/.fzf.zsh ]] && source "$HOME/.fzf.zsh"
+    [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
     local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
     find "${fzfetc[@]}" &>/dev/null \
       && source "${fzfetc[@]}"
+    export FZF_CTRL_R_OPTS="
+      --no-preview"
     export FZF_DEFAULT_OPTS="
       --ansi \
       --layout=reverse \
