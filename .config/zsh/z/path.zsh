@@ -33,6 +33,7 @@ function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/{bin,sbin}
+      #/Library/Developer/CommandLineTools/usr/bin
       "$path[@]"
       $(getconf PATH | command -p tr ':' '\n'))
 
