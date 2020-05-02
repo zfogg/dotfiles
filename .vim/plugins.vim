@@ -89,7 +89,7 @@ Plug 'junegunn/vim-plug'
     Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
     Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
     "Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
-    Plug 'wokalski/autocomplete-flow', PIf(PHas('deoplete.nvim'))
+    "Plug 'wokalski/autocomplete-flow', PIf(PHas('deoplete.nvim'))
     Plug 'codota/tabnine-vim'
     if has('win32') || has('win64')
         Plug 'tbodt/deoplete-tabnine', {'do': 'powershell.exe .\install.ps1'}
@@ -148,7 +148,7 @@ Plug 'junegunn/vim-plug'
     "Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
     "Plug 'othree/jspc.vim',               {'for': ft['js']}
     Plug 'itchyny/vim-haskell-indent',    {'for': ['haskell'] }
-    Plug 'flowtype/vim-flow',             {'for': ft['js']}
+    "Plug 'flowtype/vim-flow',             {'for': ft['js']}
     " markdown
     Plug 'plasticboy/vim-markdown',            {'for': ['markdown']}
     Plug 'nelstrom/vim-markdown-folding', {'for': ['markdown']}
@@ -161,7 +161,7 @@ Plug 'junegunn/vim-plug'
 
     " clang
     Plug 'libclang-vim/libclang-vim', {'for': ft['cx']}
-    Plug 'justmao945/vim-clang',      {'for': ft['cx']}
+    "Plug 'justmao945/vim-clang',      {'for': ft['cx']}
 
     Plug 'kchmck/vim-coffee-script', {'for': ['coffee']}
     Plug 'tweekmonster/braceless.vim',

@@ -95,8 +95,14 @@ fi
 # terminal }}}
 
 
-# github FIXME: encrypt this {{{
+# git {{{
+# FIXME: encrypt this 
 export HOMEBREW_GITHUB_API_TOKEN='681bb1ecc1c1fdef3060092e730211e2455212fe'
+
+# INFO: https://git-quick-stats.sh/
+export _GIT_PATHSPEC=':!package-lock.json:!yarn.lock'
+export _GIT_MERGE_VIEW="enable"
+#export _GIT_MERGE_VIEW="exclusive"
 # }}}
 
 
