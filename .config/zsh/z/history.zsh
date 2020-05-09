@@ -21,11 +21,11 @@ setopt   BANG_HIST
 unsetopt BEEP
 unsetopt CASE_GLOB
 setopt   CDABLEVARS
-unsetopt COMPLETE_ALIASES
+setopt   COMPLETE_ALIASES
 setopt   COMPLETE_IN_WORD
 setopt   EXTENDED_GLOB
 setopt   EXTENDED_HISTORY
-unsetopt FLOW_CONTROL
+setopt   FLOW_CONTROL
 setopt   GLOB_COMPLETE
 setopt   GLOB_DOTS
 setopt   HIST_EXPIRE_DUPS_FIRST
@@ -40,7 +40,8 @@ setopt   IGNORE_EOF
 setopt   INC_APPEND_HISTORY
 setopt   INTERACTIVE_COMMENTS
 unsetopt LIST_AMBIGUOUS
-unsetopt MENU_COMPLETE
+setopt   MARK_DIRS
+setopt   MENU_COMPLETE
 setopt   MULTIOS
 unsetopt NOMATCH
 unsetopt NOTIFY
@@ -52,5 +53,5 @@ setopt   PUSHD_IGNORE_DUPS
 setopt   PUSHD_TO_HOME
 setopt   RC_EXPAND_PARAM
 setopt   RM_STAR_WAIT
-setopt   SHARE_HISTORY
+#setopt   SHARE_HISTORY
 setopt   TRANSIENT_RPROMPT

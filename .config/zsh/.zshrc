@@ -72,38 +72,13 @@ fi
 [[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
   && source "$BREW/etc/profile.d/z.sh"
 
-if command_exists fzf; then
-  function() {
-    [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-    local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
-    find "${fzfetc[@]}" &>/dev/null \
-      && source "${fzfetc[@]}"
-    export FZF_CTRL_R_OPTS="
-      --no-preview"
-    export FZF_DEFAULT_OPTS="
-      --ansi \
-      --layout=reverse \
-      --info=inline \
-      --extended-exact \
-      --height=100% \
-      --multi \
-      --preview '(bat --color=always {} || pcat {} || tree -C {}) 2> /dev/null | head -200'"
-    #if command_exists fd; then
-      #export FZF_DEFAULT_COMMAND='fd --type f'
-    #fi
-  }
-  function vo() {
-    $EDITOR -o `rgf | fzf`
-  }
-fi
-
 function() { # grep, rg
   if command_exists rg; then
     export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
     local RG_PRG='rg'
     local GREPPRG_PRG="$RG_PRG"
     local GREPPRG_ARGS="$RG_ARGS"
-    export FZF_DEFAULT_COMMAND="$RG_PRG --files --ignore --hidden"
+    export FZF_DEFAULT_COMMAND="$RG_PRG --files --sortr=modified --ignore --hidden 2>/dev/null"
 
   else # INFO: "command_exists grep; then"
     local GREP_PRG='grep'
@@ -126,6 +101,55 @@ function() { # grep, rg
     unset GENCOMPL_FPATH
   fi
 }
+
+
+if command_exists fzf; then
+  _fzf_compgen_path() {
+    eval "${FZF_DEFAULT_COMMAND} ${1}"
+  }
+  _fzf_compgen_dir() {
+    eval "${FZF_DEFAULT_COMMAND} ${1} --null | xargs -0 dirname | sort | uniq | tail -n+2"
+  }
+  function() {
+    export FZF_HISTORY_DIR="${XDG_DATA_HOME:-${HOME}/.fzf}/fzf"
+    [[ -d FZF_HISTORY_DIR ]] || mkdir -p "$FZF_HISTORY_DIR"
+    export FZF_HISTORY_FILE="${FZF_HISTORY_DIR}/history"
+    export FZF_COMPLETION_TRIGGER=';;'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_FILE_PREVIEW_OPT='(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200'
+    export FZF_CTRL_T_OPTS="
+      --preview '(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200'
+    "
+    export FZF_CTRL_R_OPTS="
+      --no-preview \
+      --history=${FZF_HISTORY_FILE} \
+      --bind=alt-n:down \
+      --bind=alt-p:up
+    "
+      #--extended-exact \
+    export FZF_DEFAULT_OPTS="
+      --ansi \
+      --layout=reverse \
+      --info=inline \
+      --height=100% \
+      --multi \
+      --no-mouse \
+      --bind=ctrl-d:half-page-down \
+      --bind=ctrl-u:half-page-up \
+      --bind=ctrl-space:toggle-preview
+    "
+    #if command_exists fd; then
+      #export FZF_DEFAULT_COMMAND='fd --type f'
+    #fi
+    [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+    local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
+    find "${fzfetc[@]}" &>/dev/null \
+      && source "${fzfetc[@]}"
+  }
+  function vo() {
+    $EDITOR -o "`rgf | fzf --preview=$FZF_FILE_PREVIEW_OPT`"
+  }
+fi
 
 
 # node, npm, nvm {{{

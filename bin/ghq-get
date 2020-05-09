@@ -17,7 +17,7 @@ else
     ba-err 11 '' "${0:t}" "\$$OSX \$$LINUX" 'wrong os'
 fi)"
 
-ghq get -u -p --shallow "$x" 1>&2 \
+ghq get -u -p "$x" 1>&2 \
     || ba-err 12 '' "${0:t}" "\$$x" 'bad repo'
 
 echo "$(ghq root)/$(ghq list "$x")"

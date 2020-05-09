@@ -14,6 +14,13 @@ call deoplete#custom#option('min_pattern_length', 1)
 
 call deoplete#custom#source('_', 'max_menu_width', 70)
 
+if PHas('deoplete-tabnine')
+    call deoplete#custom#var('tabnine', {
+        \ 'line_limit': 750,
+        \ 'max_num_results': 6,
+    \ })
+endif
+
 "let g:deoplete#enable_smart_case = 1  " smartcase
 "let g:deoplete#max_list          = 65 " default=100
 "let g:deoplete#max_menu_width    = 85

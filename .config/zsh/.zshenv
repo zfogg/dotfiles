@@ -199,6 +199,10 @@ if [ -d ~/Library/Android/sdk ]; then
   export ANDROID_HOME=~/Library/Android/sdk
   export ANDROID_SDK_ROOT="$ANDROID_HOME"
   export ANDROID_SDK_VERSION="29.0.3"
+elif [ -d /opt/android-sdk ]; then
+  export ANDROID_HOME="/opt/android-sdk"
+  export ANDROID_SDK_ROOT="$ANDROID_HOME"
+  export ANDROID_SDK_VERSION="29.0.3"
 fi
 
 function() {

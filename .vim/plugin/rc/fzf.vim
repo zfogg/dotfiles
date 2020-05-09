@@ -2,17 +2,21 @@
 scriptencoding utf-8
 
 
+let g:fzf_preview_window = 'right:60%'
+let g:fzf_buffers_jump = 1
+if exists('$FZF_HISTORY_DIR')
+  let g:fzf_history_dir = expand('$FZF_HISTORY_DIR')
+else
+  let g:fzf_history_dir = $HOME . '/.fzf-history'
+endif
+call mkdir(g:fzf_history_dir, 'p')
 
 command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>,
-        \ {'options': [
-            \ '--layout=reverse',
-            \ '--info=inline',
-            \ '--preview',
-            \ '~/.vim/bundle/fzf.vim/bin/preview.sh {}',
-            \ ],
-        \ },
-    \ <bang>0)
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(
+    \ {'options': [
+      \ ],
+    \ },
+  \ ), <bang>0)
 
 let g:fzf_colors = {
     \ 'fg':      ['fg', 'Normal'],
@@ -33,9 +37,15 @@ let g:fzf_colors = {
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit'
+  \ 'ctrl-v': 'vsplit',
 \ }
 
+" hide status line
+if has('nvim') && !exists('g:fzf_layout')
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0 noshowmode noruler
+    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+endif
 
 if executable('rg')
   let s:fzf_find_command = 'rg'
