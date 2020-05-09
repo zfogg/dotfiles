@@ -7,12 +7,10 @@
 # compinit {{{
 function() {
   autoload -Uz compinit
-  local dump="$ZDOTDIR"/.zcompdump
-  typeset -i updated_at=$(date +'%j' -r "$dump" 2>/dev/null || stat -f '%Sm' -t '%j' "$dump" 2>/dev/null)
-  if [ $(date +'%j') != $updated_at ]; then
-    compinit -i
+  if [[ $(date +'%j') > $(date +'%j' -r "${ZDOTDIR}/.zcompdump") ]]; then
+    compinit
   else
-    compinit -C -i
+    compinit -C
   fi
   zmodload -i zsh/complist
 }

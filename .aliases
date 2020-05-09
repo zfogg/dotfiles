@@ -2,20 +2,6 @@
 #   ~/.dotfiles/.aliases
 
 
-alias rm='trash'
-
-alias vim="$EDITOR"
-alias  vi="$EDITOR"
-alias   v="$EDITOR"
-
-if [[ "$OSX" == "$TRUE" ]]; then
-  #alias python="python3"
-  #alias    pip="pip3"
-fi
-#[[ "$OSX" == "$TRUE" ]] \
-    #&& alias python="python3.6.9" \
-    #|| alias python3="python3.7.4"
-
 function aliasof() {
   local a1=$(alias "$1")
   [[ $a1 == "" ]] && return 1
@@ -25,17 +11,45 @@ function aliasof() {
     || echo "$a1" | \sed -E "s|^${1}=(.+)$|\1|"
 }
 
-alias    zshrc='$EDITOR $ZDOTDIR/.zshrc'
-alias   zshenv='$EDITOR $ZDOTDIR/.zshenv'
-alias   zlogin='$EDITOR $ZDOTDIR/.zlogin'
-alias zprofile='$EDITOR $ZDOTDIR/.zprofile'
-alias    vimrc='$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc'
+function compdefas() {
+  # INFO: https://unix.stackexchange.com/a/6340/99026
+  local a
+  a="$1"
+  shift
+  compdef "$_comps[$a]" "${(@)*}=$a"
+}
 
-#if command_exists zshz; then
-  #compdef _zshz z=zshz
-#fi
+alias rm='trash'
+
+alias vim="$EDITOR"
+alias  vi="$EDITOR"
+alias   v="$EDITOR"
+compdefas "$EDITOR" vim vi v
+
+if [[ "$OSX" == "$TRUE" ]]; then
+  #alias python="python3"
+  #alias    pip="pip3"
+elif [[ "$LINUX" == "$TRUE" ]]; then
+  alias p=pacman
+  compdefas pacman p
+fi
+
+alias    zshrc="$EDITOR $ZDOTDIR/.zshrc"
+alias   zshenv="$EDITOR $ZDOTDIR/.zshenv"
+alias   zlogin="$EDITOR $ZDOTDIR/.zlogin"
+alias zprofile="$EDITOR $ZDOTDIR/.zprofile"
+alias    vimrc="$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc"
+compdefas "$EDITOR" zshrc zshenv zprofile vimrc
+
+if command_exists zshz; then
+  compdefas zshz z
+fi
 
 alias ql='quick-look'
+
+if [[ `aliasof whois` != (grc --colour=auto)* ]]; then
+  [[ -f /etc/grc.zsh ]] && source /etc/grc.zsh
+fi
 
 function() { # ls
   local  LSPRG_PRG='ls'
@@ -64,55 +78,64 @@ function() { # ls
       printf ' --timesort --date=relative --reverse'
       printf ' --group-dirs=first --classify' `"
     alias lsd="${LSDPRG_PRG} ${LSDPRG_ARGS}"
+    compdefas ls lsd
     LSPRG_PRG="$LSDPRG_PRG"
     LSPRG_ARGS="$LSDPRG_ARGS"
   fi
 
+  unalias ls
   alias ls='\'"${LSPRG_PRG} ${LSPRG_ARGS}"
   alias  l='ls -1'
   alias ll='ls -1l'
   alias la='nowrap ls -1lA'
   alias lt='ls -1Al --tree --depth=2'
+  compdefas ls ls l ll la lt
 }
 
 alias sudo='nocorrect sudo -E '
 
 alias   s='sudo'
+compdefas sudo s
 
 alias llog='command -p log'
 
 alias ..='cd ..'
 alias ...='cd ../..'
 
-alias less='$PAGER'
-alias zless='$PAGER'
+alias less="$PAGER"
+alias zless="$PAGER"
 
-alias htop='htop -u $USER'
+alias htop="htop -u $USER"
 
 _grep_prg=$(echo "${GREPPRG:-grep}" | cut -d' ' -f1)
 if command_exists rg; then
   #alias   rg="$_grep_prg"
-  alias rgc="$_grep_prg --context=1";  compdef rgc=rg
-  alias rgf="$_grep_prg --files";      compdef rgf=rg
-  alias rgg="$_grep_prg --glob";       compdef rgf=rg
-  alias grep="$_grep_prg";             compdef grep=rg
-  alias rgd='rgf --hidden -0 | xargs -0 gdirname | sort | uniq | ghead -n-2'; compdef rgd=head
-  alias rgdf='(rgd; rgf) | sort'; compdef rgdf=sort
+  alias rgc="$_grep_prg --context=1"
+  alias rgf="$_grep_prg --files"
+  alias rgg="$_grep_prg --glob"
+  #alias grep="$_grep_prg"
+  compdefas rg rgc rgf rgg
+  alias rgd='rgf --hidden -0 | xargs -0 gdirname | sort | uniq | ghead -n-2'; compdefas head rgd
+  alias rgdf='(rgd; rgf) | sort'; compdefas sort rgd
 fi
 
 # pip2 install pygments
 #alias pcat='pygmentize -O style=monokai -f 256 -g'
 alias pcat='pygmentize -O style=base16-default-dark -f 256 -g'
 alias c='pcat'
+compdefas pygmentize pcat c
 
+alias gtail='grc tail'
+alias t='gtail'
+compdefas tail gtail t
 
 [[ "$OSX" == "$TRUE" ]] \
-  && alias ping='grc ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q' \
-  || alias     ping='ping    -c 3'
+  && alias ping='ping -C -c 3 -i 0.2 -W 5000 -t 5 -Q' \
+  || alias ping='ping    -c 3'
 
 alias fs='du -shL'
 
-alias idea='$EDITOR ~/Dropbox/ideas.md'
+#alias idea="$EDITOR ~/Dropbox/ideas.md"
 
 alias colortest='~/.config/base16-shell/colortest'
 
@@ -153,24 +176,31 @@ alias gst='git status'
 alias ga='git add'
 alias gco='git checkout'
 alias gcm='git checkout master'
+compdefas git gc gca gd gdd gl gp grv gst ga gco gcm
 
 alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 alias get='cd "$(ghq-get)"'
 
 function tree() {
   #-D -c \
-  /usr/bin/env tree \
+  local gitignore=~/.config/git/ignore
+  if [[ -f $gitignore ]]; then
+    local ignores=$(cat "$gitignore" | grep -v '^$' | xargs | tr '\ ' '|')
+  else
+    local ignores='node_modules|bower_components|vendor|bundle|target|build|public|.git'
+  fi
+  command tree \
     --du \
     --filelimit 512 \
     --prune \
     -F -L 4 \
     -h \
-    -I "node_modules|bower_components|vendor|bundle|target|build|public|.git" \
+    -I "$ignores" \
     "$@"
 }
 #alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git" -L 5'
 
-alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
+#alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
 
 #function npm-do {

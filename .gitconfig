@@ -46,6 +46,7 @@
 
 [diff]
     tool = vimdiff3
+    wordRegex = [[:alnum:]_]+|[^[:alnum:]_[:space:]]+
 [difftool "vimdiff3"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
     trustExitCode = true

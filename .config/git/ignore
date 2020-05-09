@@ -33,6 +33,8 @@ Gemfile.lock
 composer.lock
 stack.yaml.lock
 Cargo.lock
+yarn.lock
+package-lock.json
 
 bundle/ruby
 
