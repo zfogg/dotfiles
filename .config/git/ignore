@@ -65,6 +65,4 @@ bundle/ruby
 
 *@neomake_*.*
 
-*.svg
-
 doc/tags
