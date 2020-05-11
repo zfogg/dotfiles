@@ -2,18 +2,21 @@
 # vim: set fdm=marker:
 
 
-
 # NOTE: run this BEFORE sourcing 3rd-party completions
 # compinit {{{
+autoload -Uz compinit
 function() {
-  autoload -Uz compinit
-  if [[ $(date +'%j') > $(date +'%j' -r "${ZDOTDIR}/.zcompdump") ]]; then
+  local zcompdump=$ZDOTDIR/.zcompdump
+  if [[ $OSX == $TRUE && -d $BREW/opt/coreutils ]] && alias date=gdate
+  if [[ -f $zcompdump && $(date +'%j') > $(date +'%j' -r $zcompdump) ]]; then
     compinit
   else
     compinit -C
   fi
-  zmodload -i zsh/complist
+  alias date >/dev/null && unalias date
 }
+
+zmodload -i zsh/complist
 
 set completion-ignore-case on
 set show-all-if-ambiguous on
