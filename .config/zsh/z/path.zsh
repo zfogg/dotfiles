@@ -4,11 +4,11 @@
 
 # {{{ variable typesets
   # NOTE: these typesets need to appear first
-  typeset -U path
-  typeset -U fpath
-  typeset -U manpath
-  typeset -aU infopath
-  typeset -xT INFOPATH infopath
+  typeset -U   path
+  typeset -U   fpath
+  typeset -U   manpath
+  typeset -aU  infopath
+  typeset -xUT INFOPATH infopath
 
 # }}}
 

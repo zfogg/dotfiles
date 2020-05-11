@@ -26,10 +26,10 @@ alias  vi="$EDITOR"
 alias   v="$EDITOR"
 compdefas "$EDITOR" vim vi v
 
-if [[ "$OSX" == "$TRUE" ]]; then
+if [[ $OSX == $TRUE ]]; then
   #alias python="python3"
   #alias    pip="pip3"
-elif [[ "$LINUX" == "$TRUE" ]]; then
+elif [[ $LINUX == $TRUE ]]; then
   alias p=pacman
   compdefas pacman p
 fi
@@ -47,9 +47,16 @@ fi
 
 alias ql='quick-look'
 
-if [[ `aliasof whois` != (grc --colour=auto)* ]]; then
-  [[ -f /etc/grc.zsh ]] && source /etc/grc.zsh
-fi
+function() { # grc
+  [[ `alias whois` == (whois=\'grc)* ]] && return
+  local grc_shell
+  if [[ $OSX == $TRUE ]]; then
+    grc_shell=$BREW/etc/grc.$SHELL_NAME
+  elif [[ $LINUX == $TRUE ]]; then
+    grc_shell=/etc/grc.$SHELL_NAME
+  fi
+  [[ -f $grc_shell ]] && source "$grc_shell"
+}
 
 function() { # ls
   local  LSPRG_PRG='ls'
@@ -83,7 +90,7 @@ function() { # ls
     LSPRG_ARGS="$LSDPRG_ARGS"
   fi
 
-  unalias ls
+  alias ls >/dev/null && unalias ls
   alias ls='\'"${LSPRG_PRG} ${LSPRG_ARGS}"
   alias  l='ls -1'
   alias ll='ls -1l'
