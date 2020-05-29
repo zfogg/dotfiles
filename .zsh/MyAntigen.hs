@@ -33,8 +33,8 @@ bundles = [
         --, (bundle "RobSis/zsh-completion-generator")
             --{ fpathLocations = [] }
 
-        , (bundle "nojhan/liquidprompt")
-            { fpathLocations = [] }
+        {-, (bundle "nojhan/liquidprompt")-}
+            {-{ fpathLocations = [] }-}
 
         --, (bundle "djui/alias-tips")
             --{ fpathLocations = [] }

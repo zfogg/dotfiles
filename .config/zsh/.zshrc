@@ -3,6 +3,14 @@
 # ~/.zshrc
 
 
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+
 # init: zsh modules, autoload, antigen-hs {{{
 zmodload zsh/zpty
 
@@ -112,19 +120,26 @@ if command_exists fzf; then
   }
   function() {
     export FZF_HISTORY_DIR="${XDG_DATA_HOME:-${HOME}/.fzf}/fzf"
-    [[ -d FZF_HISTORY_DIR ]] || mkdir -p "$FZF_HISTORY_DIR"
+    [[ -d $FZF_HISTORY_DIR ]] || mkdir -p "$FZF_HISTORY_DIR"
     export FZF_HISTORY_FILE="${FZF_HISTORY_DIR}/history"
     export FZF_COMPLETION_TRIGGER=';;'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_FILE_PREVIEW_OPT='(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200'
     export FZF_CTRL_T_OPTS="
       --preview '(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200'
     "
+    export FZF_FILE_PREVIEW_OPT="(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200"
+    export FZF_CTRL_Z_KEYBINDS="
+    --bind=ctrl-d:half-page-down \
+    --bind=ctrl-u:half-page-up \
+    --bind=ctrl-space:toggle-preview \
+    "
     export FZF_CTRL_R_OPTS="
       --no-preview \
+      --multi \
       --history=${FZF_HISTORY_FILE} \
+      ${CTRL_Z_KEYBINDS}
       --bind=alt-n:down \
-      --bind=alt-p:up
+      --bind=alt-p:up \
     "
       #--extended-exact \
     export FZF_DEFAULT_OPTS="
@@ -133,10 +148,8 @@ if command_exists fzf; then
       --info=inline \
       --height=100% \
       --multi \
+      ${CTRL_Z_KEYBINDS}
       --no-mouse \
-      --bind=ctrl-d:half-page-down \
-      --bind=ctrl-u:half-page-up \
-      --bind=ctrl-space:toggle-preview
     "
     #if command_exists fd; then
       #export FZF_DEFAULT_COMMAND='fd --type f'
@@ -192,10 +205,23 @@ source "$HOME/.aliases"
 # }}}
 
 
-export HNS_REGTEST_COINBASE="rs1qzjc9mypdp7cxvpgtcpclsxxdlf8aa24yus0tyx"
-function mine-hns() {
-  ~/src/github.com/namebasehq/full-node/scripts/mine-block.sh "${HNS_REGTEST_COINBASE}" "a" "${1}"
+# powerlevel10k {{{
+function() {
+  local pl10k_file=powerlevel10k.zsh-theme
+  local pl10k_root=
+  if [[ $OSX == $TRUE ]]; then
+    pl10k_root=$BREW/opt/powerlevel10k
+  elif [[ $LINUX == $TRUE ]]; then
+    pl10k_root=/usr/share/zsh-theme-powerlevel10k
+  fi
+  local pl10k_path=$pl10k_root/$pl10k_file
+  [[ -d $pl10k_root && -f $pl10k_path ]] && source "$pl10k_path"
 }
+# }}}
+
+
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 # zsh startup debug (BOTTOM of ~/.zshrc) {{{
 #   https://kev.inburke.com/kevin/profiling-zsh-startup-time
