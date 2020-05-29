@@ -70,7 +70,7 @@ if command_exists direnv; then
   export AUTOENV_FILE_ENTER=.env
   export AUTOENV_HANDLE_LEAVE=0
   export AUTOENV_LOOK_UPWARDS=0
-  eval "$(direnv hook zsh)"
+  emulate zsh -c "$(direnv hook zsh)"
 fi
 
 if command_exists jenv; then
