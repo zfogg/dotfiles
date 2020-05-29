@@ -36,6 +36,12 @@ bundles = [
         {-, (bundle "nojhan/liquidprompt")-}
             {-{ fpathLocations = [] }-}
 
+        , (bundle "romkatv/powerlevel10k")
+            { sourcingStrategy = filePathsSourcingStrategy [
+                 "config/p10k-pure.zsh"
+                ,"powerlevel10k.zsh-theme"
+                ] }
+
         --, (bundle "djui/alias-tips")
             --{ fpathLocations = [] }
 
