@@ -17,7 +17,7 @@
   for zf in $zfiles; do
     #/bin/rm -f "${zf}.zwc"
     if [[ -s "$zf" && (! -s "${zf}.zwc" || "$zf" -nt "${zf}.zwc") ]]; then
-      echo "zrecompile ${zf}.zwc"
+      #echo "zrecompile ${zf}.zwc"
       zrecompile -pq "$zf"
     fi
   done
