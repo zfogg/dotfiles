@@ -45,6 +45,7 @@ Plug 'junegunn/vim-plug'
     if has('unix') || has('win32')
         Plug 'junegunn/fzf', PIf(executable('fzf'), { 'do': { -> fzf#install() } })
         Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
+        Plug 'yuki-ycino/fzf-preview.vim'
     endif
 
     "Plug 'easymotion/vim-easymotion'

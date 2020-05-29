@@ -62,6 +62,11 @@ set viewoptions+=cursor,curdir,folds
     set completeopt=menu,menuone,preview,noinsert,noselect
     set conceallevel=2 concealcursor=nvic
 
+    let s:unix_dictionary='/usr/share/dict/words'
+    if has('unix') && filereadable(s:unix_dictionary)
+        execute 'set dictionary+='.s:unix_dictionary
+    endif
+
     let s:vim_data_dirs = {}
     let s:editor_name = fnamemodify($VIM, ':t')
     for [s:dir_name, s:dir_path] in items({

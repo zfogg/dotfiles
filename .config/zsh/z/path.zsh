@@ -79,8 +79,8 @@ function () { # {{{ platform-specifics
 function() { # {{{ AFTER platform-specifics
   path=(
     $HOME/bin
-    $HOME/.local/bin
     $HOME/.local/lib/node_modules/bin
+    $HOME/.local/bin
     $HOME/.{cabal,cargo,gem}/bin
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
     #$PYENV_ROOT/{bin,shims}
