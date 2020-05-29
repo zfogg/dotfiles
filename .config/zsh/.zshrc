@@ -160,10 +160,10 @@ function nvmRC() {
   [[ -s $NVM_DIR/nvm.sh && ! -v NVM_CD_FLAGS ]] \
     && source "$NVM_DIR/nvm.sh" 
 }
-function node() { nvmRC node; node "$@"; }
-function npm()  { nvmRC npm;  npm  "$@"; }
-function nvm()  { nvmRC nvm;  nvm  "$@"; }
-function npx()  { nvmRC npx;  npx  "$@"; }
+#function node() { nvmRC node; node "$@"; }
+#function npm()  { nvmRC npm;  npm  "$@"; }
+#function nvm()  { nvmRC nvm;  nvm  "$@"; }
+#function npx()  { nvmRC npx;  npx  "$@"; }
 # node, npm, nvm }}}
 
 # plugins }}}

@@ -140,6 +140,7 @@ Plug 'junegunn/vim-plug'
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
     Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
     Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
+    Plug 'hashivim/vim-terraform',        {'for': ['terraform', 'json']}
     "Plug 'Quramy/tsuquyomi'
     "Plug 'yuezk/vim-js',                  {'for': ft['js']}
     "Plug 'HerringtonDarkholme/yats.vim'

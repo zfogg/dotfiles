@@ -55,6 +55,7 @@ function () { # {{{ platform-specifics
     path=(
       $BREW/local/{bin,sbin}
       $BREW/{bin,sbin}
+      #/usr/share/aws-cli/v2/2.0.14/bin
       "$path[@]"
       /bin
       /sbin
