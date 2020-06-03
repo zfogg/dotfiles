@@ -8,6 +8,8 @@ catch
     echom 'z#rc#Init() error :/'
     echom v:errmsg
 finally
+    filetype plugin on
+    syntax on
     runtime plugins.vim
     packloadall
 endtry

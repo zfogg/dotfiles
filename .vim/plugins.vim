@@ -170,7 +170,8 @@ Plug 'junegunn/vim-plug'
         \{'for': ft['py'] + ft['jade'] + ['coffee', 'yaml', 'haml']}
     "Plug 'vim-scripts/openvpn'
     "Plug 'vim-utils/vim-man'
-    Plug 'chrisbra/csv.vim',       {'for': ['csv']}
+    "Plug 'chrisbra/csv.vim',       {'for': ['csv']}
+    Plug 'chrisbra/csv.vim'
     Plug 'cespare/vim-toml',       {'for': ['toml']}
     Plug 'digitaltoad/vim-pug',    {'for': ft['jade']}
     Plug 'tpope/vim-afterimage',   {'for': ft['image']}

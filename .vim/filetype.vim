@@ -22,3 +22,12 @@ aug rc_filetype_omnicomplete
 
     au FileType crontab setlocal nobackup nowritebackup
 aug END
+
+
+" INFO: https://github.com/chrisbra/csv.vim#manual-installation
+"if exists("did_load_csvfiletype") | finish | endif
+"let did_load_csvfiletype=1
+"augroup filetypedetect
+    "au!
+    "au BufRead,BufNewFile *.csv,*.dat setfiletype csv
+"augroup END
