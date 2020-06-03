@@ -93,8 +93,11 @@ endif
     noremap k gk
 
     " Scroll through items in the locations list.
-    nmap <Leader>< <Plug>LocationPrevious
-    nmap <Leader>> <Plug>LocationNext
+    "INFO: can't map some keys :( use <Leader> I guess
+    "nnoremap <C-S-{> :lnext<CR>
+    "nnoremap <C-S-}> :lprevious<CR>
+    nnoremap <Leader>, :lnext<CR>
+    nnoremap <Leader>< :lprevious<CR>
 
     " A 'scrolling' effect.
     " FIXME: doesn't really work with in my iTerm+tmux setup.

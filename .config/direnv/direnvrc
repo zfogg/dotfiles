@@ -10,5 +10,3 @@ use_nvm() {
     nvm use $node_version
   fi
 }
-
-export POWERLEVEL9K_INSTANT_PROMPT=quiet
