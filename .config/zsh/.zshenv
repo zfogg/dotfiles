@@ -159,14 +159,14 @@ export GO111MODULE='auto' # on | off | auto
 
 # node {{{
 export NVM_DIR="${HOME}/.nvm"
-export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
-export NVM_NO_USE=true    # lukechilds/zsh-nvm
+export NVM_LAZY_LOAD=false # lukechilds/zsh-nvm
+export NVM_NO_USE=false   # lukechilds/zsh-nvm
 #unset NVM_LAZY_LOAD
 #unset NVM_NO_USE
-#export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
-[ -d ~/.local ] \
-  && export npm_config_prefix=~/.local \
-  || export npm_config_prefix=~/.npm
+export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
+#[ -d ~/.local ] \
+  #&& export npm_config_prefix=~/.local \
+  #|| export npm_config_prefix=~/.npm
 # node }}}
 
 
