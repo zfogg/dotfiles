@@ -78,10 +78,13 @@ function () { # {{{ platform-specifics
 } # }}}
 
 function() { # {{{ AFTER platform-specifics
+  local nvmv=$(<~/.nvm/alias/$(<~/.nvmrc))
+  local nvmv_root=versions/node/v$nvmv
+
   path=(
     $HOME/bin
-    $HOME/.local/lib/node_modules/bin
     $HOME/.local/bin
+    $HOME/.nvm/$nvmv_root/bin
     $HOME/.{cabal,cargo,gem}/bin
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
     #$PYENV_ROOT/{bin,shims}
@@ -102,6 +105,7 @@ function() { # {{{ AFTER platform-specifics
     "$fpath[@]")
 
   manpath=(
+    $HOME/.nvm/$nvmv_root/share/man
     $XDG_DATA_HOME/man
     "$manpath[@]")
 

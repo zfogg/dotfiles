@@ -159,7 +159,7 @@ export GO111MODULE='auto' # on | off | auto
 
 # node {{{
 export NVM_DIR="${HOME}/.nvm"
-export NVM_LAZY_LOAD=false # lukechilds/zsh-nvm
+export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
 export NVM_NO_USE=false   # lukechilds/zsh-nvm
 #unset NVM_LAZY_LOAD
 #unset NVM_NO_USE

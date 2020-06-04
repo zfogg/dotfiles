@@ -8,6 +8,7 @@
 autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
 
+autoload -Uz joopal-trim
 
 local var_name="${1:-PATH}"
 [[ -v "$var_name" ]] || \
@@ -21,7 +22,7 @@ exec 3>&2 2>"$tempf"
 echoer                                                      #'\n'
 echoer "${0:t} - pretty print shell env vars"               #'\n'
 echoer $'\tvar name'   $'\t->' "${var_name}"                #'\n'
-echoer $'\titem count' $'\t->' "${var_len}"                 #'\n'
+echoer $'\titem count' $'\t->' "$(joopal-trim $var_len)"    #'\n'
 
 printf "%s\n" "${plines[@]}"
 
