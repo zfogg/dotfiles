@@ -23,6 +23,8 @@ function() { # Node.js, npm, nvm
         jsonlint
         tern
         neovim)
+    source ~/.nvm/nvm.sh
+    nvm use
     npm --silent install --global ${npm_reqs}
 
     #nvm install stable \
