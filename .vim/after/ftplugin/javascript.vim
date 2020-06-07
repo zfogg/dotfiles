@@ -3,5 +3,7 @@ scriptencoding utf-8
 
 
 setl fdm=syntax
-    \ iskeyword+=$
 
+setl iskeyword+=$
+
+setl formatprg=prettier
