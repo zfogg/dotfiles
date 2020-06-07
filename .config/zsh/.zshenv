@@ -80,7 +80,7 @@ export SHELL_NAME="$(basename "$SHELL")"
 
 # terminal {{{
 if [[ -v TMUX ]]; then
-  export TERM="screen-256color"
+  #export TERM="screen-256color"
 fi
 if [[ -v TERM ]]; then
   export COLORTERM="TRUECOLOR"
@@ -97,7 +97,7 @@ fi
 
 # git {{{
 # FIXME: encrypt this 
-export HOMEBREW_GITHUB_API_TOKEN='681bb1ecc1c1fdef3060092e730211e2455212fe'
+#export HOMEBREW_GITHUB_API_TOKEN='secret! 🕵'
 
 # INFO: https://git-quick-stats.sh/
 export _GIT_PATHSPEC=':!package-lock.json:!yarn.lock'
