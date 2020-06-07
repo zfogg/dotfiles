@@ -65,6 +65,7 @@ Plug 'junegunn/vim-plug'
     " making / linting
     Plug 'Shougo/neoinclude.vim'
     Plug 'neomake/neomake', PIf(has('nvim'))
+    Plug 'sbdchd/neoformat', PIf(has('nvim'))
     Plug 'jaawerth/nrun.vim'
 
     " completion
@@ -91,7 +92,7 @@ Plug 'junegunn/vim-plug'
     Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
     "Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
     "Plug 'wokalski/autocomplete-flow', PIf(PHas('deoplete.nvim'))
-    Plug 'codota/tabnine-vim'
+    "Plug 'codota/tabnine-vim'
     if has('win32') || has('win64')
         Plug 'tbodt/deoplete-tabnine', {'do': 'powershell.exe .\install.ps1'}
     else
