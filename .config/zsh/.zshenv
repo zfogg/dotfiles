@@ -83,7 +83,7 @@ if [[ -v TMUX ]]; then
   #export TERM="screen-256color"
 fi
 if [[ -v TERM ]]; then
-  export COLORTERM="TRUECOLOR"
+  export COLORTERM="truecolor"
 fi
 if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   export TERMINAL_DOTAPP="true"
