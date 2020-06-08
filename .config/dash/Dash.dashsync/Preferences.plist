@@ -635,7 +635,7 @@
 			<key>React_Offline</key>
 			<dict>
 				<key>date</key>
-				<date>2020-05-23T11:02:34Z</date>
+				<date>2020-06-06T10:38:44Z</date>
 				<key>entry</key>
 				<dict>
 					<key>aliases</key>
@@ -654,7 +654,7 @@
 			<key>React_Online</key>
 			<dict>
 				<key>date</key>
-				<date>2020-05-23T11:02:04Z</date>
+				<date>2020-06-06T10:38:03Z</date>
 				<key>entry</key>
 				<dict>
 					<key>aliases</key>
@@ -775,7 +775,7 @@
 			<key>Terraform</key>
 			<dict>
 				<key>date</key>
-				<date>2020-05-23T11:11:24Z</date>
+				<date>2020-06-05T10:38:07Z</date>
 				<key>entry</key>
 				<dict>
 					<key>aliases</key>

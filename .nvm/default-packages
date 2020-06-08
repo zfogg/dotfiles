@@ -11,3 +11,8 @@ eslint-plugin-import
 eslint-plugin-node
 eslint-plugin-react
 babel-eslint
+javascript-typescript-langserver
+typescript-language-server
+flow-bin
+vscode-html-languageserver-bin
+vscode-css-languageserver-bin

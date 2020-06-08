@@ -3,22 +3,8 @@ scriptencoding utf-8
 
 
 if z#util#HasPlugin('neoformat')
-    "let g:neoformat_only_msg_on_error = 1
-    let g:neoformat_try_formatprg = 1
-
-    function! NeoformatPrettier() abort
-        if z#util#HasPlugin('nrun.vim')
-            let s:prettier_exe = nrun#Which('prettier')
-            let g:neoformat_javascript_prettier = {
-                \ 'exe': s:prettier_exe,
-            \ }
-            let g:neoformat_typescript_prettier = {
-                \ 'exe': s:prettier_exe,
-            \ }
-        endif
-        let g:neoformat_enabled_javascript = ['prettier']
-        let g:neoformat_enabled_typescript = ['prettier']
-    endfunc
+    let g:neoformat_only_msg_on_error = 1
+    "let g:neoformat_try_formatprg = 1
 
     "\ 'args': ['-s 4', '-E'],
     "\ 'replace': 1 " replace the file, instead of updating buffer (default: 0),
@@ -29,6 +15,6 @@ if z#util#HasPlugin('neoformat')
 
     aug RcPlugin__neoformat
         au!
-        au BufWritePre *.js,*.jsx,*.ts,*.tsx undojoin | Neoformat
+        "au BufWritePre *.js,*.jsx,*.ts,*.tsx Neoformat
     aug END
 endif

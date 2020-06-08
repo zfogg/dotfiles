@@ -142,6 +142,8 @@ Plug 'junegunn/vim-plug'
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
     Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
     Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
+    Plug 'prettier/vim-prettier',         {'do': 'yarn install', 'for': ft['js'] + ft['ts']}
+        " 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
     Plug 'hashivim/vim-terraform',        {'for': ['terraform', 'json']}
     "Plug 'Quramy/tsuquyomi'
     "Plug 'yuezk/vim-js',                  {'for': ft['js']}
@@ -198,6 +200,7 @@ Plug 'junegunn/vim-plug'
     "Plug 'qstrahl/vim-matchmaker'
     "Plug 'machakann/vim-highlightedyank', { 'on': '<Plug>(highlightedyank)' }
 
+    Plug 'markonm/traces.vim'
     Plug 'haya14busa/incsearch.vim',            PIf(v:true, {})
     Plug 'haya14busa/incsearch-easymotion.vim', PIf(PHas('incsearch.vim'), {})
     Plug 'haya14busa/incsearch-fuzzy.vim',      PIf(PHas('incsearch.vim'), {})
