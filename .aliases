@@ -55,7 +55,7 @@ function() { # grc
   elif [[ $LINUX == $TRUE ]]; then
     grc_shell=/etc/grc.$SHELL_NAME
   fi
-  #[[ -f $grc_shell ]] && source "$grc_shell"
+  [[ -f $grc_shell ]] && source "$grc_shell"
 }
 
 function() { # ls
