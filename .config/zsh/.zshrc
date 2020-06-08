@@ -205,6 +205,19 @@ source "$HOME/.aliases"
 # }}}
 
 
+# gitstatus {{{
+function() {
+  local gitstatus_source=/dev/null
+  if [[ $OSX == $TRUE ]]; then
+    gitstatus_source=$BREW/opt/gitstatus/gitstatus.prompt.zsh
+  elif [[ $LINUX == $TRUE ]]; then
+    gitstatus_source=/usr/share/gitstatus/gitstatus.prompt.zsh
+  fi
+  [[ -f $gitstatus_source ]] && source $gitstatus_source
+}
+# }}}
+
+
 # powerlevel10k {{{
 function() {
   local pl10k_file=powerlevel10k.zsh-theme
