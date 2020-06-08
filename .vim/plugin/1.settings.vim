@@ -128,7 +128,8 @@ set viewoptions+=cursor,curdir,folds
     set cpo+=d cpo-=D  " cpo-d cpo-D
     set cpo+=Ee        " cpo-E cpo-e
     set cpo+=fF        " cpo-f cpo-F
-    set cpo-=i cpo+=I  " cpo-i cpo-I
+    "set cpo+=I         " cpo-I
+    set cpo-=i         " cpo-i
     set cpo-=J         " cpo-J
     set cpo-=K         " cpo-K
     set cpo-=lL        " cpo-l cpo-L
@@ -268,7 +269,8 @@ set viewoptions+=cursor,curdir,folds
     set ignorecase      " Default to using case insensitive searches.
     set smartcase       " unless uppercase letters are used in the regex.
     set smarttab        " Handle tabs more intelligently.
-    set smartindent     " Indent intelligently.
+    set nosmartindent   " Indent intelligently.
+    set cindent         " Indent even more intelligently.
     set hlsearch        " Highlight searches by default.
     set incsearch       " Incrementally search while typing a /regex.
     set regexpengine=1  " Auto-switch regexp engines if workload hangs.
