@@ -58,7 +58,7 @@ if [[ ${OSX:-0} == ${TRUE:-1} && -v ITERM_SESSION_ID ]]; then
     local iterm2_integration="$HOME/.iterm2_shell_integration.${SHELL_NAME:t}"
     [[ -f $iterm2_integration  ]] && source "$iterm2_integration"
     # INFO: github.com/garabik/grc
-    [[ -f $BREW/etc/grc.bashrc ]] && source "$BREW/etc/grc.bashrc"
+    #[[ -f $BREW/etc/grc.bashrc ]] && source "$BREW/etc/grc.bashrc"
   }
 fi
 # }}}
