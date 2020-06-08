@@ -194,8 +194,11 @@ endif
     nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
     nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
 
-    if exists('&inccommand')
-        set inccommand=nosplit
+    if !z#util#HasPlugin('traces.vim')
+        " INFO: https://github.com/markonm/traces.vim#neovim-v023
+        if exists('&inccommand')
+            set inccommand=nosplit
+        endif
     endif
 " }}}
 
