@@ -155,9 +155,18 @@ if command_exists fzf; then
       #export FZF_DEFAULT_COMMAND='fd --type f'
     #fi
     [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-    local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
-    find "${fzfetc[@]}" &>/dev/null \
-      && source "${fzfetc[@]}"
+    #local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
+    #find "${fzfetc[@]}" &>/dev/null \
+      #&& source "${fzfetc[@]}"
+
+    # FZF_ALT_C_COMMAND
+    #export FZF_ALT_C_COMMAND='fd --type d'
+    #export FZF_ALT_C_OPTS="
+      #--preview '(tree -C {}) 2>/dev/null | head -200'
+    #"
+    # / ALT-C -> CTRL-.
+    bindkey -r '\ec'
+    bindkey '^z' fzf-cd-widget
   }
   function vo() {
     $EDITOR -o "`rgf | fzf --preview=$FZF_FILE_PREVIEW_OPT`"
@@ -206,15 +215,15 @@ source "$HOME/.aliases"
 
 
 # gitstatus {{{
-function() {
-  local gitstatus_source=/dev/null
-  if [[ $OSX == $TRUE ]]; then
-    gitstatus_source=$BREW/opt/gitstatus/gitstatus.prompt.zsh
-  elif [[ $LINUX == $TRUE ]]; then
-    gitstatus_source=/usr/share/gitstatus/gitstatus.prompt.zsh
-  fi
-  [[ -f $gitstatus_source ]] && source $gitstatus_source
-}
+#function() {
+  #local gitstatus_source=/dev/null
+  #if [[ $OSX == $TRUE ]]; then
+    #gitstatus_source=$BREW/opt/gitstatus/gitstatus.prompt.zsh
+  #elif [[ $LINUX == $TRUE ]]; then
+    #gitstatus_source=/usr/share/gitstatus/gitstatus.prompt.zsh
+  #fi
+  #[[ -f $gitstatus_source ]] && source $gitstatus_source
+#}
 # }}}
 
 
