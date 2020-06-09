@@ -56,8 +56,9 @@ function() { # grc
     grc_shell=/etc/grc.$SHELL_NAME
   fi
   [[ -f $grc_shell ]] && source "$grc_shell"
-  alias colourify='grc -es --colour=auto'
-  alias du='colourify du'
+  local colourify='grc -es --colour=auto'
+  alias colourify="$colourify"
+  alias du="$colourify du"
 }
 
 function() { # ls
