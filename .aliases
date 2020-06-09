@@ -19,7 +19,7 @@ function compdefas() {
   compdef "$_comps[$a]" "${(@)*}=$a"
 }
 
-alias rm='trash'
+#alias rm='trash'
 
 alias vim="$EDITOR"
 alias  vi="$EDITOR"
