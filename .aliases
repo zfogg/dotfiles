@@ -219,10 +219,10 @@ function tree() {
 #alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
 
-#function npm-do {
-  # INFO: depracated; use `npx`
-  #(PATH=$(npm bin):$PATH; eval $@;)
-#}
+function npm-do {
+  #INFO: depracated; use `npx`
+  (PATH=$(npm bin):$PATH; eval $@;)
+}
 
 
 # pyenv
