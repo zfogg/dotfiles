@@ -160,10 +160,12 @@ if command_exists fzf; then
       #&& source "${fzfetc[@]}"
 
     # FZF_ALT_C_COMMAND
-    #export FZF_ALT_C_COMMAND='fd --type d'
-    #export FZF_ALT_C_OPTS="
-      #--preview '(tree -C {}) 2>/dev/null | head -200'
-    #"
+    #if command_exists fd; then
+      export FZF_ALT_C_COMMAND='fd --type d'
+    #fi
+    export FZF_ALT_C_OPTS="
+      --preview '(tree -C {}) 2>/dev/null | head -200'
+    "
     # / ALT-C -> CTRL-.
     bindkey -r '\ec'
     bindkey '^z' fzf-cd-widget
