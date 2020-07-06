@@ -149,6 +149,7 @@ if command_exists fzf; then
       --height=100% \
       --multi \
       ${CTRL_Z_KEYBINDS}
+      --bind ctrl-u:toggle-all
       --no-mouse \
     "
     #if command_exists fd; then

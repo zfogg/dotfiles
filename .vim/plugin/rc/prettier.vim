@@ -9,7 +9,9 @@ if z#util#HasPlugin('vim-prettier')
     aug RcPlugin__prettier
         au!
         "au BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html
-        au BufWritePre *.js,*.jsx,*.ts,*.tsx
+        au BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.graphql,*.md,*.vue,*.yaml,*.html
                     \ PrettierAsync
+        "au BufWritePre *.js,*.jsx,*.ts,*.tsx
+                    "\ PrettierAsync
     aug END
 endif
