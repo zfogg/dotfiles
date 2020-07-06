@@ -44,8 +44,9 @@ Plug 'junegunn/vim-plug'
     "elseif has('unix') || has('win32')
     if has('unix') || has('win32')
         Plug 'junegunn/fzf', PIf(executable('fzf'), { 'do': { -> fzf#install() } })
+        "Plug 'junegunn/fzf', PIf(executable('fzf'))
         Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
-        Plug 'yuki-ycino/fzf-preview.vim'
+        Plug 'yuki-ycino/fzf-preview.vim', PIf(executable('fzf'))
     endif
 
     "Plug 'easymotion/vim-easymotion'
@@ -88,7 +89,7 @@ Plug 'junegunn/vim-plug'
     Plug 'zchee/deoplete-zsh',        PIf(PHas('deoplete.nvim'),                    {'for': ['zsh']})
     Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
     "Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
-    Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
+    "Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
     Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
     "Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
     "Plug 'wokalski/autocomplete-flow', PIf(PHas('deoplete.nvim'))
@@ -138,11 +139,12 @@ Plug 'junegunn/vim-plug'
     Plug 'gisphm/vim-gitignore'
     Plug 'rust-lang/rust.vim',            {'for': ft['rs']}
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
-    Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
+    "Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
     Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
     Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
-    Plug 'prettier/vim-prettier',         {'do': 'yarn install', 'for': ft['js'] + ft['ts']}
+    "Plug 'prettier/vim-prettier',         {'do': 'yarn install', 'for': ft['js'] + ft['ts']}
+    Plug 'prettier/vim-prettier',         {'do': 'yarn install'}
         " 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
     Plug 'hashivim/vim-terraform',        {'for': ['terraform', 'json']}
     "Plug 'Quramy/tsuquyomi'
@@ -158,7 +160,7 @@ Plug 'junegunn/vim-plug'
     Plug 'plasticboy/vim-markdown',            {'for': ['markdown']}
     Plug 'nelstrom/vim-markdown-folding', {'for': ['markdown']}
     " web
-    Plug 'saltstack/salt-vim', {'for': ['sls']}
+    "Plug 'saltstack/salt-vim', {'for': ['sls']}
     Plug 'lepture/vim-jinja',  {'for': ft['jinja']}
     "Plug 'mattn/emmet-vim',    {'for': ft['markup'] + ft['styles'] + ['jsx', 'tsx']}
     Plug 'mattn/emmet-vim'
@@ -235,7 +237,7 @@ Plug 'junegunn/vim-plug'
     Plug 'saihoooooooo/vim-textobj-space'
     Plug 'jceb/vim-textobj-uri'
     Plug 'Julian/vim-textobj-variable-segment'
-    Plug 'libclang-vim/vim-textobj-clang', {'for': ft['cx']}
+    "Plug 'libclang-vim/vim-textobj-clang', {'for': ft['cx']}
     "Plug 'libclang-vim/vim-textobj-function-clang', {'for': ft['cx']}
     "Plug 'gilligan/textobj-gitgutter', PIf(PHas('vim-gitgutter') && PHas('vim-textobj-user'), {})
 
@@ -258,10 +260,10 @@ Plug 'junegunn/vim-plug'
     Plug 'kana/vim-operator-user'
     Plug 'haya14busa/vim-operator-flashy'
     Plug 'itchyny/vim-cursorword'
-    Plug 'itchyny/vim-parenmatch'
+    "Plug 'itchyny/vim-parenmatch'
     Plug 'kopischke/vim-fetch'
     Plug 'pbrisbin/vim-mkdir'
-    Plug 'AndrewRadev/switch.vim'
+    "Plug 'AndrewRadev/switch.vim'
     Plug 'vim-utils/vim-vertical-move'
     Plug 'tpope/vim-unimpaired'
 " }}}

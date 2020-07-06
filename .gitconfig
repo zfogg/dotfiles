@@ -33,32 +33,32 @@
 [grep]
     lineNumber = true
 
-[merge]
-    tool = vimdiff
-[mergetool]
-    prompt        = true
-    keepBackup    = false
-[mergetool "vimdiff"]
+[mergetool "nvim"]
     ;cmd           = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
     ;cmd           = nvim -f -c \"Gdiff\" \"$MERGED\"
     cmd            = $EDITOR -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    ;cmd            = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+    ;cmd            = vim -f -c \"Gdiffsplit!\" \"$MERGED\"
     trustExitCode  = true
+[merge]
+    tool = nvim
+[mergetool]
+    prompt        = false
+    keepBackup    = true
 
+[difftool "nvim"]
+    ;cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
+    cmd = vim -d \"$LOCAL\" \"$REMOTE\"
+    trustExitCode = true
 [diff]
-    tool = vimdiff3
+    tool = nvim
     wordRegex = [[:alnum:]_]+|[^[:alnum:]_[:space:]]+
-[difftool "vimdiff3"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
-    trustExitCode = true
-[difftool "vimdiff"]
-    ;cmd = \"$EDITOR\" -d \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c  'set ft=git' -c '$wincmd w' -c 'wincmd J'
-    trustExitCode = true
 
 
 [alias]
     submsync = submodule foreach \"git checkout master && git pull origin master\"
     mybranch = rev-parse --abbrev-ref HEAD
-    up       = pull --rebase --autostash
+	up = pull --ff-only --all -p
     gh       = joopal-clone git github.com
 
     l        = log -18 --all --topo-order
@@ -93,4 +93,5 @@
     clean  = git-media-clean %f
     smudge = git-media-smudge %f
 [pull]
+	ff = only
 	rebase = true

@@ -775,7 +775,7 @@
 			<key>Terraform</key>
 			<dict>
 				<key>date</key>
-				<date>2020-06-05T10:38:07Z</date>
+				<date>2020-06-29T23:09:17Z</date>
 				<key>entry</key>
 				<dict>
 					<key>aliases</key>
@@ -1321,7 +1321,7 @@
 	<key>isPinned</key>
 	<true/>
 	<key>menuIconBehavior</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>placeholderDelimiter</key>
 	<string>__</string>
 	<key>profiles</key>
@@ -1379,7 +1379,7 @@
 	<key>shouldRestoreTabs</key>
 	<true/>
 	<key>shouldShowStatusIcon</key>
-	<false/>
+	<true/>
 	<key>shouldStartAtLogin</key>
 	<true/>
 	<key>shouldSyncBookmarks</key>
