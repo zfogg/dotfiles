@@ -14,11 +14,15 @@ brew "mas"
 
 
 # mas {{{
-mas "Xcode", id: 497799835
-mas "Developer", id: 640199958
-mas "Messenger", id: 1480068668
-mas "Twitter", id: 1482454543
-mas "NextDNS", id: 1464122853
+mas "Xcode",             id: 497799835
+mas "Cleaner for Xcode", id: 1296084683
+mas "Developer",         id: 640199958
+
+mas "NextDNS",           id: 1464122853
+mas "Discovery",         id: 1381004916
+
+mas "Messenger",         id: 1480068668
+mas "Twitter",           id: 1482454543
 # mas }}}
 
 
@@ -43,7 +47,11 @@ cask "spectacle"
 
 cask "whatsapp"
 cask "slack"
+cask "discord"
 cask "notion"
+cask "github"
+
+cask "vimr"
 
 cask "gpg-suite"
 brew "pinentry-mac"
@@ -64,11 +72,15 @@ brew "findutils"
 brew "zsh"
 brew "powerlevel10k"
 brew "tmux"
+brew "reattach-to-user-namespace"
+
+brew "trash"
 
 brew "vim"
 brew "neovim", args: ["HEAD"]
 
 brew "git"
+brew "git-lfs"
 brew "ghq"
 
 brew "cabal-install"
@@ -91,8 +103,6 @@ brew "rustup-init"
 
 brew "ffmpeg"
 
-brew "wget"
-
 brew "ripgrep"
 brew "fd"
 
@@ -101,9 +111,11 @@ brew "lsd"
 brew "fzf"
 brew "tree"
 
+brew "wget"
 brew "curl"
 brew "ldns"
 brew "telnet"
+brew "htop"
 
 brew "grc"
 brew "bat"
