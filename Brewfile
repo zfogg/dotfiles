@@ -45,6 +45,9 @@ cask "whatsapp"
 cask "slack"
 cask "notion"
 
+cask "gpg-suite"
+brew "pinentry-mac"
+
 cask "font-fira-code"
 cask "font-noto-sans"
 # cask }}}
