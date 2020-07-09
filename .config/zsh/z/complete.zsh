@@ -40,8 +40,8 @@ zstyle ':predict'                verbose           true
 zstyle ':completion:*'           verbose           yes
 
 zstyle ':completion:*'           use-cache on
-zstyle ':completion:*'           cache-path "$ZDOTDIR/.cache"
-zstyle ':completion::complete:*' use-cache on
+#zstyle ':completion:*'           cache-path "$ZDOTDIR/.cache"
+#zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path "$ZDOTDIR/.zcompcache"
 
 #zstyle ':completion:::::'        completer          _complete _approximate # enable approximate matches for completion

@@ -87,6 +87,7 @@ function() { # {{{ AFTER platform-specifics
     $HOME/.local/bin
     $HOME/.nvm/$nvmv_root/bin
     $HOME/.{cabal,cargo,gem}/bin
+    $HOME/.gem/ruby/2.7.0/bin
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
     #$PYENV_ROOT/{bin,shims}
     $GOPATH/bin
