@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+local n="${1:-/dev/null/invalid}"
+if [[ ! -e $n ]]; then
+    >&2 echo '🔴  no file '"'$n'"' 😩' && exit 1
+fi
+
+palette="${TEMPDIR}palette.png"
+#filters="fps=15,scale=320:-1:flags=lanczos"
+filters="fps=30,scale=320:-1:flags=lanczos+full_chroma_inp"
+
+ffmpeg -v warning -i "$1" -vf "$filters,palettegen" -y "$palette"
+ffmpeg -v warning -i "$1" -i $palette -lavfi "$filters [x]; [x][1:v] paletteuse" -y "${1:r}".gif

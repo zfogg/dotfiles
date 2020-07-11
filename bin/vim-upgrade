@@ -9,12 +9,14 @@ function() { # Python, Pyenv, pip
     eval "$(pyenv init -)" #; eval "$(pyenv virtualenv-init -)"
     local pip_reqs="${XDG_CONFIG_HOME:-~/.config}/pyenv/neovim-packages"
 
-    pyenv activate 'neovim'
-    pip install -U wheel setuptools
-    pip install -U pip
-    pip install -U -r "$pip_reqs"
-
-    pyenv deactivate
+    #for penv in neovim3 neovim2; do
+    for penv in neovim3; do
+        pyenv activate "$penv"
+        pip install -U wheel setuptools
+        pip install -U pip
+        pip install -U -r "$pip_reqs"
+        pyenv deactivate
+    done
 }
 
 

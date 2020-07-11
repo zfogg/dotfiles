@@ -94,4 +94,4 @@
     smudge = git-media-smudge %f
 [pull]
 	ff = only
-	rebase = true
+	;rebase = true
