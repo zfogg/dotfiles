@@ -328,7 +328,20 @@ if has('osx')
         \    '+': 'pbpaste',
         \    '*': 'pbpaste',
         \ },
-        \ 'cache_enabled': 0,
+        \ 'cache_enabled': 1,
+    \ }
+elseif has("unix")
+    let g:clipboard = {
+        \ 'name': 'xclip',
+        \ 'copy': {
+        \    '+': 'env DISPLAY=:0 xclip -in',
+        \    '*': 'env DISPLAY=:0 xclip -in',
+        \  },
+        \ 'paste': {
+        \    '+': 'env DISPLAY=:0 xclip -out',
+        \    '*': 'env DISPLAY=:0 xclip -out',
+        \ },
+        \ 'cache_enabled': 1,
     \ }
 endif
 " }}} Syntax
