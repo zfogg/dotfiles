@@ -2,18 +2,23 @@
 
 cask_args appdir: "/Applications"
 
+
+# tap {{{
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/core"
-tap "homebrew/livecheck"
+#tap "homebrew/livecheck"
 tap "homebrew/services"
 tap "romkatv/powerlevel10k"
-
-brew "mas"
+tap "homebrew-ffmpeg/ffmpeg"
+tap "amiaopensource/amiaos"
+# tap }}}
 
 
 # mas {{{
+brew "mas"
+
 mas "Xcode",             id: 497799835
 mas "Cleaner for Xcode", id: 1296084683
 mas "Developer",         id: 640199958
@@ -101,7 +106,10 @@ brew "nvm"
 brew "rbenv"
 brew "rustup-init"
 
-brew "ffmpeg"
+brew "chromaprint", args: ["ignore-dependencies"]
+brew "decklinksdk"
+ALL_FFMPEG_OPTIONS = `brew options homebrew-ffmpeg/ffmpeg/ffmpeg | grep -vE '\s' | grep -- '--with-'`.gsub("--", "").split("\n")
+brew "homebrew-ffmpeg/ffmpeg/ffmpeg", args: ALL_FFMPEG_OPTIONS
 
 brew "ripgrep"
 brew "fd"
