@@ -30,8 +30,8 @@ bundles = [
         , (bundle "clarketm/zsh-completions")
             { fpathLocations = [] }
 
-        --, (bundle "RobSis/zsh-completion-generator")
-            --{ fpathLocations = [] }
+        , (bundle "RobSis/zsh-completion-generator")
+            { fpathLocations = [] }
 
         {-, (bundle "nojhan/liquidprompt")-}
             {-{ fpathLocations = [] }-}
