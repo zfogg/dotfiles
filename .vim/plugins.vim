@@ -32,6 +32,8 @@ Plug 'junegunn/vim-plug'
     Plug 'tmux-plugins/vim-tmux', PIf(executable('tmux'), { 'for': 'tmux' })
     Plug 'tmux-plugins/vim-tmux-focus-events', PIf(exists('$TMUX'))
     Plug 'christoomey/vim-tmux-navigator',     PIf(exists('$TMUX'))
+
+    Plug 'rfratto/vim-iterm2-navigator', PIf(!empty($ITERM_SESSION_ID) && isdirectory('/Applications/iTerm.app'), {'do': 'make install'})
 " }}}
 
 

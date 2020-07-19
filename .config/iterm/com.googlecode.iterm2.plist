@@ -12622,6 +12622,8 @@
 	<true/>
 	<key>DisablePasswordManagerAnimations</key>
 	<true/>
+	<key>DisableTmuxWindowResizing</key>
+	<false/>
 	<key>DisableWindowSizeSnap</key>
 	<false/>
 	<key>DisallowCopyEmptyString</key>
@@ -12637,7 +12639,7 @@
 	<key>EliminateCloseButtons</key>
 	<false/>
 	<key>EnableAPIServer</key>
-	<false/>
+	<true/>
 	<key>EnableDivisionView</key>
 	<true/>
 	<key>EnableProxyIcon</key>
@@ -12787,6 +12789,13 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0x68-0x40000-0x4</key>
+		<dict>
+			<key>Action</key>
+			<integer>60</integer>
+			<key>Text</key>
+			<string>vim_aware_select_pane(direction: "h")</string>
+		</dict>
 		<key>0x6a-0x100000</key>
 		<dict>
 			<key>Action</key>
@@ -12800,6 +12809,13 @@
 			<integer>21</integer>
 			<key>Text</key>
 			<string></string>
+		</dict>
+		<key>0x6a-0x40000-0x26</key>
+		<dict>
+			<key>Action</key>
+			<integer>60</integer>
+			<key>Text</key>
+			<string>vim_aware_select_pane(direction: "j")</string>
 		</dict>
 		<key>0x6b-0x100000</key>
 		<dict>
@@ -12815,6 +12831,13 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
+		<key>0x6b-0x40000-0x28</key>
+		<dict>
+			<key>Action</key>
+			<integer>60</integer>
+			<key>Text</key>
+			<string>vim_aware_select_pane(direction: "k")</string>
+		</dict>
 		<key>0x6c-0x100000</key>
 		<dict>
 			<key>Action</key>
@@ -12828,6 +12851,13 @@
 			<integer>19</integer>
 			<key>Text</key>
 			<string></string>
+		</dict>
+		<key>0x6c-0x40000-0x25</key>
+		<dict>
+			<key>Action</key>
+			<integer>60</integer>
+			<key>Text</key>
+			<string>vim_aware_select_pane(direction: "l")</string>
 		</dict>
 		<key>0x72-0x100000</key>
 		<dict>
@@ -13028,6 +13058,8 @@
 	<integer>4096</integer>
 	<key>MaxVertically</key>
 	<false/>
+	<key>MaximumBytesToProvideToPythonAPI</key>
+	<integer>512</integer>
 	<key>MaximumBytesToProvideToServices</key>
 	<integer>4094</integer>
 	<key>MetalDeferCurrentDrawable</key>
@@ -13046,6 +13078,8 @@
 	<string>~/src/github.com/zfogg/dotfiles/.config</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{799, 448}</string>
+	<key>NSOverlayScrollersFallBackForAccessoryViews</key>
+	<false/>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -15783,6 +15817,7 @@
 	</array>
 	<key>NoSyncAllAppVersions</key>
 	<array>
+		<string>3.4.0beta1</string>
 		<string>3.3.11</string>
 		<string>3.3.12beta3</string>
 	</array>
@@ -15811,8 +15846,10 @@
 	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>C9BE8181-BFCC-4BEE-B3A8-9A67D7E8A0D1</string>
+	<key>NoSyncLastOSVersion</key>
+	<string>Version 10.15.6 (Build 19G73)</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>25</integer>
+	<integer>39</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -15827,6 +15864,11 @@
 	<true/>
 	<key>NoSyncPermissionToShowTip</key>
 	<false/>
+	<key>NoSyncPersistentRateLimitedUpdates</key>
+	<dict>
+		<key>CheckForUpdatedPythonRuntime</key>
+		<real>617027942.99598801</real>
+	</dict>
 	<key>NoSyncRecordedVariables</key>
 	<dict>
 		<key>0</key>
@@ -15934,6 +15976,14 @@
 				<key>isTerminal</key>
 				<true/>
 				<key>name</key>
+				<string>selectionLength</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
 				<string>path</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
@@ -15945,6 +15995,14 @@
 				<string>triggerName</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<false/>
+				<key>name</key>
+				<string>parentSession</string>
+				<key>nonterminalContext</key>
+				<integer>1</integer>
 			</dict>
 			<dict>
 				<key>isTerminal</key>
@@ -16063,6 +16121,14 @@
 				<true/>
 				<key>name</key>
 				<string>tmuxStatusLeft</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>selection</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -16573,6 +16639,8 @@
 			</dict>
 		</array>
 	</dict>
+	<key>NoSyncRestoreWindowsCount</key>
+	<integer>0</integer>
 	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
 	<real>615365088.99461401</real>
 	<key>NumberOfLinesForAccessibility</key>
@@ -16723,15 +16791,15 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/testing_new.xml?shard=57</string>
+	<string>https://iterm2.com/appcasts/testing_modern.xml?shard=57</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-07-14T10:00:02Z</date>
+	<date>2020-07-19T04:35:44Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
-	<integer>705409272</integer>
+	<integer>1743582800</integer>
 	<key>SUUpdateRelaunchingMarker</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -16742,6 +16810,8 @@
 	<false/>
 	<key>SeparateStatusBarsPerPane</key>
 	<false/>
+	<key>SetCookie</key>
+	<true/>
 	<key>ShortLivedSessionDuration</key>
 	<real>2</real>
 	<key>ShowBookmarkName</key>
@@ -21061,7 +21131,7 @@
 	<key>findRegex_iTerm</key>
 	<true/>
 	<key>iTerm Version</key>
-	<string>3.3.12beta3</string>
+	<string>3.4.0beta1</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>

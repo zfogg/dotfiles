@@ -1,19 +1,13 @@
 [submodule ".config/base16-shell"]
-    ignore = dirty
+	ignore = dirty
 	path = .config/base16-shell
 	url = git@github.com:chriskempson/base16-shell
 [submodule ".zsh/antigen-hs"]
 	path = .zsh/antigen-hs
 	url = git@github.com:zfogg/antigen-hs.git
-[submodule ".zsh/zsh-completion-generator"]
-	path = .zsh/zsh-completion-generator
-	url = git@github.com:RobSis/zsh-completion-generator
 [submodule ".config/base16-iterm2"]
 	path = .config/base16-iterm2
 	url = git@github.com:chriskempson/base16-iterm2.git
-[submodule "Library/Developer/Xcode/UserData/FontAndColorThemes/Base16"]
-	path = Library/Developer/Xcode/UserData/FontAndColorThemes/Base16
-	url = git@github.com:joedynamite/base16-xcode
 [submodule "Library/Colors/Base16"]
 	path = Library/Colors/Base16
 	url = git@github.com:chriskempson/base16-osx-color-palette.git
@@ -23,6 +17,6 @@
 [submodule ".config/base16-terminal-app"]
 	path = .config/base16-terminal-app
 	url = git@github.com:vbwx/base16-terminal-app.git
-[submodule ".zsh/zsh-autosuggestions"]
-	path = .zsh/zsh-autosuggestions
-	url = git@github.com:zsh-users/zsh-autosuggestions.git
+[submodule "Library/Developer/Xcode/UserData/FontAndColorThemes/base16-xcode"]
+	path = Library/Developer/Xcode/UserData/FontAndColorThemes/base16-xcode
+	url = git@github.com:kreeger/base16-xcode.git
