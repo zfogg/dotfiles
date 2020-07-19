@@ -104,7 +104,7 @@ function() { # grep, rg
 
   export GENCOMPL_FPATH="$HOME/.zsh/complete"
   if [[ -d $GENCOMPL_FPATH ]]; then
-    source ~/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
+    #source ~/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
   else
     unset GENCOMPL_FPATH
   fi
