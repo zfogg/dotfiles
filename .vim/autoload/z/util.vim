@@ -55,3 +55,21 @@ fun! z#util#HasPlugin(name) abort
     let l:plugs = get(g:, 'plugs', {})
     return has_key(l:plugs, l:name)
 endfun
+
+
+fun! z#util#GetSetEnv(env_key, env_val) abort
+    let l:environ = environ()
+    let l:env_key = get(a:, 'env_key', '')
+    let l:env_val = get(a:, 'env_val', '')
+    try
+        if empty(l:env_key) | throw "EmptyEnvKey" | endif
+        let l:env_val = get(l:environ, l:env_key, l:env_val)
+    catch /^EmptyEnvKey/
+        echom "empty env_key = '".l:env_key."'"
+    finally
+        if !has_key(l:environ, l:env_key)
+            exec "let $".l:env_key." = '".l:env_val."'"
+        endif
+    endtry
+    return eval('$'.l:env_key)
+endfun

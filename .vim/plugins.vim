@@ -192,7 +192,8 @@ Plug 'junegunn/vim-plug'
 
     Plug 'PProvost/vim-ps1'
     Plug 'PotatoesMaster/i3-vim-syntax', {'for': 'i3'}
-    Plug 'darfink/vim-plist',      {'for': ['plist']}
+    "Plug 'darfink/vim-plist',      {'for': ['plist']}
+    Plug 'darfink/vim-plist'
     Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
     "Plug 'LnL7/vim-nix'
     Plug 'alvan/vim-closetag',     {'for': ['javascript.jsx', 'typescript.tsx', 'html']}

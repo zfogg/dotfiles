@@ -1,4 +1,5 @@
-# vi: ft=ruby
+# vi: ft=ruby fdm=marker
+# INFO: ~/.dotfiles/Brewfile
 
 cask_args appdir: "/Applications"
 
@@ -49,6 +50,7 @@ cask "blackhole"
 cask "obs"
 
 cask "spectacle"
+cask "appcleaner"
 
 cask "whatsapp"
 cask "slack"
@@ -132,3 +134,4 @@ brew "pygments"
 brew "docker"
 brew "docker-compose"
 # brew }}}
+
