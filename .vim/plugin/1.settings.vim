@@ -76,6 +76,8 @@ set viewoptions+=cursor,curdir,folds
     \ })
         "let s:dir = g:dotvim_f.'/'.s:dir_path
         if has('unix')
+            let s:data_home = z#util#GetSetEnv('XDG_DATA_HOME', $HOME.'/.local/share')
+            "if isdirectory(s:data_home)
             let s:dir = $XDG_DATA_HOME.'/'.s:editor_name.'/'.s:dir_path
         elseif has('win32')
             let s:dir = $LOCALAPPDATA.'/'.s:editor_name.'-data'.'/'.s:dir_path
