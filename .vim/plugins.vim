@@ -40,13 +40,15 @@ Plug 'junegunn/vim-plug'
     "if has('mac')
         "let s:fzfd = expand("$BREW/opt/fzf")
         "if !isdirectory(s:fzfd) | throw 'Z:NotFound fzf_dir: '.s:fzfd | endif
-        "exe "Plug '".s:fzfd."', PIf(executable('fzf'))"
+        "exe "Plug '".s:fzfd."', { 'do': { -> fzf#install } })"
     "elseif has('unix') || has('win32')
     if has('unix') || has('win32')
-        Plug 'junegunn/fzf', PIf(executable('fzf'), { 'do': { -> fzf#install() } })
+        "Plug 'junegunn/fzf', PIf(executable('fzf'), { 'do': { -> fzf#install() } })
         "Plug 'junegunn/fzf', PIf(executable('fzf'))
-        Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
-        Plug 'yuki-ycino/fzf-preview.vim', PIf(executable('fzf'))
+        "Plug 'junegunn/fzf.vim', PIf(executable('fzf'))
+        Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+        Plug 'junegunn/fzf.vim', PIf(PHas('fzf'), {})
+        Plug 'yuki-ycino/fzf-preview.vim', PIf(PHas('fzf'), {})
     endif
 
     "Plug 'easymotion/vim-easymotion'
@@ -85,7 +87,13 @@ Plug 'junegunn/vim-plug'
 
     " deoplete
     "Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))
-    Plug 'Shougo/deoplete.nvim',      PIf(has('nvim'),                              {'do': ':UpdateRemotePlugins'})
+    if has('nvim')
+        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    else
+        Plug 'Shougo/deoplete.nvim'
+        Plug 'roxma/nvim-yarp'
+        Plug 'roxma/vim-hug-neovim-rpc'
+    endif
     Plug 'zchee/deoplete-zsh',        PIf(PHas('deoplete.nvim'),                    {'for': ['zsh']})
     Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
     "Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})

@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 
 
-autoload -Uz bin-abort ba-err echoer
-trap 'bin-abort' ERR
+#autoload -Uz bin-abort ba-err echoer
+#trap 'bin-abort' ERR
 
 
 [[ "${OSX:-0}" == "${TRUE:-1}" ]] && [ -t 1 ] && tput rmam

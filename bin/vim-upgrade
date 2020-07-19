@@ -5,100 +5,209 @@ autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
 
 
-function() { # Python, Pyenv, pip
-    eval "$(pyenv init -)" #; eval "$(pyenv virtualenv-init -)"
-    local pip_reqs="${XDG_CONFIG_HOME:-~/.config}/pyenv/neovim-packages"
+# OSX - use gdate from GNU Coreutils
+scriptname="$(command -p ls "$0" | xargs basename)"
 
-    #for penv in neovim3 neovim2; do
-    for penv in neovim3; do
-        pyenv activate "$penv"
-        pip install -U wheel setuptools
-        pip install -U pip
-        pip install -U -r "$pip_reqs"
-        pyenv deactivate
-    done
+function get_datetime() {
+    local date_fmt='%s.%N'
+    if [[ $OSTYPE =~ "darwin" ]] && `which gdate >/dev/null`; then
+        gdate +$date_fmt
+    else
+        date +$date_fmt
+    fi
+}
+
+start_time=$(get_datetime)
+
+function log_section() {
+    echo "$scriptname: ${@}"
+}
+
+function log_section_start() {
+    local section_start_time=$(get_datetime)
+    local elapsed_time=$(printf "%.3g" $(( section_start_time - start_time )))
+    echo
+    log_section "START | $@ | started at $elapsed_time seconds"
+    #start_time=$(get_datetime)
+}
+function log_section_end() {
+    local stop_time=$(get_datetime)
+    local elapsed_time=$(printf "%.3g" $(( stop_time - start_time )))
+    log_section "END | $@ | took $elapsed_time seconds"
+    echo
 }
 
 
-function() { # Node.js, npm, nvm
-    local npm_reqs=(
-        jsonlint
-        tern
-        neovim)
-    source ~/.nvm/nvm.sh
-    nvm use
-    npm --silent install --global ${npm_reqs}
+function() {
+    local section="Python, Pyenv, pip"
+    log_section_start "$section"
 
-    #nvm install stable \
-        #--latest-npm
-    #nvm alias default stable
+    #if [ -v PYENV_VIRTUALENV_INIT ]; then
+        #eval "$(pyenv init -)" ; #eval "$(pyenv virtualenv-init -)"
+    #fi
+    eval "$(pyenv init -)" ; #eval "$(pyenv virtualenv-init -)"
+    local pip_reqs="${XDG_CONFIG_HOME:-~/.config}/pyenv/neovim-packages"
+
+    #for penv in neovim3; do
+    #for penv in neovim3 neovim2 neovim; do
+    for penv in neovim; do
+        pyenv activate "$penv"
+        pip --quiet install --upgrade wheel setuptools
+        pip --quiet install --upgrade pip
+        pip --quiet install --upgrade --requirement "$pip_reqs"
+        pyenv rehash
+        pyenv deactivate
+    done
+
+    log_section_end "$section"
+}
+
+
+function() {
+    local section="Node.js, npm, nvm"
+    log_section_start "$section"
+
+    #local npm_reqs=$(cat ~/.nvm/default-packages)
+    source ~/.nvm/nvm.sh
+    nvm install stable --latest-npm --no-progress
+    nvm alias default stable
+    #npm install --loglevel silent --global "$npm_reqs[@]"
+    #npm install --global ${npm_reqs}
 }
 
 
 function() { # Rust, rustup, Cargo
+    local section="Rust, rustup, Cargo"
+    log_section_start "$section"
+
+    local cargo_rels=(
+        stable
+        beta
+        #nightly-2020-07-11
+        #nightly-2020-07-12
+    )
+
     local cargo_reqs=(
-        racer clippy)
-    for rel in $cargo_rels; do
-        rustup update "$rel"
-        for req in $cargo_reqs; do
-            cargo +"$rel" install "$req" \
-                2>/dev/null || true
-        done
-    done
+        #racer
+        #clippy
+    )
 
     local ru_comps=(
-        clippy rustfmt rls rust-src rust-analysis)
-    for x in $ru_comps; do
-        rustup component add $x || rustup component add $x-preview
+        cargo
+        clippy
+        llvm-tools
+        miri
+        rls
+        rust
+        rust-analysis
+        rust-analyzer
+        rust-docs
+        rust-src
+        rust-std
+        rustc
+        rustc-dev
+        rustfmt
+    )
+
+    for rel in $cargo_rels; do
+        rustup update "$rel"
+        for ru_comp in $ru_comps; do
+            true && \
+                rustup component add --toolchain="$rel" "$ru_comp" || \
+                rustup component add --toolchain="$rel" "${ru_comp}-preview" || \
+                true
+        done
+        #for req in $cargo_reqs; do
+            #cargo +"$rel" install "$req" \
+                #2>/dev/null || true
+        #done
     done
+
+    log_section_end "$section"
 }
 
 
 function() { # Ruby, Gem
+    local section="Ruby, Gem"
+    log_section_start "$section"
+
     local gem_reqs=(
+        bundler
         neovim
     )
-    for r in ${gem_reqs};
+    for r in ${gem_reqs}; do
         gem install "$r"
+    done
+
+    log_section_end "$section"
 }
 
 
 function() { # Golang
+    local section="Golang"
+    log_section_start "$section"
+
     local goget_reqs=(
         github.com/nsf/gocode
     )
-    for r in ${goget_reqs};
+    for r in ${goget_reqs}; do
         go get -u "$r"
+    done
+
+    log_section_end "$section"
 }
 
 
-# NOTE: build/install editor binaries last
-function() { # OS package manager
-    # OSX
-    if [[ $OSTYPE =~ "darwin" ]]; then
-        local brew_reqs=(
-            #vim
-            neovim)
-        for r in ${brew_reqs};
-            brew ls --versions "$r" > /dev/null \
-                || brew install "$r"
+# NOTE: build/install editor binaries second-to-last
+function() {
+    local section="OS package manager"
+    log_section_start "$section"
 
-    # Manjaro (Arch-based)
-    elif [[ -f /etc/manjaro-release ]]; then
-        #local pamac_reqs=(
-            #neovim-nightly)
-        #for r in ${pamac_reqs};
-            #echo "> pamac reinstall ${r}"
-            #pacman -Q "$r" || pamac reinstall "$r"
+    if [[ $OSTYPE =~ "darwin" ]]; then # OSX
+        # local brew_reqs=(
+        #     vim
+        #     neovim
+        # )
+        # for r in ${brew_reqs}; do
+        #     brew ls --versions "$r" > /dev/null || brew install "$r"
+        # done
+
+        # FIXME: brew sux
+        local neovim_brew_cache="$HOME/Library/Caches/Homebrew/neovim--git"
+        if `which -p nvim >/dev/null` && [[ -d $neovim_brew_cache ]]; then
+            cd "$neovim_brew_cache"
+            git fetch origin --tags --force
+            cd -
+            brew upgrade neovim --fetch-HEAD --keep-tmp
+        elif `which -p nvim >/dev/null`; then
+            #brew uninstall neovim --ignore-dependencies
+            brew reinstall --keep-tmp neovim
+        else
+            brew install --fetch-HEAD --keep-tmp neovim --HEAD
+        fi
+
+    elif [[ -f /etc/manjaro-release ]]; then # Manjaro (Arch-based)
+        # local pamac_reqs=(
+        #     neovim-nightly)
+        # for r in ${pamac_reqs};
+        #     echo "> pamac reinstall ${r}"
+        #     pacman -Q "$r" || pamac reinstall "$r"
     fi
+
+    log_section_end "$section"
 }
 
 
-function() { # Editor Plugins
+function() {
+    local section="Editor Plugins"
+    log_section_start "$section"
+
     local editor="${EDITOR:-nvim}"
 
     $editor +PlugUpgrade +qall
     $editor +PlugClean +PlugInstall +qall
     $editor +PlugUpdate
+
+    log_section_end "$section"
 }
 
