@@ -33,6 +33,7 @@ function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $HOME/.rbenv/shims
+      $BREW/opt/ruby/bin
       $BREW/{bin,sbin}
       #/Library/Developer/CommandLineTools/usr/bin
       "$path[@]"
