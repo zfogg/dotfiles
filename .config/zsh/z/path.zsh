@@ -32,7 +32,6 @@ function() { # {{{ BEFORE platform-specifics
 function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
-      $HOME/.rbenv/shims
       $BREW/opt/ruby/bin
       $BREW/{bin,sbin}
       #/Library/Developer/CommandLineTools/usr/bin
@@ -80,17 +79,15 @@ function () { # {{{ platform-specifics
 } # }}}
 
 function() { # {{{ AFTER platform-specifics
-  local nvmv=$(<~/.nvm/alias/$(<~/.nvmrc))
-  local nvmv_root=versions/node/v$nvmv
-
   path=(
     $HOME/bin
     $HOME/.local/bin
-    $HOME/.nvm/$nvmv_root/bin
-    $HOME/.{cabal,cargo,gem}/bin
-    $HOME/.gem/ruby/2.7.0/bin
+    $HOME/.{cabal,cargo}/bin
+    $HOME/.nvm/versions/node/v*.*.*/bin(oanF[1])
+    $HOME/.rbenv/shims
+    $HOME/.gem/ruby/*.*.*/bin(oanF[1])
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
-    #$PYENV_ROOT/{bin,shims}
+    $PYENV_ROOT/{bin,shims}
     $GOPATH/bin
     "$path[@]")
 
