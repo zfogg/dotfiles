@@ -40,6 +40,8 @@
 	<integer>5</integer>
 	<key>BellRateLimit</key>
 	<real>2</real>
+	<key>BootstrapDaemon</key>
+	<false/>
 	<key>BracketedPasteMode</key>
 	<true/>
 	<key>CGFontRenderingFontSmoothingDisabled</key>
@@ -12639,7 +12641,7 @@
 	<key>EliminateCloseButtons</key>
 	<false/>
 	<key>EnableAPIServer</key>
-	<true/>
+	<false/>
 	<key>EnableDivisionView</key>
 	<true/>
 	<key>EnableProxyIcon</key>
@@ -12789,13 +12791,6 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x68-0x40000-0x4</key>
-		<dict>
-			<key>Action</key>
-			<integer>60</integer>
-			<key>Text</key>
-			<string>vim_aware_select_pane(direction: "h")</string>
-		</dict>
 		<key>0x6a-0x100000</key>
 		<dict>
 			<key>Action</key>
@@ -12809,13 +12804,6 @@
 			<integer>21</integer>
 			<key>Text</key>
 			<string></string>
-		</dict>
-		<key>0x6a-0x40000-0x26</key>
-		<dict>
-			<key>Action</key>
-			<integer>60</integer>
-			<key>Text</key>
-			<string>vim_aware_select_pane(direction: "j")</string>
 		</dict>
 		<key>0x6b-0x100000</key>
 		<dict>
@@ -12831,13 +12819,6 @@
 			<key>Text</key>
 			<string></string>
 		</dict>
-		<key>0x6b-0x40000-0x28</key>
-		<dict>
-			<key>Action</key>
-			<integer>60</integer>
-			<key>Text</key>
-			<string>vim_aware_select_pane(direction: "k")</string>
-		</dict>
 		<key>0x6c-0x100000</key>
 		<dict>
 			<key>Action</key>
@@ -12851,13 +12832,6 @@
 			<integer>19</integer>
 			<key>Text</key>
 			<string></string>
-		</dict>
-		<key>0x6c-0x40000-0x25</key>
-		<dict>
-			<key>Action</key>
-			<integer>60</integer>
-			<key>Text</key>
-			<string>vim_aware_select_pane(direction: "l")</string>
 		</dict>
 		<key>0x72-0x100000</key>
 		<dict>
@@ -13069,15 +13043,21 @@
 	<key>MinCompactTabWidth</key>
 	<integer>50</integer>
 	<key>MinRunningTime</key>
-	<real>25</real>
+	<real>10</real>
 	<key>MinTabWidth</key>
 	<integer>85</integer>
 	<key>MinimumTabDragDistance</key>
 	<integer>12</integer>
+	<key>Multiserver</key>
+	<true/>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/src/github.com/zfogg/dotfiles/.config</string>
+	<string>~/src/github.com/zfogg/dotfiles</string>
+	<key>NSNavLastUserSetHideExtensionButtonState</key>
+	<false/>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{799, 448}</string>
+	<key>NSNavPanelExpandedSizeForSaveMode</key>
+	<string>{712, 448}</string>
 	<key>NSOverlayScrollersFallBackForAccessoryViews</key>
 	<false/>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -13122,7 +13102,7 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
-	<string>496 486 799 448 0 0 1792 1097 </string>
+	<string>496 580 347 181 0 0 1792 1120 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>586 546 620 392 0 0 1792 1120 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
@@ -13716,7 +13696,7 @@
 			<key>Send Terminal Generated Alerts</key>
 			<true/>
 			<key>Session Close Undo Timeout</key>
-			<integer>42</integer>
+			<integer>0</integer>
 			<key>Set Local Environment Vars</key>
 			<true/>
 			<key>Shortcut</key>
@@ -15835,13 +15815,24 @@
 	</array>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
+	<key>NoSyncFrame_SessionsPreferences</key>
+	<dict>
+		<key>screenFrame</key>
+		<string>{{0, 0}, {1792, 1120}}</string>
+		<key>topLeft</key>
+		<string>{593, 976}</string>
+	</dict>
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
 		<string>{{0, 0}, {1792, 1120}}</string>
 		<key>topLeft</key>
-		<string>{269, 595}</string>
+		<string>{358, 817}</string>
 	</dict>
+	<key>NoSyncFunctionCallError_SilenceUntil</key>
+	<real>616856081.57702196</real>
+	<key>NoSyncFunctionCallError_selection</key>
+	<integer>0</integer>
 	<key>NoSyncHaveUsedCopyMode</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
@@ -15849,7 +15840,7 @@
 	<key>NoSyncLastOSVersion</key>
 	<string>Version 10.15.6 (Build 19G73)</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>39</integer>
+	<integer>53</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -16212,6 +16203,14 @@
 				<true/>
 				<key>name</key>
 				<string>style</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>currentTab.currentSession.jobPid</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -16641,6 +16640,10 @@
 	</dict>
 	<key>NoSyncRestoreWindowsCount</key>
 	<integer>0</integer>
+	<key>NoSyncSuppressMissingProfileInArrangementWarning</key>
+	<false/>
+	<key>NoSyncSuppressRestartSessionConfirmationAlert</key>
+	<false/>
 	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
 	<real>615365088.99461401</real>
 	<key>NumberOfLinesForAccessibility</key>
@@ -16736,13 +16739,13 @@
 	<key>ResetSGROnPrompt</key>
 	<true/>
 	<key>RestoreWindowContents</key>
-	<true/>
+	<false/>
 	<key>RightCommand</key>
 	<integer>8</integer>
 	<key>RightOption</key>
 	<integer>3</integer>
 	<key>RunJobsInServers</key>
-	<true/>
+	<false/>
 	<key>SGTRecentFileSearches</key>
 	<array>
 		<dict>

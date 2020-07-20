@@ -24,17 +24,21 @@ mas "Xcode",             id: 497799835
 mas "Cleaner for Xcode", id: 1296084683
 mas "Developer",         id: 640199958
 
+mas "1Password 7",       id: 1333542190
+mas "WhatsApp",          id: 1147396723
+
 mas "NextDNS",           id: 1464122853
 mas "Discovery",         id: 1381004916
 
 mas "Messenger",         id: 1480068668
 mas "Twitter",           id: 1482454543
+mas "Vimari",            id: 1480933944
+mas "slack",             id: 803453959
 # mas }}}
 
 
 # cask {{{
 cask "iterm2"
-cask "1password"
 cask "1password-cli"
 cask "authy"
 cask "dropbox"
@@ -52,8 +56,6 @@ cask "obs"
 cask "spectacle"
 cask "appcleaner"
 
-cask "whatsapp"
-cask "slack"
 cask "discord"
 cask "notion"
 cask "github"
@@ -65,6 +67,10 @@ brew "pinentry-mac"
 
 cask "font-fira-code"
 cask "font-noto-sans"
+cask "font-meslo-lg"
+cask "font-meslolg-nerd-font"
+
+cask "deluge"
 # cask }}}
 
 
