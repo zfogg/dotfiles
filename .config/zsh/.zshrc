@@ -12,7 +12,10 @@ fi
 
 
 # init: zsh modules, autoload, antigen-hs {{{
-zmodload zsh/zpty
+zmodload -a zsh/zpty zpty
+zmodload -a zsh/stat stat
+zmodload -a zsh/zprof zprof
+zmodload -a zsh/mapfile mapfile
 
 autoload -Uz          \
     select-word-style \
@@ -20,7 +23,13 @@ autoload -Uz          \
 select-word-style normal
 zsh-mime-setup
 
-export ANTIGEN_HS_SANDBOX='stack'
+function () {
+  local zsh_autosuggestions_config_file="$HOME/.zsh/zsh-autosuggestions.config.zsh"
+  [[ -f $zsh_autosuggestions_config_file ]] && source "$zsh_autosuggestions_config_file"
+}
+
+#export ANTIGEN_HS_SANDBOX='stack'
+export ANTIGEN_HS_SANDBOX='cabal'
 source ~/.zsh/antigen-hs/init.zsh
 # }}}
 
