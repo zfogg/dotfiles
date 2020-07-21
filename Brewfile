@@ -71,6 +71,11 @@ cask "font-meslo-lg"
 cask "font-meslolg-nerd-font"
 
 cask "deluge"
+
+cask "adoptopenjdk"
+cask "adoptopenjdk"
+
+cask "visual-studio-code"
 # cask }}}
 
 
@@ -83,9 +88,13 @@ brew "gnu-tar"
 brew "findutils"
 
 brew "zsh"
+brew "bash"
 brew "powerlevel10k"
 brew "tmux"
 brew "reattach-to-user-namespace"
+
+brew "cocoapods"
+brew "p7zip"
 
 brew "trash"
 
@@ -118,6 +127,7 @@ brew "chromaprint", args: ["ignore-dependencies"]
 brew "decklinksdk"
 ALL_FFMPEG_OPTIONS = `brew options homebrew-ffmpeg/ffmpeg/ffmpeg | grep -vE '\s' | grep -- '--with-'`.gsub("--", "").split("\n")
 brew "homebrew-ffmpeg/ffmpeg/ffmpeg", args: ALL_FFMPEG_OPTIONS
+brew "youtube-dl"
 
 brew "ripgrep"
 brew "fd"
@@ -139,5 +149,7 @@ brew "pygments"
 
 brew "docker"
 brew "docker-compose"
+
+brew "openjdk"
 # brew }}}
 

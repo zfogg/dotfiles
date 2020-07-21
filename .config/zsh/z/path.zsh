@@ -87,7 +87,7 @@ function() { # {{{ AFTER platform-specifics
     $HOME/.rbenv/shims
     $HOME/.gem/ruby/*.*.*/bin(oanF[1])
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
-    $PYENV_ROOT/{bin,shims}
+    #$HOME/.pyenv/shims
     $GOPATH/bin
     "$path[@]")
 

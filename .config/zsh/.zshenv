@@ -17,7 +17,7 @@
       echo "#}''}}" >> "$SHELL_DEBUG_LOG"
       $EDITOR "$SHELL_DEBUG_LOG"
     }
-    zmodload zsh/datetime
+    zmodload -a zsh/datetime datetime
     setopt PROMPT_SUBST
     PS4=$'#}'$'}}\012\012\012# %x:%I {'$'{{\012# %N:i \012# +$EPOCHREALTIME\012  '
     #PS4='+$EPOCHREALTIME %N:%i> '
