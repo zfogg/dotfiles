@@ -62,6 +62,8 @@ cask "github"
 
 cask "vimr"
 
+cask "disk-inventory-x"
+
 cask "gpg-suite"
 brew "pinentry-mac"
 
@@ -136,6 +138,11 @@ brew "jq"
 brew "lsd"
 brew "fzf"
 brew "tree"
+
+brew "translate-shell"
+brew "mplayer"
+brew "mpv", args: ["ignore-dependencies"]
+brew "mpg123"
 
 brew "wget"
 brew "curl"
