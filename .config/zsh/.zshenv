@@ -170,6 +170,11 @@ export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 # node }}}
 
 
+# ruby {{{
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${BREW}/opt/openssl@1.1"
+# ruby }}}
+
+
 # python {{{
 export PIP_REQUIRE_VIRTUALENV=true
 #if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then;
