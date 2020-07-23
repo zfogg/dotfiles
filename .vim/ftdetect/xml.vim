@@ -7,5 +7,5 @@
     "\ setfiletype xml
 
 au BufRead,BufNewFile
-        \,*.xml
+        \ *.xml
     \ setfiletype xml
