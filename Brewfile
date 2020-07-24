@@ -71,6 +71,7 @@ cask "font-fira-code"
 cask "font-noto-sans"
 cask "font-meslo-lg"
 cask "font-meslolg-nerd-font"
+cask "font-recursive"
 
 cask "deluge"
 
@@ -117,12 +118,16 @@ brew "ipython"
 brew "go"
 
 brew "ruby"
-brew "ruby-build"
 
 brew "pyenv"
 brew "pyenv-virtualenv"
 brew "nvm"
+
 brew "rbenv"
+brew "rbenv-default-gems"
+brew "rbenv-vars"
+brew "rbenv-bundler"
+
 brew "rustup-init"
 
 brew "chromaprint", args: ["ignore-dependencies"]
