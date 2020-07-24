@@ -319,31 +319,39 @@ set viewoptions+=cursor,curdir,folds
 
 
 " {{{ Clipboard
-if has('osx')
-    let g:clipboard = {
-        \ 'name': 'pbcopy',
-        \ 'copy': {
-        \    '+': 'pbcopy',
-        \    '*': 'pbcopy',
-        \  },
-        \ 'paste': {
-        \    '+': 'pbpaste',
-        \    '*': 'pbpaste',
-        \ },
-        \ 'cache_enabled': 1,
-    \ }
-elseif has("unix")
-    let g:clipboard = {
-        \ 'name': 'xclip',
-        \ 'copy': {
-        \    '+': 'env DISPLAY=:0 xclip -in',
-        \    '*': 'env DISPLAY=:0 xclip -in',
-        \  },
-        \ 'paste': {
-        \    '+': 'env DISPLAY=:0 xclip -out',
-        \    '*': 'env DISPLAY=:0 xclip -out',
-        \ },
-        \ 'cache_enabled': 1,
-    \ }
-endif
+    if has('osx')
+        let g:clipboard = {
+            \ 'name': 'pbcopy',
+            \ 'copy': {
+            \    '+': 'pbcopy',
+            \    '*': 'pbcopy',
+            \  },
+            \ 'paste': {
+            \    '+': 'pbpaste',
+            \    '*': 'pbpaste',
+            \ },
+            \ 'cache_enabled': 1,
+        \ }
+    elseif has("unix")
+        let g:clipboard = {
+            \ 'name': 'xclip',
+            \ 'copy': {
+            \    '+': 'env DISPLAY=:0 xclip -in',
+            \    '*': 'env DISPLAY=:0 xclip -in',
+            \  },
+            \ 'paste': {
+            \    '+': 'env DISPLAY=:0 xclip -out',
+            \    '*': 'env DISPLAY=:0 xclip -out',
+            \ },
+            \ 'cache_enabled': 1,
+        \ }
+    endif
+" }}} Clipboard
+
+
+" {{{ Mouse stuff
+    " INFO: https://www.iterm2.com/faq.html
+    if has('mouse_sgr')
+        set ttymouse=sgr
+    endif
 " }}} Syntax

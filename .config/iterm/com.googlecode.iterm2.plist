@@ -44,8 +44,6 @@
 	<false/>
 	<key>BracketedPasteMode</key>
 	<true/>
-	<key>CGFontRenderingFontSmoothingDisabled</key>
-	<false/>
 	<key>CheckTestRelease</key>
 	<true/>
 	<key>ClosingHotkeySwitchesSpaces</key>
@@ -12973,7 +12971,7 @@
 	<key>HideMenuBarInFullscreen</key>
 	<true/>
 	<key>HideScrollbar</key>
-	<true/>
+	<false/>
 	<key>HideTab</key>
 	<true/>
 	<key>HideTabCloseButton</key>
@@ -13377,6 +13375,8 @@
 			</dict>
 			<key>Bound Hosts</key>
 			<array/>
+			<key>Brighten Bold Text</key>
+			<true/>
 			<key>Character Encoding</key>
 			<integer>4</integer>
 			<key>Close Sessions On End</key>
@@ -13437,7 +13437,7 @@
 			<key>Disable Window Resizing</key>
 			<false/>
 			<key>Draw Powerline Glyphs</key>
-			<true/>
+			<false/>
 			<key>Flashing Bell</key>
 			<false/>
 			<key>Foreground Color</key>
@@ -13629,7 +13629,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>MesloLGS-NF-Regular 14</string>
+			<string>RecursiveMonoCsl-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -13649,7 +13649,7 @@
 			<key>Screen</key>
 			<integer>-2</integer>
 			<key>Scrollback Lines</key>
-			<integer>4096</integer>
+			<integer>8192</integer>
 			<key>Scrollback With Status Bar</key>
 			<false/>
 			<key>Scrollback in Alternate Screen</key>
@@ -13712,7 +13712,7 @@
 			<key>Smart Selection Rules</key>
 			<array/>
 			<key>Space</key>
-			<integer>0</integer>
+			<integer>-1</integer>
 			<key>Status Bar Layout</key>
 			<dict>
 				<key>advanced configuration</key>
@@ -13978,7 +13978,7 @@
 			<key>Thin Strokes</key>
 			<integer>1</integer>
 			<key>Title Components</key>
-			<integer>513</integer>
+			<integer>386</integer>
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Triggers</key>
@@ -14000,7 +14000,7 @@
 			<key>Use Italic Font</key>
 			<true/>
 			<key>Use Non-ASCII Font</key>
-			<false/>
+			<true/>
 			<key>Use Tab Color</key>
 			<true/>
 			<key>Use Underline Color</key>
@@ -15797,9 +15797,10 @@
 	</array>
 	<key>NoSyncAllAppVersions</key>
 	<array>
-		<string>3.4.0beta1</string>
-		<string>3.3.11</string>
 		<string>3.3.12beta3</string>
+		<string>3.3.11</string>
+		<string>3.4.0beta1</string>
+		<string>3.4.0beta2</string>
 	</array>
 	<key>NoSyncAutoBurialReveal</key>
 	<true/>
@@ -15807,14 +15808,21 @@
 	<array>
 		<string>SauceCodePro Nerd Font Mono</string>
 		<string>MesloLGS NF</string>
+		<string>Recursive</string>
 	</array>
 	<key>NoSyncBFPRecents</key>
 	<array>
-		<string>SauceCodePro Nerd Font Mono</string>
 		<string>MesloLGS NF</string>
+		<string>MesloLGSDZ Nerd Font</string>
+		<string>MesloLGMDZ Nerd Font</string>
+		<string>MesloLGM Nerd Font</string>
 	</array>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
+	<true/>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
+	<integer>1</integer>
 	<key>NoSyncFrame_SessionsPreferences</key>
 	<dict>
 		<key>screenFrame</key>
@@ -15827,7 +15835,7 @@
 		<key>screenFrame</key>
 		<string>{{0, 0}, {1792, 1120}}</string>
 		<key>topLeft</key>
-		<string>{358, 817}</string>
+		<string>{737, 984}</string>
 	</dict>
 	<key>NoSyncFunctionCallError_SilenceUntil</key>
 	<real>616856081.57702196</real>
@@ -15838,9 +15846,9 @@
 	<key>NoSyncInstallationId</key>
 	<string>C9BE8181-BFCC-4BEE-B3A8-9A67D7E8A0D1</string>
 	<key>NoSyncLastOSVersion</key>
-	<string>Version 10.15.6 (Build 19G73)</string>
+	<string>Version 10.16 (Build 20A5323l)</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>53</integer>
+	<integer>68</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -16687,7 +16695,7 @@
 	<key>PasteSpecialUseRegexSubstitution</key>
 	<true/>
 	<key>PerPaneBackgroundImage</key>
-	<true/>
+	<false/>
 	<key>PerformDictionaryLookupOnQuickLook</key>
 	<false/>
 	<key>PinchToChangeFontSizeDisabled</key>
@@ -16798,11 +16806,11 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-07-19T04:35:44Z</date>
+	<date>2020-07-24T15:00:01Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
-	<integer>1743582800</integer>
+	<integer>1012966821</integer>
 	<key>SUUpdateRelaunchingMarker</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -16848,9 +16856,9 @@
 	<key>SoundForEsc</key>
 	<false/>
 	<key>SplitPaneDimmingAmount</key>
-	<real>0.17094968971631208</real>
+	<real>0.17601358355998237</real>
 	<key>StatusBarPosition</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>StealKeyFocus</key>
 	<true/>
 	<key>StretchTabsToFillBar</key>
@@ -16874,7 +16882,7 @@
 	<key>TabTitlesUseSmartTruncation</key>
 	<true/>
 	<key>TabViewType</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>TabsHaveCloseButton</key>
 	<false/>
 	<key>TerminalMargin</key>
@@ -16889,6 +16897,8 @@
 	<real>0.20000000298023224</real>
 	<key>TmuxDashboardLimit</key>
 	<integer>10</integer>
+	<key>TmuxUnpauseAutomatically</key>
+	<true/>
 	<key>TmuxUsesDedicatedProfile</key>
 	<false/>
 	<key>TmuxVariableWindowSizesSupported</key>
@@ -16955,7 +16965,7 @@
 	<key>UseSystemCursorWhenPossible</key>
 	<true/>
 	<key>UseTmuxStatusBar</key>
-	<false/>
+	<true/>
 	<key>UseUnevenTabs</key>
 	<true/>
 	<key>UseVirtualKeyCodesForDetectingDigits</key>
@@ -21134,7 +21144,7 @@
 	<key>findRegex_iTerm</key>
 	<true/>
 	<key>iTerm Version</key>
-	<string>3.4.0beta1</string>
+	<string>3.4.0beta2</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
