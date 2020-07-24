@@ -44,6 +44,8 @@ cask "authy"
 cask "dropbox"
 cask "alfred"
 
+cask "key-codes"
+
 cask "google-chrome"
 cask "firefox"
 
@@ -79,6 +81,8 @@ cask "adoptopenjdk"
 cask "adoptopenjdk"
 
 cask "visual-studio-code"
+
+cask "xquartz"
 # cask }}}
 
 

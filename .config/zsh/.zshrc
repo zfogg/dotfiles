@@ -23,13 +23,8 @@ autoload -Uz          \
 select-word-style normal
 zsh-mime-setup
 
-function () {
-  local zsh_autosuggestions_config_file="$HOME/.zsh/zsh-autosuggestions.config.zsh"
-  [[ -f $zsh_autosuggestions_config_file ]] && source "$zsh_autosuggestions_config_file"
-}
-
-#export ANTIGEN_HS_SANDBOX='stack'
-export ANTIGEN_HS_SANDBOX='cabal'
+export ANTIGEN_HS_SANDBOX='stack'
+#export ANTIGEN_HS_SANDBOX='cabal'
 source ~/.zsh/antigen-hs/init.zsh
 # }}}
 
