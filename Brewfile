@@ -20,7 +20,7 @@ tap "amiaopensource/amiaos"
 # mas {{{
 brew "mas"
 
-mas "Xcode",             id: 497799835
+#mas "Xcode",             id: 497799835
 mas "Cleaner for Xcode", id: 1296084683
 mas "Developer",         id: 640199958
 
@@ -55,7 +55,7 @@ cask "spotify"
 cask "blackhole"
 cask "obs"
 
-cask "spectacle"
+cask "rectangle"
 cask "appcleaner"
 
 cask "discord"
