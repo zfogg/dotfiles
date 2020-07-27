@@ -15848,7 +15848,7 @@
 	<key>NoSyncLastOSVersion</key>
 	<string>Version 10.16 (Build 20A5323l)</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>69</integer>
+	<integer>70</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -16667,6 +16667,8 @@
 	<key>OpenNewWindowAtStartup</key>
 	<true/>
 	<key>OpenNoWindowsAtStartup</key>
+	<false/>
+	<key>OpenTmuxDashboardIfHiddenWindows</key>
 	<false/>
 	<key>OpenTmuxWindowsIn</key>
 	<integer>2</integer>
