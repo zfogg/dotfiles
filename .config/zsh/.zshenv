@@ -61,18 +61,29 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh"
 export   ZSHRC="$ZDOTDIR/.zshrc"
 unsetopt GLOBAL_RCS
 
-if [[ "$OSX" == "$TRUE" ]]; then
+if [[ $OSX == $TRUE ]]; then
   export BREW='/usr/local'
-elif [[ "$LINUX" == "$TRUE" ]]; then
+elif [[ $LINUX == $TRUE ]]; then
   export BREW='/usr'
 else
   export BREW='/usr/local'
 fi
 
-export PKG_CONFIG_PATH="/usr/lib/pkgconfig"
-if [[ "$OSX" == "$TRUE" ]]; then
-  export PKG_CONFIG_PATH="${BREW}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+export  LDFLAGS=''
+export CPPFLAGS=''
+export PKG_CONFIG_PATH='/usr/lib/pkgconfig'
+if [[ $OSX == $TRUE ]]; then
+  export PKG_CONFIG_PATH="$BREW/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
+
+# function() {
+#   local NCURSES="${BREW}/opt/ncurses"
+#   if [[ -d $NCURSES ]]; then
+#     export PKG_CONFIG_PATH="${NCURSES}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+#     export  LDFLAGS="-L${NCURSES}/lib $LDFLAGS"
+#     export CPPFLAGS="-I${NCURSES}/include $CPPFLAGS"
+#   fi
+# }
 
 export SHELL_NAME="$(basename "$SHELL")"
 # $SHELL }}}

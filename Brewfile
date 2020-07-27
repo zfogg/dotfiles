@@ -20,8 +20,9 @@ tap "amiaopensource/amiaos"
 # mas {{{
 brew "mas"
 
-#mas "Xcode",             id: 497799835
+mas "Xcode",             id: 497799835
 mas "Cleaner for Xcode", id: 1296084683
+mas "DevCleaner",        id: 1388020431
 mas "Developer",         id: 640199958
 
 mas "1Password 7",       id: 1333542190
@@ -78,11 +79,19 @@ cask "font-recursive"
 cask "deluge"
 
 cask "adoptopenjdk"
-cask "adoptopenjdk"
 
 cask "visual-studio-code"
 
 cask "xquartz"
+
+cask "qlcolorcode"
+cask "qlstephen"
+cask "qlmarkdown"
+cask "quicklook-json"
+cask "qlimagesize"
+cask "suspicious-package"
+cask "quicklookase"
+cask "qlvideo"
 # cask }}}
 
 
@@ -143,10 +152,14 @@ brew "youtube-dl"
 brew "ripgrep"
 brew "fd"
 
+brew "yj"
+
 brew "jq"
 brew "lsd"
 brew "fzf"
 brew "tree"
+
+brew "glances"
 
 brew "translate-shell"
 brew "mplayer"
