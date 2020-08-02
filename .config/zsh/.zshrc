@@ -234,6 +234,15 @@ source "$HOME/.aliases"
 # }}}
 
 
+# gpg, gnupg {{{
+function() {
+  if ! pgrep gpg-agent 1>/dev/null; then
+    eval "$(gpg-agent --daemon)" 1>/dev/null
+  fi
+}
+# }}}
+
+
 # powerlevel10k {{{
 function() {
   local pl10k_file=powerlevel10k.zsh-theme
@@ -245,10 +254,10 @@ function() {
   fi
   local pl10k_path=$pl10k_root/$pl10k_file
   [[ -d $pl10k_root && -f $pl10k_path ]] && source "$pl10k_path"
+  [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 }
 # }}}
 
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 # zsh startup debug (BOTTOM of ~/.zshrc) {{{
 #   https://kev.inburke.com/kevin/profiling-zsh-startup-time
