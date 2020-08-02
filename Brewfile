@@ -14,6 +14,7 @@ tap "homebrew/services"
 tap "romkatv/powerlevel10k"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "amiaopensource/amiaos"
+tap "homebrew/cask-versions"
 # tap }}}
 
 
@@ -25,7 +26,7 @@ mas "Cleaner for Xcode", id: 1296084683
 mas "DevCleaner",        id: 1388020431
 mas "Developer",         id: 640199958
 
-mas "1Password 7",       id: 1333542190
+#mas "1Password 7",       id: 1333542190
 mas "WhatsApp",          id: 1147396723
 
 mas "NextDNS",           id: 1464122853
@@ -39,7 +40,9 @@ mas "slack",             id: 803453959
 
 
 # cask {{{
-cask "iterm2"
+cask "iterm2-beta"
+
+cask "1password-beta"
 cask "1password-cli"
 cask "authy"
 cask "dropbox"
@@ -57,6 +60,8 @@ cask "blackhole"
 cask "obs"
 
 cask "rectangle"
+cask "bettertouchtool"
+
 cask "appcleaner"
 
 cask "discord"
@@ -67,7 +72,7 @@ cask "vimr"
 
 cask "disk-inventory-x"
 
-cask "gpg-suite"
+#cask "gpg-suite-no-mail"
 brew "pinentry-mac"
 
 cask "font-fira-code"
@@ -92,6 +97,8 @@ cask "qlimagesize"
 cask "suspicious-package"
 cask "quicklookase"
 cask "qlvideo"
+
+cask "airfoil"
 # cask }}}
 
 
@@ -113,6 +120,8 @@ brew "cocoapods"
 brew "p7zip"
 
 brew "trash"
+
+brew "gnupg"
 
 brew "vim"
 brew "neovim", args: ["HEAD"]
@@ -175,6 +184,8 @@ brew "htop"
 brew "grc"
 brew "bat"
 brew "pygments"
+
+brew "svgo"
 
 brew "docker"
 brew "docker-compose"

@@ -15848,7 +15848,7 @@
 	<key>NoSyncLastOSVersion</key>
 	<string>Version 10.16 (Build 20A5323l)</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>70</integer>
+	<integer>75</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -15857,6 +15857,10 @@
 	<true/>
 	<key>NoSyncNewTabFromTmuxOpensTmux_selection</key>
 	<integer>0</integer>
+	<key>NoSyncNewWindowFromTmuxOpensTmux</key>
+	<true/>
+	<key>NoSyncNewWindowFromTmuxOpensTmux_selection</key>
+	<integer>1</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
 	<real>615857751.92847395</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
@@ -16808,7 +16812,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-07-24T15:00:01Z</date>
+	<date>2020-07-29T15:00:07Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
@@ -21142,7 +21146,7 @@
 	<key>findIgnoreCase_iTerm</key>
 	<true/>
 	<key>findMode_iTerm</key>
-	<integer>3</integer>
+	<integer>0</integer>
 	<key>findRegex_iTerm</key>
 	<true/>
 	<key>iTerm Version</key>
