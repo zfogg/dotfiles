@@ -192,5 +192,7 @@ brew "docker"
 brew "docker-compose"
 
 brew "openjdk"
+
+brew "speedtest"
 # brew }}}
 
