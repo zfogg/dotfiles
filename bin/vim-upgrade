@@ -68,11 +68,13 @@ function() {
     log_section_start "$section"
 
     #local npm_reqs=$(cat ~/.nvm/default-packages)
-    source ~/.nvm/nvm.sh
-    nvm install stable --latest-npm --no-progress
-    nvm alias default stable
+    nvm-upgrade
+    #nvm install stable --latest-npm --no-progress
+    #nvm alias default stable
     #npm install --loglevel silent --global "$npm_reqs[@]"
     #npm install --global ${npm_reqs}
+
+    log_section_end "$section"
 }
 
 
