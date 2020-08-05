@@ -15,6 +15,7 @@ tap "romkatv/powerlevel10k"
 tap "homebrew-ffmpeg/ffmpeg"
 tap "amiaopensource/amiaos"
 tap "homebrew/cask-versions"
+tap "teamookla/speedtest"
 # tap }}}
 
 
@@ -191,5 +192,7 @@ brew "docker"
 brew "docker-compose"
 
 brew "openjdk"
+
+brew "speedtest"
 # brew }}}
 
