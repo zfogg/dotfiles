@@ -41,6 +41,7 @@ bundles = [
                  "config/p10k-pure.zsh"
                 ,"powerlevel10k.zsh-theme"
                 ] }
+            { fpathLocations = [""] }
 
         --, (bundle "djui/alias-tips")
             --{ fpathLocations = [] }
@@ -57,6 +58,7 @@ bundles = [
             { fpathLocations = [] }
 
         , (bundle "agkozak/zsh-z")
+            { fpathLocations = [] }
 
         --, (bundle "Tarrasch/zsh-autoenv")
             --{ fpathLocations = [] }

@@ -1,11 +1,17 @@
 #!/usr/bin/env zsh
-# joopal-trim-whitespace (joopal-trim)
+# joopal-trim-whitespace (trim-whitespace)
 #   trims leading and trailing whitespace from arguments
 #   INFO: https://stackoverflow.com/a/3352015/672346
 
+function trim-whitespace() {
+    autoload -Uz echoer
+    if [[ ! -v 1 ]]; then
+      echoer "🚫 no arguments given 🚫"
+      return 12
+    fi
 
-function joopal-trim() {
     local var="$*"
+
     # remove leading whitespace characters
     var="${var#"${var%%[![:space:]]*}"}"
     # remove trailing whitespace characters
@@ -13,5 +19,4 @@ function joopal-trim() {
     printf '%s' "$var"
 }
 
-
-joopal-trim "$@"
+trim-whitespace "$@"

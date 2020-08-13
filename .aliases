@@ -219,9 +219,9 @@ function tree() {
 #alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
 
-function npm-do {
+function npm-do() {
   #INFO: depracated; use `npx`
-  (PATH=$(npm bin):$PATH; eval $@;)
+  (PATH="$(npm bin):$PATH"; eval "$@";)
 }
 
 
@@ -231,3 +231,9 @@ function gpip2() {PIP_REQUIRE_VIRTUALENV='' pip2 "$@"}
 function gpip3() {PIP_REQUIRE_VIRTUALENV='' pip3 "$@"}
 
 alias pyenv-init='eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)"'
+
+# custom functions from $FPATH (prolly ~/.zsh/site-functions)
+autoload -Uz \
+  ppvar \
+  trim-whitespace
+

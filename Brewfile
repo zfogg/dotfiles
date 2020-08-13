@@ -73,6 +73,8 @@ cask "vimr"
 
 cask "disk-inventory-x"
 
+cask "launchcontrol"
+
 #cask "gpg-suite-no-mail"
 brew "pinentry-mac"
 
@@ -116,6 +118,7 @@ brew "bash"
 brew "powerlevel10k"
 brew "tmux"
 brew "reattach-to-user-namespace"
+brew "launchctl-completion"
 
 brew "cocoapods"
 brew "p7zip"
@@ -130,6 +133,8 @@ brew "neovim", args: ["HEAD"]
 brew "git"
 brew "git-lfs"
 brew "ghq"
+
+brew "tldr"
 
 brew "cabal-install"
 brew "haskell-stack"
