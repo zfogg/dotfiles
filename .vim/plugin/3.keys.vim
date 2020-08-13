@@ -107,8 +107,17 @@ endif
     noremap <a-h> zhh
 
 
+    " join lines: this to prev
+    nnoremap <Leader>oO Dk$p<S-v>=
+    inoremap <Leader>oO <C-o>D<C-o>k<C-o>$<C-o>p
+    nnoremap <Leader>OO Dk$P<S-v>=
+    inoremap <Leader>OO <C-o>D<C-o>k<C-o>$<C-o>P
+
     " join lines: next to this
     inoremap JJ <C-o>J<C-o>==
+
+    " 1st 1st 1st
+    " 2nd 2nd 2nd
 
     " join lines: this to prev
     inoremap KK <C-o>k<C-o>J<C-o>==

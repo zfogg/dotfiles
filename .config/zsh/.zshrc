@@ -11,12 +11,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 
-# init: zsh modules, autoload, antigen-hs {{{
+# init: zsh modules {{{
 zmodload -a zsh/zpty zpty
 zmodload -a zsh/stat stat
 zmodload -a zsh/zprof zprof
 zmodload -a zsh/mapfile mapfile
 
+# zsh builtins
 autoload -Uz          \
     select-word-style \
     zsh-mime-setup
@@ -30,6 +31,9 @@ source ~/.zsh/antigen-hs/init.zsh
 
 
 # $ZDOTDIR/z/ {{{
+# path, manpath, fpath, infopath
+source "$ZDOTDIR/z/path.zsh"
+
 # bindkey, zle
 source "$ZDOTDIR/z/keys.zsh"
 

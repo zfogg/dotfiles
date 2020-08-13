@@ -39,7 +39,8 @@ function () { # {{{ platform-specifics
       $(getconf PATH | command -p tr ':' '\n'))
 
     fpath=(
-      $BREW/share/zsh/{site-functions,functions}
+      $HOME/.zsh/osx-zsh-completions
+      $BREW/share/zsh/site-functions
       "$fpath[@]")
 
     manpath=(
@@ -79,6 +80,8 @@ function () { # {{{ platform-specifics
 } # }}}
 
 function() { # {{{ AFTER platform-specifics
+  #local nvmv_root=($HOME/.nvm/versions/node/v*.*.*([-1]))
+
   path=(
     $HOME/bin
     $HOME/.local/bin
@@ -96,16 +99,16 @@ function() { # {{{ AFTER platform-specifics
         $ANDROID_HOME/emulator
         $ANDROID_HOME/tools/bin
         $ANDROID_HOME/platform-tools
-        $ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*([-1])}
+        $ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*(oanF[1])}
         "$path[@]")
     fi
 
   fpath=(
-    $HOME/.zsh/{site-functions,complete}
+    $HOME/.zsh/{site-functions,completions}
     "$fpath[@]")
 
   manpath=(
-    $HOME/.nvm/$nvmv_root/share/man
+    $HOME/.nvm/versions/node/v*.*.*/share/man(oanF[-1])
     $XDG_DATA_HOME/man
     "$manpath[@]")
 
