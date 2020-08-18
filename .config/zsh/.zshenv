@@ -290,6 +290,11 @@ export ZSHZ_NO_RESOLVE_SYMLINKS="$TRUE"
 export ZSHZ_OWNER="$USER"
 # }}}
 
+# zsh-completion-generator {{{
+export GENCOMPL_FPATH="$HOME/.zsh/completions"
+export GENCOMPL_PY='python2'
+# }}}
+
 
 # ghq {{{
 export GHQ_ROOT="$HOME/src"

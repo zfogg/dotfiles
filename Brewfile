@@ -147,6 +147,12 @@ brew "go"
 
 brew "ruby"
 
+brew "maven"
+
+brew "nginx"
+
+brew "direnv"
+
 brew "pyenv"
 brew "pyenv-virtualenv"
 brew "nvm"

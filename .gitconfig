@@ -1,6 +1,7 @@
 [user]
     email = me@zfo.gg
     name  = Zachary Fogg
+	signingkey = 49EC8653B46B7709A275B5639FCD7766F3B769C9
 
 [core]
     editor       = $EDITOR
@@ -95,3 +96,7 @@
 [pull]
 	ff = only
 	;rebase = true
+[commit]
+	gpgsign = true
+[gpg]
+	program = gpg
