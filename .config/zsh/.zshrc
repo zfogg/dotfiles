@@ -26,7 +26,7 @@ zsh-mime-setup
 
 export ANTIGEN_HS_SANDBOX='stack'
 #export ANTIGEN_HS_SANDBOX='cabal'
-source ~/.zsh/antigen-hs/init.zsh
+source "$HOME/.zsh/antigen-hs/init.zsh"
 # }}}
 
 
@@ -85,8 +85,9 @@ if command_exists jenv; then
   eval "$(jenv init -)"
 fi
 
-[[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
-  && source "$BREW/etc/profile.d/z.sh"
+# INFO: antigen handles this now
+#[[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
+  #&& source "$BREW/etc/profile.d/z.sh"
 
 function() { # grep, rg
   if command_exists rg; then
@@ -109,13 +110,6 @@ function() { # grep, rg
   [[ -v GREPPRG_PRG && -v GREPPRG_ARGS ]] \
     && export GREPPRG="${GREPPRG_PRG}${GREPPRG_ARGS}" \
     || export GREPPRG="${GREPPRG:-command -p grep}"
-
-  export GENCOMPL_FPATH="$HOME/.zsh/complete"
-  if [[ -d $GENCOMPL_FPATH ]]; then
-    #source ~/.zsh/zsh-completion-generator/zsh-completion-generator.plugin.zsh
-  else
-    unset GENCOMPL_FPATH
-  fi
 }
 
 

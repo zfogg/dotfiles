@@ -33,8 +33,6 @@ Library/
 #composer.lock
 #stack.yaml.lock
 #Cargo.lock
-#yarn.lock
-#package-lock.json
 
 bundle/ruby
 
@@ -59,6 +57,8 @@ bundle/ruby
 .envrc
 .nvmrc
 .lvimrc
+
+.env*.local
 
 .ignore
 *.js.map
