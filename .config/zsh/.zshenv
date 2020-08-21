@@ -301,6 +301,11 @@ export GHQ_ROOT="$HOME/src"
 # ghq }}}
 
 
+# gpg {{{
+export GPG_TTY="$(tty)"
+# gpg }}}
+
+
 # compilers {{{
 export  CC='clang'
 export CXX='clang++'
