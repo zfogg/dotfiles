@@ -1,0 +1,3013 @@
+
+# Copyright 2019 The Kubernetes Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#compdef kops
+
+__kops_bash_source() {
+	alias shopt=':'
+	alias _expand=_bash_expand
+	alias _complete=_bash_comp
+	emulate -L sh
+	setopt kshglob noshglob braceexpand
+	source "$@"
+}
+__kops_type() {
+	# -t is not supported by zsh
+	if [ "$1" == "-t" ]; then
+		shift
+		# fake Bash 4 to disable "complete -o nospace". Instead
+		# "compopt +-o nospace" is used in the code to toggle trailing
+		# spaces. We don't support that, but leave trailing spaces on
+		# all the time
+		if [ "$1" = "__kops_compopt" ]; then
+			echo builtin
+			return 0
+		fi
+	fi
+	type "$@"
+}
+__kops_compgen() {
+	local completions w
+	completions=( $(compgen "$@") ) || return $?
+	# filter by given word as prefix
+	while [[ "$1" = -* && "$1" != -- ]]; do
+		shift
+		shift
+	done
+	if [[ "$1" == -- ]]; then
+		shift
+	fi
+	for w in "${completions[@]}"; do
+		if [[ "${w}" = "$1"* ]]; then
+			echo "${w}"
+		fi
+	done
+}
+__kops_compopt() {
+	true # don't do anything. Not supported by bashcompinit in zsh
+}
+
+__kops_ltrim_colon_completions()
+{
+	if [[ "$1" == *:* && "$COMP_WORDBREAKS" == *:* ]]; then
+		# Remove colon-word prefix from COMPREPLY items
+		local colon_word=${1%${1##*:}}
+		local i=${#COMPREPLY[*]}
+		while [[ $((--i)) -ge 0 ]]; do
+			COMPREPLY[$i]=${COMPREPLY[$i]#"$colon_word"}
+		done
+	fi
+}
+__kops_get_comp_words_by_ref() {
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[${COMP_CWORD}-1]}"
+	words=("${COMP_WORDS[@]}")
+	cword=("${COMP_CWORD[@]}")
+}
+__kops_filedir() {
+	local RET OLD_IFS w qw
+	__debug "_filedir $@ cur=$cur"
+	if [[ "$1" = \~* ]]; then
+		# somehow does not work. Maybe, zsh does not call this at all
+		eval echo "$1"
+		return 0
+	fi
+	OLD_IFS="$IFS"
+	IFS=$'\n'
+	if [ "$1" = "-d" ]; then
+		shift
+		RET=( $(compgen -d) )
+	else
+		RET=( $(compgen -f) )
+	fi
+	IFS="$OLD_IFS"
+	IFS="," __debug "RET=${RET[@]} len=${#RET[@]}"
+	for w in ${RET[@]}; do
+		if [[ ! "${w}" = "${cur}"* ]]; then
+			continue
+		fi
+		if eval "[[ \"\${w}\" = *.$1 || -d \"\${w}\" ]]"; then
+			qw="$(__kops_quote "${w}")"
+			if [ -d "${w}" ]; then
+				COMPREPLY+=("${qw}/")
+			else
+				COMPREPLY+=("${qw}")
+			fi
+		fi
+	done
+}
+__kops_quote() {
+    if [[ $1 == \'* || $1 == \"* ]]; then
+        # Leave out first character
+        printf %q "${1:1}"
+    else
+    	printf %q "$1"
+    fi
+}
+autoload -U +X bashcompinit && bashcompinit
+# use word boundary patterns for BSD or GNU sed
+LWORD='[[:<:]]'
+RWORD='[[:>:]]'
+if sed --help 2>&1 | grep -q GNU; then
+	LWORD='\<'
+	RWORD='\>'
+fi
+__kops_convert_bash_to_zsh() {
+	sed \
+	-e 's/declare -F/whence -w/' \
+	-e 's/_get_comp_words_by_ref "\$@"/_get_comp_words_by_ref "\$*"/' \
+	-e 's/local \([a-zA-Z0-9_]*\)=/local \1; \1=/' \
+	-e 's/flags+=("\(--.*\)=")/flags+=("\1"); two_word_flags+=("\1")/' \
+	-e 's/must_have_one_flag+=("\(--.*\)=")/must_have_one_flag+=("\1")/' \
+	-e "s/${LWORD}_filedir${RWORD}/__kops_filedir/g" \
+	-e "s/${LWORD}_get_comp_words_by_ref${RWORD}/__kops_get_comp_words_by_ref/g" \
+	-e "s/${LWORD}__ltrim_colon_completions${RWORD}/__kops_ltrim_colon_completions/g" \
+	-e "s/${LWORD}compgen${RWORD}/__kops_compgen/g" \
+	-e "s/${LWORD}compopt${RWORD}/__kops_compopt/g" \
+	-e "s/${LWORD}declare${RWORD}/builtin declare/g" \
+	-e "s/\\\$(type${RWORD}/\$(__kops_type/g" \
+	<<'BASH_COMPLETION_EOF'
+# bash completion for kops                                 -*- shell-script -*-
+
+__kops_debug()
+{
+    if [[ -n ${BASH_COMP_DEBUG_FILE} ]]; then
+        echo "$*" >> "${BASH_COMP_DEBUG_FILE}"
+    fi
+}
+
+# Homebrew on Macs have version 1.3 of bash-completion which doesn't include
+# _init_completion. This is a very minimal version of that function.
+__kops_init_completion()
+{
+    COMPREPLY=()
+    _get_comp_words_by_ref "$@" cur prev words cword
+}
+
+__kops_index_of_word()
+{
+    local w word=$1
+    shift
+    index=0
+    for w in "$@"; do
+        [[ $w = "$word" ]] && return
+        index=$((index+1))
+    done
+    index=-1
+}
+
+__kops_contains_word()
+{
+    local w word=$1; shift
+    for w in "$@"; do
+        [[ $w = "$word" ]] && return
+    done
+    return 1
+}
+
+__kops_handle_reply()
+{
+    __kops_debug "${FUNCNAME[0]}"
+    case $cur in
+        -*)
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                compopt -o nospace
+            fi
+            local allflags
+            if [ ${#must_have_one_flag[@]} -ne 0 ]; then
+                allflags=("${must_have_one_flag[@]}")
+            else
+                allflags=("${flags[*]} ${two_word_flags[*]}")
+            fi
+            COMPREPLY=( $(compgen -W "${allflags[*]}" -- "$cur") )
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                [[ "${COMPREPLY[0]}" == *= ]] || compopt +o nospace
+            fi
+
+            # complete after --flag=abc
+            if [[ $cur == *=* ]]; then
+                if [[ $(type -t compopt) = "builtin" ]]; then
+                    compopt +o nospace
+                fi
+
+                local index flag
+                flag="${cur%=*}"
+                __kops_index_of_word "${flag}" "${flags_with_completion[@]}"
+                COMPREPLY=()
+                if [[ ${index} -ge 0 ]]; then
+                    PREFIX=""
+                    cur="${cur#*=}"
+                    ${flags_completion[${index}]}
+                    if [ -n "${ZSH_VERSION}" ]; then
+                        # zsh completion needs --flag= prefix
+                        eval "COMPREPLY=( \"\${COMPREPLY[@]/#/${flag}=}\" )"
+                    fi
+                fi
+            fi
+            return 0;
+            ;;
+    esac
+
+    # check if we are handling a flag with special work handling
+    local index
+    __kops_index_of_word "${prev}" "${flags_with_completion[@]}"
+    if [[ ${index} -ge 0 ]]; then
+        ${flags_completion[${index}]}
+        return
+    fi
+
+    # we are parsing a flag and don't have a special handler, no completion
+    if [[ ${cur} != "${words[cword]}" ]]; then
+        return
+    fi
+
+    local completions
+    completions=("${commands[@]}")
+    if [[ ${#must_have_one_noun[@]} -ne 0 ]]; then
+        completions=("${must_have_one_noun[@]}")
+    fi
+    if [[ ${#must_have_one_flag[@]} -ne 0 ]]; then
+        completions+=("${must_have_one_flag[@]}")
+    fi
+    COMPREPLY=( $(compgen -W "${completions[*]}" -- "$cur") )
+
+    if [[ ${#COMPREPLY[@]} -eq 0 && ${#noun_aliases[@]} -gt 0 && ${#must_have_one_noun[@]} -ne 0 ]]; then
+        COMPREPLY=( $(compgen -W "${noun_aliases[*]}" -- "$cur") )
+    fi
+
+    if [[ ${#COMPREPLY[@]} -eq 0 ]]; then
+		if declare -F __kops_custom_func >/dev/null; then
+			# try command name qualified custom func
+			__kops_custom_func
+		else
+			# otherwise fall back to unqualified for compatibility
+			declare -F __custom_func >/dev/null && __custom_func
+		fi
+    fi
+
+    # available in bash-completion >= 2, not always present on macOS
+    if declare -F __ltrim_colon_completions >/dev/null; then
+        __ltrim_colon_completions "$cur"
+    fi
+
+    # If there is only 1 completion and it is a flag with an = it will be completed
+    # but we don't want a space after the =
+    if [[ "${#COMPREPLY[@]}" -eq "1" ]] && [[ $(type -t compopt) = "builtin" ]] && [[ "${COMPREPLY[0]}" == --*= ]]; then
+       compopt -o nospace
+    fi
+}
+
+# The arguments should be in the form "ext1|ext2|extn"
+__kops_handle_filename_extension_flag()
+{
+    local ext="$1"
+    _filedir "@(${ext})"
+}
+
+__kops_handle_subdirs_in_dir_flag()
+{
+    local dir="$1"
+    pushd "${dir}" >/dev/null 2>&1 && _filedir -d && popd >/dev/null 2>&1
+}
+
+__kops_handle_flag()
+{
+    __kops_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    # if a command required a flag, and we found it, unset must_have_one_flag()
+    local flagname=${words[c]}
+    local flagvalue
+    # if the word contained an =
+    if [[ ${words[c]} == *"="* ]]; then
+        flagvalue=${flagname#*=} # take in as flagvalue after the =
+        flagname=${flagname%=*} # strip everything after the =
+        flagname="${flagname}=" # but put the = back
+    fi
+    __kops_debug "${FUNCNAME[0]}: looking for ${flagname}"
+    if __kops_contains_word "${flagname}" "${must_have_one_flag[@]}"; then
+        must_have_one_flag=()
+    fi
+
+    # if you set a flag which only applies to this command, don't show subcommands
+    if __kops_contains_word "${flagname}" "${local_nonpersistent_flags[@]}"; then
+      commands=()
+    fi
+
+    # keep flag value with flagname as flaghash
+    # flaghash variable is an associative array which is only supported in bash > 3.
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        if [ -n "${flagvalue}" ] ; then
+            flaghash[${flagname}]=${flagvalue}
+        elif [ -n "${words[ $((c+1)) ]}" ] ; then
+            flaghash[${flagname}]=${words[ $((c+1)) ]}
+        else
+            flaghash[${flagname}]="true" # pad "true" for bool flag
+        fi
+    fi
+
+    # skip the argument to a two word flag
+    if [[ ${words[c]} != *"="* ]] && __kops_contains_word "${words[c]}" "${two_word_flags[@]}"; then
+			  __kops_debug "${FUNCNAME[0]}: found a flag ${words[c]}, skip the next argument"
+        c=$((c+1))
+        # if we are looking for a flags value, don't show commands
+        if [[ $c -eq $cword ]]; then
+            commands=()
+        fi
+    fi
+
+    c=$((c+1))
+
+}
+
+__kops_handle_noun()
+{
+    __kops_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    if __kops_contains_word "${words[c]}" "${must_have_one_noun[@]}"; then
+        must_have_one_noun=()
+    elif __kops_contains_word "${words[c]}" "${noun_aliases[@]}"; then
+        must_have_one_noun=()
+    fi
+
+    nouns+=("${words[c]}")
+    c=$((c+1))
+}
+
+__kops_handle_command()
+{
+    __kops_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    local next_command
+    if [[ -n ${last_command} ]]; then
+        next_command="_${last_command}_${words[c]//:/__}"
+    else
+        if [[ $c -eq 0 ]]; then
+            next_command="_kops_root_command"
+        else
+            next_command="_${words[c]//:/__}"
+        fi
+    fi
+    c=$((c+1))
+    __kops_debug "${FUNCNAME[0]}: looking for ${next_command}"
+    declare -F "$next_command" >/dev/null && $next_command
+}
+
+__kops_handle_word()
+{
+    if [[ $c -ge $cword ]]; then
+        __kops_handle_reply
+        return
+    fi
+    __kops_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+    if [[ "${words[c]}" == -* ]]; then
+        __kops_handle_flag
+    elif __kops_contains_word "${words[c]}" "${commands[@]}"; then
+        __kops_handle_command
+    elif [[ $c -eq 0 ]]; then
+        __kops_handle_command
+    elif __kops_contains_word "${words[c]}" "${command_aliases[@]}"; then
+        # aliashash variable is an associative array which is only supported in bash > 3.
+        if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+            words[c]=${aliashash[${words[c]}]}
+            __kops_handle_command
+        else
+            __kops_handle_noun
+        fi
+    else
+        __kops_handle_noun
+    fi
+    __kops_handle_word
+}
+
+_kops_completion()
+{
+    last_command="kops_completion"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("-h")
+    local_nonpersistent_flags+=("--help")
+    flags+=("--shell=")
+    two_word_flags+=("--shell")
+    local_nonpersistent_flags+=("--shell=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_cluster()
+{
+    last_command="kops_create_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--admin-access=")
+    two_word_flags+=("--admin-access")
+    local_nonpersistent_flags+=("--admin-access=")
+    flags+=("--api-loadbalancer-type=")
+    two_word_flags+=("--api-loadbalancer-type")
+    local_nonpersistent_flags+=("--api-loadbalancer-type=")
+    flags+=("--api-ssl-certificate=")
+    two_word_flags+=("--api-ssl-certificate")
+    local_nonpersistent_flags+=("--api-ssl-certificate=")
+    flags+=("--associate-public-ip")
+    local_nonpersistent_flags+=("--associate-public-ip")
+    flags+=("--authorization=")
+    two_word_flags+=("--authorization")
+    local_nonpersistent_flags+=("--authorization=")
+    flags+=("--bastion")
+    local_nonpersistent_flags+=("--bastion")
+    flags+=("--channel=")
+    two_word_flags+=("--channel")
+    local_nonpersistent_flags+=("--channel=")
+    flags+=("--cloud=")
+    two_word_flags+=("--cloud")
+    local_nonpersistent_flags+=("--cloud=")
+    flags+=("--cloud-labels=")
+    two_word_flags+=("--cloud-labels")
+    local_nonpersistent_flags+=("--cloud-labels=")
+    flags+=("--container-runtime=")
+    two_word_flags+=("--container-runtime")
+    local_nonpersistent_flags+=("--container-runtime=")
+    flags+=("--disable-subnet-tags")
+    local_nonpersistent_flags+=("--disable-subnet-tags")
+    flags+=("--dns=")
+    two_word_flags+=("--dns")
+    local_nonpersistent_flags+=("--dns=")
+    flags+=("--dns-zone=")
+    two_word_flags+=("--dns-zone")
+    local_nonpersistent_flags+=("--dns-zone=")
+    flags+=("--dry-run")
+    local_nonpersistent_flags+=("--dry-run")
+    flags+=("--encrypt-etcd-storage")
+    local_nonpersistent_flags+=("--encrypt-etcd-storage")
+    flags+=("--etcd-storage-type=")
+    two_word_flags+=("--etcd-storage-type")
+    local_nonpersistent_flags+=("--etcd-storage-type=")
+    flags+=("--gce-service-account=")
+    two_word_flags+=("--gce-service-account")
+    local_nonpersistent_flags+=("--gce-service-account=")
+    flags+=("--image=")
+    two_word_flags+=("--image")
+    local_nonpersistent_flags+=("--image=")
+    flags+=("--kubernetes-version=")
+    two_word_flags+=("--kubernetes-version")
+    local_nonpersistent_flags+=("--kubernetes-version=")
+    flags+=("--master-count=")
+    two_word_flags+=("--master-count")
+    local_nonpersistent_flags+=("--master-count=")
+    flags+=("--master-public-name=")
+    two_word_flags+=("--master-public-name")
+    local_nonpersistent_flags+=("--master-public-name=")
+    flags+=("--master-security-groups=")
+    two_word_flags+=("--master-security-groups")
+    local_nonpersistent_flags+=("--master-security-groups=")
+    flags+=("--master-size=")
+    two_word_flags+=("--master-size")
+    local_nonpersistent_flags+=("--master-size=")
+    flags+=("--master-tenancy=")
+    two_word_flags+=("--master-tenancy")
+    local_nonpersistent_flags+=("--master-tenancy=")
+    flags+=("--master-volume-size=")
+    two_word_flags+=("--master-volume-size")
+    local_nonpersistent_flags+=("--master-volume-size=")
+    flags+=("--master-zones=")
+    two_word_flags+=("--master-zones")
+    local_nonpersistent_flags+=("--master-zones=")
+    flags+=("--model=")
+    two_word_flags+=("--model")
+    local_nonpersistent_flags+=("--model=")
+    flags+=("--network-cidr=")
+    two_word_flags+=("--network-cidr")
+    local_nonpersistent_flags+=("--network-cidr=")
+    flags+=("--networking=")
+    two_word_flags+=("--networking")
+    local_nonpersistent_flags+=("--networking=")
+    flags+=("--node-count=")
+    two_word_flags+=("--node-count")
+    local_nonpersistent_flags+=("--node-count=")
+    flags+=("--node-security-groups=")
+    two_word_flags+=("--node-security-groups")
+    local_nonpersistent_flags+=("--node-security-groups=")
+    flags+=("--node-size=")
+    two_word_flags+=("--node-size")
+    local_nonpersistent_flags+=("--node-size=")
+    flags+=("--node-tenancy=")
+    two_word_flags+=("--node-tenancy")
+    local_nonpersistent_flags+=("--node-tenancy=")
+    flags+=("--node-volume-size=")
+    two_word_flags+=("--node-volume-size")
+    local_nonpersistent_flags+=("--node-volume-size=")
+    flags+=("--os-dns-servers=")
+    two_word_flags+=("--os-dns-servers")
+    local_nonpersistent_flags+=("--os-dns-servers=")
+    flags+=("--os-ext-net=")
+    two_word_flags+=("--os-ext-net")
+    local_nonpersistent_flags+=("--os-ext-net=")
+    flags+=("--os-ext-subnet=")
+    two_word_flags+=("--os-ext-subnet")
+    local_nonpersistent_flags+=("--os-ext-subnet=")
+    flags+=("--os-kubelet-ignore-az")
+    local_nonpersistent_flags+=("--os-kubelet-ignore-az")
+    flags+=("--os-lb-floating-subnet=")
+    two_word_flags+=("--os-lb-floating-subnet")
+    local_nonpersistent_flags+=("--os-lb-floating-subnet=")
+    flags+=("--os-network=")
+    two_word_flags+=("--os-network")
+    local_nonpersistent_flags+=("--os-network=")
+    flags+=("--os-octavia")
+    local_nonpersistent_flags+=("--os-octavia")
+    flags+=("--out=")
+    two_word_flags+=("--out")
+    local_nonpersistent_flags+=("--out=")
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--output=")
+    flags+=("--project=")
+    two_word_flags+=("--project")
+    local_nonpersistent_flags+=("--project=")
+    flags+=("--ssh-access=")
+    two_word_flags+=("--ssh-access")
+    local_nonpersistent_flags+=("--ssh-access=")
+    flags+=("--ssh-public-key=")
+    two_word_flags+=("--ssh-public-key")
+    local_nonpersistent_flags+=("--ssh-public-key=")
+    flags+=("--subnets=")
+    two_word_flags+=("--subnets")
+    local_nonpersistent_flags+=("--subnets=")
+    flags+=("--target=")
+    two_word_flags+=("--target")
+    local_nonpersistent_flags+=("--target=")
+    flags+=("--topology=")
+    two_word_flags+=("--topology")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--topology=")
+    flags+=("--utility-subnets=")
+    two_word_flags+=("--utility-subnets")
+    local_nonpersistent_flags+=("--utility-subnets=")
+    flags+=("--vpc=")
+    two_word_flags+=("--vpc")
+    local_nonpersistent_flags+=("--vpc=")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    flags+=("--zones=")
+    two_word_flags+=("--zones")
+    local_nonpersistent_flags+=("--zones=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_instancegroup()
+{
+    last_command="kops_create_instancegroup"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--dry-run")
+    local_nonpersistent_flags+=("--dry-run")
+    flags+=("--edit")
+    local_nonpersistent_flags+=("--edit")
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--output=")
+    flags+=("--role=")
+    two_word_flags+=("--role")
+    local_nonpersistent_flags+=("--role=")
+    flags+=("--subnet=")
+    two_word_flags+=("--subnet")
+    local_nonpersistent_flags+=("--subnet=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_secret_dockerconfig()
+{
+    last_command="kops_create_secret_dockerconfig"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--=")
+    two_word_flags+=("--")
+    two_word_flags+=("-f")
+    local_nonpersistent_flags+=("--=")
+    flags+=("--force")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_secret_encryptionconfig()
+{
+    last_command="kops_create_secret_encryptionconfig"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--=")
+    two_word_flags+=("--")
+    two_word_flags+=("-f")
+    local_nonpersistent_flags+=("--=")
+    flags+=("--force")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_secret_keypair_ca()
+{
+    last_command="kops_create_secret_keypair_ca"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--cert=")
+    two_word_flags+=("--cert")
+    local_nonpersistent_flags+=("--cert=")
+    flags+=("--key=")
+    two_word_flags+=("--key")
+    local_nonpersistent_flags+=("--key=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_secret_keypair()
+{
+    last_command="kops_create_secret_keypair"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("ca")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_secret_sshpublickey()
+{
+    last_command="kops_create_secret_sshpublickey"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--pubkey=")
+    two_word_flags+=("--pubkey")
+    two_word_flags+=("-i")
+    local_nonpersistent_flags+=("--pubkey=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_secret_weavepassword()
+{
+    last_command="kops_create_secret_weavepassword"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--=")
+    two_word_flags+=("--")
+    two_word_flags+=("-f")
+    local_nonpersistent_flags+=("--=")
+    flags+=("--force")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create_secret()
+{
+    last_command="kops_create_secret"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("dockerconfig")
+    commands+=("encryptionconfig")
+    commands+=("keypair")
+    commands+=("sshpublickey")
+    commands+=("weavepassword")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_create()
+{
+    last_command="kops_create"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+    commands+=("instancegroup")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("ig")
+        aliashash["ig"]="instancegroup"
+        command_aliases+=("instancegroups")
+        aliashash["instancegroups"]="instancegroup"
+    fi
+    commands+=("secret")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--filename=")
+    two_word_flags+=("--filename")
+    two_word_flags+=("-f")
+    local_nonpersistent_flags+=("--filename=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_flag+=("--filename=")
+    must_have_one_flag+=("-f")
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_delete_cluster()
+{
+    last_command="kops_delete_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--external")
+    local_nonpersistent_flags+=("--external")
+    flags+=("--region=")
+    two_word_flags+=("--region")
+    local_nonpersistent_flags+=("--region=")
+    flags+=("--unregister")
+    local_nonpersistent_flags+=("--unregister")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_delete_instancegroup()
+{
+    last_command="kops_delete_instancegroup"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_delete_secret()
+{
+    last_command="kops_delete_secret"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_delete()
+{
+    last_command="kops_delete"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+    commands+=("instancegroup")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("ig")
+        aliashash["ig"]="instancegroup"
+        command_aliases+=("instancegroups")
+        aliashash["instancegroups"]="instancegroup"
+    fi
+    commands+=("secret")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--filename=")
+    two_word_flags+=("--filename")
+    two_word_flags+=("-f")
+    local_nonpersistent_flags+=("--filename=")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_flag+=("--filename=")
+    must_have_one_flag+=("-f")
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_describe_secrets()
+{
+    last_command="kops_describe_secrets"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--type=")
+    two_word_flags+=("--type")
+    local_nonpersistent_flags+=("--type=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_describe()
+{
+    last_command="kops_describe"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("secrets")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("secret")
+        aliashash["secret"]="secrets"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_edit_cluster()
+{
+    last_command="kops_edit_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_edit_instancegroup()
+{
+    last_command="kops_edit_instancegroup"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_edit()
+{
+    last_command="kops_edit"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+    commands+=("instancegroup")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("ig")
+        aliashash["ig"]="instancegroup"
+        command_aliases+=("instancegroups")
+        aliashash["instancegroups"]="instancegroup"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_export_kubecfg()
+{
+    last_command="kops_export_kubecfg"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--all")
+    local_nonpersistent_flags+=("--all")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_export()
+{
+    last_command="kops_export"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("kubecfg")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_get_clusters()
+{
+    last_command="kops_get_clusters"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--full")
+    local_nonpersistent_flags+=("--full")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_get_instancegroups()
+{
+    last_command="kops_get_instancegroups"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_get_secrets()
+{
+    last_command="kops_get_secrets"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--type=")
+    two_word_flags+=("--type")
+    local_nonpersistent_flags+=("--type=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_get()
+{
+    last_command="kops_get"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("clusters")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("cluster")
+        aliashash["cluster"]="clusters"
+    fi
+    commands+=("instancegroups")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("ig")
+        aliashash["ig"]="instancegroups"
+        command_aliases+=("instancegroup")
+        aliashash["instancegroup"]="instancegroups"
+    fi
+    commands+=("secrets")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("secret")
+        aliashash["secret"]="secrets"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_import_cluster()
+{
+    last_command="kops_import_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--region=")
+    two_word_flags+=("--region")
+    local_nonpersistent_flags+=("--region=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_import()
+{
+    last_command="kops_import"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_replace()
+{
+    last_command="kops_replace"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--filename=")
+    two_word_flags+=("--filename")
+    two_word_flags+=("-f")
+    local_nonpersistent_flags+=("--filename=")
+    flags+=("--force")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_flag+=("--filename=")
+    must_have_one_flag+=("-f")
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_rolling-update_cluster()
+{
+    last_command="kops_rolling-update_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--bastion-interval=")
+    two_word_flags+=("--bastion-interval")
+    local_nonpersistent_flags+=("--bastion-interval=")
+    flags+=("--cloudonly")
+    local_nonpersistent_flags+=("--cloudonly")
+    flags+=("--fail-on-drain-error")
+    local_nonpersistent_flags+=("--fail-on-drain-error")
+    flags+=("--fail-on-validate-error")
+    local_nonpersistent_flags+=("--fail-on-validate-error")
+    flags+=("--force")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--instance-group=")
+    two_word_flags+=("--instance-group")
+    local_nonpersistent_flags+=("--instance-group=")
+    flags+=("--instance-group-roles=")
+    two_word_flags+=("--instance-group-roles")
+    local_nonpersistent_flags+=("--instance-group-roles=")
+    flags+=("--interactive")
+    flags+=("-i")
+    local_nonpersistent_flags+=("--interactive")
+    flags+=("--master-interval=")
+    two_word_flags+=("--master-interval")
+    local_nonpersistent_flags+=("--master-interval=")
+    flags+=("--node-interval=")
+    two_word_flags+=("--node-interval")
+    local_nonpersistent_flags+=("--node-interval=")
+    flags+=("--post-drain-delay=")
+    two_word_flags+=("--post-drain-delay")
+    local_nonpersistent_flags+=("--post-drain-delay=")
+    flags+=("--validate-count=")
+    two_word_flags+=("--validate-count")
+    local_nonpersistent_flags+=("--validate-count=")
+    flags+=("--validation-timeout=")
+    two_word_flags+=("--validation-timeout")
+    local_nonpersistent_flags+=("--validation-timeout=")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_rolling-update()
+{
+    last_command="kops_rolling-update"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_set_cluster()
+{
+    last_command="kops_set_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_set()
+{
+    last_command="kops_set"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_toolbox_bundle()
+{
+    last_command="kops_toolbox_bundle"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--target=")
+    two_word_flags+=("--target")
+    local_nonpersistent_flags+=("--target=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_toolbox_convert-imported()
+{
+    last_command="kops_toolbox_convert-imported"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--channel=")
+    two_word_flags+=("--channel")
+    local_nonpersistent_flags+=("--channel=")
+    flags+=("--newname=")
+    two_word_flags+=("--newname")
+    local_nonpersistent_flags+=("--newname=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_toolbox_dump()
+{
+    last_command="kops_toolbox_dump"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--output=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_toolbox_template()
+{
+    last_command="kops_toolbox_template"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--config-value=")
+    two_word_flags+=("--config-value")
+    local_nonpersistent_flags+=("--config-value=")
+    flags+=("--fail-on-missing")
+    local_nonpersistent_flags+=("--fail-on-missing")
+    flags+=("--format-yaml")
+    local_nonpersistent_flags+=("--format-yaml")
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    local_nonpersistent_flags+=("--output=")
+    flags+=("--set=")
+    two_word_flags+=("--set")
+    local_nonpersistent_flags+=("--set=")
+    flags+=("--set-string=")
+    two_word_flags+=("--set-string")
+    local_nonpersistent_flags+=("--set-string=")
+    flags+=("--snippets=")
+    two_word_flags+=("--snippets")
+    local_nonpersistent_flags+=("--snippets=")
+    flags+=("--template=")
+    two_word_flags+=("--template")
+    local_nonpersistent_flags+=("--template=")
+    flags+=("--values=")
+    two_word_flags+=("--values")
+    local_nonpersistent_flags+=("--values=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_toolbox()
+{
+    last_command="kops_toolbox"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("bundle")
+    commands+=("convert-imported")
+    commands+=("dump")
+    commands+=("template")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_update_cluster()
+{
+    last_command="kops_update_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--create-kube-config")
+    local_nonpersistent_flags+=("--create-kube-config")
+    flags+=("--lifecycle-overrides=")
+    two_word_flags+=("--lifecycle-overrides")
+    local_nonpersistent_flags+=("--lifecycle-overrides=")
+    flags+=("--model=")
+    two_word_flags+=("--model")
+    local_nonpersistent_flags+=("--model=")
+    flags+=("--out=")
+    two_word_flags+=("--out")
+    local_nonpersistent_flags+=("--out=")
+    flags+=("--phase=")
+    two_word_flags+=("--phase")
+    local_nonpersistent_flags+=("--phase=")
+    flags+=("--ssh-public-key=")
+    two_word_flags+=("--ssh-public-key")
+    local_nonpersistent_flags+=("--ssh-public-key=")
+    flags+=("--target=")
+    two_word_flags+=("--target")
+    local_nonpersistent_flags+=("--target=")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_update()
+{
+    last_command="kops_update"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_upgrade_cluster()
+{
+    last_command="kops_upgrade_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--channel=")
+    two_word_flags+=("--channel")
+    local_nonpersistent_flags+=("--channel=")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_upgrade()
+{
+    last_command="kops_upgrade"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_validate_cluster()
+{
+    last_command="kops_validate_cluster"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--count=")
+    two_word_flags+=("--count")
+    local_nonpersistent_flags+=("--count=")
+    flags+=("--kubeconfig=")
+    two_word_flags+=("--kubeconfig")
+    local_nonpersistent_flags+=("--kubeconfig=")
+    flags+=("--output=")
+    two_word_flags+=("--output")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--output=")
+    flags+=("--wait=")
+    two_word_flags+=("--wait")
+    local_nonpersistent_flags+=("--wait=")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_validate()
+{
+    last_command="kops_validate"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("cluster")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_version()
+{
+    last_command="kops_version"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--short")
+    local_nonpersistent_flags+=("--short")
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_kops_root_command()
+{
+    last_command="kops"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("completion")
+    commands+=("create")
+    commands+=("delete")
+    commands+=("describe")
+    commands+=("edit")
+    commands+=("export")
+    commands+=("get")
+    commands+=("import")
+    commands+=("replace")
+    commands+=("rolling-update")
+    commands+=("set")
+    commands+=("toolbox")
+    commands+=("update")
+    commands+=("upgrade")
+    commands+=("validate")
+    commands+=("version")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--add_dir_header")
+    flags+=("--alsologtostderr")
+    flags+=("--config=")
+    two_word_flags+=("--config")
+    flags+=("--log_backtrace_at=")
+    two_word_flags+=("--log_backtrace_at")
+    flags+=("--log_dir=")
+    two_word_flags+=("--log_dir")
+    flags+=("--log_file=")
+    two_word_flags+=("--log_file")
+    flags+=("--log_file_max_size=")
+    two_word_flags+=("--log_file_max_size")
+    flags+=("--logtostderr")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    flags+=("--skip_headers")
+    flags+=("--skip_log_headers")
+    flags+=("--state=")
+    two_word_flags+=("--state")
+    flags+=("--stderrthreshold=")
+    two_word_flags+=("--stderrthreshold")
+    flags+=("--v=")
+    two_word_flags+=("--v")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+    two_word_flags+=("--vmodule")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+__start_kops()
+{
+    local cur prev words cword
+    declare -A flaghash 2>/dev/null || :
+    declare -A aliashash 2>/dev/null || :
+    if declare -F _init_completion >/dev/null 2>&1; then
+        _init_completion -s || return
+    else
+        __kops_init_completion -n "=" || return
+    fi
+
+    local c=0
+    local flags=()
+    local two_word_flags=()
+    local local_nonpersistent_flags=()
+    local flags_with_completion=()
+    local flags_completion=()
+    local commands=("kops")
+    local must_have_one_flag=()
+    local must_have_one_noun=()
+    local last_command
+    local nouns=()
+
+    __kops_handle_word
+}
+
+if [[ $(type -t compopt) = "builtin" ]]; then
+    complete -o default -F __start_kops kops
+else
+    complete -o default -o nospace -F __start_kops kops
+fi
+
+# ex: ts=4 sw=4 et filetype=sh
+
+BASH_COMPLETION_EOF
+}
+__kops_bash_source <(__kops_convert_bash_to_zsh)
+_complete kops 2>/dev/null
