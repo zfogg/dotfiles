@@ -18,6 +18,12 @@ tap "homebrew/cask-versions"
 tap "beeftornado/rmtree"
 # tap }}}
 
+# popcorn-time {{{
+popcorn_time_repo = 'popcorn-official/popcorn-desktop'
+tap popcorn_time_repo, "https://github.com/#{popcorn_time_repo}.git"
+cask 'popcorn-time'
+# popcorn-time }}}
+
 
 # mas {{{
 brew "mas"
@@ -174,6 +180,8 @@ brew "ripgrep"
 brew "fd"
 
 brew "yj"
+
+brew "awscli"
 
 brew "jq"
 brew "lsd"

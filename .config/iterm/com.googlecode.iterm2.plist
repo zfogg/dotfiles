@@ -15835,6 +15835,7 @@
 		<string>3.3.11</string>
 		<string>3.4.0beta1</string>
 		<string>3.4.0beta3</string>
+		<string>3.4.0beta4</string>
 		<string>3.4.0beta2</string>
 	</array>
 	<key>NoSyncAutoBurialReveal</key>
@@ -15885,7 +15886,7 @@
 	<key>NoSyncLastOSVersion</key>
 	<string>Version 11.0 (Build 20A5343i)</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>96</integer>
+	<integer>112</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -16853,11 +16854,11 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-08-10T19:00:03Z</date>
+	<date>2020-08-18T15:00:04Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
-	<integer>1012966821</integer>
+	<integer>2678328050</integer>
 	<key>SUUpdateRelaunchingMarker</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -16933,7 +16934,7 @@
 	<key>TabTitlesUseSmartTruncation</key>
 	<true/>
 	<key>TabViewType</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>TabsHaveCloseButton</key>
 	<false/>
 	<key>TerminalMargin</key>
@@ -17052,7 +17053,7 @@
 	<key>findRegex_iTerm</key>
 	<true/>
 	<key>iTerm Version</key>
-	<string>3.4.0beta3</string>
+	<string>3.4.0beta4</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
