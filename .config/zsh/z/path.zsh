@@ -64,7 +64,7 @@ function () { # {{{ platform-specifics
       /sbin
     )
 
-    if command_exists colorgcc; then
+    if command -v colorgcc 2> /dev/null >&2; then
       export CCACHE_PATH=$BREW/bin
       path=(
         $BREW/lib/colorgcc/bin
@@ -102,6 +102,12 @@ function() { # {{{ AFTER platform-specifics
     #$HOME/.pyenv/shims
     $GOPATH/bin
     "$path[@]")
+
+    if [[ -d ~/.fzf/bin ]]; then
+      path=(
+        $HOME/.fzf/bin
+        "$path[@]")
+    fi
 
     if [[ -v ANDROID_HOME ]]; then
       path=(
