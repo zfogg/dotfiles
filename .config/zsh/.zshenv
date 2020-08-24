@@ -195,9 +195,9 @@ export WORKON_HOME=~/.virtualenvs
 
 # pyenv {{{
   # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
-  #export PYENV_SHELL="$SHELL_NAME"
-  #export PYENV_ROOT="${HOME}/.pyenv"
-  export PYENV_VIRTUALENV_DISABLE_PROMPT='1'
+  export PYENV_SHELL="$SHELL_NAME"
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PYENV_VIRTUALENV_DISABLE_PROMPT='0'
   export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
   export ZSH_PYENV_LAZY_VIRTUALENV=true
 # }}}
