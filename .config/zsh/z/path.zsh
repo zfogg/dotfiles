@@ -32,6 +32,7 @@ function() { # {{{ BEFORE platform-specifics
 function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
+      $BREW/opt/ccache/libexec
       $BREW/opt/ruby/bin
       $BREW/{bin,sbin}
       #/Library/Developer/CommandLineTools/usr/bin
@@ -62,6 +63,14 @@ function () { # {{{ platform-specifics
       /bin
       /sbin
     )
+
+    if command_exists colorgcc; then
+      export CCACHE_PATH=$BREW/bin
+      path=(
+        $BREW/lib/colorgcc/bin
+        "$path[@]"
+      )
+    fi
 
     fpath=(
       $BREW/share/zsh/{site-functions,functions}

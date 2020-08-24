@@ -149,6 +149,8 @@ brew "python"
 brew "python@3.8"
 brew "ipython"
 
+brew "ccache"
+
 brew "go"
 
 brew "ruby"

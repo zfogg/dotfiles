@@ -193,6 +193,17 @@ function nvmRC() {
 #function npx()  { nvmRC npx;  npx  "$@"; }
 # node, npm, nvm }}}
 
+# node, npm, nvm {{{
+function() {
+  #if [[ -d $PYENV_ROOT ]] && command_exists pyenv && command_exists pyenv-virtualenv; then
+    #eval "$(pyenv            init -)"
+    #eval "$(pyenv virtualenv-init -)"
+    #source "$BREW/opt/pyenv/completions/pyenv.zsh"
+  #fi
+}
+# python, pip, pyenv }}}
+
+
 # plugins }}}
 
 
