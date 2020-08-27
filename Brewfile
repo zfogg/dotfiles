@@ -28,7 +28,7 @@ cask 'popcorn-time'
 # mas {{{
 brew "mas"
 
-mas "Xcode",             id: 497799835
+#mas "Xcode",             id: 497799835
 mas "Cleaner for Xcode", id: 1296084683
 mas "DevCleaner",        id: 1388020431
 mas "Developer",         id: 640199958
@@ -47,7 +47,10 @@ mas "slack",             id: 803453959
 
 
 # cask {{{
+#cask "iterm2"
 cask "iterm2-beta"
+
+cask "setapp"
 
 cask "1password-beta"
 cask "1password-cli"
@@ -112,7 +115,6 @@ cask "airfoil"
 
 
 # brew {{{
-brew "cmake"
 brew "openssl"
 brew "coreutils"
 brew "gnu-sed"
@@ -155,6 +157,9 @@ brew "go"
 
 brew "ruby"
 
+brew "cmake"
+brew "scons"
+brew "lilv"
 brew "maven"
 
 brew "nginx"
@@ -199,6 +204,7 @@ brew "mpg123"
 
 brew "wget"
 brew "curl"
+brew "curl-openssl"
 brew "ldns"
 brew "telnet"
 brew "htop"
@@ -215,5 +221,8 @@ brew "docker-compose"
 brew "openjdk"
 
 brew "speedtest"
+
+brew "pulseaudio"
+brew "portaudio"
 # brew }}}
 
