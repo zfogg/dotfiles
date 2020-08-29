@@ -306,6 +306,11 @@ export GPG_TTY="$(tty)"
 # gpg }}}
 
 
+# curl {{{
+export CURL_HOME="$XDG_CONFIG_HOME/curl"
+# curl }}}
+
+
 # compilers {{{
 export  CC='clang'
 export CXX='clang++'
