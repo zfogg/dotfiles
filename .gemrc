@@ -6,3 +6,7 @@
 :backtrace: false
 :verbose: false
 gem: --no-document --user-install
+install: --no-rdoc --no-ri
+update: --no-rdoc --no-ri
+
+# vim: set filetype=yaml:
