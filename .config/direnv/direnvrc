@@ -1,6 +1,10 @@
-# vim: filetype=sh:
+#/usr/bin/env zsh
+# vim: ft=zsh foldmethod=marker:
 
-use_nvm() {
+
+# {{{ Node.js
+# INFO: https://github.com/direnv/direnv/wiki/Node#using-nvm
+function use_nvm() {
   local node_version=$1
   unset npm_config_prefix
 
@@ -10,26 +14,40 @@ use_nvm() {
     nvm use $node_version
   fi
 }
+# }}}
 
-# use a certain pyenv version
-use_python() {
-    if [ -n "$(which pyenv)" ]; then
-        local pyversion=$1
-        pyenv local ${pyversion}
-    fi
-}
 
-layout_virtualenv() {
+# {{{ Python
+# INFO: https://github.com/direnv/direnv/wiki/Python#pyenv-virtualenv
+function use_python() {
+  if [ -n "$(which pyenv)" ]; then
     local pyversion=$1
-    local pvenv=$2
-    if [ -n "$(which pyenv virtualenv)" ]; then
-        pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
-    fi
-    pyenv local --unset
+    pyenv local ${pyversion}
+  fi
 }
 
-layout_activate() {
-    if [ -n "$(which pyenv)" ]; then
-        source $(pyenv root)/versions/$1/bin/activate
-    fi
+function layout_virtualenv() {
+  local pyversion=$1
+  local pvenv=$2
+  if [ -n "$(which pyenv virtualenv)" ]; then
+    pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
+  fi
+  pyenv local --unset
 }
+
+function layout_activate() {
+  if [ -n "$(which pyenv)" ]; then
+    source $(pyenv root)/versions/$1/bin/activate
+  fi
+}
+# }}}
+
+
+# {{{ Ruby
+# INFO: https://github.com/direnv/direnv/wiki/Ruby
+function use_ruby() {
+  local ruby_root=$HOME/.rubies/$1
+  load_prefix "$ruby_root"
+  layout_ruby
+}
+# }}}
