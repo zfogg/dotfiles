@@ -9,24 +9,27 @@
   typeset -U   manpath
   typeset -aU  infopath
   typeset -xUT INFOPATH infopath
-
 # }}}
 
 
 function() { # {{{ BEFORE platform-specifics
   path=(
-    "$path[@]")
+    "$path[@]"
+  )
 
   fpath=(
     /usr/share/zsh/site-functions
-    "$fpath[@]")
+    "$fpath[@]"
+  )
 
   manpath=(
     /usr/share/man
-    "$manpath[@]")
+    "$manpath[@]"
+  )
 
   infopath=(
-    "$infopath[@]")
+    "$infopath[@]"
+  )
 } # }}}
 
 function () { # {{{ platform-specifics
@@ -56,7 +59,19 @@ function () { # {{{ platform-specifics
     )
 
   elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
+
+    if command -v colorgcc ccache 2> /dev/null >&2; then
+      export CCACHE_PATH=$BREW/bin
+      path=(
+        $BREW/lib/colorgcc/bin
+        $BREW/lib/ccache/bin
+        "$path[@]"
+      )
+    fi
+
     path=(
+      $BREW/lib/colorgcc/bin
+      $BREW/lib/ccache/bin
       $BREW/local/{bin,sbin}
       $BREW/{bin,sbin}
       #/usr/share/aws-cli/v2/2.0.14/bin
@@ -65,21 +80,15 @@ function () { # {{{ platform-specifics
       /sbin
     )
 
-    if command -v colorgcc 2> /dev/null >&2; then
-      export CCACHE_PATH=$BREW/bin
-      path=(
-        $BREW/lib/colorgcc/bin
-        "$path[@]"
-      )
-    fi
-
     fpath=(
       $BREW/share/zsh/{site-functions,functions}
-      "$fpath[@]")
+      "$fpath[@]"
+    )
 
     manpath=(
       $BREW/share/man
-      "$manpath[@]")
+      "$manpath[@]"
+    )
 
     infopath=(
       $BREW/share/info
@@ -102,36 +111,41 @@ function() { # {{{ AFTER platform-specifics
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
     #$HOME/.pyenv/shims
     $GOPATH/bin
-    "$path[@]")
+    "$path[@]"
+  )
 
-    if [[ -d ~/.fzf/bin ]]; then
-      path=(
-        $HOME/.fzf/bin
-        "$path[@]")
-    fi
+  if [[ -d ~/.fzf/bin ]]; then
+    path=(
+      $HOME/.fzf/bin
+      "$path[@]")
+  fi
 
-    if [[ -v ANDROID_HOME ]]; then
-      path=(
-        $ANDROID_HOME/emulator
-        $ANDROID_HOME/tools/bin
-        $ANDROID_HOME/platform-tools
-        $ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*(onF[-1])}
-        "$path[@]")
-    fi
+  #if [[ -v ANDROID_HOME ]]; then
+    #path=(
+      #$ANDROID_HOME/emulator
+      #$ANDROID_HOME/tools/bin
+      #$ANDROID_HOME/platform-tools
+      #$ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*(onF[-1])}
+      #"$path[@]"
+    #)
+  #fi
 
   fpath=(
     $HOME/.zsh/{site-functions,completions,gencompl}
-    "$fpath[@]")
+    "$fpath[@]"
+  )
 
   manpath=(
     $HOME/.nvm/versions/node/v*.*.*/share/man(onF[-1])
     $XDG_DATA_HOME/man
-    "$manpath[@]")
+    "$manpath[@]"
+  )
 
   #infopath=(
     #$XDG_DATA_HOME/info
     #$BREW/share/info
-    #"$infopath[@]")
+    #"$infopath[@]"
+  #)
 } # }}}
 
 
