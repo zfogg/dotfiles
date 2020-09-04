@@ -47,8 +47,8 @@ mas "slack",             id: 803453959
 
 
 # cask {{{
-#cask "iterm2"
-cask "iterm2-beta"
+cask "iterm2"
+#cask "iterm2-beta"
 
 cask "setapp"
 
@@ -65,6 +65,7 @@ cask "firefox"
 
 cask "iina"
 cask "vlc"
+cask "mpv"
 cask "spotify"
 cask "blackhole"
 cask "obs"
@@ -119,6 +120,7 @@ brew "openssl"
 brew "coreutils"
 brew "gnu-sed"
 brew "gnu-tar"
+brew "gawk"
 brew "findutils"
 
 brew "zsh"
@@ -191,6 +193,8 @@ brew "yj"
 brew "awscli"
 
 brew "jq"
+brew "rg"
+brew "ag"
 brew "lsd"
 brew "fzf"
 brew "tree"
