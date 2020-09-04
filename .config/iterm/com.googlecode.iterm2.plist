@@ -47,7 +47,7 @@
 	<key>BracketedPasteMode</key>
 	<true/>
 	<key>CheckTestRelease</key>
-	<true/>
+	<false/>
 	<key>ClosingHotkeySwitchesSpaces</key>
 	<true/>
 	<key>ClosingTmuxTabKillsTmuxWindows</key>
@@ -13137,6 +13137,8 @@
 	<string>712 556 367 187 0 0 1792 1120 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>586 546 620 392 0 0 1792 1120 </string>
+	<key>NSWindow Frame UKCrashReporter</key>
+	<string>49 165 725 906 0 0 1792 1120 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>0 0 1792 1120 0 0 1792 1120 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
@@ -15832,11 +15834,12 @@
 	<key>NoSyncAllAppVersions</key>
 	<array>
 		<string>3.3.12beta3</string>
+		<string>3.4.0beta5</string>
 		<string>3.3.11</string>
-		<string>3.4.0beta1</string>
-		<string>3.4.0beta3</string>
 		<string>3.4.0beta4</string>
+		<string>3.4.0beta3</string>
 		<string>3.4.0beta2</string>
+		<string>3.4.0beta1</string>
 	</array>
 	<key>NoSyncAutoBurialReveal</key>
 	<true/>
@@ -15886,7 +15889,7 @@
 	<key>NoSyncLastOSVersion</key>
 	<string>Version 11.0 (Build 20A5354i)</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>117</integer>
+	<integer>141</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -16018,6 +16021,14 @@
 				<true/>
 				<key>name</key>
 				<string>selectionLength</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>processTitle</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -16349,6 +16360,14 @@
 				<true/>
 				<key>name</key>
 				<string>currentTab.currentSession.lastCommand</string>
+				<key>nonterminalContext</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>isTerminal</key>
+				<true/>
+				<key>name</key>
+				<string>currentTab.currentSession.processTitle</string>
 				<key>nonterminalContext</key>
 				<integer>0</integer>
 			</dict>
@@ -16850,15 +16869,15 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/testing_modern.xml?shard=57</string>
+	<string>https://iterm2.com/appcasts/final_modern.xml?shard=57</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-08-24T22:05:30Z</date>
+	<date>2020-09-03T23:41:12Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
-	<integer>2678328050</integer>
+	<integer>3902971287</integer>
 	<key>SUUpdateRelaunchingMarker</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -16969,6 +16988,8 @@
 	<true/>
 	<key>TypingClearsSelection</key>
 	<false/>
+	<key>UKCrashReporterLastCrashReportDate</key>
+	<real>1599176832</real>
 	<key>URLHandlersByGuid</key>
 	<dict>
 		<key>ftp</key>
@@ -17053,7 +17074,7 @@
 	<key>findRegex_iTerm</key>
 	<true/>
 	<key>iTerm Version</key>
-	<string>3.4.0beta4</string>
+	<string>3.4.0beta5</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
