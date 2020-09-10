@@ -272,7 +272,7 @@ fi
 
 
 # rust {{{
-export CORES="`nproc`"
+export CORES="`$BREW/bin/nproc`"
 
 export RUSTUP_HOME=~/.rustup
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
