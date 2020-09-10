@@ -105,9 +105,9 @@ function() { # {{{ AFTER platform-specifics
     $HOME/bin
     $HOME/.local/bin
     $HOME/.{cabal,cargo}/bin
-    $HOME/.nvm/versions/node/v*.*.*/bin(oanF[-1])
+    $HOME/.nvm/versions/node/v*.*.*/bin(onF[-1])
     $HOME/.rbenv/shims
-    $HOME/.gem/ruby/*.*.*/bin(oanF[-1])
+    $HOME/.gem/ruby/*.*.*/bin(onF[-1])
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
     #$HOME/.pyenv/shims
     $GOPATH/bin
@@ -125,7 +125,7 @@ function() { # {{{ AFTER platform-specifics
       #$ANDROID_HOME/emulator
       #$ANDROID_HOME/tools/bin
       #$ANDROID_HOME/platform-tools
-      #$ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*(oanF[-1])}
+      #$ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*(onF[-1])}
       #"$path[@]"
     #)
   #fi
@@ -136,7 +136,7 @@ function() { # {{{ AFTER platform-specifics
   )
 
   manpath=(
-    $HOME/.nvm/versions/node/v*.*.*/share/man(oanF[-1])
+    $HOME/.nvm/versions/node/v*.*.*/share/man(onF[-1])
     $XDG_DATA_HOME/man
     "$manpath[@]"
   )
