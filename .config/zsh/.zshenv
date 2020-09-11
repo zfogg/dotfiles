@@ -233,7 +233,7 @@ function() {
 
 
 # path, manpath, fpath {{{
-#source "$ZDOTDIR/z/path.zsh"
+source "$ZDOTDIR/z/path.zsh"
   # note: meta helpers {{{
   command_exists() { command -v "$1" 2>/dev/null 1>&2 }
   # alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
