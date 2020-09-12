@@ -2,6 +2,11 @@
 # vim: ft=zsh foldmethod=marker:
 
 
+# {{{ asdf
+source "$(asdf direnv hook asdf)"
+# }}}
+
+
 # {{{ Node.js
 # INFO: https://github.com/direnv/direnv/wiki/Node#using-nvm
 function use_nvm() {

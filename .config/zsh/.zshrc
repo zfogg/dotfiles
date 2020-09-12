@@ -81,6 +81,10 @@ if command_exists direnv; then
   emulate zsh -c "$(direnv hook zsh)"
 fi
 
+if command_exists asdf; then
+  #source "$BREW/opt/asdf/asdf.sh"
+fi
+
 if command_exists jenv; then
   eval "$(jenv init -)"
 fi
