@@ -290,6 +290,7 @@ export ZSHZ_NO_RESOLVE_SYMLINKS="$TRUE"
 export ZSHZ_OWNER="$USER"
 # }}}
 
+
 # zsh-completion-generator {{{
 export GENCOMPL_FPATH="$HOME/.zsh/completions"
 export GENCOMPL_PY='python2'
@@ -309,6 +310,13 @@ export GPG_TTY="$(tty)"
 # curl {{{
 export CURL_HOME="$XDG_CONFIG_HOME/curl"
 # curl }}}
+
+
+# asdf {{{
+export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdfrc"
+export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
+export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME='.tool-versions'
+# asdf }}}
 
 
 # compilers {{{
