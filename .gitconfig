@@ -1,102 +1,102 @@
 [user]
-    email = me@zfo.gg
-    name  = Zachary Fogg
-	signingkey = 49EC8653B46B7709A275B5639FCD7766F3B769C9
+    	email      = me@zfo.gg
+    	name       = Zachary Fogg
+    	signingkey = 49EC8653B46B7709A275B5639FCD7766F3B769C9
 
 [core]
-    editor       = $EDITOR
-    pager        = $PAGER
-    ;pager = diff-so-fancy | less --tabs=4 -RFX
-    eol          = lf
-    autocrlf     = input
-    excludesFile = ~/.config/git/ignore
-    safecrlf = false
-[push]
-    default = simple
-
-[color]
-    diff        = auto
-    status      = auto
-    branch      = auto
-    interactive = auto
-    ui          = auto
-    pager       = true
-
-[fetch]
-    prune     = true
-    pruneTags = true
-    output    = compact
+    	editor       = $EDITOR
+    	pager        = $PAGER
+    	;pager        = diff-so-fancy | less --tabs=4 -RFX
+    	eol          = lf
+    	autocrlf     = input
+    	excludesFile = ~/.config/git/ignore
+    	safecrlf     = false
 
 [log]
-    decorate     = true
-    abbrevCommit = true
-
+    	decorate     = true
+    	abbrevCommit = true
+[fetch]
+    	prune     = true
+    	pruneTags = true
+    	output    = compact
+[commit]
+    	gpgsign = true
+[push]
+    	default = simple
+[pull]
+    	ff = only
+    	;rebase = true
+[diff]
+    	tool = vimdiff3
+    	wordRegex = [[:alnum:]_]+|[^[:alnum:]_[:space:]]+
+[merge]
+    	tool = vimdiff3
 [grep]
-    lineNumber = true
+    	lineNumber = true
+[gpg]
+    	program = gpg
+
+[color]
+    	diff        = auto
+    	status      = auto
+    	branch      = auto
+    	interactive = auto
+    	ui          = auto
+    	pager       = true
 
 [mergetool "nvim"]
-    ;cmd           = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-    ;cmd           = nvim -f -c \"Gdiff\" \"$MERGED\"
-    cmd            = $EDITOR -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
-    ;cmd            = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
-    ;cmd            = vim -f -c \"Gdiffsplit!\" \"$MERGED\"
-    trustExitCode  = true
-[merge]
-    tool = nvim
+    	;cmd           = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    	;cmd           = nvim -f -c \"Gdiff\" \"$MERGED\"
+    	cmd           = $EDITOR -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    	;cmd           = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+    	;cmd           = vim -f -c \"Gdiffsplit!\" \"$MERGED\"
+    	trustExitCode = true
 [mergetool]
-    prompt        = false
-    keepBackup    = true
+    	prompt        = false
+    	keepBackup    = true
 
 [difftool "nvim"]
-    ;cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
-    cmd = vim -d \"$LOCAL\" \"$REMOTE\"
-    trustExitCode = true
-[diff]
-    tool = nvim
-    wordRegex = [[:alnum:]_]+|[^[:alnum:]_[:space:]]+
-
+    	;cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
+    	cmd = vim -d \"$LOCAL\" \"$REMOTE\"
+    	trustExitCode = true
+[difftool "vimdiff3"]
+    	path = nvim
+[mergetool "vimdiff3"]
+    	path = nvim
 
 [alias]
-    submsync = submodule foreach \"git checkout master && git pull origin master\"
-    mybranch = rev-parse --abbrev-ref HEAD
-	up = pull --ff-only --all -p
-    gh       = joopal-clone git github.com
+    	submsync = submodule foreach \"git checkout master && git pull origin master\"
+    	mybranch = rev-parse --abbrev-ref HEAD
+    	up       = pull --ff-only --all -p
+    	gh       = joopal-clone git github.com
 
-    l        = log -18 --all --topo-order
-    ll       = log     --all --topo-order
-    gl       = log -12 --all --graph --topo-order
-    gll      = log     --all --graph --topo-order
+    	l        = log -18 --all --topo-order
+    	ll       = log     --all --topo-order
+    	gl       = log -12 --all --graph --topo-order
+    	gll      = log     --all --graph --topo-order
 
-    unshallow = "!:; \
-    git fetch --unshallow 2>/dev/null; \
-    git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'; \
-    git fetch -v origin; "
+    	unshallow = "!:; \
+    	git fetch --unshallow 2>/dev/null; \
+    	git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'; \
+    	git fetch -v origin; "
 
-    pruner = "!:; \
-    git prune --expire=now; \
-    git reflog expire --expire-unreachable=now --rewrite --all; "
+    	pruner = "!:; \
+    	git prune --expire=now; \
+    	git reflog expire --expire-unreachable=now --rewrite --all; "
 
-    fetch-branch = "!:; \
-    git remote set-branches --add origin $1; \
-    git fetch -v origin $1:$1; "
+    	fetch-branch = "!:; \
+    	git remote set-branches --add origin $1; \
+    	git fetch -v origin $1:$1; "
 
 
 [ghq "https://bitbucket.org/"]
-    vcs = git
+    	vcs = git
 
 [filter "lfs"]
-    clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
-    process = git-lfs filter-process
-    required = true
-
+    	clean = git-lfs clean -- %f
+    	smudge = git-lfs smudge -- %f
+    	process = git-lfs filter-process
+    	required = true
 [filter "media"]
-    clean  = git-media-clean %f
-    smudge = git-media-smudge %f
-[pull]
-	ff = only
-	;rebase = true
-[commit]
-	gpgsign = true
-[gpg]
-	program = gpg
+    	clean  = git-media-clean %f
+    	smudge = git-media-smudge %f

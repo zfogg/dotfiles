@@ -15837,6 +15837,7 @@
 		<string>3.4.0beta5</string>
 		<string>3.3.11</string>
 		<string>3.4.0beta4</string>
+		<string>3.3.12</string>
 		<string>3.4.0beta3</string>
 		<string>3.4.0beta2</string>
 		<string>3.4.0beta1</string>
@@ -15889,7 +15890,7 @@
 	<key>NoSyncLastOSVersion</key>
 	<string>Version 11.0 (Build 20A5354i)</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>141</integer>
+	<integer>143</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -16869,7 +16870,7 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/final_modern.xml?shard=57</string>
+	<string>https://iterm2.com/appcasts/final_new.xml?shard=57</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
@@ -16903,7 +16904,7 @@
 	<key>ShowHintsInSplitPaneMenuItems</key>
 	<true/>
 	<key>ShowMetalFPSmeter</key>
-	<true/>
+	<false/>
 	<key>ShowNewOutputIndicator</key>
 	<true/>
 	<key>ShowPaneTitles</key>
@@ -16989,7 +16990,7 @@
 	<key>TypingClearsSelection</key>
 	<false/>
 	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1599176832</real>
+	<real>1599177088</real>
 	<key>URLHandlersByGuid</key>
 	<dict>
 		<key>ftp</key>
@@ -17074,7 +17075,7 @@
 	<key>findRegex_iTerm</key>
 	<true/>
 	<key>iTerm Version</key>
-	<string>3.4.0beta5</string>
+	<string>3.3.12</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>

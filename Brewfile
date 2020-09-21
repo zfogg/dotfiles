@@ -1,4 +1,4 @@
-# vi: ft=ruby fdm=marker
+# vim: filetype=ruby foldmethod=marker:
 # INFO: ~/.dotfiles/Brewfile
 
 cask_args appdir: "/Applications"
@@ -191,6 +191,7 @@ brew "fd"
 brew "yj"
 
 brew "awscli"
+brew "gh"
 
 brew "jq"
 brew "rg"

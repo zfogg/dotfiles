@@ -1,2 +1,4 @@
 /Brewfile.lock.json
 /.antigen-hs
+
+!/.cache/
