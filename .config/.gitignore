@@ -1,6 +1,8 @@
 /*
 
 !/.gitignore
+!/.ignore
+!.gitkeep
 
 !/asciinema/
 !/base16-iterm2/
@@ -14,3 +16,4 @@
 !/vim/
 !/zsh/
 !/i3/
+!/asdf/

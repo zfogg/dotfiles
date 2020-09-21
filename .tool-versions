@@ -1,0 +1,4 @@
+python 3.8.2 2.7.15 system
+nodejs 14.10.1 14.9.0 13.14.0 12.16.2 system
+ruby 2.7.1 2.6.0 system
+direnv 2.22.0
