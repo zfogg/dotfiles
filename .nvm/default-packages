@@ -16,3 +16,4 @@ typescript-language-server
 flow-bin
 vscode-html-languageserver-bin
 vscode-css-languageserver-bin
+vercel

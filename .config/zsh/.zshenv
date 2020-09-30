@@ -323,3 +323,8 @@ export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME='.tool-versions'
 export  CC='clang'
 export CXX='clang++'
 # }}}
+
+
+# imagemagick {{{
+export XML_CATALOG_FILES="$BREW/etc/xml/catalog"
+# }}}
