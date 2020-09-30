@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+# joopal-kops (kops)
+#   autoload completions
+
+function kops() {
+  if [[ ! (($_comps[(Ie)kops])) ]]; then
+    source $BREW/share/zsh/site-functions/_kops
+  fi
+  command kops "$@"
+}
+
+kops "$@"
+
+# vim:ft=zsh:et:sts=2:sw=2
