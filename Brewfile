@@ -112,6 +112,8 @@ cask "quicklookase"
 cask "qlvideo"
 
 cask "airfoil"
+
+cask "blockstack"
 # cask }}}
 
 
@@ -181,6 +183,8 @@ brew "rustup-init"
 
 brew "chromaprint", args: ["ignore-dependencies"]
 brew "decklinksdk"
+brew "imagemagick"
+brew "game-music-emu"
 ALL_FFMPEG_OPTIONS = `brew options homebrew-ffmpeg/ffmpeg/ffmpeg | grep -vE '\s' | grep -- '--with-'`.gsub("--", "").split("\n")
 brew "homebrew-ffmpeg/ffmpeg/ffmpeg", args: ALL_FFMPEG_OPTIONS
 brew "youtube-dl"
@@ -190,6 +194,7 @@ brew "fd"
 
 brew "yj"
 
+#brew "vercel"
 brew "awscli"
 brew "gh"
 
@@ -223,11 +228,23 @@ brew "svgo"
 brew "docker"
 brew "docker-compose"
 
+brew "wp-cli"
+brew "wp-cli-completion"
+
+brew "postgresql"
+brew "mysql"
+#brew "mariadb"
+
 brew "openjdk"
 
-brew "speedtest"
+brew "speedtest-cli"
 
 brew "pulseaudio"
 brew "portaudio"
+
+brew "ykman"
+brew "ykpers"
+brew "pam_yubico"
+brew "yubico-piv-tool"
 # brew }}}
 

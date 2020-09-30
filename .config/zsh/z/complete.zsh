@@ -4,7 +4,8 @@
 
 # NOTE: run this BEFORE sourcing 3rd-party completions
 # compinit {{{
-autoload -Uz compinit
+autoload -Uz +X bashcompinit && bashcompinit
+autoload -Uz +X compinit
 function() {
   local zcompdump=$ZDOTDIR/.zcompdump
   if [[ $OSX == $TRUE && -d $BREW/opt/coreutils ]] && alias date=gdate
