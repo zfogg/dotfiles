@@ -338,5 +338,7 @@ export XML_CATALOG_FILES="$BREW/etc/xml/catalog"
 
 
 # wxWidgets (for Audacity) {{{
-export WX_CONFIG=/usr/local/x86_64/bin/wx-config
+if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+  export WX_CONFIG="$BREW/x86_64/bin/wx-config"
+fi
 # }}}
