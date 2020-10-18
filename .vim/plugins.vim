@@ -74,17 +74,18 @@ Plug 'junegunn/vim-plug'
     Plug 'jaawerth/nrun.vim'
 
     " completion
-    "if has('unix')
-        "Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
-            "\ 'branch': 'next',
-            "\ 'do':     'bash install.sh && npm install -g flow-bin',
-        "\ })
-    "elseif has('win32')
-        "Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
-            "\ 'branch': 'next',
-            "\ 'do':     'powershell -executionpolicy bypass -File install.ps1',
-        "\ })
-    "endif
+    if has('unix')
+        Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+            \ 'branch': 'next',
+            \ 'do':     'bash install.sh && npm install -g flow-bin',
+        \ })
+        "\ 'do':     'bash install.sh',
+    elseif has('win32')
+        Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
+            \ 'branch': 'next',
+            \ 'do':     'powershell -executionpolicy bypass -File install.ps1',
+        \ })
+    endif
     ""Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
 
     " deoplete
@@ -137,10 +138,10 @@ Plug 'junegunn/vim-plug'
     "Plug 'joonty/vdebug',                 {'for': ft['php']}
     "Plug 'StanAngeloff/php.vim',          {'for': ft['php']}
     "Plug '2072/PHP-Indenting-for-VIm',    {'for': ft['php']}
-    Plug 'lvht/phpfold.vim',              {'for': ft['php']}
+    "Plug 'lvht/phpfold.vim',              {'for': ft['php']}
     "Plug 'miya0001/vim-dict-wordpress',   {'for': ft['php']}
-    "Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'})
-    "Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
+    Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'})
+    Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
     Plug 'othree/html5.vim'
     Plug 'lifepillar/pgsql.vim',          {'for': ft['sql']}
     "Plug 'sheerun/vim-polyglot'
@@ -151,8 +152,8 @@ Plug 'junegunn/vim-plug'
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
     "Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
-    Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
-    Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
+    "Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
+    Plug 'peitalin/vim-jsx-typescript' ",   {'for': ft['ts']}
     "Plug 'prettier/vim-prettier',         {'do': 'yarn install', 'for': ft['js'] + ft['ts']}
     Plug 'prettier/vim-prettier',         {'do': 'yarn install'}
         " 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -174,7 +175,7 @@ Plug 'junegunn/vim-plug'
     Plug 'lepture/vim-jinja',  {'for': ft['jinja']}
     "Plug 'mattn/emmet-vim',    {'for': ft['markup'] + ft['styles'] + ['jsx', 'tsx']}
     Plug 'mattn/emmet-vim'
-    Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ft['js'] }
+    "Plug 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ft['js'] }
 
     " clang
     Plug 'libclang-vim/libclang-vim', {'for': ft['cx']}
@@ -208,7 +209,7 @@ Plug 'junegunn/vim-plug'
     Plug 'fedorenchik/AnsiEsc'
     Plug 'nathanaelkane/vim-indent-guides'
     Plug 'luochen1990/rainbow', PIf(v:false, {})
-    Plug 'ap/vim-css-color',          { 'for': ft['styles'] }
+    "Plug 'ap/vim-css-color',          { 'for': ft['styles'] }
     Plug 'arakashic/chromatica.nvim', { 'for': ft['cx']  }
     "Plug 'qstrahl/vim-matchmaker'
     "Plug 'machakann/vim-highlightedyank', { 'on': '<Plug>(highlightedyank)' }
