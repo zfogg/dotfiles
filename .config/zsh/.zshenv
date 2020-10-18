@@ -74,6 +74,13 @@ export CPPFLAGS=''
 export PKG_CONFIG_PATH='/usr/lib/pkgconfig'
 if [[ $OSX == $TRUE ]]; then
   export PKG_CONFIG_PATH="$BREW/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+  export LIBRARY_PATH="/usr/lib:$BREW/lib"
+  #if [[ ! -v LIBRARY_PATH ]]; then
+    #export LIBRARY_PATH="$LIBRARY_PATH:$BREW/lib"
+  #else
+    #export LIBRARY_PATH="/usr/lib:$BREW/lib"
+  #fi
 fi
 
 # function() {
@@ -327,4 +334,9 @@ export CXX='clang++'
 
 # imagemagick {{{
 export XML_CATALOG_FILES="$BREW/etc/xml/catalog"
+# }}}
+
+
+# wxWidgets (for Audacity) {{{
+export WX_CONFIG=/usr/local/x86_64/bin/wx-config
 # }}}
