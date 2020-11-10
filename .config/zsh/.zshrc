@@ -73,20 +73,28 @@ fi
 
 
 # plugins {{{
-if command_exists direnv; then
+#if command_exists direnv; then
   export AUTOENV_DISABLED=0
   export AUTOENV_FILE_ENTER=.env
   export AUTOENV_HANDLE_LEAVE=0
   export AUTOENV_LOOK_UPWARDS=0
-  emulate zsh -c "$(direnv hook zsh)"
-fi
+  #emulate zsh -c "$(direnv hook zsh)"
+#fi
 
-if command_exists asdf; then
-  #source "$BREW/opt/asdf/asdf.sh"
-fi
+function() {
+  if [[ -d $XDG_DATA_HOME/asdf ]]; then
+    eval "$(asdf exec direnv hook zsh)"
+    #source "$BREW/opt/asdf/asdf.sh"
+    direnv() { asdf exec direnv "$@"; }
+
+    local asdf_java=${ASDF_DATA_DIR:-~/.asdf}/plugins/java
+    [[ -d $asdf_java ]] && \
+      source "$asdf_java/set-java-home.zsh"
+  fi
+}
 
 if command_exists jenv; then
-  eval "$(jenv init -)"
+  #eval "$(jenv init -)"
 fi
 
 # INFO: antigen handles this now
