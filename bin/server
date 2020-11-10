@@ -30,7 +30,8 @@ esac
 
 
 function server_() {
-    echo "$pyargs" | xargs "$py" 2>/dev/null
+    echo "$pyargs" \
+        | xargs "$py" 2>/dev/null
 }
 
 function server() {

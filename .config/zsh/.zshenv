@@ -320,9 +320,16 @@ export CURL_HOME="$XDG_CONFIG_HOME/curl"
 
 
 # asdf {{{
-export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdfrc"
+if [[ -d $XDG_CONFIG_HOME/asdf ]]; then
+  export ASDF_CONFIG_DIR="$XDG_CONFIG_HOME/asdf"
+  export ASDF_CONFIG_FILE="$ASDF_CONFIG_DIR/asdfrc"
+else
+  export ASDF_CONFIG_DIR="$HOME"
+  export ASDF_CONFIG_FILE="$ASDF_CONFIG_DIR/.asdfrc"
+fi
 export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
-export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME='.tool-versions'
+export ASDF_DIR="$BREW/opt/asdf"
+export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
 # asdf }}}
 
 

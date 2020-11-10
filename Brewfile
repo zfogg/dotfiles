@@ -16,6 +16,7 @@ tap "homebrew-ffmpeg/ffmpeg"
 tap "amiaopensource/amiaos"
 tap "homebrew/cask-versions"
 tap "beeftornado/rmtree"
+tap "rami3l/tap"
 # tap }}}
 
 # popcorn-time {{{
@@ -246,5 +247,7 @@ brew "ykman"
 brew "ykpers"
 brew "pam_yubico"
 brew "yubico-piv-tool"
+
+#brew "pacaptr"
 # brew }}}
 

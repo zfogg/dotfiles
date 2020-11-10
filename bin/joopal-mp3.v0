@@ -31,6 +31,8 @@ while [ $# -gt 0 ]; do
     if [[ -e $1 ]]; then
         local filetype="${1:e}"
         ffmpeg -i "$1" \
+            -hide_banner \
+            -loglevel warning \
             -codec:a libmp3lame \
             -qscale:a 0 \
             "${out_dir}/${1%."$filetype"}.v0.mp3"
