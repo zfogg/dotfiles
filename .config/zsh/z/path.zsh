@@ -85,6 +85,10 @@ function () { # {{{ platform-specifics
       "$fpath[@]"
     )
 
+    #echo "LINUX=$LINUX"; echo "$FPATH" | tr ':' '\n'; echo 'BREAK' echo; echo;
+
+    #echo "LINUX=$LINUX"; echo "$fpath" | tr ' ' '\n'; echo 'BREAK'; echo; echo
+
     manpath=(
       $BREW/share/man
       "$manpath[@]"
@@ -107,10 +111,10 @@ function() { # {{{ AFTER platform-specifics
     $HOME/.local/bin
     $HOME/.{cabal,cargo}/bin
     $HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
-    $HOME/.rbenv/shims
-    $HOME/.gem/ruby/*.*.*/bin(nF/[-1])
+    #$HOME/.rbenv/shims
+    #$HOME/.gem/ruby/*.*.*/bin(nF/[-1])
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
-    $HOME/.pyenv/{bin,shims}
+    #$HOME/.pyenv/{bin,shims}
     $GOPATH/bin
     "$path[@]"
   )
@@ -119,6 +123,12 @@ function() { # {{{ AFTER platform-specifics
     path=(
       $HOME/.fzf/bin
       "$path[@]")
+  fi
+
+  if [[ -d ~/.asdf/completions ]]; then
+    fpath=(
+      $HOME/.asdf/completions
+      "$fpath[@]")
   fi
 
   #if [[ -v ANDROID_HOME ]]; then

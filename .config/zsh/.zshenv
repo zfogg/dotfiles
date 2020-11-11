@@ -194,7 +194,8 @@ export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${BREW}/opt/openssl@1.1"
 
 
 # python {{{
-export PIP_REQUIRE_VIRTUALENV=true
+#export PIP_REQUIRE_VIRTUALENV=true
+export PIP_REQUIRE_VIRTUALENV=false
 #if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then;
   #source "${VIRTUAL_ENV}/bin/activate"; fi
 
@@ -202,11 +203,11 @@ export WORKON_HOME=~/.virtualenvs
 
 # pyenv {{{
   # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
-  export PYENV_SHELL="$SHELL_NAME"
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PYENV_VIRTUALENV_DISABLE_PROMPT='0'
-  export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
-  export ZSH_PYENV_LAZY_VIRTUALENV=true
+  #export PYENV_SHELL="$SHELL_NAME"
+  #export PYENV_ROOT="$HOME/.pyenv"
+  #export PYENV_VIRTUALENV_DISABLE_PROMPT='0'
+  #export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV='true'
+  #export ZSH_PYENV_LAZY_VIRTUALENV=true
 # }}}
 
 # pipenv {{{
@@ -328,8 +329,13 @@ else
   export ASDF_CONFIG_FILE="$ASDF_CONFIG_DIR/.asdfrc"
 fi
 export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
-export ASDF_DIR="$BREW/opt/asdf"
+if [[ $LINUX == $TRUE ]]; then
+  export ASDF_DIR="/opt/asdf-vm"
+else
+  export ASDF_DIR="$BREW/opt-vm/asdf"
+fi
 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
+export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-~/.config}/asdf/neovim-packages"
 # asdf }}}
 
 

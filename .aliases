@@ -226,9 +226,15 @@ function npm-do() {
 
 
 # pyenv
-function gpip()  {PIP_REQUIRE_VIRTUALENV='' pip  "$@"}
-function gpip2() {PIP_REQUIRE_VIRTUALENV='' pip2 "$@"}
-function gpip3() {PIP_REQUIRE_VIRTUALENV='' pip3 "$@"}
+#function gpip()  {env PIP_REQUIRE_VIRTUALENV='' python -m pip  "$@"}
+#function gpip2() {env PIP_REQUIRE_VIRTUALENV='' python -m pip2 "$@"}
+#function gpip3() {env PIP_REQUIRE_VIRTUALENV='' python -m pip3 "$@"}
+
+# asdf-vm
+alias  pip='python -m pip'
+alias gpip='python -m pip'
+#function gpip2() {env PIP_REQUIRE_VIRTUALENV='' python -m pip2 "$@"}
+#function gpip3() {env PIP_REQUIRE_VIRTUALENV='' python -m pip3 "$@"}
 
 alias pyenv-init='eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)"'
 

@@ -336,12 +336,12 @@ set viewoptions+=cursor,curdir,folds
         let g:clipboard = {
             \ 'name': 'xclip',
             \ 'copy': {
-            \    '+': 'env DISPLAY=:0 xclip -in',
-            \    '*': 'env DISPLAY=:0 xclip -in',
+            \    '+': 'xclip -selection clipboard -in',
+            \    '*': 'xclip -selection clipboard -in',
             \  },
             \ 'paste': {
-            \    '+': 'env DISPLAY=:0 xclip -out',
-            \    '*': 'env DISPLAY=:0 xclip -out',
+            \    '+': 'xclip -selection clipboard -out',
+            \    '*': 'xclip -selection clipboard -out',
             \ },
             \ 'cache_enabled': 1,
         \ }

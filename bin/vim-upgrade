@@ -38,6 +38,13 @@ function log_section_end() {
 }
 
 
+if [[ $OSX == 1 ]]; then
+    source $BREW/opt/asdf-vm/asdf.sh
+elif [[ $LINUX == 1 ]]; then
+    source      /opt/asdf-vm/asdf.sh
+fi
+
+
 function() {
     local section="Python, Pyenv, pip"
     log_section_start "$section"
@@ -45,19 +52,24 @@ function() {
     #if [ -v PYENV_VIRTUALENV_INIT ]; then
         #eval "$(pyenv init -)" ; #eval "$(pyenv virtualenv-init -)"
     #fi
-    eval "$(pyenv init -)" ; #eval "$(pyenv virtualenv-init -)"
-    local pip_reqs="${XDG_CONFIG_HOME:-~/.config}/pyenv/neovim-packages"
+    #eval "$(pyenv init -)" ; #eval "$(pyenv virtualenv-init -)"
+    #local pip_reqs="${XDG_CONFIG_HOME:-~/.config}/asdf/neovim-packages"
 
     #for penv in neovim3; do
     #for penv in neovim3 neovim2 neovim; do
-    for penv in neovim; do
-        pyenv activate "$penv"
-        pip --quiet install --upgrade wheel setuptools
-        pip --quiet install --upgrade pip
-        pip --quiet install --upgrade --requirement "$pip_reqs"
-        pyenv rehash
-        pyenv deactivate
-    done
+    #for penv in neovim; do
+        #pyenv activate "$penv"
+        #pip --quiet install --upgrade wheel setuptools
+        #pip --quiet install --upgrade pip
+        #pip --quiet install --upgrade --requirement "$pip_reqs"
+        #pyenv rehash
+        #pyenv deactivate
+    #done
+
+    asdf plugin update python
+    local pip_reqs="${ASDF_PYTHON_DEFAULT_PACKAGES_FILE:-~/.default-python-packages}"
+    asdf exec python -m pip install -U -r "$pip_reqs"
+    asdf reshim python
 
     log_section_end "$section"
 }
@@ -68,11 +80,17 @@ function() {
     log_section_start "$section"
 
     #local npm_reqs=$(cat ~/.nvm/default-packages)
-    nvm-upgrade
+    #nvm-upgrade
     #nvm install stable --latest-npm --no-progress
     #nvm alias default stable
     #npm install --loglevel silent --global "$npm_reqs[@]"
     #npm install --global ${npm_reqs}
+
+    asdf plugin update nodejs
+    while read -r nr; do
+        asdf exec yarn global add "$nr"
+    done < <(cat ~/.default-npm-packages)
+    asdf reshim nodejs
 
     log_section_end "$section"
 }

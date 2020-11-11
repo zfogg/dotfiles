@@ -9,7 +9,9 @@ Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintfull
 Xft.hinting: 1
 Xft.antialias: 1
-Xft.rgba: rgb
+Xft.rgba: rgba
+
+Xcursor.size: 96
 
 #define base00 #181818
 #define base01 #282828

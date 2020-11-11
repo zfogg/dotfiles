@@ -145,7 +145,7 @@ Plug 'junegunn/vim-plug'
     Plug 'othree/html5.vim'
     Plug 'lifepillar/pgsql.vim',          {'for': ft['sql']}
     "Plug 'sheerun/vim-polyglot'
-    Plug 'lambdalisue/vim-pyenv',         {'for': ft['py']}
+    "Plug 'lambdalisue/vim-pyenv',         {'for': ft['py']}
     "Plug 'python-mode/python-mode',       {'for': ft['py']}
     Plug 'gisphm/vim-gitignore'
     Plug 'rust-lang/rust.vim',            {'for': ft['rs']}
@@ -197,7 +197,7 @@ Plug 'junegunn/vim-plug'
     Plug 'PotatoesMaster/i3-vim-syntax', {'for': 'i3'}
     "Plug 'darfink/vim-plist',      {'for': ['plist']}
     Plug 'darfink/vim-plist'
-    Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
+    "Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
     "Plug 'LnL7/vim-nix'
     Plug 'alvan/vim-closetag',     {'for': ['javascript.jsx', 'typescript.tsx', 'html']}
 " }}}
