@@ -82,6 +82,7 @@ fi
 #fi
 
 function() {
+  [[ -f $ASDF_DIR/asdf.sh ]] && source "$ASDF_DIR/asdf.sh"
   if [[ -d $XDG_DATA_HOME/asdf ]]; then
     eval "$(asdf exec direnv hook zsh)"
     #source "$BREW/opt/asdf/asdf.sh"
@@ -192,13 +193,13 @@ fi
 
 
 # node, npm, nvm {{{
-function nvmRC() {
-  unset -f "$1"
-  unset npm_config_prefix
-  export NVM_DIR="$HOME/.nvm"
-  [[ -s $NVM_DIR/nvm.sh && ! -v NVM_CD_FLAGS ]] \
-    && source "$NVM_DIR/nvm.sh" 
-}
+#function nvmRC() {
+  #unset -f "$1"
+  #unset npm_config_prefix
+  #export NVM_DIR="$HOME/.nvm"
+  #[[ -s $NVM_DIR/nvm.sh && ! -v NVM_CD_FLAGS ]] \
+    #&& source "$NVM_DIR/nvm.sh"
+#}
 #function node() { nvmRC node; node "$@"; }
 #function npm()  { nvmRC npm;  npm  "$@"; }
 #function nvm()  { nvmRC nvm;  nvm  "$@"; }
@@ -206,13 +207,13 @@ function nvmRC() {
 # node, npm, nvm }}}
 
 # node, npm, nvm {{{
-function() {
+#function() {
   #if [[ -d $PYENV_ROOT ]] && command_exists pyenv && command_exists pyenv-virtualenv; then
     #eval "$(pyenv            init -)"
     #eval "$(pyenv virtualenv-init -)"
     #source "$BREW/opt/pyenv/completions/pyenv.zsh"
   #fi
-}
+#}
 # python, pip, pyenv }}}
 
 

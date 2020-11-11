@@ -56,8 +56,8 @@ bundles = [
         , (bundle "softmoth/zsh-vim-mode")
             { fpathLocations = [] }
 
-        , (bundle "davidparsson/zsh-pyenv-lazy")
-            { fpathLocations = [] }
+        --, (bundle "davidparsson/zsh-pyenv-lazy")
+            --{ fpathLocations = [] }
 
         , (bundle "agkozak/zsh-z")
             { fpathLocations = [""] }
@@ -65,8 +65,8 @@ bundles = [
         --, (bundle "Tarrasch/zsh-autoenv")
             --{ fpathLocations = [] }
 
-        , (bundle "lukechilds/zsh-nvm")
-            { fpathLocations = [] }
+        --, (bundle "lukechilds/zsh-nvm")
+            --{ fpathLocations = [] }
     ]
 
 
