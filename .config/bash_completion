@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# vim: set fdm=marker:
+
+
+# kitty {{{
+function _() {
+    if command_exists kitty; then
+        kitty + complete setup "$(current_shell)" | source /dev/stdin
+    fi
+} && _; unset -f _
+# }}}
+
+
+# ipfs {{{
+function _() {
+    local ipfs_bash_compl="$BREW/etc/bash_completion.d/ipfs-completion.bash"
+    if command_exists ipfs && [[ -f $ipfs_bash_compl ]]; then
+        source "$ipfs_bash_compl"
+    fi
+} && _; unset -f _
+# }}}
