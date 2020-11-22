@@ -29,7 +29,6 @@ export ANTIGEN_HS_SANDBOX='stack'
 source "$HOME/.zsh/antigen-hs/init.zsh"
 # }}}
 
-
 # $ZDOTDIR/z/ {{{
 # path, manpath, fpath, infopath
 source "$ZDOTDIR/z/path.zsh"
@@ -89,7 +88,7 @@ function() {
     direnv() { asdf exec direnv "$@"; }
 
     local asdf_java=${ASDF_DATA_DIR:-~/.asdf}/plugins/java
-    [[ -d $asdf_java ]] && \
+   [[ -d $asdf_java ]] && \
       source "$asdf_java/set-java-home.zsh"
   fi
 }
