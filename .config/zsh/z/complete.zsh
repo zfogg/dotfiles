@@ -2,34 +2,7 @@
 # vim: set fdm=marker:
 
 
-# NOTE: run this BEFORE sourcing 3rd-party completions
-# compinit {{{
-autoload -Uz +X bashcompinit && bashcompinit
-autoload -Uz +X compinit
-function() {
-  local zcompdump=$ZDOTDIR/.zcompdump
-  if [[ $OSX == $TRUE && -d $BREW/opt/coreutils ]] && alias date=gdate
-  if [[ -f $zcompdump && $(date +'%j') > $(date +'%j' -r $zcompdump) ]]; then
-    compinit
-  else
-    compinit -C
-  fi
-  alias date >/dev/null && unalias date
-}
-
 zmodload -i zsh/complist
-
-set completion-ignore-case on
-set show-all-if-ambiguous on
-
-# INFO: do NOT complete these file extensions
-fignore+=(
-  .zwc
-  .old
-  .tmp
-  .bak)
-# compinit }}}
-
 
 # zstyle {{{
 zstyle ':completion:*'           special-dirs      true
@@ -59,7 +32,17 @@ zstyle ':completion:*'               completer          _complete _match _prefix
 #zstyle ':completion:*'               completer          _oldlist _expand _force_rehash _complete
 #zstyle ':completion:*'               completer          _oldlist _expand _force_rehash _complete _list _match _approximate
 #zstyle ':completion:*'               completer          _expand _complete _correct _approximate
-zstyle ':completion:*'               rehash             true
+
+if [[ $OSX == $TRUE ]]; then
+  zstyle ':completion:*'               rehash             true
+elif [[ $LINUX == $TRUE ]]; then
+  # INFO: https://wiki.archlinux.org/index.php/Zsh#Alternative_on-demand_rehash_using_SIGUSR1
+  # requires /etc/pacman.d/hooks/zsh-rehash.hook
+  trap 'rehash' USR1
+else
+  zstyle ':completion:*'               rehash             true
+fi
+
 zstyle ':completion:*:match:*'       original           only
 
 zstyle ':completion:*:approximate:*' max-errors        'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
@@ -172,8 +155,46 @@ zstyle :compinstall filename "${ZDOTDIR:-~/.config/zsh}/z/complete.zsh"
 # zstyle }}}
 
 
+# NOTE: run this BEFORE sourcing 3rd-party completions
+# compinit {{{
+function() {
+  autoload -Uz +X compinit
+  autoload -Uz +X bashcompinit
+
+  local zcompdump=$ZDOTDIR/.zcompdump
+  [[ $OSX == $TRUE && -d $BREW/opt/coreutils ]] && alias date=gdate
+  [[ -f $zcompdump && $(date +'%j') > $(date +'%j' -r $zcompdump) ]] \
+    && compinit \
+    || compinit -C
+
+  alias date >/dev/null && unalias date
+
+  bashcompinit
+}
+
+# INFO: do NOT complete these file extensions
+fignore+=(
+  .zwc
+  .old
+  .tmp
+  .bak)
+# compinit }}}
+
+
+# inputrc {{{
+function () {
+  local inputrc=${INPUTRC:-$HOME/.inputrc}
+  [[ -f $inputrc ]] && source "$inputrc"
+}
+# }}}
+
+
 # 3rd-party {{{
-if command_exists kitty; then
-  kitty + complete setup zsh | source /dev/stdin
-fi
+# FIXME: should be shell agnostic
+# INFO: ~/.config/bash_completion
+
+function() {
+  local bash_completion="${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
+  [[ -r $bash_completion ]] && source "$bash_completion"
+}
 # 3rd-party }}}

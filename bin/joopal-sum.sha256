@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+
+if [[ $# -le 0 ]]; then
+    echo "ERROR: bad input - pass more than 0 arguments" >&2 \
+        && exit -520
+fi
+
+
+function _joopal-sha256sum() {
+    while [ $# -gt 0 ]; do
+        if [[ ! -z $1 ]]; then
+            local string_data="$1"
+            local string_hash=$(echo -n "$1" | sha256sum | cut -d' ' -f1)
+            #echo -en "${string_data}"
+            #echo -en "\t"
+            echo -en "${string_hash}"
+            echo
+        else
+            echo "ERROR: bad input: '$1'" >&2 \
+                && exit -520
+        fi
+        shift
+    done | column -t
+}
+
+
+_joopal-sha256sum "$@"

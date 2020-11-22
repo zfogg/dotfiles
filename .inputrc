@@ -7,14 +7,14 @@ set mark-symlinked-directories on
 set editing-mode vi
 set blink-matching-paren on
 
-"\e[B": history-search-forward
-"\e[A": history-search-backward
+#"\e[B": history-search-forward
+#"\e[A": history-search-backward
 
 set match-hidden-files off
 
 set page-completions off
 
-set completion-query-items 200
+set completion-query-items 120
 
 set colored-stats on
 set visible-stats on

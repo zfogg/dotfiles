@@ -218,6 +218,7 @@ function tree() {
 
 #alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
+alias yass='[[ $? == 0 ]] && echo "✅ yass 👸🏾 0" || echo "❗ nahh 🤬 1"'
 
 function npm-do() {
   #INFO: depracated; use `npx`
@@ -237,3 +238,4 @@ autoload -Uz \
   ppvar \
   trim-whitespace
 
+function jps() { local pids=$(pgrep -fai "$@"); [[ $? == 0 ]] && ps aux -p "$pids" }
