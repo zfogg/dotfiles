@@ -1,0 +1,10 @@
+wheel
+pip
+pynvim
+python-language-server[all]
+jedi
+pipenv
+virtualenv
+virtualenvwrapper
+pygments
+pygments-base16
