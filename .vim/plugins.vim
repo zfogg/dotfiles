@@ -200,6 +200,7 @@ Plug 'junegunn/vim-plug'
     "Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
     "Plug 'LnL7/vim-nix'
     Plug 'alvan/vim-closetag',     {'for': ['javascript.jsx', 'typescript.tsx', 'html']}
+    Plug 'isobit/vim-caddyfile'
 " }}}
 
 

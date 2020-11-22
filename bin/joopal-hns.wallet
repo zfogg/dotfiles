@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+from os import environ
+from sys import stderr
+from binascii import hexlify
+import json
+from mnemonic import Mnemonic
+
+try:
+    memo = Mnemonic("english")
+    words    = memo.generate(strength=256)
+
+    entropy   = memo.to_entropy(words)
+    hentropy  = hexlify(entropy)
+    ahentropy = hentropy.decode('utf-8')
+
+    seed      = memo.to_seed(words, passphrase=environ["HNS_WALLET_PASS"])
+    hseed     = hexlify(seed)
+    ahseed    = hseed.decode('utf-8')
+
+    wallet_data = {
+        'words':   words,
+        'entropy': ahentropy,
+        'seed':    ahseed,
+    }
+    wallet_json = json.dumps(wallet_data, sort_keys=False, indent=2)
+    print(wallet_json)
+
+except Exception as e:
+    stderr.write(f'❌ Something went wrong ❗️\n')
+    stderr.write(f'\t{str(type(e))}\n')
+    stderr.write(f'\t{str(e)}\n')
+    stderr.write(f'\t\t{str(e.args)}\n')
+
