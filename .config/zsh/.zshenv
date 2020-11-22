@@ -355,8 +355,10 @@ fi
 export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
 if [[ $LINUX == $TRUE ]]; then
   export ASDF_DIR="/opt/asdf-vm"
+elif [[ $OSX == $TRUE ]]; then
+  export ASDF_DIR="$BREW/opt/asdf"
 else
-  export ASDF_DIR="$BREW/opt-vm/asdf"
+  export ASDF_DIR="~/.asdf"
 fi
 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
 export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-~/.config}/asdf/neovim-packages"
