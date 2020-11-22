@@ -27,6 +27,13 @@
 # }}} zsh startup debug (TOP of ~/.zshenv)
 
 
+# shell crosscompat {{{
+# .profile
+export DOTPROFILE="${HOME}/.profile"
+[[ -f $DOTPROFILE ]] && source "$DOTPROFILE"
+# }}}
+
+
 # $SHELL {{{
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
@@ -63,6 +70,7 @@ unsetopt GLOBAL_RCS
 
 if [[ $OSX == $TRUE ]]; then
   export BREW='/usr/local'
+  export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
 elif [[ $LINUX == $TRUE ]]; then
   export BREW='/usr'
 else
@@ -92,7 +100,8 @@ fi
 #   fi
 # }
 
-export SHELL_NAME="$(basename "$SHELL")"
+export SHELL_NAME=`current_shell`
+
 # $SHELL }}}
 
 
@@ -143,10 +152,19 @@ export             LC_ALL=en_US.UTF-8
 
 
 # $SHELL help {{{
-#export HELPDIR="${BREW}/share/zsh/help"
-unalias    run-help 2>/dev/null
-unfunction run-help 2>/dev/null
-#autoload -Uz run-help
+export HELPDIR="${BREW}/share/zsh/help"
+autoload -Uz run-help
+unalias      run-help 2>/dev/null
+unfunction   run-help 2>/dev/null
+alias        run-help help
+
+# INFO: https://unix.stackexchange.com/q/214296/99026
+#autoload -U run-help
+#autoload run-help-git
+#autoload run-help-svn
+#autoload run-help-svk
+#unalias run-help
+#alias help=run-help
 # $SHELL help }}}
 
 
@@ -229,12 +247,12 @@ elif [ -d /opt/android-sdk ]; then
 fi
 
 function() {
-  for jbt in ant maven gradle; do
-    local jbt_home="$BREW/opt/$jbt"
-    if [[ -d $jbt_home ]]; then
-      #export "${jbt:u}"_HOME="$jbt_home"
-    fi
-  done
+  #for jbt in ant maven gradle; do
+    #local jbt_home="$BREW/opt/$jbt"
+    #if [[ -d $jbt_home ]]; then
+      ##export "${jbt:u}"_HOME="$jbt_home"
+    #fi
+  #done
 }
 # android }}}
 
@@ -242,8 +260,8 @@ function() {
 # path, manpath, fpath {{{
 source "$ZDOTDIR/z/path.zsh"
   # note: meta helpers {{{
-  command_exists() { command -v "$1" 2>/dev/null 1>&2 }
-  # alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
+  #command_exists() { command -v "$1" 2>/dev/null 1>&2 }
+  #alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }
   # }}}
 # path, manpath, fpath }}}
 
@@ -298,6 +316,12 @@ export ZSHZ_OWNER="$USER"
 # }}}
 
 
+# bash-completion, bashcompinit {{{
+export BASH_COMPLETION_USER_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
+export BASH_COMPLETION_USER_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion"
+# }}}
+
+
 # zsh-completion-generator {{{
 export GENCOMPL_FPATH="$HOME/.zsh/completions"
 export GENCOMPL_PY='python2'
@@ -343,6 +367,25 @@ export CXX='clang++'
 export XML_CATALOG_FILES="$BREW/etc/xml/catalog"
 # }}}
 
+
+# ipfs {{{
+#IPFS_LOGGING - sets the level of verbosity of the logging.
+    #One of: debug, info, warn, error, dpanic, panic, fatal
+export IPFS_LOGGING="warn"
+#IPFS_LOGGING_FMT - sets formatting of the log output.
+    #One of: color, nocolor
+export IPFS_LOGGING_FMT="color"
+# }}}
+
+
+# apache stuff {{{
+export APACHE_SOLR_HOME="$HOME/src/solr-8.7.0"
+export NUTCH_HOME="$HOME/src/apache-nutch-2.4"
+export HBASE_HOME="$HOME/src/hbase-0.98.8-hadoop2"
+export HBASE_CONF_DIR="${HBASE_HOME}/conf"
+export SONAR_HOME="$BREW/opt/sonar-scanner/libexec"
+export SONAR="$BREW/opt/sonar-scanner/libexec/bin"
+# }}}
 
 # wxWidgets (for Audacity) {{{
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then

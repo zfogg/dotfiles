@@ -7,3 +7,7 @@ use_release_candidates = no
 # always_keep_download - defaults to no. If set to yes it will cause asdf install always keep the source code or binary it downloads. If set to no the source code or binary downloaded by asdf install will be deleted after successful installation.
 always_keep_download = no
 
+# Some applications in macOS use /usr/libexec/java_home to set java home.
+# Setting java_macos_integration_enable to yes on .asdfrc file enables this integration.
+java_macos_integration_enable = yes
+# Note: Not all distributions of Java JDK packages offer this integration (eg. liberica). This option only works for packages that do offer that integration.

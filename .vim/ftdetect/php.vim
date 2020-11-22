@@ -2,5 +2,6 @@
 
 
 au BufRead,BufNewFile
-            \ *.php,*.phpt
-      \ setfiletype php
+        \ *.php
+        \,*.phpt
+    \ setfiletype php

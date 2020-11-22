@@ -6,10 +6,10 @@ scriptencoding utf-8
 "\ *.tsx,*.jsx
 "\ *.ts,*.tsx,*.jsx
 au BufRead,BufNewFile
-        \ *.ts,*.tsx,*.jsx
-    \ set filetype=typescript.tsx
+        \ *.tsx,*.jsx
+    \ setfiletype=typescript.tsx
 
 " FIXME: hack!
 au BufReadPost
         \ *.ts
-    \ set filetype=typescript
+    \ setfiletype=typescript
