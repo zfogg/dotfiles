@@ -13,9 +13,13 @@ function _() {
 
 # ipfs {{{
 function _() {
-    local ipfs_bash_compl="$BREW/etc/bash_completion.d/ipfs-completion.bash"
-    if command_exists ipfs && [[ -f $ipfs_bash_compl ]]; then
-        source "$ipfs_bash_compl"
+    if command_exists ipfs ; then
+        if [[ $OSX == "$TRUE" ]]; then
+            local ipfs_bash_compl="$BREW/etc/bash_completion.d/ipfs-completion.bash"
+        elif [[ $LINUX == "$TRUE" ]]; then
+            local ipfs_bash_compl="$BREW/share/bash-completion/completions/ipfs"
+        fi
+        [[ -f $ipfs_bash_compl ]] && source "$ipfs_bash_compl"
     fi
 } && _; unset -f _
 # }}}
