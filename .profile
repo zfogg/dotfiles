@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 
 function current_shell() {
@@ -18,26 +18,34 @@ export  TRUE='1'
 export FALSE='0'
 
 export OSX=$(
-  [[ $OSTYPE =~ darwin ]]
-  [[ $? == 0 ]] \
-    && echo "${TRUE:-1}" \
-    || echo "${FALSE-0}")
+  if [[ $OSTYPE =~ darwin ]]; then
+    echo "${TRUE:-1}"
+  else
+    echo "${FALSE-0}"
+  fi
+)
 
 export LINUX=$(
-  [[ $OSTYPE =~ linux ]]
-  [[ $? == 0 ]] \
-    && echo "${TRUE:-1}" \
-    || echo "${FALSE-0}")
+  if [[ "$OSTYPE" =~ linux ]]; then
+    echo "${TRUE:-1}"
+  else
+    echo "${FALSE-0}"
+  fi
+)
 
-if [[ $OSX == $TRUE ]]; then
+if [[ $OSX == "$TRUE" ]]; then
     export BREW='/usr/local'
     export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
-elif [[ $LINUX == $TRUE ]]; then
+elif [ "$LINUX" = "$TRUE" ]; then
     export BREW='/usr'
 else
     export BREW='/usr/local'
 fi
 
-export SYSCONFDIR="${BREW}/etc"
+if [[ $OSX = "$TRUE" ]]; then
+  export SYSCONFDIR="$BREW/etc"
+elif [ "$LINUX" = "$TRUE" ]; then
+  export SYSCONFDIR="/etc"
+fi
 
 export SHELL_NAME=`current_shell`

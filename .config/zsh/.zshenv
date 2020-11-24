@@ -54,6 +54,10 @@ export LINUX="$(
     && echo "${TRUE:-1}" \
     || echo "${FALSE-0}")"
 
+if [[ $LINUX == $TRUE ]]; then
+  export XDG_RUNTIME_DIR=/run/user/$UID
+fi
+
 export DOTFILES=~/.dotfiles
 export DOTVIM=~/.vim
 export MYVIMRC="$DOTVIM/init.vim"
