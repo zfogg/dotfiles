@@ -39,7 +39,7 @@ function log_section_end() {
 
 
 if [[ $OSX == 1 ]]; then
-    source $BREW/opt/asdf-vm/asdf.sh
+    source $BREW/opt/asdf/asdf.sh
 elif [[ $LINUX == 1 ]]; then
     source      /opt/asdf-vm/asdf.sh
 fi
@@ -129,8 +129,9 @@ function() { # Rust, rustup, Cargo
         rustfmt
     )
 
+    asdf plugin update rust
     for rel in $cargo_rels; do
-        rustup update "$rel"
+        asdf exec rustup update "$rel"
         for ru_comp in $ru_comps; do
             true && \
                 rustup component add --toolchain="$rel" "$ru_comp" || \
@@ -142,6 +143,7 @@ function() { # Rust, rustup, Cargo
                 #2>/dev/null || true
         #done
     done
+    asdf reshim rust
 
     log_section_end "$section"
 }
@@ -156,7 +158,7 @@ function() { # Ruby, Gem
         neovim
     )
     for r in ${gem_reqs}; do
-        gem install "$r"
+        asdf exec gem install "$r"
     done
 
     log_section_end "$section"
@@ -171,8 +173,9 @@ function() { # Golang
         github.com/nsf/gocode
     )
     for r in ${goget_reqs}; do
-        go get -u "$r"
+        asdf exec go get -u "$r"
     done
+    asdf reshim golang
 
     log_section_end "$section"
 }

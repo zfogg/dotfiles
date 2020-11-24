@@ -36,7 +36,7 @@ function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/opt/ccache/libexec
-      $BREW/opt/ruby/bin
+      $BREW/opt/ruby@2.7/bin
       $BREW/opt/curl-openssl/bin
       $BREW/{bin,sbin}
       #/Library/Developer/CommandLineTools/usr/bin
@@ -110,7 +110,7 @@ function() { # {{{ AFTER platform-specifics
     $HOME/bin
     $HOME/.local/bin
     $HOME/.{cabal,cargo}/bin
-    $HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
+    #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
     #$HOME/.rbenv/shims
     #$HOME/.gem/ruby/*.*.*/bin(nF/[-1])
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
@@ -147,7 +147,7 @@ function() { # {{{ AFTER platform-specifics
   )
 
   manpath=(
-    $HOME/.nvm/versions/node/v*.*.*/share/man(nF/[-1])
+    #$HOME/.nvm/versions/node/v*.*.*/share/man(nF/[-1])
     $XDG_DATA_HOME/man
     "$manpath[@]"
   )
@@ -162,10 +162,10 @@ function() { # {{{ AFTER platform-specifics
 
 # {{{ variables exports
   # FIXME: do i even need these exports?
-  #export PATH
-  #export FPATH
-  #export MANPATH
-  #export CLASSPATH
-  #export INFOPATH
+  export PATH
+  export FPATH
+  export MANPATH
+  export CLASSPATH
+  export INFOPATH
 # }}}
 

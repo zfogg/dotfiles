@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+
+function _ipfs_tree {
+    for uri in $@; do
+        local files=$(ipfs resolve $uri | ipfs ls)
+        echo "FILES\n$files" >&2
+        local file_cids=$( echo $files | cut -f1 -d ' ')
+        local file_names=$(echo $files | cut -f3 -d ' ')
+        for cid in `echo "$file_cids" | xargs`; do
+            echo "$cid" >&2
+            _ipfs_tree "$cid"
+        done
+    done
+}
+
+_ipfs_tree "$@"

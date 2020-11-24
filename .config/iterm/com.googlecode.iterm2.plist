@@ -15961,7 +15961,7 @@
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>ShowHintsInSplitPaneMenuItems</key>
 	<true/>
 	<key>ShowMetalFPSmeter</key>
