@@ -89,7 +89,24 @@ if [[ $OSX == $TRUE ]]; then
   #else
     #export LIBRARY_PATH="/usr/lib:$BREW/lib"
   #fi
+
 fi
+
+function() {
+  if [[ $OSX == $TRUE ]]; then
+    local ruby_vvv=2.7.0
+    local ruby_vv=2.7
+    local ruby_v=2
+    local ruby_d="ruby@$ruby_vv"
+    local ruby_base="$BREW/opt/$ruby_d"
+    if [[ -d $ruby_base ]]; then
+      #export PKG_CONFIG_PATH="$ruby_base/lib/pkgconfig:$PKG_CONFIG_PATH"
+      #export  LDFLAGS="-L$BREW/lib/ruby $LDFLAGS"
+      #export  LDFLAGS="-L$BREW/lib/ruby/$ruby_vvv $LDFLAGS"
+      #export CPPFLAGS="-I$BREW/include/$ruby_d $LDFLAGS"
+    fi
+  fi
+}
 
 # function() {
 #   local NCURSES="${BREW}/opt/ncurses"
@@ -207,7 +224,10 @@ export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 
 
 # ruby {{{
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${BREW}/opt/openssl@1.1"
+export RUBY_CONFIGURE_OPTS="--enable-shared"
+export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS}  --with-openssl-dir=${BREW}/opt/openssl@1.1"
+export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS} --with-readline-dir=${BREW}/opt/readline"
+export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS}  --with-libyaml-dir=${BREW}/opt/libyaml"
 # ruby }}}
 
 
@@ -300,12 +320,12 @@ fi
 # rust {{{
 export CORES="`$BREW/bin/nproc`"
 
-export RUSTUP_HOME=~/.rustup
-if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
-  export RUST_SRC_PATH="${RUSTUP_HOME:-~/.rustup}/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
-elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
-  export RUST_SRC_PATH="${RUSTUP_HOME:-~/.rustup}/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
-fi
+#export RUSTUP_HOME=~/.rustup
+#if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+  #export RUST_SRC_PATH="${RUSTUP_HOME:-~/.rustup}/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
+#elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
+  #export RUST_SRC_PATH="${RUSTUP_HOME:-~/.rustup}/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
+#fi
 export CARGO_INCREMENTAL=1
 export CARGO_BUILD_JOBS="$((${CORES:-2} - 1))"
 # }}}
@@ -362,6 +382,7 @@ else
 fi
 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
 export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-~/.config}/asdf/neovim-packages"
+export ASDF_CONCURRENCY="${CORES:-4}"
 # asdf }}}
 
 
@@ -379,7 +400,7 @@ export XML_CATALOG_FILES="$BREW/etc/xml/catalog"
 # ipfs {{{
 #IPFS_LOGGING - sets the level of verbosity of the logging.
     #One of: debug, info, warn, error, dpanic, panic, fatal
-export IPFS_LOGGING="warn"
+export IPFS_LOGGING="info"
 #IPFS_LOGGING_FMT - sets formatting of the log output.
     #One of: color, nocolor
 export IPFS_LOGGING_FMT="color"
