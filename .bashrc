@@ -3,7 +3,7 @@
 
 source "${HOME}/.profile"
 
-source "${SYSCONFDIR}/profile.d/bash_completion.sh"
+source "$SYSCONFDIR/profile.d/bash_completion.sh"
 
 source "${HOME}/.asdf/plugins/java/set-java-home.bash"
 

@@ -220,6 +220,8 @@ function tree() {
 
 alias yass='[[ $? == 0 ]] && echo "✅ yass 👸🏾 0" || echo "❗ nahh 🤬 1"'
 
+alias groups-reload='exec sudo su -l $USER'
+
 function npm-do() {
   #INFO: depracated; use `npx`
   (PATH="$(npm bin):$PATH"; eval "$@";)
