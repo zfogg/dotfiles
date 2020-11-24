@@ -88,8 +88,9 @@ function() {
     direnv() { asdf exec direnv "$@"; }
 
     local asdf_java=${ASDF_DATA_DIR:-~/.asdf}/plugins/java
-   [[ -d $asdf_java ]] && \
+    if [[ -d $asdf_java ]]; then
       source "$asdf_java/set-java-home.zsh"
+    fi
   fi
 }
 
