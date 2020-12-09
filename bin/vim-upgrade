@@ -68,7 +68,7 @@ function() {
 
     asdf plugin update python
     local pip_reqs="${ASDF_PYTHON_DEFAULT_PACKAGES_FILE:-~/.default-python-packages}"
-    asdf exec python -m pip install -U -r "$pip_reqs"
+    asdf exec python3 -m pip install -U -r "$pip_reqs"
     asdf reshim python
 
     log_section_end "$section"

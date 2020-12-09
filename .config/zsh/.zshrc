@@ -24,6 +24,9 @@ autoload -Uz          \
 select-word-style normal
 zsh-mime-setup
 
+export ANTIGEN_HS_HOME="$HOME/.zsh/antigen-hs"
+export ANTIGEN_HS_MY="$ANTIGEN_HS_HOME/../MyAntigen.hs"
+export ANTIGEN_HS_OUT="$HOME/.antigen-hs"
 export ANTIGEN_HS_SANDBOX='stack'
 #export ANTIGEN_HS_SANDBOX='cabal'
 source "$HOME/.zsh/antigen-hs/init.zsh"

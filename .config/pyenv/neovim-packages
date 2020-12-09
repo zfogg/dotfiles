@@ -1,5 +1,16 @@
 wheel
 pip
 pynvim
+pipenv
+virtualenv
+virtualenvwrapper
+pew
 python-language-server[all]
 jedi
+flake8
+pep8
+tox
+pylint
+pygments
+pygments-base16
+ansible

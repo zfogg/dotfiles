@@ -5,14 +5,14 @@
 # ls colors {{{
 autoload -Uz colors && colors
 
-if [ -f ~/.LS_COLORS ]; then
+if [[ -f ~/.LS_COLORS ]]; then
   source ~/.LS_COLORS
   export ZLS_COLORS=$LS_COLORS
 fi
 
 if [[ $OSX == $TRUE ]]; then
   export CLICOLOR=true
-  export CLICOLOR_FORCE=true
+  #export CLICOLOR_FORCE=true
   #export LSCOLORS=gxbxhxdxfxhxhxhxhxcxcx
   export LSCOLORS=GxFxCxDxBxegedabagaced
 fi

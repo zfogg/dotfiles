@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AdaptiveFrameRateThroughputThreshold</key>
-	<integer>8192</integer>
+	<integer>2048</integer>
 	<key>AdjustWindowForFontSizeChange</key>
 	<true/>
 	<key>AllowClipboardAccess</key>
@@ -15,7 +15,7 @@
 	<key>AlwaysAcceptFirstMouse</key>
 	<true/>
 	<key>AlwaysWarnBeforePastingOverSize</key>
-	<integer>2048</integer>
+	<integer>4096</integer>
 	<key>AnimateDimming</key>
 	<false/>
 	<key>AutoCommandHistory</key>
@@ -27,11 +27,11 @@
 	<key>BadgeFont</key>
 	<string>Helvetica</string>
 	<key>BadgeFontIsBold</key>
-	<false/>
+	<true/>
 	<key>BadgeRightMargin</key>
 	<integer>5</integer>
 	<key>BellRateLimit</key>
-	<real>2</real>
+	<real>0.5</real>
 	<key>BootstrapDaemon</key>
 	<false/>
 	<key>BracketedPasteMode</key>
@@ -45,7 +45,7 @@
 	<key>ClosingTmuxTabKillsTmuxWindows_selection</key>
 	<integer>1</integer>
 	<key>CmdClickWhenInactiveInvokesSemanticHistory</key>
-	<true/>
+	<false/>
 	<key>Command</key>
 	<string></string>
 	<key>CommandSelection</key>
@@ -12593,7 +12593,7 @@
 	<key>Default Bookmark Guid</key>
 	<string>C94EB68C-5703-49D9-A20F-ACE71D1F9261</string>
 	<key>DefaultTabStopWidth</key>
-	<integer>4</integer>
+	<integer>2</integer>
 	<key>DimBackgroundWindows</key>
 	<false/>
 	<key>DimInactiveSplitPanes</key>
@@ -12601,11 +12601,11 @@
 	<key>DimOnlyText</key>
 	<true/>
 	<key>DisableAdaptiveFrameRateInInteractiveApps</key>
-	<false/>
+	<true/>
 	<key>DisableCustomBoxDrawing</key>
 	<false/>
 	<key>DisableDECRQCRA</key>
-	<false/>
+	<true/>
 	<key>DisableFullscreenTransparency</key>
 	<true/>
 	<key>DisableMetalWhenIdle</key>
@@ -12625,9 +12625,9 @@
 	<key>DoubleClickPerformsSmartSelection</key>
 	<true/>
 	<key>DrawOutlineAroundCursor</key>
-	<true/>
+	<false/>
 	<key>EchoProbeDuration</key>
-	<real>0.17499999701976776</real>
+	<real>0.18000000715255737</real>
 	<key>EliminateCloseButtons</key>
 	<false/>
 	<key>EnableAPIServer</key>
@@ -12677,6 +12677,15 @@
 			<integer>2</integer>
 			<key>Text</key>
 			<string></string>
+		</dict>
+		<key>0x2c-0x80000-0x2b</key>
+		<dict>
+			<key>Action</key>
+			<integer>11</integer>
+			<key>Label</key>
+			<string></string>
+			<key>Text</key>
+			<string>0x80120</string>
 		</dict>
 		<key>0x48-0x160000</key>
 		<dict>
@@ -12981,7 +12990,7 @@
 	<key>HotKeyTogglesWindow</key>
 	<false/>
 	<key>Hotkey</key>
-	<true/>
+	<false/>
 	<key>HotkeyAutoHides</key>
 	<false/>
 	<key>HotkeyChar</key>
@@ -12993,11 +13002,11 @@
 	<key>HotkeyModifiers</key>
 	<integer>393219</integer>
 	<key>HotkeyTermAnimationDuration</key>
-	<real>0.17499999701976776</real>
+	<real>0.75</real>
 	<key>IRMemory</key>
 	<integer>4</integer>
 	<key>IdleTimeSeconds</key>
-	<real>24</real>
+	<real>90</real>
 	<key>IgnoreHardNewlinesInURLs</key>
 	<true/>
 	<key>IndicateBellsInDockBadgeLabel</key>
@@ -13023,13 +13032,13 @@
 	<key>MaxVertically</key>
 	<false/>
 	<key>MaximumBytesToProvideToPythonAPI</key>
-	<integer>512</integer>
+	<integer>2048</integer>
 	<key>MaximumBytesToProvideToServices</key>
-	<integer>4094</integer>
+	<integer>2048</integer>
 	<key>MetalDeferCurrentDrawable</key>
 	<true/>
 	<key>MetalSlowFrameRate</key>
-	<real>60</real>
+	<real>30</real>
 	<key>MinCompactTabWidth</key>
 	<integer>50</integer>
 	<key>MinRunningTime</key>
@@ -13039,11 +13048,11 @@
 	<key>MinimumTabDragDistance</key>
 	<integer>12</integer>
 	<key>MinimumWeightDifferenceForBoldFont</key>
-	<integer>5</integer>
+	<integer>4</integer>
 	<key>Multiserver</key>
 	<true/>
 	<key>NeverWarnAboutMeta</key>
-	<true/>
+	<false/>
 	<key>NeverWarnAboutMeta_selection</key>
 	<integer>0</integer>
 	<key>NeverWarnAboutShortLivedSessions_300F2E11-F22D-425B-A63D-31811650237A</key>
@@ -13056,7 +13065,7 @@
 	<array>
 		<dict>
 			<key>ASCII Anti Aliased</key>
-			<false/>
+			<true/>
 			<key>ASCII Ligatures</key>
 			<false/>
 			<key>AWDS Pane Directory</key>
@@ -13072,6 +13081,8 @@
 			<key>AWDS Window Option</key>
 			<string>No</string>
 			<key>Allow Title Reporting</key>
+			<true/>
+			<key>Allow modifyOtherKeys</key>
 			<true/>
 			<key>Ambiguous Double Width</key>
 			<false/>
@@ -13252,7 +13263,7 @@
 				<real>0.6705882352941176</real>
 			</dict>
 			<key>Application Keypad Allowed</key>
-			<false/>
+			<true/>
 			<key>Automatically Log</key>
 			<false/>
 			<key>BM Growl</key>
@@ -13405,12 +13416,187 @@
 			</array>
 			<key>Keyboard Map</key>
 			<dict>
-				<key>0x7f-0x80000</key>
+				<key>0x2a-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>*</string>
+				</dict>
+				<key>0x2b-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>+</string>
+				</dict>
+				<key>0x2d-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>-</string>
+				</dict>
+				<key>0x2d-0x40000-0x0</key>
 				<dict>
 					<key>Action</key>
 					<integer>11</integer>
 					<key>Text</key>
-					<string>0x1B 0x08</string>
+					<string>0x1f</string>
+				</dict>
+				<key>0x2e-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>.</string>
+				</dict>
+				<key>0x2f-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>/</string>
+				</dict>
+				<key>0x3-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0xd</string>
+				</dict>
+				<key>0x30-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>0</string>
+				</dict>
+				<key>0x31-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>1</string>
+				</dict>
+				<key>0x32-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>2</string>
+				</dict>
+				<key>0x32-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x00</string>
+				</dict>
+				<key>0x33-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>3</string>
+				</dict>
+				<key>0x33-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x1b</string>
+				</dict>
+				<key>0x34-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>4</string>
+				</dict>
+				<key>0x34-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x1c</string>
+				</dict>
+				<key>0x35-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>5</string>
+				</dict>
+				<key>0x35-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x1d</string>
+				</dict>
+				<key>0x36-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>6</string>
+				</dict>
+				<key>0x36-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x1e</string>
+				</dict>
+				<key>0x37-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>7</string>
+				</dict>
+				<key>0x37-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x1f</string>
+				</dict>
+				<key>0x38-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>8</string>
+				</dict>
+				<key>0x38-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x7f</string>
+				</dict>
+				<key>0x39-0x200000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>12</integer>
+					<key>Text</key>
+					<string>9</string>
+				</dict>
+				<key>0x7f-0x100000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x15</string>
+				</dict>
+				<key>0x7f-0x80000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x1b 0x7f</string>
 				</dict>
 				<key>0x7f-0xa0000</key>
 				<dict>
@@ -13419,89 +13605,229 @@
 					<key>Text</key>
 					<string>d</string>
 				</dict>
-				<key>0xf700-0x260000</key>
-				<dict>
-					<key>Action</key>
-					<integer>47</integer>
-					<key>Text</key>
-					<string>2</string>
-				</dict>
-				<key>0xf701-0x260000</key>
-				<dict>
-					<key>Action</key>
-					<integer>46</integer>
-					<key>Text</key>
-					<string>2</string>
-				</dict>
-				<key>0xf702-0x220000</key>
-				<dict>
-					<key>Action</key>
-					<integer>48</integer>
-					<key>Text</key>
-					<string>0</string>
-				</dict>
-				<key>0xf702-0x240000</key>
+				<key>0xf700-0x220000-0x0</key>
 				<dict>
 					<key>Action</key>
 					<integer>10</integer>
 					<key>Text</key>
-					<string>^a</string>
+					<string>[1;2A</string>
 				</dict>
-				<key>0xf702-0x260000</key>
+				<key>0xf700-0x240000-0x0</key>
 				<dict>
 					<key>Action</key>
-					<integer>47</integer>
+					<integer>10</integer>
 					<key>Text</key>
-					<string>1</string>
+					<string>[1;5A</string>
 				</dict>
-				<key>0xf702-0x280000</key>
+				<key>0xf700-0x260000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;6A</string>
+				</dict>
+				<key>0xf701-0x220000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;2B</string>
+				</dict>
+				<key>0xf701-0x240000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;5B</string>
+				</dict>
+				<key>0xf701-0x260000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;6B</string>
+				</dict>
+				<key>0xf702-0x220000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;2D</string>
+				</dict>
+				<key>0xf702-0x240000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;5D</string>
+				</dict>
+				<key>0xf702-0x260000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;6D</string>
+				</dict>
+				<key>0xf702-0x280000-0x0</key>
 				<dict>
 					<key>Action</key>
 					<integer>10</integer>
 					<key>Text</key>
 					<string>b</string>
 				</dict>
-				<key>0xf702-0x300000</key>
+				<key>0xf702-0x300000-0x0</key>
 				<dict>
 					<key>Action</key>
 					<integer>11</integer>
 					<key>Text</key>
-					<string>0x01</string>
+					<string>0x1</string>
 				</dict>
-				<key>0xf703-0x220000</key>
+				<key>0xf703-0x220000-0x0</key>
 				<dict>
 					<key>Action</key>
-					<integer>46</integer>
+					<integer>10</integer>
 					<key>Text</key>
-					<string>0</string>
+					<string>[1;2C</string>
 				</dict>
-				<key>0xf703-0x240000</key>
+				<key>0xf703-0x240000-0x0</key>
 				<dict>
 					<key>Action</key>
-					<integer>11</integer>
+					<integer>10</integer>
 					<key>Text</key>
-					<string>0x05</string>
+					<string>[1;5C</string>
 				</dict>
-				<key>0xf703-0x260000</key>
+				<key>0xf703-0x260000-0x0</key>
 				<dict>
 					<key>Action</key>
-					<integer>46</integer>
+					<integer>10</integer>
 					<key>Text</key>
-					<string>1</string>
+					<string>[1;6C</string>
 				</dict>
-				<key>0xf703-0x280000</key>
+				<key>0xf703-0x280000-0x0</key>
 				<dict>
 					<key>Action</key>
 					<integer>10</integer>
 					<key>Text</key>
 					<string>f</string>
 				</dict>
-				<key>0xf703-0x300000</key>
+				<key>0xf703-0x300000-0x0</key>
 				<dict>
 					<key>Action</key>
 					<integer>11</integer>
 					<key>Text</key>
-					<string>0x05</string>
+					<string>0x5</string>
+				</dict>
+				<key>0xf704-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;2P</string>
+				</dict>
+				<key>0xf705-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;2Q</string>
+				</dict>
+				<key>0xf706-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;2R</string>
+				</dict>
+				<key>0xf707-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;2S</string>
+				</dict>
+				<key>0xf708-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[15;2~</string>
+				</dict>
+				<key>0xf709-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[17;2~</string>
+				</dict>
+				<key>0xf70a-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[18;2~</string>
+				</dict>
+				<key>0xf70b-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[19;2~</string>
+				</dict>
+				<key>0xf70c-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[20;2~</string>
+				</dict>
+				<key>0xf70d-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[21;2~</string>
+				</dict>
+				<key>0xf70e-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[23;2~</string>
+				</dict>
+				<key>0xf70f-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[24;2~</string>
+				</dict>
+				<key>0xf728-0x0-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x4</string>
+				</dict>
+				<key>0xf728-0x80000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>d</string>
+				</dict>
+				<key>0xf729-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;2H</string>
+				</dict>
+				<key>0xf729-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;5H</string>
 				</dict>
 				<key>0xf729-0x60000</key>
 				<dict>
@@ -13509,6 +13835,20 @@
 					<integer>45</integer>
 					<key>Text</key>
 					<string>1</string>
+				</dict>
+				<key>0xf72b-0x20000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;2F</string>
+				</dict>
+				<key>0xf72b-0x40000-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>10</integer>
+					<key>Text</key>
+					<string>[1;5F</string>
 				</dict>
 				<key>0xf72b-0x60000</key>
 				<dict>
@@ -13530,6 +13870,13 @@
 					<integer>48</integer>
 					<key>Text</key>
 					<string>2</string>
+				</dict>
+				<key>0xf739-0x0-0x0</key>
+				<dict>
+					<key>Action</key>
+					<integer>13</integer>
+					<key>Text</key>
+					<string></string>
 				</dict>
 			</dict>
 			<key>Link Color</key>
@@ -13562,7 +13909,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<false/>
 			<key>Normal Font</key>
-			<string>MesloLGS-NF-Regular 14</string>
+			<string>MesloLGMDZNerdFontComplete-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -13653,8 +14000,6 @@
 					<string>\S+</string>
 				</dict>
 				<dict>
-					<key>actions</key>
-					<array/>
 					<key>notes</key>
 					<string>Paths</string>
 					<key>precision</key>
@@ -13672,15 +14017,13 @@
 				</dict>
 				<dict>
 					<key>notes</key>
-					<string>email address</string>
+					<string>Java/Python include paths</string>
 					<key>precision</key>
-					<string>high</string>
+					<string>normal</string>
 					<key>regex</key>
-					<string>\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b</string>
+					<string>([[:letter:][:number:]._]+\.)+[[:letter:][:number:]._]+</string>
 				</dict>
 				<dict>
-					<key>actions</key>
-					<array/>
 					<key>notes</key>
 					<string>HTTP URL</string>
 					<key>precision</key>
@@ -13695,24 +14038,6 @@
 					<string>very_high</string>
 					<key>regex</key>
 					<string>\bssh:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
-				</dict>
-				<dict>
-					<key>notes</key>
-					<string>Telnet URL</string>
-					<key>precision</key>
-					<string>very_high</string>
-					<key>regex</key>
-					<string>\btelnet:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
-				</dict>
-				<dict>
-					<key>actions</key>
-					<array/>
-					<key>notes</key>
-					<string>HTTP URL extra2</string>
-					<key>precision</key>
-					<string>very_high</string>
-					<key>regex</key>
-					<string>https?://([0-9a-zA-Z\.]+(:[0-9]+)?)\b</string>
 				</dict>
 			</array>
 			<key>Space</key>
@@ -13982,13 +14307,13 @@
 			<key>Thin Strokes</key>
 			<integer>1</integer>
 			<key>Title Components</key>
-			<integer>386</integer>
+			<integer>896</integer>
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Triggers</key>
 			<array/>
 			<key>Unicode Normalization</key>
-			<integer>0</integer>
+			<integer>3</integer>
 			<key>Unicode Version</key>
 			<integer>9</integer>
 			<key>Unlimited Scrollback</key>
@@ -14009,6 +14334,8 @@
 			<true/>
 			<key>Use Underline Color</key>
 			<true/>
+			<key>Use libtickit protocol</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
@@ -15800,7 +16127,7 @@
 		</dict>
 	</array>
 	<key>NumberOfLinesForAccessibility</key>
-	<integer>256</integer>
+	<integer>32</integer>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -15824,7 +16151,7 @@
 	<key>OptionIsMetaForSpecialChars</key>
 	<true/>
 	<key>OscColorReport16Bits</key>
-	<false/>
+	<true/>
 	<key>PMPrintingExpandedStateForPrint2</key>
 	<true/>
 	<key>PassOnControlClick</key>
@@ -15840,7 +16167,7 @@
 	<key>PasteSpecialRegex</key>
 	<string>\r</string>
 	<key>PasteSpecialSubstitution</key>
-	<string>\ </string>
+	<string>,</string>
 	<key>PasteSpecialUseRegexSubstitution</key>
 	<true/>
 	<key>PerPaneBackgroundImage</key>
@@ -15850,7 +16177,7 @@
 	<key>PinchToChangeFontSizeDisabled</key>
 	<true/>
 	<key>PointSizeOfTimeStamp</key>
-	<real>14</real>
+	<real>12</real>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -15873,16 +16200,14 @@
 	<true/>
 	<key>PreserveWindowSizeWhenTabBarVisibilityChanges</key>
 	<true/>
-	<key>PreventEscapeSequenceFromClearingHistory</key>
-	<false/>
 	<key>Print In Black And White</key>
 	<true/>
 	<key>ProfilesWindowJoinsActiveSpace</key>
-	<true/>
+	<false/>
 	<key>PromptOnQuit</key>
 	<true/>
 	<key>QuickPasteBytesPerCall</key>
-	<integer>4096</integer>
+	<integer>2048</integer>
 	<key>QuickPasteDelayBetweenCalls</key>
 	<real>0.019999999552965164</real>
 	<key>QuitWhenAllWindowsClosed</key>
@@ -15900,7 +16225,7 @@
 	<key>RightOption</key>
 	<integer>3</integer>
 	<key>RunJobsInServers</key>
-	<false/>
+	<true/>
 	<key>SGTRecentFileSearches</key>
 	<array>
 		<dict>
@@ -15947,7 +16272,7 @@
 	<key>SavePasteHistory</key>
 	<true/>
 	<key>SaveScrollBufferWhenClearing</key>
-	<false/>
+	<true/>
 	<key>SearchCommand</key>
 	<string>https://www.google.com/search?q=%@</string>
 	<key>SensitiveScrollWheel</key>
@@ -15957,11 +16282,11 @@
 	<key>SetCookie</key>
 	<false/>
 	<key>ShortLivedSessionDuration</key>
-	<real>2</real>
+	<real>5</real>
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>ShowHintsInSplitPaneMenuItems</key>
 	<true/>
 	<key>ShowMetalFPSmeter</key>
@@ -15975,7 +16300,7 @@
 	<key>ShowYellowMarkForJobStoppedBySignal</key>
 	<true/>
 	<key>SlowFrameRate</key>
-	<real>60</real>
+	<real>15</real>
 	<key>SlowPasteBytesPerCall</key>
 	<integer>256</integer>
 	<key>SlowPasteDelayBetweenCalls</key>
@@ -15993,7 +16318,7 @@
 	<key>StatusBarPosition</key>
 	<integer>0</integer>
 	<key>StealKeyFocus</key>
-	<true/>
+	<false/>
 	<key>StretchTabsToFillBar</key>
 	<false/>
 	<key>SupportREPCode</key>
@@ -16019,9 +16344,9 @@
 	<key>TabsHaveCloseButton</key>
 	<false/>
 	<key>TerminalMargin</key>
-	<integer>15</integer>
+	<integer>5</integer>
 	<key>TerminalVMargin</key>
-	<integer>0</integer>
+	<integer>2</integer>
 	<key>ThreeFingerEmulates</key>
 	<false/>
 	<key>ThrottleMetalConcurrentFrames</key>
@@ -16029,7 +16354,7 @@
 	<key>TimeBetweenBlinks</key>
 	<real>2.6800000667572021</real>
 	<key>TimeToWaitForEmojiPanel</key>
-	<real>0.20000000298023224</real>
+	<real>0.10000000149011612</real>
 	<key>TmuxDashboardLimit</key>
 	<integer>10</integer>
 	<key>TmuxUnpauseAutomatically</key>
@@ -16047,11 +16372,11 @@
 	<key>TrackingRunloopForLiveResize</key>
 	<true/>
 	<key>TriggerRadius</key>
-	<integer>5</integer>
+	<integer>3</integer>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<true/>
 	<key>TypingClearsSelection</key>
-	<false/>
+	<true/>
 	<key>URLHandlersByGuid</key>
 	<dict>
 		<key>ftp</key>
@@ -16072,9 +16397,9 @@
 	<key>UnderlineCursorOffset</key>
 	<real>-2</real>
 	<key>UnderlineHyperlinks</key>
-	<false/>
+	<true/>
 	<key>UpdateScreenParamsDelay</key>
-	<real>0.15000000596046448</real>
+	<real>0.10000000149011612</real>
 	<key>Use background pattern indicator</key>
 	<true/>
 	<key>UseAdaptiveFrameRate</key>
@@ -16086,7 +16411,7 @@
 	<key>UseCompactLabel</key>
 	<true/>
 	<key>UseExperimentalFontMetrics</key>
-	<true/>
+	<false/>
 	<key>UseLayers</key>
 	<false/>
 	<key>UseLionStyleFullscreen</key>
@@ -16096,7 +16421,7 @@
 	<key>UseModernScrollWheelAccumulator</key>
 	<true/>
 	<key>UseOpenDirectory</key>
-	<false/>
+	<true/>
 	<key>UseSystemCursorWhenPossible</key>
 	<true/>
 	<key>UseTmuxStatusBar</key>
@@ -16104,7 +16429,7 @@
 	<key>UseUnevenTabs</key>
 	<true/>
 	<key>UseVirtualKeyCodesForDetectingDigits</key>
-	<true/>
+	<false/>
 	<key>VerticalBarCursorWidth</key>
 	<real>1</real>
 	<key>ViewManPageCommand</key>

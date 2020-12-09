@@ -77,7 +77,7 @@ Plug 'junegunn/vim-plug'
     if has('unix')
         Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
             \ 'branch': 'next',
-            \ 'do':     'bash install.sh && npm install -g flow-bin',
+            \ 'do':     'bash install.sh && npm install -g flow-bin typescript',
         \ })
         "\ 'do':     'bash install.sh',
     elseif has('win32')
@@ -86,7 +86,7 @@ Plug 'junegunn/vim-plug'
             \ 'do':     'powershell -executionpolicy bypass -File install.ps1',
         \ })
     endif
-    ""Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
+    Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
 
     " deoplete
     "Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))
@@ -117,7 +117,7 @@ Plug 'junegunn/vim-plug'
 
     Plug 'Shougo/context_filetype.vim'
     Plug 'Shougo/neco-syntax'
-    Plug 'Shougo/neco-vim',     {'for': ['vim']}
+    Plug 'Shougo/neco-vim'
     "Plug 'eagletmt/neco-ghc',  {'for' : ['haskell']}
 
     " snippets
@@ -126,7 +126,7 @@ Plug 'junegunn/vim-plug'
 
     " etc
     Plug 'ervandew/supertab'
-    Plug 'tpope/vim-rsi', PIf(v:false)
+    Plug 'tpope/vim-rsi'
     Plug 'embear/vim-localvimrc'
 " }}}
 
@@ -140,7 +140,7 @@ Plug 'junegunn/vim-plug'
     "Plug '2072/PHP-Indenting-for-VIm',    {'for': ft['php']}
     "Plug 'lvht/phpfold.vim',              {'for': ft['php']}
     "Plug 'miya0001/vim-dict-wordpress',   {'for': ft['php']}
-    Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'})
+    "Plug 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs'})
     Plug 'lvht/phpcd.vim', PIf(has('nvim'), {'for': ft['php'], 'do': 'composer install'})
     Plug 'othree/html5.vim'
     Plug 'lifepillar/pgsql.vim',          {'for': ft['sql']}
@@ -150,21 +150,21 @@ Plug 'junegunn/vim-plug'
     Plug 'gisphm/vim-gitignore'
     Plug 'rust-lang/rust.vim',            {'for': ft['rs']}
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
-    "Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
+    Plug 'guns/vim-clojure-highlight',    {'for': ft['clj']}
     Plug 'pangloss/vim-javascript',       {'for': ft['js']}
-    "Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
-    Plug 'peitalin/vim-jsx-typescript' ",   {'for': ft['ts']}
-    "Plug 'prettier/vim-prettier',         {'do': 'yarn install', 'for': ft['js'] + ft['ts']}
-    Plug 'prettier/vim-prettier',         {'do': 'yarn install'}
-        " 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+    Plug 'leafgarland/typescript-vim',    {'for': ft['ts']}
+    Plug 'peitalin/vim-jsx-typescript',   {'for': ft['ts']}
+    Plug 'prettier/vim-prettier',         {'do': 'yarn install', 'for': ft['js'] + ft['ts']}
+    "Plug 'prettier/vim-prettier',         {'do': 'yarn install'}
+        "'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
     Plug 'hashivim/vim-terraform',        {'for': ['terraform', 'json']}
     "Plug 'Quramy/tsuquyomi'
-    "Plug 'yuezk/vim-js',                  {'for': ft['js']}
+    Plug 'yuezk/vim-js',                  {'for': ft['js']}
     "Plug 'HerringtonDarkholme/yats.vim'
     Plug 'maxmellon/vim-jsx-pretty',      {'for': ft['js']}
-    "Plug 'Olical/vim-syntax-expand',      {'for': ft['js']}
-    "Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
-    "Plug 'othree/jspc.vim',               {'for': ft['js']}
+    Plug 'Olical/vim-syntax-expand',      {'for': ft['js']}
+    Plug 'ternjs/tern_for_vim',           {'for': ft['js'], 'do': 'npm install'}
+    Plug 'othree/jspc.vim',               {'for': ft['js']}
     Plug 'itchyny/vim-haskell-indent',    {'for': ['haskell'] }
     "Plug 'flowtype/vim-flow',             {'for': ft['js']}
     " markdown
@@ -199,7 +199,7 @@ Plug 'junegunn/vim-plug'
     Plug 'darfink/vim-plist'
     "Plug 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml']}
     "Plug 'LnL7/vim-nix'
-    Plug 'alvan/vim-closetag',     {'for': ['javascript.jsx', 'typescript.tsx', 'html']}
+    Plug 'alvan/vim-closetag' ",     {'for': ['javascript.jsx', 'typescript.tsx', 'html']}
     Plug 'isobit/vim-caddyfile'
 " }}}
 
@@ -257,7 +257,7 @@ Plug 'junegunn/vim-plug'
     Plug 'bruno-/vim-space'
     Plug 'Konfekt/FastFold'
     Plug 'Konfekt/FoldText'
-    Plug 'kopischke/vim-stay', PIf(has('nvim'))
+    "Plug 'kopischke/vim-stay', PIf(has('nvim'))
 " }}}
 
 
@@ -272,7 +272,7 @@ Plug 'junegunn/vim-plug'
     "Plug 'unblevable/quick-scope'
     Plug 'kana/vim-operator-user'
     Plug 'haya14busa/vim-operator-flashy'
-    Plug 'itchyny/vim-cursorword'
+    "Plug 'itchyny/vim-cursorword'
     "Plug 'itchyny/vim-parenmatch'
     Plug 'kopischke/vim-fetch'
     Plug 'pbrisbin/vim-mkdir'

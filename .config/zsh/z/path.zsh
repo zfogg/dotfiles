@@ -110,6 +110,7 @@ function() { # {{{ AFTER platform-specifics
     $HOME/bin
     $HOME/.local/bin
     $HOME/.{cabal,cargo}/bin
+    $HOME/.minikube/bin
     #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
     #$HOME/.rbenv/shims
     #$HOME/.gem/ruby/*.*.*/bin(nF/[-1])

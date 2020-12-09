@@ -73,3 +73,23 @@ fun! z#util#GetSetEnv(env_key, env_val) abort
     endtry
     return eval('$'.l:env_key)
 endfun
+
+
+" FIXME
+fun! z#util#Shiftwidth() abort
+    " INFO: :help 'shiftwidth()'
+    let l:sw =<< trim END
+        if exists('*shiftwidth')
+            func s:sw()
+                return shiftwidth()
+            endfunc
+        else
+            func s:sw()
+                return &sw
+            endfunc
+        endif
+    END
+    let l:swt = map(copy(l:sw), {_, v -> v})
+    return join(l:swt, "\n")
+endfun
+

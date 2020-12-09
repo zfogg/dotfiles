@@ -6,7 +6,7 @@ let g:loaded_python_provider  = 0
 "let g:loaded_python3_provider = 0
 "let g:loaded_ruby_provider    = 0
 "let g:loaded_node_provider    = 0
-"let g:loaded_perl_provider    = 0
+let g:loaded_perl_provider    = 0
 
 
 " https://github.com/mhinz/vim-galore#standard-plugins
@@ -14,7 +14,7 @@ let g:loaded_getscriptPlugin  = v:true
 let g:loaded_gzip             = v:true
 let g:loaded_logipat          = v:true
 let g:loaded_rrhelper         = v:true
-let g:loaded_spellfile_plugin = v:true
+"let g:loaded_spellfile_plugin = v:true
 let g:loaded_vimballPlugin    = v:true
 
 
@@ -65,3 +65,14 @@ let g:menutrans_spell_change_ARG_to        = v:true              " $VIMRUNTIME/m
 let g:menutrans_spell_add_ARG_to_word_list = v:true              " $VIMRUNTIME/menu.vim
 let g:menutrans_spell_ignore_ARG           = v:true              " $VIMRUNTIME/menu.vim
 
+
+" {{{ INFO ~/.plugins/rc/
+let s:rc = {}
+
+" INFO: ~/.vim/plugin/rc/cursorline.vim
+let s:rc.cursor_line = {
+    \ 'auto': v:true,
+    \ 'restore': v:true,
+    \}
+
+" }}

@@ -2,7 +2,8 @@
 
 -- Don't display the "helpful" message on startup.
 \set QUIET 1
-\pset null '[NULL]'
+\pset null [null]
+-- \pset null '#'
 
 -- https://www.postgresql.org/docs/9.6/static/app-psql.html#APP-PSQL-PROMPTING
 \set PROMPT1 '%[%033[0;35;40m%]%n%[%033[0;1m%]%@%[%033[0;36;40m%]%M%[%033[0;1m%]/%[%033[0;33;1m%]%/ %[%033[0;1m%]%R%#%[%033[0m%] '
@@ -13,6 +14,8 @@
 
 -- Show how long each query takes to execute
 \timing
+
+\set ON_ERROR_ROLLBACK interactive
 
 -- Use best available output format
 \x auto

@@ -128,7 +128,7 @@ export SHELL_NAME=`current_shell`
 
 # terminal {{{
 if [[ -v TMUX ]]; then
-  #export TERM="screen-256color"
+  export TERM="screen-256color"
 fi
 if [[ -v TERM ]]; then
   export COLORTERM="truecolor"
@@ -174,10 +174,10 @@ export             LC_ALL=en_US.UTF-8
 
 # $SHELL help {{{
 export HELPDIR="${BREW}/share/zsh/help"
-autoload -Uz run-help
-unalias      run-help 2>/dev/null
-unfunction   run-help 2>/dev/null
-alias        run-help help
+#autoload -Uz run-help
+#unalias      run-help 2>/dev/null
+#unfunction   run-help 2>/dev/null
+#alias        run-help help
 
 # INFO: https://unix.stackexchange.com/q/214296/99026
 #autoload -U run-help
@@ -220,10 +220,23 @@ export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
 export NVM_NO_USE=false   # lukechilds/zsh-nvm
 #unset NVM_LAZY_LOAD
 #unset NVM_NO_USE
-export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 #[ -d ~/.local ] \
   #&& export npm_config_prefix=~/.local \
   #|| export npm_config_prefix=~/.npm
+export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
+
+function() {
+  local asdf_root="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}"
+  local node_version_file="$HOME/.node_version_latest"
+  if [[ -f $node_version_file && ! -v NODE_VERSION_LATEST ]]; then
+    read -r node_version_latest < $node_version_file
+  fi
+  if [[ ! -v node_version_latest && -d $asdf_root/plugins/nodejs ]]; then
+    local node_versions=($(env CLICOLOR= command -p ls -d "$asdf_root"/installs/nodejs/*.*.*(oanF[@])))
+    echo -n "${node_versions[-1]}" > $node_version_file
+  fi
+  export NODE_VERSION_LATEST="$node_version_latest"
+}
 # node }}}
 
 
@@ -384,10 +397,16 @@ elif [[ $OSX == $TRUE ]]; then
 else
   export ASDF_DIR="~/.asdf"
 fi
-export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
+#export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
+export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=".tool-versions"
 export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-~/.config}/asdf/neovim-packages"
 export ASDF_CONCURRENCY="${CORES:-4}"
 # asdf }}}
+
+
+# perl {{{
+export PERL_CPANM_OPT="--prompt --reinstall -l $PERL_LOCAL_LIB_ROOT --mirror http://cpan.cpantesters.org"
+# perl }}}
 
 
 # compilers {{{
