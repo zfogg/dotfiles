@@ -26,28 +26,54 @@ function use_nvm() {
 
 
 # {{{ Python
-# INFO: https://github.com/direnv/direnv/wiki/Python#pyenv-virtualenv
-function use_python() {
-  if [ -n "$(which pyenv)" ]; then
+# INFO: @zfogg remix
+use_python() {
+  if [ -n "$(which asdf)" ]; then
     local pyversion=$1
-    pyenv local ${pyversion}
+    asdf local python ${pyversion}
   fi
 }
 
-function layout_virtualenv() {
+layout_virtualenv() {
   local pyversion=$1
   local pvenv=$2
-  if [ -n "$(which pyenv virtualenv)" ]; then
-    pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
+  if [[ -n $(which asdf virtualenv) ]]; then
+    asdf exec virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
   fi
-  pyenv local --unset
+  #asdf local --unset
 }
 
-function layout_activate() {
-  if [ -n "$(which pyenv)" ]; then
-    source $(pyenv root)/versions/$1/bin/activate
+# INFO: u rly only need this lol
+layout_activate() {
+  local envbin="${PWD:-.}/env/bin"
+  if [[ -d $envbin ]]; then
+    source "$envbin/activate"
   fi
+  unset PS1
 }
+
+# INFO: https://github.com/direnv/direnv/wiki/Python#pyenv-virtualenv
+#function use_python() {
+#  if [ -n "$(which pyenv)" ]; then
+#    local pyversion=$1
+#    pyenv local ${pyversion}
+#  fi
+#}
+#
+#function layout_virtualenv() {
+#  local pyversion=$1
+#  local pvenv=$2
+#  if [ -n "$(which pyenv virtualenv)" ]; then
+#    pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
+#  fi
+#  pyenv local --unset
+#}
+#
+#function layout_activate() {
+#  if [ -n "$(which pyenv)" ]; then
+#    source $(pyenv root)/versions/$1/bin/activate
+#  fi
+#}
 # }}}
 
 

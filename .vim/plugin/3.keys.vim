@@ -2,7 +2,8 @@
 scriptencoding utf-8
 
 
-let mapleader = ','
+let mapleader      = ','
+let maplocalleader = ','
 
 
 inoremap <C-c> <Esc>

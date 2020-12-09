@@ -1,4 +1,11 @@
 wheel
 pip
-pygments
-pygments-base16
+pynvim
+pipenv
+virtualenv
+virtualenvwrapper
+pew
+flake8
+pep8
+tox
+pylint
