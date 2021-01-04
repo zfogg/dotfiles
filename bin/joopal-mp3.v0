@@ -30,10 +30,12 @@ fi
 while [ $# -gt 0 ]; do
     if [[ -e $1 ]]; then
         local filetype="${1:e}"
-        ffmpeg -i "$1" \
+        ffmpeg \
+            -loglevel info \
             -hide_banner \
-            -loglevel warning \
+            -i "$1" \
             -codec:a libmp3lame \
+            -vsync 2 \
             -qscale:a 0 \
             "${out_dir}/${1%."$filetype"}.v0.mp3"
     else

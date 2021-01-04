@@ -201,6 +201,7 @@ Plug 'junegunn/vim-plug'
     "Plug 'LnL7/vim-nix'
     Plug 'alvan/vim-closetag' ",     {'for': ['javascript.jsx', 'typescript.tsx', 'html']}
     Plug 'isobit/vim-caddyfile'
+    Plug 'wgwoods/vim-systemd-syntax' " systemctl / systemd
 " }}}
 
 

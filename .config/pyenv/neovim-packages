@@ -6,11 +6,10 @@ virtualenv
 virtualenvwrapper
 pew
 python-language-server[all]
-jedi
+jedi<0.18.0
 flake8
 pep8
 tox
 pylint
 pygments
 pygments-base16
-ansible

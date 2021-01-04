@@ -1,11 +1,11 @@
 npm
 yarn
+node-gyp
+rimraf
 neovim
 jsonlint
 tern
 eslint
-eslint-config-standard
-eslint-plugin-standard
 eslint-plugin-promise
 eslint-plugin-import
 eslint-plugin-node
@@ -14,7 +14,8 @@ babel-eslint
 javascript-typescript-langserver
 typescript-language-server
 flow-bin
-vscode-html-languageserver-bin
-vscode-css-languageserver-bin
 vercel
 nodemon
+truffle
+grunt-cli
+ganache-cli

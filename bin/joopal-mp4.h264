@@ -35,8 +35,8 @@ while [ $# -gt 0 ]; do
             -hide_banner \
             -loglevel info \
             -c:v libx264 \
-            -crf 28 \
-            -preset medium \
+            -crf 26 \
+            -preset veryslow \
             "${out_dir}/${1%."$filetype"}.h264.mp4"
     else
         echo "ERROR: bad input file: '$1'" \

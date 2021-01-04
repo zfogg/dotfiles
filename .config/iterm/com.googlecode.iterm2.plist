@@ -12631,7 +12631,7 @@
 	<key>EliminateCloseButtons</key>
 	<false/>
 	<key>EnableAPIServer</key>
-	<false/>
+	<true/>
 	<key>EnableDivisionView</key>
 	<true/>
 	<key>EnableProxyIcon</key>
@@ -16214,6 +16214,8 @@
 	<true/>
 	<key>RememberWindowPositions</key>
 	<true/>
+	<key>RequireAuthenticationAfterScreenLocks</key>
+	<true/>
 	<key>RequireCmdForDraggingText</key>
 	<true/>
 	<key>ResetSGROnPrompt</key>
@@ -16286,7 +16288,7 @@
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>ShowHintsInSplitPaneMenuItems</key>
 	<true/>
 	<key>ShowMetalFPSmeter</key>
@@ -16365,9 +16367,9 @@
 	<true/>
 	<key>ToolbeltTools</key>
 	<array>
-		<string>Recent Directories</string>
+		<string>Jobs</string>
 		<string>Command History</string>
-		<string>Captured Output</string>
+		<string>Recent Directories</string>
 	</array>
 	<key>TrackingRunloopForLiveResize</key>
 	<true/>

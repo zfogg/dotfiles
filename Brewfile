@@ -160,7 +160,7 @@ brew "ccache"
 
 brew "go"
 
-brew "ruby"
+#brew "ruby"
 
 brew "cmake"
 brew "scons"
@@ -169,18 +169,18 @@ brew "maven"
 
 brew "nginx"
 
-brew "direnv"
+#brew "direnv"
 
-brew "pyenv"
-brew "pyenv-virtualenv"
-brew "nvm"
-
-brew "rbenv"
-brew "rbenv-default-gems"
-brew "rbenv-vars"
-brew "rbenv-bundler"
-
-brew "rustup-init"
+#brew "pyenv"
+#brew "pyenv-virtualenv"
+#brew "nvm"
+#
+#brew "rbenv"
+#brew "rbenv-default-gems"
+#brew "rbenv-vars"
+#brew "rbenv-bundler"
+#
+#brew "rustup-init"
 
 brew "chromaprint", args: ["ignore-dependencies"]
 brew "decklinksdk"
