@@ -37,7 +37,7 @@ function () { # {{{ platform-specifics
     path=(
       $BREW/opt/ccache/libexec
       $BREW/opt/ruby@2.7/bin
-      $BREW/opt/curl-openssl/bin
+      $BREW/opt/curl/bin
       $BREW/{bin,sbin}
       #/Library/Developer/CommandLineTools/usr/bin
       "$path[@]"
