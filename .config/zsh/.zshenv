@@ -189,6 +189,11 @@ export HELPDIR="${BREW}/share/zsh/help"
 # $SHELL help }}}
 
 
+# ghq {{{
+export GHQ_ROOT="$HOME/src"
+# ghq }}}
+
+
 # groovy {{{
 #export GROOVY_HOME="$BREW/opt/groovy/libexec"
 #
@@ -255,6 +260,7 @@ export PIP_REQUIRE_VIRTUALENV=false
   #source "${VIRTUAL_ENV}/bin/activate"; fi
 
 export WORKON_HOME=~/.virtualenvs
+export PROJECT_HOME="${GHQ_ROOT:-~/src}"
 
 # pyenv {{{
   # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
@@ -366,11 +372,6 @@ export GENCOMPL_PY='python2'
 # }}}
 
 
-# ghq {{{
-export GHQ_ROOT="$HOME/src"
-# ghq }}}
-
-
 # gpg {{{
 export GPG_TTY="$(tty)"
 # gpg }}}
@@ -444,3 +445,4 @@ if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
   export WX_CONFIG="$BREW/x86_64/bin/wx-config"
 fi
 # }}}
+if [ -e /Users/zfogg/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/zfogg/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

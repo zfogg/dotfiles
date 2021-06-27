@@ -1,7 +1,8 @@
 direnv 2.27.0
 java adoptopenjdk-15.0.1+9 adoptopenjdk-9.0.0+181 adoptopenjdk-8.0.275+1
-nodejs 15.5.1 14.15.4 13.14.0 12.19.0 10.23.0
+nodejs 15.5.1 14.15.4 13.14.0 13.13.0 12.19.0 10.23.0
 python 3.9.1 2.7.18
 ruby 3.0.0 2.7.2
 rust stable:latest
 golang 1.15.6:latest
+deno 1.8.0:latest

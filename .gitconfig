@@ -101,3 +101,7 @@
 [filter "media"]
     	clean  = git-media-clean %f
     	smudge = git-media-smudge %f
+[init]
+	defaultBranch = master
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/

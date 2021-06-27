@@ -38,7 +38,7 @@ layout_virtualenv() {
   local pyversion=$1
   local pvenv=$2
   if [[ -n $(which asdf virtualenv) ]]; then
-    asdf exec virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
+    asdf exec virtualenv --quiet ${pyversion} ${pvenv}-${pyversion}
   fi
   #asdf local --unset
 }

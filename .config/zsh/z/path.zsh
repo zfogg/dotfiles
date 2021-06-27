@@ -37,7 +37,7 @@ function () { # {{{ platform-specifics
     path=(
       $BREW/opt/ccache/libexec
       $BREW/opt/ruby@2.7/bin
-      $BREW/opt/curl/bin
+      #$BREW/opt/curl/bin
       $BREW/{bin,sbin}
       #/Library/Developer/CommandLineTools/usr/bin
       "$path[@]"
@@ -111,6 +111,8 @@ function() { # {{{ AFTER platform-specifics
     $HOME/.local/bin
     $HOME/.{cabal,cargo}/bin
     $HOME/.minikube/bin
+    $HOME/.krew/bin
+    #/nix/var/nix/profiles/default/bin
     #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
     #$HOME/.rbenv/shims
     #$HOME/.gem/ruby/*.*.*/bin(nF/[-1])
