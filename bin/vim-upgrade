@@ -87,9 +87,9 @@ function() {
     #npm install --global ${npm_reqs}
 
     asdf plugin update nodejs
-    for v in `cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //'`; do
+    for v in `cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //' | tac -rs ' +' | xargs`; do
         asdf install nodejs "$v" || true \
-            && echo && "✅ nodejs ${v} ✅" && echo
+            && echo && echo "✅ nodejs ${v} ✅" && echo
         #asdf local nodejs "$v" && echo "local nodejs ${v}"
         #asdf exec yarn cache clean
         #asdf exec yarn global add npm@latest || true

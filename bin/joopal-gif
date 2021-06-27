@@ -16,7 +16,9 @@ function run_joopal-gif1() {
     #local palette="${TEMPDIR}palette.png"
     local palette="${1:r}".palette.png
 
-    local filters="fps=15,scale=400:-1:flags=lanczos+full_chroma_inp"
+    local filters="fps=20,scale=800:-1:flags=lanczos+full_chroma_inp"
+    #local filters="fps=15,scale=640:-1:flags=lanczos+full_chroma_inp"
+    #local filters="fps=15,scale=400:-1:flags=lanczos+full_chroma_inp"
     #local filters="fps=30,scale=320:-1:flags=lanczos+full_chroma_inp"
 
     ffmpeg -i "$1" \

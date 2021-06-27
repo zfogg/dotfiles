@@ -57,6 +57,7 @@ let g:NERDTreeIgnore            = [
     \ '' . '\.zwc'            . '$' . '[[file]]' ,
     \ '' . '\.zwc.old'        . '$' . '[[file]]' ,
     \ '' . '\.js.map'         . '$' . '[[file]]' ,
+    \ '' . '\.tern-port'      . '$' . '[[file]]' ,
     \ '' . '\.git'            . '$' . '[[dir]]'  ,
     \ '' . '\.hg'             . '$' . '[[dir]]'  ,
     \ '' . '\.svn'            . '$' . '[[dir]]'  ,

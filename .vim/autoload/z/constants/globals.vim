@@ -62,13 +62,13 @@ func! z#constants#globals#Python()
     let l:py2_prog = 'python2'
     let l:py3_prog = 'python3'
     if exists('$XDG_DATA_HOME') && isdirectory(expand($XDG_DATA_HOME))
-      if isdirectory($XDG_DATA_HOME.'/asdf')
+      if exists('$WORKON_HOME') && isdirectory(expand($WORKON_HOME))
+        let l:py2_root = $WORKON_HOME.'/neovim2/bin'
+        let l:py3_root = $WORKON_HOME.'/neovim3/bin'
+      elseif isdirectory($XDG_DATA_HOME.'/asdf')
         let l:py2_root = $XDG_DATA_HOME.'/asdf/shims'
         let l:py3_root = $XDG_DATA_HOME.'/asdf/shims'
       endif
-    elseif exists('$PYENV_ROOT')
-      let l:py2_root = $PYENV_ROOT.'/versions/neovim/bin'
-      let l:py3_root = $PYENV_ROOT.'/versions/neovim/bin'
     elseif exists('$BREW')
       let l:py2_root = $BREW.'/bin'
       let l:py3_root = $BREW.'/bin'

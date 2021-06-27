@@ -203,7 +203,7 @@ function tree() {
   if [[ -f $gitignore ]]; then
     local ignores=$(cat "$gitignore" | grep -v '^$' | xargs | tr '\ ' '|')
   else
-    local ignores='node_modules|bower_components|vendor|bundle|target|build|public|.git'
+    local ignores='node_modules|bower_components|vendor|bundle|target|build|public|.git|env'
   fi
   command tree \
     --du \
@@ -214,7 +214,7 @@ function tree() {
     -I "$ignores" \
     "$@"
 }
-#alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git" -L 5'
+alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git|env|__pycache__" -L 5'
 
 #alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 

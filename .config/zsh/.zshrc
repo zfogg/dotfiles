@@ -217,6 +217,32 @@ fi
     #source "$BREW/opt/pyenv/completions/pyenv.zsh"
   #fi
 #}
+
+function workon_home() {
+  local _workon_home="${WORKON_HOME:-~/.virtualenvs}"
+  echo "$_workon_home"
+}
+
+function project_home() {
+  local _project_home="${PROJECT_HOME:-${1:-${GHQ_ROOT:-~/src}}}"/"${2:-github.com}"
+  echo "$_workon_home"
+}
+
+function mkenv() {
+  local _workon_home="$(workon_home)"
+  mkdir -p "$_workon_home"
+  `asdf where python "$1"`/bin/virtualenv \
+    --seeder pip \
+    --download \
+    -p $(asdf where python "$1")/bin/python "$_workon_home"/"$2"
+  #--system-site-packages \
+  #--symlink-app-data \
+}
+
+function workon() {
+  source "$(workon_home)"/"$1"/bin/activate
+  #[ -d "$(project_home)"/"$1" ] && cd "$(project_home)"/"$1"
+}
 # python, pip, pyenv }}}
 
 
@@ -291,3 +317,9 @@ if [[ ! -z $SHELL_DEBUG ]]; then
   exec 2>&3 3>&-
 fi
 # zsh startup debug (BOTTOM of ~/.zshrc) }}}
+#source /etc/nix/nix-profile.sh
+#. /Users/zfogg/.nix-profile/etc/profile.d/nix.sh
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true

@@ -47,7 +47,7 @@
 	<key>CmdClickWhenInactiveInvokesSemanticHistory</key>
 	<false/>
 	<key>Command</key>
-	<string></string>
+	<string>/usr/local/bin/zsh</string>
 	<key>CommandSelection</key>
 	<true/>
 	<key>CompactMinimalTabBarHeight</key>
@@ -12631,7 +12631,7 @@
 	<key>EliminateCloseButtons</key>
 	<false/>
 	<key>EnableAPIServer</key>
-	<true/>
+	<false/>
 	<key>EnableDivisionView</key>
 	<true/>
 	<key>EnableProxyIcon</key>
@@ -13004,7 +13004,7 @@
 	<key>HotkeyTermAnimationDuration</key>
 	<real>0.75</real>
 	<key>IRMemory</key>
-	<integer>4</integer>
+	<integer>2</integer>
 	<key>IdleTimeSeconds</key>
 	<real>90</real>
 	<key>IgnoreHardNewlinesInURLs</key>
@@ -13369,7 +13369,7 @@
 			<key>Cursor Type</key>
 			<integer>2</integer>
 			<key>Custom Command</key>
-			<string>No</string>
+			<string>Custom Shell</string>
 			<key>Custom Directory</key>
 			<string>Advanced</string>
 			<key>Default Bookmark</key>
@@ -16221,7 +16221,7 @@
 	<key>ResetSGROnPrompt</key>
 	<true/>
 	<key>RestoreWindowContents</key>
-	<false/>
+	<true/>
 	<key>RightCommand</key>
 	<integer>8</integer>
 	<key>RightOption</key>
@@ -16284,11 +16284,11 @@
 	<key>SetCookie</key>
 	<false/>
 	<key>ShortLivedSessionDuration</key>
-	<real>5</real>
+	<real>3</real>
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>ShowHintsInSplitPaneMenuItems</key>
 	<true/>
 	<key>ShowMetalFPSmeter</key>

@@ -99,7 +99,7 @@ Plug 'junegunn/vim-plug'
     endif
     Plug 'zchee/deoplete-zsh',        PIf(PHas('deoplete.nvim'),                    {'for': ['zsh']})
     Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
-    "Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
+    Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
     "Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
     Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
     "Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
@@ -146,7 +146,7 @@ Plug 'junegunn/vim-plug'
     Plug 'lifepillar/pgsql.vim',          {'for': ft['sql']}
     "Plug 'sheerun/vim-polyglot'
     "Plug 'lambdalisue/vim-pyenv',         {'for': ft['py']}
-    "Plug 'python-mode/python-mode',       {'for': ft['py']}
+    Plug 'python-mode/python-mode',       {'for': ft['py']}
     Plug 'gisphm/vim-gitignore'
     Plug 'rust-lang/rust.vim',            {'for': ft['rs']}
     Plug 'vim-scripts/applescript.vim',   {'for': ft['scpt']}
@@ -202,6 +202,7 @@ Plug 'junegunn/vim-plug'
     Plug 'alvan/vim-closetag' ",     {'for': ['javascript.jsx', 'typescript.tsx', 'html']}
     Plug 'isobit/vim-caddyfile'
     Plug 'wgwoods/vim-systemd-syntax' " systemctl / systemd
+    Plug 'tomlion/vim-solidity' " ethereum's solidity
 " }}}
 
 

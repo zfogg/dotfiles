@@ -2,4 +2,5 @@
 
 
 sudo killall -HUP mDNSResponder
-dscacheutil -flushcache
+sudo killall mDNSResponderHelper
+sudo dscacheutil -flushcache
