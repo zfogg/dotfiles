@@ -285,15 +285,6 @@ source "$HOME/.aliases"
 # }}}
 
 
-# gpg, gnupg {{{
-function() {
-  if ! pgrep gpg-agent 1>/dev/null; then
-    eval "$(gpg-agent --daemon)" 1>/dev/null
-  fi
-}
-# }}}
-
-
 # powerlevel10k {{{
 function() {
   local pl10k_file=powerlevel10k.zsh-theme
@@ -306,6 +297,17 @@ function() {
   local pl10k_path=$pl10k_root/$pl10k_file
   [[ -d $pl10k_root && -f $pl10k_path ]] && source "$pl10k_path"
   [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+}
+# }}}
+
+
+# crypto auth agents {{{
+function() {
+    if command_exists keychain; then
+        local ssh_keys="$(for x in `ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
+        # --quiet
+        eval "`keychain --eval --agents ssh,gpg --inherit any-once "${(f)ssh_keys}"`"
+    fi
 }
 # }}}
 
