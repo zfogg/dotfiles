@@ -329,7 +329,13 @@ if [[ -v NVIM || -v VIM ]]; then
 fi
 
 export VISUAL="$EDITOR"
-export LESS='-R'
+#export LESS='-R'
+
+# INFO: https://www.topbug.net/blog/2016/09/27/make-gnu-less-more-powerful/
+# set options for less
+export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
+# or the short version
+# export LESS='-F -i -J -M -R -W -x4 -X -z-4'
 
 if command_exists nvimpager; then
   export PAGER='nvimpager'

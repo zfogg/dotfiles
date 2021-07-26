@@ -88,12 +88,12 @@ function() {
   if [[ -d $XDG_DATA_HOME/asdf ]]; then
     eval "$(asdf exec direnv hook zsh)"
     #source "$BREW/opt/asdf/asdf.sh"
-    direnv() { asdf exec direnv "$@"; }
+    function direnv() { asdf exec direnv "$@"; }
 
-    local asdf_java=${ASDF_DATA_DIR:-~/.asdf}/plugins/java
-    if [[ -d $asdf_java ]]; then
-      source "$asdf_java/set-java-home.zsh"
-    fi
+    #local asdf_java=${ASDF_DATA_DIR:-~/.asdf}/plugins/java
+    #if [[ -d $asdf_java ]]; then
+    #  source "$asdf_java/set-java-home.zsh"
+    #fi
   fi
   #path=(
     #$HOME/.yarn/bin
@@ -101,9 +101,9 @@ function() {
   #export PATH
 }
 
-if command_exists jenv; then
-  #eval "$(jenv init -)"
-fi
+#if command_exists jenv; then
+#  #eval "$(jenv init -)"
+#fi
 
 # INFO: antigen handles this now
 #[[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
@@ -183,9 +183,9 @@ if command_exists fzf; then
       #&& source "${fzfetc[@]}"
 
     # FZF_ALT_C_COMMAND
-    #if command_exists fd; then
+    if command_exists fd; then
       export FZF_ALT_C_COMMAND='fd --type d'
-    #fi
+    fi
     export FZF_ALT_C_OPTS="
       --preview '(tree -C {}) 2>/dev/null | head -200'
     "
@@ -222,31 +222,31 @@ fi
   #fi
 #}
 
-function workon_home() {
-  local _workon_home="${WORKON_HOME:-~/.virtualenvs}"
-  echo "$_workon_home"
-}
-
-function project_home() {
-  local _project_home="${PROJECT_HOME:-${1:-${GHQ_ROOT:-~/src}}}"/"${2:-github.com}"
-  echo "$_workon_home"
-}
-
-function mkenv() {
-  local _workon_home="$(workon_home)"
-  mkdir -p "$_workon_home"
-  `asdf where python "$1"`/bin/virtualenv \
-    --seeder pip \
-    --download \
-    -p $(asdf where python "$1")/bin/python "$_workon_home"/"$2"
-  #--system-site-packages \
-  #--symlink-app-data \
-}
-
-function workon() {
-  source "$(workon_home)"/"$1"/bin/activate
-  #[ -d "$(project_home)"/"$1" ] && cd "$(project_home)"/"$1"
-}
+#function workon_home() {
+#  local _workon_home="${WORKON_HOME:-~/.virtualenvs}"
+#  echo "$_workon_home"
+#}
+#
+#function project_home() {
+#  local _project_home="${PROJECT_HOME:-${1:-${GHQ_ROOT:-~/src}}}"/"${2:-github.com}"
+#  echo "$_workon_home"
+#}
+#
+#function mkenv() {
+#  local _workon_home="$(workon_home)"
+#  mkdir -p "$_workon_home"
+#  `asdf where python "$1"`/bin/virtualenv \
+#    --seeder pip \
+#    --download \
+#    -p $(asdf where python "$1")/bin/python "$_workon_home"/"$2"
+#  #--system-site-packages \
+#  #--symlink-app-data \
+#}
+#
+#function workon() {
+#  source "$(workon_home)"/"$1"/bin/activate
+#  #[ -d "$(project_home)"/"$1" ] && cd "$(project_home)"/"$1"
+#}
 # python, pip, pyenv }}}
 
 
