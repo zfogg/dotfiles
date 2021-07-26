@@ -37,11 +37,12 @@ function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/opt/ccache/libexec
-      $BREW/opt/ruby@{2,3}/bin
-      #$BREW/opt/ruby/bin
-      #$BREW/opt/curl/bin
+      $BREW/opt/{findutils,coreutils,libtool}/libexec/gnubin
+      $BREW/opt/{make,grep,sed,tar,which,ed,gawk,indent}/libexec/gnubin
+      $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
+      $BREW/opt/ruby@{3,2}/bin
       $BREW/{bin,sbin}
-      #/Library/Developer/CommandLineTools/usr/bin
+      /Library/Developer/CommandLineTools/usr/bin
       "$path[@]"
       $(getconf PATH | command -p tr ':' '\n'))
 
@@ -147,7 +148,7 @@ function() { # {{{ AFTER platform-specifics
   #fi
 
   fpath=(
-    $HOME/.zsh/{site-functions,completions,gencompl}
+    $HOME/.zsh/{site-functions,completions}
     "$fpath[@]"
   )
 
