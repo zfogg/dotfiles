@@ -222,15 +222,15 @@ export GO111MODULE='auto' # on | off | auto
 
 
 # node {{{
-export NVM_DIR="${HOME}/.nvm"
-export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
-export NVM_NO_USE=false   # lukechilds/zsh-nvm
+#export NVM_DIR="${HOME}/.nvm"
+#export NVM_LAZY_LOAD=true # lukechilds/zsh-nvm
+#export NVM_NO_USE=false   # lukechilds/zsh-nvm
 #unset NVM_LAZY_LOAD
 #unset NVM_NO_USE
 #[ -d ~/.local ] \
   #&& export npm_config_prefix=~/.local \
   #|| export npm_config_prefix=~/.npm
-export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
+#export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 
 function() {
   local asdf_root="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}"
@@ -400,7 +400,7 @@ if [[ $LINUX == $TRUE ]]; then
 elif [[ $OSX == $TRUE ]]; then
   export ASDF_DIR="$BREW/opt/asdf"
 else
-  export ASDF_DIR="~/.asdf"
+  export ASDF_DIR="$HOME/.asdf"
 fi
 #export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=".tool-versions"
@@ -436,15 +436,15 @@ export IPFS_LOGGING_FMT="color"
 
 
 # java stuff {{{
-export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
-export JAVA_11_HOME=$(/usr/libexec/java_home -v11)
-export JAVA_13_HOME=$(/usr/libexec/java_home -v13)
-export JAVA_14_HOME=$(/usr/libexec/java_home -v14)
-
-alias  java8='export JAVA_HOME=$JAVA_8_HOME'
-alias java11='export JAVA_HOME=$JAVA_11_HOME'
-alias java13='export JAVA_HOME=$JAVA_13_HOME'
-alias java14='export JAVA_HOME=$JAVA_14_HOME'
+#export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
+#export JAVA_11_HOME=$(/usr/libexec/java_home -v11)
+#export JAVA_13_HOME=$(/usr/libexec/java_home -v13)
+#export JAVA_14_HOME=$(/usr/libexec/java_home -v14)
+#
+#alias  java8='export JAVA_HOME=$JAVA_8_HOME'
+#alias java11='export JAVA_HOME=$JAVA_11_HOME'
+#alias java13='export JAVA_HOME=$JAVA_13_HOME'
+#alias java14='export JAVA_HOME=$JAVA_14_HOME'
 # }}}
 
 
