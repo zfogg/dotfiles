@@ -1,7 +1,5 @@
 npm
-yarn
 node-gyp
-rimraf
 neovim
 jsonlint
 tern
@@ -10,12 +8,8 @@ eslint-plugin-promise
 eslint-plugin-import
 eslint-plugin-node
 eslint-plugin-react
-babel-eslint
+@babel/eslint-parser
+@babel/core
 javascript-typescript-langserver
 typescript-language-server
 flow-bin
-vercel
-nodemon
-truffle
-grunt-cli
-ganache-cli

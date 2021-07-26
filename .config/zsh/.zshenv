@@ -97,19 +97,19 @@ if [[ $OSX == $TRUE ]]; then
 fi
 
 function() {
-  if [[ $OSX == $TRUE ]]; then
-    local ruby_vvv=2.7.0
-    local ruby_vv=2.7
-    local ruby_v=2
-    local ruby_d="ruby@$ruby_vv"
-    local ruby_base="$BREW/opt/$ruby_d"
-    if [[ -d $ruby_base ]]; then
-      #export PKG_CONFIG_PATH="$ruby_base/lib/pkgconfig:$PKG_CONFIG_PATH"
-      #export  LDFLAGS="-L$BREW/lib/ruby $LDFLAGS"
-      #export  LDFLAGS="-L$BREW/lib/ruby/$ruby_vvv $LDFLAGS"
-      #export CPPFLAGS="-I$BREW/include/$ruby_d $LDFLAGS"
-    fi
-  fi
+  #if [[ $OSX == $TRUE ]]; then
+  #  local ruby_vvv=2.7.0
+  #  local ruby_vv=2.7
+  #  local ruby_v=2
+  #  local ruby_d="ruby@$ruby_vv"
+  #  local ruby_base="$BREW/opt/$ruby_d"
+  #  if [[ -d $ruby_base ]]; then
+  #    #export PKG_CONFIG_PATH="$ruby_base/lib/pkgconfig:$PKG_CONFIG_PATH"
+  #    #export  LDFLAGS="-L$BREW/lib/ruby $LDFLAGS"
+  #    #export  LDFLAGS="-L$BREW/lib/ruby/$ruby_vvv $LDFLAGS"
+  #    #export CPPFLAGS="-I$BREW/include/$ruby_d $LDFLAGS"
+  #  fi
+  #fi
 }
 
 # function() {
@@ -140,6 +140,8 @@ if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
 elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
   export ITERM_DOTAPP="true"
 fi
+
+#setopt allexport
 # terminal }}}
 
 
@@ -247,7 +249,8 @@ function() {
 
 # ruby {{{
 export RUBY_CONFIGURE_OPTS="--enable-shared"
-export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS}  --with-openssl-dir=${BREW}/opt/openssl@1.1"
+#export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS}  --with-openssl-dir=${BREW}/opt/openssl@1.1"
+export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS}  --with-openssl-dir=${BREW}/opt/openssl"
 export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS} --with-readline-dir=${BREW}/opt/readline"
 export RUBY_CONFIGURE_OPTS="${RUBY_CONFIGURE_OPTS}  --with-libyaml-dir=${BREW}/opt/libyaml"
 # ruby }}}
@@ -373,7 +376,8 @@ export GENCOMPL_PY='python2'
 
 
 # gpg {{{
-export GPG_TTY="$(tty)"
+# INFO: moved to ~/.zshrc + `keychain`
+#export GPG_TTY="$(tty)"
 # gpg }}}
 
 
@@ -428,6 +432,19 @@ export IPFS_LOGGING="info"
 #IPFS_LOGGING_FMT - sets formatting of the log output.
     #One of: color, nocolor
 export IPFS_LOGGING_FMT="color"
+# }}}
+
+
+# java stuff {{{
+export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
+export JAVA_11_HOME=$(/usr/libexec/java_home -v11)
+export JAVA_13_HOME=$(/usr/libexec/java_home -v13)
+export JAVA_14_HOME=$(/usr/libexec/java_home -v14)
+
+alias  java8='export JAVA_HOME=$JAVA_8_HOME'
+alias java11='export JAVA_HOME=$JAVA_11_HOME'
+alias java13='export JAVA_HOME=$JAVA_13_HOME'
+alias java14='export JAVA_HOME=$JAVA_14_HOME'
 # }}}
 
 
