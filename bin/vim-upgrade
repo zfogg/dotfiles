@@ -87,15 +87,23 @@ function() {
     #npm install --global ${npm_reqs}
 
     asdf plugin update nodejs
-    for v in `cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //' | tac -rs ' +' | xargs`; do
+    for v in `cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //' | tac -rs ' +' | tr ' ' '\n' | grep -v '^10.' | grep -v '^13.' | xargs`; do
         asdf install nodejs "$v" || true \
             && echo && echo "✅ nodejs ${v} ✅" && echo
+        asdf shell nodejs "$v"
         #asdf local nodejs "$v" && echo "local nodejs ${v}"
         #asdf exec yarn cache clean
         #asdf exec yarn global add npm@latest || true
         #asdf exec yarn global add yarn@latest || true
         #asdf exec yarn global add `cat ~/.default-npm-packages | tail -n +3 | xargs`
+        #asdf exec yarn global list --json \
+        #    | jq -r 'select(.type == "info") | .data' \
+        #    | grep -v npm \
+        #    | sed 's/"\(.*\)@.*/\1/g' \
+        #    | xargs asdf exec yarn global remove
+        asdf exec npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | grep -v '^yarn' | xargs asdf exec npm -g rm --force
         asdf exec yarn global upgrade
+        asdf shell nodejs --unset
     done
     asdf reshim nodejs "$v"
 

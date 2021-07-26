@@ -1,5 +1,12 @@
-#!/usr/bin/env zsh -e
+#!/usr/bin/env zsh
+# vim: set fdm=marker:
 #   ~/.dotfiles/.aliases
+
+
+# custom functions from $FPATH (prolly ~/.zsh/site-functions)
+autoload -Uz \
+  ppvar \
+  trim-whitespace
 
 
 function aliasof() {
@@ -20,6 +27,9 @@ function compdefas() {
 }
 
 #alias rm='trash'
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -iv"
 
 alias vim="$EDITOR"
 alias  vi="$EDITOR"
@@ -62,8 +72,8 @@ function() { # grc
 }
 
 function() { # ls
-  local  LSPRG_PRG='ls'
-  local LSPRG_ARGS=' -LhHGstc'
+  export  LSPRG_PRG='ls'
+  export LSPRG_ARGS=' -LhHGstc'
 
   if command_exists gls; then
     #local LSPRG_PRG="`which -p gls ls | head -n1 | xargs basename`"
@@ -75,30 +85,46 @@ function() { # ls
       printf ' --group-directories-first'
       printf ' --quoting-style=shell-always' `"
     alias gls="${GLSPRG_PRG} ${GLSPRG_ARGS}"
-    LSPRG_PRG="$GLSPRG_PRG"
-    LSPRG_ARGS="$GLSPRG_ARGS"
+    export LSPRG_PRG="$GLSPRG_PRG"
+    export LSPRG_ARGS="$GLSPRG_ARGS"
   fi
 
   if command_exists lsd; then
-    alias lsd >/dev/null && unalias lsd
-    local LSDPRG_PRG='lsd'
-    local LSDPRG_ARGS="`
-      printf ' --blocks=date,size,user,name'
-      printf ' --human-readable --size=short'
-      printf ' --timesort --date=relative --reverse'
-      printf ' --group-dirs=first --classify' `"
-    alias lsd="${LSDPRG_PRG} ${LSDPRG_ARGS}"
+    #alias lsd >/dev/null && unalias lsd
+    export LSDPRG_PRG='command lsd'
+    export LSDPRG_ARGS="`
+    printf  '--blocks=user,group,size,date,name'
+    printf ' --human-readable --size=short'
+    printf ' --sort=time --date=relative --reverse'
+    printf ' --group-dirs=none --classify'`"
+    #printf ' --directory-only --total-size' `"
     compdefas ls lsd
-    LSPRG_PRG="$LSDPRG_PRG"
-    LSPRG_ARGS="$LSDPRG_ARGS"
+
+    export  LSPRG_PRG="$LSDPRG_PRG"
+    export LSPRG_ARGS="$LSDPRG_ARGS"
+
+    functions -UzWT lsd
+    function lsd() {
+      if [[ -v LSD_DEBUG ]]; then set -x; fi
+      readonly func_args="${${@:1}:-.}"
+      typeset cmd="${LSPRG_PRG}" args="${LSPRG_ARGS}"
+      typeset -aU paths=($(trim-whitespace "${func_args[@]}" | xargs printf "%s\n"))
+      if [[ ${#paths[@]} -le 0 ]] paths="${PWD:-/dev/null}"
+      >&2 echo $LSD_DEBUG
+      if [[ -v LSD_DEBUG ]]; then set +x;
+        >&2 echo $'$paths:\n' "$(printf "\t%q\n" `trim-whitespace "${paths[@]}"`)"
+      fi
+      eval "${cmd} ${args} ${paths}"; #set +x;
+    }
   fi
 
   alias ls >/dev/null && unalias ls
-  alias ls='\'"${LSPRG_PRG} ${LSPRG_ARGS}"
+  #alias ls='\'"${LSPRG_PRG} ${LSPRG_ARGS}"
+  alias ls='lsd'
   alias  l='ls -1'
   alias ll='ls -1l'
   alias la='nowrap ls -1lA'
-  alias lt='ls -1Al --tree --depth=2'
+  alias lt='ls -1Al --tree --depth=2 --total-size'
   compdefas ls ls l ll la lt
 }
 
@@ -235,6 +261,11 @@ function npm-do() {
   (PATH="$(npm bin):$PATH"; eval "$@";)
 }
 
+# INFO: https://askubuntu.com/a/1125667
+function trimpath {
+  PATH=${PATH%:*}
+}
+
 
 # pyenv
 #function gpip()  {env PIP_REQUIRE_VIRTUALENV='' python -m pip  "$@"}
@@ -257,11 +288,9 @@ compdefas pip pip pip2 pip3 gpip gpip2 gpip3
 
 alias pyenv-init='eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)"'
 
-# custom functions from $FPATH (prolly ~/.zsh/site-functions)
-autoload -Uz \
-  ppvar \
-  trim-whitespace
-
 function jps() { local pids=$(pgrep -fai "$@"); [[ $? == 0 ]] && ps aux -p "$pids" }
 
 alias nextdns-diag='sh -c "$(curl -s https://nextdns.io/diag)"'
+
+
+alias wrap_with_setx='(){ set -x; "$@"; set +x }'

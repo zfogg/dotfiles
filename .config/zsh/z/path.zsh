@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # vim: set fdm=marker:
+#   ~/.config/zsh/z/path.zsh
 
 
 # {{{ variable typesets
@@ -36,7 +37,8 @@ function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/opt/ccache/libexec
-      $BREW/opt/ruby@2.7/bin
+      $BREW/opt/ruby@{2,3}/bin
+      #$BREW/opt/ruby/bin
       #$BREW/opt/curl/bin
       $BREW/{bin,sbin}
       #/Library/Developer/CommandLineTools/usr/bin

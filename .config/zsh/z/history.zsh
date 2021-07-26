@@ -6,7 +6,8 @@
   export HISTFILE="${ZDOTDIR:-~/.config/zsh}/history"
 
 # NOTE: you should set $SAVEHIST to be no more than $HISTSIZE
-export HISTSIZE=65536       # == 256**2
+#export HISTSIZE=65536       # == 256**2
+export HISTSIZE=16384       # == 128**2
 export SAVEHIST=$HISTSIZE
 
 set +o histexpand
@@ -17,7 +18,8 @@ setopt   AUTO_LIST
 setopt   AUTO_MENU
 setopt   AUTO_PARAM_SLASH
 setopt   AUTO_PUSHD
-setopt   BANG_HIST
+#setopt   BANG_HIST
+setopt   NOBANGHIST # INFO: https://unix.stackexchange.com/a/379436/99026
 unsetopt BEEP
 unsetopt CASE_GLOB
 setopt   CDABLEVARS
@@ -30,10 +32,11 @@ setopt   GLOB_COMPLETE
 setopt   GLOB_DOTS
 setopt   HIST_EXPIRE_DUPS_FIRST
 setopt   HIST_IGNORE_ALL_DUPS
-setopt   HIST_IGNORE_DUPS
+#setopt   HIST_IGNORE_DUPS
 setopt   HIST_IGNORE_SPACE
 setopt   HIST_REDUCE_BLANKS
-unsetopt HIST_SAVE_NO_DUPS
+#unsetopt HIST_SAVE_NO_DUPS
+setopt   HIST_SAVE_NO_DUPS
 setopt   HIST_FIND_NO_DUPS
 setopt   HIST_VERIFY
 setopt   IGNORE_EOF

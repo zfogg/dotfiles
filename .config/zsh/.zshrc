@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # vim: set fdm=marker:
-# ~/.zshrc
+#   ~/.config/zsh/.zshrc
 
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
@@ -303,11 +303,25 @@ function() {
 
 # crypto auth agents {{{
 function() {
-    if command_exists keychain; then
-        local ssh_keys="$(for x in `ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
-        # --quiet
-        eval "`keychain --eval --agents ssh,gpg --inherit any-once "${(f)ssh_keys}"`"
+  #export SSH_AUTH_SOCK=/Users/zfogg/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh
+  if command_exists keychain; then
+    local keys="${(f)ssh_keys}"
+    local gpg_keyid_file="$HOME"/.gnupg/.keyid
+    if [[ -f $gpg_keyid_file ]]; then
+      keys+="$gpg_keyid_file"
     fi
+    local ssh_keys="$(for x in `\ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
+    export GPG_AGENT_INFO="~/.gnupg/S.gpg-agent:$(pgrep gpg-agent):1"
+    local life=28800
+    eval "`keychain --quiet \
+      --confhost \
+      --quick \
+      --eval \
+      --agents ssh,gpg \
+      --timeout "$life" \
+      --inherit any-once "${(f)keys}"`"
+    export GPG_TTY=`tty`
+  fi
 }
 # }}}
 
@@ -325,3 +339,5 @@ fi
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+
+export SSH_AUTH_SOCK=/Users/zfogg/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh

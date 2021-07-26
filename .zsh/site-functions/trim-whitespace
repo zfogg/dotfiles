@@ -16,7 +16,7 @@ function trim-whitespace() {
     var="${var#"${var%%[![:space:]]*}"}"
     # remove trailing whitespace characters
     var="${var%"${var##*[![:space:]]}"}"
-    printf '%s' "$var"
+    printf '%s' "$var" | tr -s ' '
 }
 
 trim-whitespace "$@"
