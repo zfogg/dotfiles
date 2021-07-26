@@ -354,6 +354,7 @@ export CORES="`$BREW/bin/nproc`"
 #fi
 export CARGO_INCREMENTAL=1
 export CARGO_BUILD_JOBS="$((${CORES:-2} - 1))"
+#[[ -f $HOME/.local/share/asdf/installs/rust/stable/env ]] && source "$HOME/.local/share/asdf/installs/rust/stable/env"
 # }}}
 
 
@@ -404,7 +405,8 @@ else
 fi
 #export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=".tool-versions"
-export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-~/.config}/asdf/neovim-packages"
+export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="$HOME/.default-python-packages"
+export ASDF_NPM_DEFAULT_PACKAGES_FILE="$HOME/.default-npm-packages"
 export ASDF_CONCURRENCY="${CORES:-4}"
 # asdf }}}
 
@@ -462,4 +464,3 @@ if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
   export WX_CONFIG="$BREW/x86_64/bin/wx-config"
 fi
 # }}}
-if [ -e /Users/zfogg/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/zfogg/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

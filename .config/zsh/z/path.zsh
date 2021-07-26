@@ -111,7 +111,7 @@ function() { # {{{ AFTER platform-specifics
   path=(
     $HOME/bin
     $HOME/.local/bin
-    $HOME/.{cabal,cargo}/bin
+    $HOME/.{cabal,cargo,yarn}/bin
     $HOME/.minikube/bin
     $HOME/.krew/bin
     #/nix/var/nix/profiles/default/bin

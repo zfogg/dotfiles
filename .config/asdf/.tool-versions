@@ -1,9 +1,9 @@
 direnv latest 2.28.0:latest 2.28.0
-java latest adoptopenjdk-15.0.2+7:latest adoptopenjdk-9.0.0+181:latest adoptopenjdk-8.0.292+10:latest
-nodejs latest 16.5.0:latest 15.14.0:latest lts-fermium:latest lts:latest
-yarn latest 1.22.10:latest
-python latest 3.9.6:latest 2.7.18:latest
-ruby latest 3.0.2:latest 2.7.4:latest
-rust latest stable:latest beta:latest
-golang latest 1.16:latest
-deno latest 1.12.1:latest
+java latest adoptopenjdk-15.0.2+7:latest adoptopenjdk-9.0.0+181:latest adoptopenjdk-8.0.292+10:latest system
+nodejs 16.5.0:latest 15.14.0 lts-fermium lts
+yarn 1.22.10 1.22.10:latest
+python latest 3.9.6 2.7.18 system
+ruby latest 3.0.2 2.7.4 system
+rust latest stable beta:latest
+golang latest 1.16 system
+deno latest 1.12.1

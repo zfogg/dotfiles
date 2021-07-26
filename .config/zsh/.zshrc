@@ -95,6 +95,10 @@ function() {
       source "$asdf_java/set-java-home.zsh"
     fi
   fi
+  #path=(
+    #$HOME/.yarn/bin
+    #"$path[@]")
+  #export PATH
 }
 
 if command_exists jenv; then

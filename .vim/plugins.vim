@@ -203,6 +203,10 @@ Plug 'junegunn/vim-plug'
     Plug 'isobit/vim-caddyfile'
     Plug 'wgwoods/vim-systemd-syntax' " systemctl / systemd
     Plug 'tomlion/vim-solidity' " ethereum's solidity
+    " LSP - language server protocol
+    Plug 'neovim/nvim-lsp',           PIf(has('nvim'))
+    Plug 'neovim/nvim-lspconfig',     PIf(PHas('nvim-lsp'))
+    Plug 'kabouzeid/nvim-lspinstall', PIf(PHas('nvim-lsp'))
 " }}}
 
 
