@@ -13,3 +13,4 @@ eslint-plugin-react
 javascript-typescript-langserver
 typescript-language-server
 flow-bin
+pyright
