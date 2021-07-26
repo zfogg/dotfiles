@@ -89,7 +89,6 @@ function() {
     asdf plugin update nodejs
     asdf install nodejs
     for v in `cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //' | tac -rs ' +' | tr ' ' '\n' | xargs`; do
-        set -x
         #asdf install nodejs "$v" || true \
             #&& echo && echo "✅ nodejs ${v} ✅" && echo
         asdf shell nodejs "$v"
@@ -107,7 +106,6 @@ function() {
         asdf exec yarn global add `cat $HOME/.default-npm-packages | xargs`
         asdf exec yarn global upgrade
         asdf shell nodejs --unset
-        set +x
         asdf reshim nodejs "$v"
         asdf reshim yarn
     done
