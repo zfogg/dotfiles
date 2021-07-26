@@ -140,7 +140,8 @@ alias ...='cd ../..'
 alias less="$PAGER"
 alias zless="$PAGER"
 
-alias htop="htop -u $USER"
+#alias htop="htop -u $USER"
+alias htop="command sudo htop"
 
 alias psef="ps -ef"
 

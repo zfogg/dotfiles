@@ -86,6 +86,7 @@ function() {
     #npm install --loglevel silent --global "$npm_reqs[@]"
     #npm install --global ${npm_reqs}
 
+    set -x
     asdf plugin update nodejs
     for v in `cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //' | tac -rs ' +' | tr ' ' '\n' | grep -v '^10.' | grep -v '^13.' | xargs`; do
         asdf install nodejs "$v" || true \
@@ -104,8 +105,9 @@ function() {
         asdf exec npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | grep -v '^yarn' | xargs asdf exec npm -g rm --force
         asdf exec yarn global upgrade
         asdf shell nodejs --unset
+        asdf reshim nodejs "$v"
     done
-    asdf reshim nodejs "$v"
+    set +x
 
     #while read -r nr; do
         #asdf exec yarn global add "$nr"
