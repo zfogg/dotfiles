@@ -110,7 +110,6 @@ function() { # ls
       typeset cmd="${LSPRG_PRG}" args="${LSPRG_ARGS}"
       typeset -aU paths=($(trim-whitespace "${func_args[@]}" | xargs printf "%s\n"))
       if [[ ${#paths[@]} -le 0 ]] paths="${PWD:-/dev/null}"
-      >&2 echo $LSD_DEBUG
       if [[ -v LSD_DEBUG ]]; then set +x;
         >&2 echo $'$paths:\n' "$(printf "\t%q\n" `trim-whitespace "${paths[@]}"`)"
       fi
