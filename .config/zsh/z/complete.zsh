@@ -197,4 +197,10 @@ function() {
   local bash_completion="${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
   [[ -r $bash_completion ]] && source "$bash_completion"
 }
+
+function() {
+  local pip_complete_file="$HOME/.zsh/site-functions/_pip"
+  if (( $+commands[pip] )) && [[ -f $pip_complete_file ]] \
+    source "$pip_complete_file"
+}
 # 3rd-party }}}
