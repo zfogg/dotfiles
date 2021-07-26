@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh -e
+
+
+function _joopal-whitespace-between() {
+    set +x
+    typeset -a args=($@)
+    typeset -a result=()
+    for i ($(seq 1 $((${#args})))) {
+        RESULT+=("${args[$i]}" '')
+    }
+    echo ${"${RESULT[@]:0:-1}"//[[:space:]]/}
+    set +x
+}
+
+
+_joopal-whitespace-between "$@"

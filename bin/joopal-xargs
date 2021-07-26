@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh -e
+
+
+function _joopal-xargs() {
+    typeset -a flags=() extra=() fargs=(${${@:1}:-.})
+    for f ($fargs) {
+        if [[ "$f" =~ ^--?.+ ]];
+        then flags+="$f";
+        else extra+="$f"; fi
+    }
+    echo 'args->flags\n'"$(print -r -- $'\t'${(q)flags})" #; echo
+    echo 'args->extra\n'"$(print -r -- $'\t'${(q)extra})"
+}
+
+
+_joopal-xargs "$@"
