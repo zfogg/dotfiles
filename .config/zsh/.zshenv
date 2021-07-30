@@ -235,7 +235,7 @@ export GO111MODULE='auto' # on | off | auto
 function() {
   local asdf_root="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}"
   local node_version_file="$HOME/.node_version_latest"
-  if [[ -f $node_version_file && ! -v NODE_VERSION_LATEST ]]; then
+  if [[ -f $node_version_file || ! -v NODE_VERSION_LATEST ]]; then
     read -r node_version_latest < $node_version_file
   fi
   if [[ ! -v node_version_latest && -d $asdf_root/plugins/nodejs ]]; then

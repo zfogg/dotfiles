@@ -105,10 +105,11 @@ function() {
         #asdf exec npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | grep -v '^yarn' | xargs asdf exec npm -g rm --force
         asdf exec yarn global add `cat $HOME/.default-npm-packages | xargs`
         asdf exec yarn global upgrade
-        asdf shell nodejs --unset
-        asdf reshim nodejs "$v"
-        asdf reshim yarn
     done
+
+    asdf shell nodejs --unset
+    asdf reshim nodejs "$v"
+    asdf reshim yarn
 
     #while read -r nr; do
         #asdf exec yarn global add "$nr"
