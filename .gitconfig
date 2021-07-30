@@ -26,6 +26,7 @@
     	default = simple
 [pull]
     	ff = only
+	rebase = true
     	;rebase = true
 [diff]
     	tool = vimdiff3
@@ -94,10 +95,10 @@
     	vcs = git
 
 [filter "lfs"]
-    	clean = git-lfs clean -- %f
-    	smudge = git-lfs smudge -- %f
-    	process = git-lfs filter-process
-    	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 [filter "media"]
     	clean  = git-media-clean %f
     	smudge = git-media-smudge %f
