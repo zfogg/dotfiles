@@ -3,11 +3,8 @@
 #   trims leading and trailing whitespace from arguments
 #   INFO: https://stackoverflow.com/a/3352015/672346
 
-#local v=$(echo "$*" | tr -s ' ') # remove multiple whitespaces
-#v="${v#"${v%%[![:space:]]*}"}"  # remove leading whitespace characters
-#v="${v%"${v##*[![:space:]]}"}"  # remove trailing whitespace characters
 
-autoload -Uz echoer
+autoload -Uz echoer # custom error handler of mine
 
 function _trim-whitespace() {
     local v=$*
@@ -33,8 +30,8 @@ function _trim-whitespace-stdin() {
 }
 
 
-if [[ -p /dev/stdin ]]; then
-    _trim-whitespace-stdin
+(if [[ ! -t 0 ]] && [[  ! -p /dev/stdout || -p /dev/stdout ]]; then
+    _trim-whitespace-stdin < /dev/stdin
 else
-    _trim-whitespace-args "$@"
-fi | head -c-1
+    _trim-whitespace-args $*
+fi) | head -c-1
