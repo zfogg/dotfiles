@@ -317,7 +317,8 @@ function() {
     local ssh_keys="$(for x in `\ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
     export GPG_AGENT_INFO="~/.gnupg/S.gpg-agent:$(pgrep gpg-agent):1"
     local life=28800
-    eval "`keychain --quiet \
+    #eval "`keychain --quiet \
+    eval "`keychain \
       --confhost \
       --quick \
       --eval \
