@@ -54,7 +54,7 @@
     	;cmd           = vim -f -c \"Gdiffsplit!\" \"$MERGED\"
     	trustExitCode = true
 [mergetool]
-    	prompt        = false
+    	prompt        = true
     	keepBackup    = true
 
 [difftool "nvim"]
