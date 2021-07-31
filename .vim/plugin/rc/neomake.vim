@@ -19,7 +19,7 @@ if z#util#HasPlugin('neomake')
         endif
         let g:neomake_tempfile_dir = s:neomake_tempfile_dir . '%:p:h'
     catch
-        silent! unlet g:neomake_tempfile_dir
+        "silent! unlet g:neomake_tempfile_dir
         echom expand('<sfile>')
         echom v:errmsg
     endtry

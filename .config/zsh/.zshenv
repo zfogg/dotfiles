@@ -233,16 +233,24 @@ export GO111MODULE='auto' # on | off | auto
 #export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 
 function() {
+  autoload -Uz is-at-least
   local asdf_root="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}"
+  local node_root=$asdf_root/installs/nodejs
+  local node_versions=($(env CLICOLOR= command -p ls -d "$asdf_root"/installs/nodejs/*.*.*(oanF[@])))
+  local node_version_new=$(basename "${node_versions[-1]}")
   local node_version_file="$HOME/.node_version_latest"
-  if [[ -f $node_version_file || ! -v NODE_VERSION_LATEST ]]; then
-    read -r node_version_latest < $node_version_file
+  if [[ ! -f $node_version_file && -d $node_versions[-1] ]]; then
+    echo -n "${node_root}/${node_version_new}" > "$node_version_file"
   fi
-  if [[ ! -v node_version_latest && -d $asdf_root/plugins/nodejs ]]; then
-    local node_versions=($(env CLICOLOR= command -p ls -d "$asdf_root"/installs/nodejs/*.*.*(oanF[@])))
-    echo -n "${node_versions[-1]}" > $node_version_file
+
+  local node_version_latest=$(basename `cat "$node_version_file"`)
+  if is-at-least $node_version_latest $node_version_new && [[ -d $node_root/$node_version_new ]]; then
+    node_version_latest=$node_version_new
+    echo -n "${node_root}/${node_version_latest}" > "$node_version_file"
   fi
-  export NODE_VERSION_LATEST="$node_version_latest"
+  if [[ -f $node_version_file && $NODE_VERSION_LATEST != $node_version_latest ]]; then
+    export NODE_VERSION_LATEST="${node_root}/${node_version_latest}"
+  fi
 }
 # node }}}
 
