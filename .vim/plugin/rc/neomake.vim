@@ -31,9 +31,16 @@ if z#util#HasPlugin('neomake')
     aug RcPlugin__neomake
         au!
         if z#util#HasPlugin('nrun.vim')
-            au FileType javascript let b:neomake_javascript_eslint_exe = nrun#Which('eslint')
-            au FileType typescript let b:neomake_typescript_tsc_exe    = nrun#Which('tsc')
-            au FileType typescript let b:neomake_typescript_tslint_exe = nrun#Which('tslint')
+            if executable('eslint_d')
+                au FileType javascript let b:neomake_javascript_eslint_exe = nrun#Which('eslint_d')
+                au FileType typescript let b:neomake_typescript_eslint_exe = nrun#Which('eslint_d')
+            elseif executable('eslint')
+                au FileType javascript let b:neomake_javascript_eslint_exe = nrun#Which('eslint')
+                au FileType typescript let b:neomake_typescript_eslint_exe = nrun#Which('eslint')
+            endif
+            if executable('tsc')
+                au FileType typescript let b:neomake_typescript_tsc_exe    = nrun#Which('tsc')
+            endif
         endif
     aug END
 endif

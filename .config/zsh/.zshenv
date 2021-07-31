@@ -412,7 +412,8 @@ fi
 #export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=".tool-versions"
 export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="$HOME/.default-python-packages"
-export ASDF_NPM_DEFAULT_PACKAGES_FILE="$HOME/.default-npm-packages"
+#export ASDF_NPM_DEFAULT_PACKAGES_FILE="$HOME/.default-npm-packages"
+export ASDF_YARN_DEFAULT_PACKAGES_FILE="$HOME/.default-yarn-packages"
 export ASDF_CONCURRENCY="${CORES:-4}"
 # asdf }}}
 

@@ -41,7 +41,6 @@ function () { # {{{ platform-specifics
       $BREW/opt/{make,grep,ed,gawk}/libexec/gnubin
       $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
       $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
-      $BREW/opt/ruby@{3,2}/bin
       $BREW/{bin,sbin}
       /Library/Developer/CommandLineTools/usr/bin
       "$path[@]"
@@ -117,7 +116,7 @@ function() { # {{{ AFTER platform-specifics
   path=(
     $HOME/bin
     $HOME/.local/bin
-    $HOME/.{cabal,cargo,yarn}/bin
+    $HOME/.{cabal,cargo}/bin
     $HOME/.minikube/bin
     $HOME/.krew/bin
     #/nix/var/nix/profiles/default/bin

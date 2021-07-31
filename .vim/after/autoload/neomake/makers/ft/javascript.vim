@@ -3,6 +3,7 @@ scriptencoding utf-8
 
 
 function! neomake#makers#ft#javascript#EnabledMakers() abort
-    return ['eslint']
+    "return ['eslint']
+    return ['eslint_d']
 endfunction
 
