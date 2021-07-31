@@ -38,7 +38,8 @@ function () { # {{{ platform-specifics
     path=(
       $BREW/opt/ccache/libexec
       $BREW/opt/{findutils,coreutils,libtool}/libexec/gnubin
-      $BREW/opt/{make,grep,sed,tar,which,ed,gawk,indent}/libexec/gnubin
+      $BREW/opt/{make,grep,ed,gawk}/libexec/gnubin
+      $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
       $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
       $BREW/opt/ruby@{3,2}/bin
       $BREW/{bin,sbin}
@@ -52,6 +53,10 @@ function () { # {{{ platform-specifics
       "$fpath[@]")
 
     manpath=(
+      $BREW/opt/{findutils,coreutils,libtool}/libexec/gnuman
+      $BREW/opt/{make,grep,ed,gawk}/libexec/gnuman
+      $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnuman
+      $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/share/man
       $BREW/share/man
       "$manpath[@]")
 

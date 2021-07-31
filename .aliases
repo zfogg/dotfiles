@@ -2,6 +2,7 @@
 # vim: set fdm=marker:
 #   ~/.dotfiles/.aliases
 
+#set -x INFO: DEBUG
 
 # custom functions from $FPATH (prolly ~/.zsh/site-functions)
 autoload -Uz \
@@ -26,7 +27,7 @@ function compdefas() {
   compdef "$_comps[$a]" "${(@)*}=$a"
 }
 
-#alias rm='trash'
+#alias -g rm='trash'
 alias cp="cp -iv"
 alias mv="mv -iv"
 alias rm="rm -iv"
@@ -36,11 +37,16 @@ alias  vi="$EDITOR"
 alias   v="$EDITOR"
 compdefas "$EDITOR" vim vi v
 
+
+alias -g NULL='>/dev/null'
+alias -g NULL1='1>/dev/null'
+alias -g NULL2='2>/dev/null'
+
 if [[ $OSX == $TRUE ]]; then
-  #alias python="python3"
-  #alias    pip="pip3"
+  #alias -g python="python3"
+  #alias -g    pip="pip3"
 elif [[ $LINUX == $TRUE ]]; then
-  alias p=pacman
+  alias -g p=pacman
   compdefas pacman p
 fi
 
@@ -72,54 +78,56 @@ function() { # grc
 }
 
 function() { # ls
-  export  LSPRG_PRG='ls'
-  export LSPRG_ARGS=' -LhHGstc'
-
-  if command_exists gls; then
-    #local LSPRG_PRG="`which -p gls ls | head -n1 | xargs basename`"
-    #if [[ "$LSPRG_PRG" == 'gls' ]]; then echo 'has gls'; fi
-    local GLSPRG_PRG='gls'
-    local GLSPRG_ARGS="`
-      printf ' -LhHGstc'
-      printf ' --color=auto'
-      printf ' --group-directories-first'
-      printf ' --quoting-style=shell-always' `"
-    alias gls="${GLSPRG_PRG} ${GLSPRG_ARGS}"
-    export LSPRG_PRG="$GLSPRG_PRG"
-    export LSPRG_ARGS="$GLSPRG_ARGS"
-  fi
+  local  LSPRG_PRG='ls'
+  local LSPRG_ARGS='-LhHGtc'
 
   if command_exists lsd; then
-    #alias lsd >/dev/null && unalias lsd
-    export LSDPRG_PRG='command lsd'
-    export LSDPRG_ARGS="`
-    printf  '--blocks=user,group,size,date,name'
+    local LSDPRG_PRG="command `command which lsd`"
+    local LSDPRG_ARGS="`
+    printf '--blocks=user,group,size,date,name'
     printf ' --human-readable --size=short'
     printf ' --sort=time --date=relative --reverse'
     printf ' --group-dirs=none --classify'`"
+    LSPRG_PRG="$LSDPRG_PRG"
+    LSPRG_ARGS="$LSDPRG_ARGS"
     #printf ' --directory-only --total-size' `"
     compdefas ls lsd
 
-    export  LSPRG_PRG="$LSDPRG_PRG"
-    export LSPRG_ARGS="$LSDPRG_ARGS"
-
     functions -UzWT lsd
     function lsd() {
-      if [[ -v LSD_DEBUG ]]; then set -x; fi
+      if [[ -v LSD_DEBUG ]] { set -x }
       readonly func_args="${${@:1}:-.}"
-      typeset cmd="${LSPRG_PRG}" args="${LSPRG_ARGS}"
+      typeset cmd="${LSDPRG_PRG}" args="${LSDPRG_ARGS}"
       typeset -aU paths=($(trim-whitespace "${func_args[@]}" | xargs printf "%s\n"))
-      if [[ ${#paths[@]} -le 0 ]] paths="${PWD:-/dev/null}"
-      if [[ -v LSD_DEBUG ]]; then set +x;
+      if [[ ${#paths[@]} -le 0 ]] { paths="${PWD:-/dev/null}" }
+      if [[ -v LSD_DEBUG ]] { set +x;
         >&2 echo $'$paths:\n' "$(printf "\t%q\n" `trim-whitespace "${paths[@]}"`)"
-      fi
+      }
       eval "${cmd} ${args} ${paths}"; #set +x;
     }
+
+  elif command_exists gls && [[ $OSX == 1 ]] ; then
+    #printf ' -ALhHgGtc'
+    local GLSPRG_PRG=`command which gls`
+    local GLSPRG_ARGS="`
+      printf ' -LhHGtc'
+      printf ' --color=auto'
+      printf ' --group-directories-first'
+      printf ' --quoting-style=shell-always' `"
+      LSPRG_PRG="$LSDPRG_PRG"
+      LSPRG_ARGS="$LSDPRG_ARGS"
+    alias gls="${GLSPRG_PRG} ${GLSPRG_ARGS}"
+
+  else
+    LSPRG_PRG=`command -pv ls`
+    LSPRG_ARGS='-LhHGtc'
+    alias gls="${LSPRG_PRG} ${LSPRG_ARGS}"
   fi
 
+  export LSPRG_PRG LSPRG_ARGS
+
   alias ls >/dev/null && unalias ls
-  #alias ls='\'"${LSPRG_PRG} ${LSPRG_ARGS}"
-  alias ls='lsd'
+  alias ls="${LSPRG_PRG} ${LSPRG_ARGS}"
   alias  l='ls -1'
   alias ll='ls -1l'
   alias la='nowrap ls -1lA'
@@ -129,7 +137,7 @@ function() { # ls
 
 alias sudo='nocorrect sudo -E '
 
-alias   s='sudo'
+alias s='sudo'
 compdefas sudo s
 
 alias llog='command -p log'
@@ -149,17 +157,19 @@ if command_exists fzf; then
   alias -g F='| fzf'
 fi
 
-_grep_prg=$(echo "${GREPPRG:-grep}" | cut -d' ' -f1)
-if command_exists rg; then
-  #alias   rg="$_grep_prg"
-  alias rgc="$_grep_prg --context=1"
-  alias rgf="$_grep_prg --files"
-  alias rgg="$_grep_prg --glob"
-  #alias grep="$_grep_prg"
-  compdefas rg rgc rgf rgg
-  alias rgd='rgf --hidden -0 | xargs -0 gdirname | sort | uniq | ghead -n-2'; compdefas head rgd
-  alias rgdf='(rgd; rgf) | sort'; compdefas sort rgd
-fi
+function() {
+  local _grep_prg=$(echo "${GREPPRG:-grep}" | cut -d' ' -f1)
+  if command_exists rg; then
+    #alias   rg="$_grep_prg"
+    alias rgc="$_grep_prg --context=1"
+    alias rgf="$_grep_prg --files"
+    alias rgg="$_grep_prg --glob"
+    #alias grep="$_grep_prg"
+    compdefas rg rgc rgf rgg
+    alias rgd='rgf --hidden -0 | xargs -0 gdirname | sort | uniq | ghead -n-2'; compdefas head rgd
+    alias rgdf='(rgd; rgf) | sort'; compdefas sort rgd
+  fi
+}
 
 # pip2 install pygments
 #alias pcat='pygmentize -O style=monokai -f 256 -g'
@@ -176,16 +186,17 @@ compdefas tail gtail t
   || alias ping='ping    -c 3'
 
 alias fs='du -shL'
+alias dfht='df --human-readable --total --sync --output=source,fstype,size,avail,used,pcent --all'
 
 #alias idea="$EDITOR ~/Dropbox/ideas.md"
 
 alias colortest='~/.config/base16-shell/colortest'
 
-function pyeve() { eval "`~/bin/pyeve ${1:-';'}`" }
+#function pyeve() { eval "`~/bin/pyeve ${1:-';'}`" }
 
-#alias chmod='command -p chmod'
-#alias chown='command -p chown'
-#alias chgrp='command -p chgrp'
+alias chmod='command -p chmod'
+alias chown='command -p chown'
+alias chgrp='command -p chgrp'
 
 
 alias info='command -p info --vi-keys'
@@ -207,30 +218,31 @@ alias nowrap='nowrap '
 
 
 # git
-alias gc='git commit'
+
+alias  gc='git commit'
 alias gca='git commit -a'
 alias  gd='git diff 2>/dev/null'
 alias gdd='git diff --color-words 2>/dev/null'
-alias gl='git log'
-alias gp='git push'
+alias  gl='git log'
+alias  gp='git push'
 alias grv='git remote -v'
 alias gst='git status'
-alias ga='git add'
+alias  ga='git add'
 alias gco='git checkout'
 alias gcm='git checkout master'
+
 compdefas git gc gca gd gdd gl gp grv gst ga gco gcm
 
 alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 alias get='cd "$(ghq-get)"'
 
-function tree() {
+
+function _tree() {
   #-D -c \
-  local gitignore=~/.config/git/ignore
-  if [[ -f $gitignore ]]; then
-    local ignores=$(cat "$gitignore" | grep -v '^$' | xargs | tr '\ ' '|')
-  else
-    local ignores='node_modules|bower_components|vendor|bundle|target|build|public|.git|env'
-  fi
+  local gitignore="$HOME/.config/git/ignore"
+  if [[ -f $gitignore ]];
+  then local ignores=$(cat "$gitignore" | grep -v '^$' | xargs | tr '\ ' '|')
+  else local ignores='node_modules|bower_components|vendor|bundle|target|build|public|.git|env'; fi
   command tree \
     --du \
     --filelimit 512 \
@@ -240,7 +252,8 @@ function tree() {
     -I "$ignores" \
     "$@"
 }
-alias tree='tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git|env|__pycache__" -L 5'
+
+alias tree='_tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git|env|__pycache__" -L 5'
 
 #alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
@@ -287,10 +300,24 @@ compdefas pip pip pip2 pip3 gpip gpip2 gpip3
 #function gpip2() {env PIP_REQUIRE_VIRTUALENV='' python -m pip2 "$@"}
 #function gpip3() {env PIP_REQUIRE_VIRTUALENV='' python -m pip3 "$@"}
 
-alias pyenv-init='eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)"'
+#alias pyenv-init='eval "$(pyenv init -)"; eval "$(pyenv virtualenv-init -)"'
 
 function jps() { local pids=$(pgrep -fai "$@"); [[ $? == 0 ]] && ps aux -p "$pids" }
 
 alias nextdns-diag='sh -c "$(curl -s https://nextdns.io/diag)"'
 
-alias wrap_with_setx='(){ set -x; "$@"; set +x }'
+#alias setx-wrap='(){ set -x; "$@"; set +x }'
+#function setx-wrap() { set -x; "$@"; set +x }
+#alias setx-wrap='(){ set -x; `aliasof "$@"`; set +x }'
+alias setx-wrap='(){ set -x; $@; set +x }'
+
+
+# Coreutils (macOS / OSX) {{{
+if [[ $OSX == $TRUE ]]; then
+  alias locate=`command -pv locate`
+  alias updatedb='/usr/libexec/locate.updatedb'
+fi
+# }}}
+
+
+#set +x INFO: DEBUG
