@@ -29,9 +29,27 @@ function _trim-whitespace-stdin() {
     }
 }
 
-
-(if [[ ! -t 0 ]] && [[  ! -p /dev/stdout || -p /dev/stdout ]]; then
+(if [[ ! -t 0 ]] && [[ ! -p /dev/stdout || -p /dev/stdout ]]; then
     _trim-whitespace-stdin < /dev/stdin
-else
+elif [[ ${#*} -ge 0 ]]; then
     _trim-whitespace-args $*
-fi) | head -c-1
+else
+    echoer "🚫 ERROR: no args, no stdin 🚫"; return 14;
+fi
+) | sed '$ { /^$/ d}' | head -c -1 # maybe trim one trailing newline
+
+
+
+# {{{ INFO: test with this!
+return 0 # comment to test!
+function _trim-whitespace-test() {
+    # unfunction trim-whitespace && autoload -Uz trim-whitespace; autoload -Uz trim-whitespace;
+    local test_text=' asdasdfas \n asda \n \n asdad a\n yoasa  ' 
+    # it works when sending text to it via stdin and a unix pipe
+    (echo; echo;); echo "$test_text"| trim-whitespace
+    # it works when sending text to it via stdin and a unix redirect
+    (echo; echo;); trim-whitespace < <(echo "$test_text")
+    # it works when sending text to it via command/function arguments
+    (echo; echo;); trim-whitespace "$test_text"
+}
+# }}}
