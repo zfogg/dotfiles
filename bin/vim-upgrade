@@ -46,27 +46,21 @@ fi
 
 
 function() {
+    local section="asdf"
+    log_section_start "$section"
+
+    asdf update || true
+    asdf plugin-update --all
+
+    log_section_end "$section"
+}
+
+
+function() {
     local section="Python, Pyenv, pip"
     log_section_start "$section"
 
-    #if [ -v PYENV_VIRTUALENV_INIT ]; then
-        #eval "$(pyenv init -)" ; #eval "$(pyenv virtualenv-init -)"
-    #fi
-    #eval "$(pyenv init -)" ; #eval "$(pyenv virtualenv-init -)"
-    #local pip_reqs="${XDG_CONFIG_HOME:-~/.config}/asdf/neovim-packages"
-
-    #for penv in neovim3; do
-    #for penv in neovim3 neovim2 neovim; do
-    #for penv in neovim; do
-        #pyenv activate "$penv"
-        #pip --quiet install --upgrade wheel setuptools
-        #pip --quiet install --upgrade pip
-        #pip --quiet install --upgrade --requirement "$pip_reqs"
-        #pyenv rehash
-        #pyenv deactivate
-    #done
-
-    asdf plugin update python
+    asdf install python && asdf plugin-update python
     local pip_reqs="${ASDF_PYTHON_DEFAULT_PACKAGES_FILE:-~/.default-python-packages}"
     asdf exec python3 -m pip install -U -r "$pip_reqs"
     asdf reshim python
@@ -79,42 +73,19 @@ function() {
     local section="Node.js, npm, nvm"
     log_section_start "$section"
 
-    #local npm_reqs=$(cat ~/.nvm/default-packages)
-    #nvm-upgrade
-    #nvm install stable --latest-npm --no-progress
-    #nvm alias default stable
-    #npm install --loglevel silent --global "$npm_reqs[@]"
-    #npm install --global ${npm_reqs}
+    asdf plugin-update nodejs && asdf install nodejs
+    asdf plugin-update yarn   && asdf install yarn
 
-    asdf plugin update nodejs
-    asdf install nodejs
-    for v in `cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //' | tac -rs ' +' | tr ' ' '\n' | xargs`; do
-        #asdf install nodejs "$v" || true \
-            #&& echo && echo "✅ nodejs ${v} ✅" && echo
+    local node_versions=$(cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //' | tac -rs '\s\+')
+    local yarn_reqs=$(cat ${ASDF_YARN_DEFAULT_PACKAGES_FILE:-~/.default-yarn-packages} | xargs)
+    for v (${(z)node_versions}) {
         asdf shell nodejs "$v"
-        #asdf local nodejs "$v" && echo "local nodejs ${v}"
-        #asdf exec yarn cache clean
-        #asdf exec yarn global add npm@latest || true
-        #asdf exec yarn global add yarn@latest || true
-        #asdf exec yarn global add `cat ~/.default-npm-packages | tail -n +3 | xargs`
-        #asdf exec yarn global list --json \
-        #    | jq -r 'select(.type == "info") | .data' \
-        #    | grep -v npm \
-        #    | sed 's/"\(.*\)@.*/\1/g' \
-        #    | xargs asdf exec yarn global remove
-        #asdf exec npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\/npm$/ {print $NF}' | grep -v '^yarn' | xargs asdf exec npm -g rm --force
-        asdf exec yarn global add `cat $HOME/.default-npm-packages | xargs`
-        asdf exec yarn global upgrade
-    done
-
+        asdf exec yarn global add "${(z)yarn_reqs[@]}"
+        #asdf exec yarn global upgrade
+    }
     asdf shell nodejs --unset
     asdf reshim nodejs "$v"
     asdf reshim yarn
-
-    #while read -r nr; do
-        #asdf exec yarn global add "$nr"
-    #done < <(cat ~/.default-npm-packages)
-    #asdf reshim nodejs
 
     log_section_end "$section"
 }
@@ -153,20 +124,20 @@ function() { # Rust, rustup, Cargo
         rustfmt
     )
 
-    asdf plugin update rust
-    for rel in $cargo_rels; do
+    asdf install rust && asdf plugin-update rust
+    for rel (${cargo_rels}) {
         asdf exec rustup update "$rel"
-        for ru_comp in $ru_comps; do
+        for ru_comp (${ru_comps}) {
             true && \
                 rustup component add --toolchain="$rel" "$ru_comp" || \
                 rustup component add --toolchain="$rel" "${ru_comp}-preview" || \
                 true
-        done
+        }
         #for req in $cargo_reqs; do
             #cargo +"$rel" install "$req" \
                 #2>/dev/null || true
         #done
-    done
+    }
     asdf reshim rust
 
     log_section_end "$section"
@@ -177,13 +148,15 @@ function() { # Ruby, Gem
     local section="Ruby, Gem"
     log_section_start "$section"
 
+    asdf install ruby && asdf plugin-update ruby
+
     local gem_reqs=(
         bundler
         neovim
     )
-    for r in ${gem_reqs}; do
+    for r (${gem_reqs}) {
         asdf exec gem install "$r"
-    done
+    }
 
     log_section_end "$section"
 }
@@ -193,12 +166,14 @@ function() { # Golang
     local section="Golang"
     log_section_start "$section"
 
+    asdf install golang && asdf plugin-update golang
+
     local goget_reqs=(
         github.com/nsf/gocode
     )
-    for r in ${goget_reqs}; do
+    for r (${goget_reqs}) {
         asdf exec go get -u "$r"
-    done
+    }
     asdf reshim golang
 
     log_section_end "$section"
@@ -221,7 +196,7 @@ function() {
 
         # FIXME: brew sux
         local neovim_brew_cache="$HOME/Library/Caches/Homebrew/neovim--git"
-        if `which -p nvim >/dev/null` && [[ -d $neovim_brew_cache ]]; then
+        if which -p nvim >/dev/null && [[ -d $neovim_brew_cache ]]; then
             cd "$neovim_brew_cache"
             git fetch origin --tags --force
             cd -
