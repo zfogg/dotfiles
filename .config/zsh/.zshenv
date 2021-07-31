@@ -415,6 +415,13 @@ export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="$HOME/.default-python-packages"
 #export ASDF_NPM_DEFAULT_PACKAGES_FILE="$HOME/.default-npm-packages"
 export ASDF_YARN_DEFAULT_PACKAGES_FILE="$HOME/.default-yarn-packages"
 export ASDF_CONCURRENCY="${CORES:-4}"
+
+export RUSTUP_INIT_SKIP_PATH_CHECK='yes'
+# asdf }}}
+
+
+# asdf {{{
+export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 # asdf }}}
 
 
