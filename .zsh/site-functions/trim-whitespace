@@ -10,7 +10,6 @@
 autoload -Uz echoer
 
 function _trim-whitespace() {
-    if [[ $# == 0 ]] { echoer "🚫 ERROR: no args, no stdin 🚫"; return 12; }
     local v=$*
     v=$(echo "$v" | tr -s ' ' | tr -d $'\n'); v=${v%% } ; v=${v## };
     printf '%s\n' "${(p)v}"
@@ -18,16 +17,19 @@ function _trim-whitespace() {
 
 
 function _trim-whitespace-args() {
-    local lines=$(echo "$*")
+    if [[ $# == 0 ]] { echoer "🚫 ERROR: no args, no stdin 🚫"; return 12; }
+    local lines=$(echo "$*" | awk NF)
     for line (${(f)lines}) {
         _trim-whitespace "${line}"
     }
 }
 
 function _trim-whitespace-stdin() {
-    while IFS= read -r LINE; do
-        _trim-whitespace "$LINE";
-    done < /dev/stdin
+    local stdin=`echo "$(</dev/stdin)"`
+    local lines=$(echo "$stdin" | awk NF)
+    for line (${(f)lines}) {
+        _trim-whitespace "${line}";
+    }
 }
 
 
