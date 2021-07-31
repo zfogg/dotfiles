@@ -8,7 +8,6 @@ eslint_d
 jsonlint
 prettier
 tern
-tslint
 typescript
 javascript-typescript-langserver
 vim-language-server

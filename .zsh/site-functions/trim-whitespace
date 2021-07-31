@@ -3,20 +3,36 @@
 #   trims leading and trailing whitespace from arguments
 #   INFO: https://stackoverflow.com/a/3352015/672346
 
-function trim-whitespace() {
-    autoload -Uz echoer
-    if [[ ! -v 1 ]]; then
-      echoer "🚫 no arguments given 🚫"
-      return 12
-    fi
+#local v=$(echo "$*" | tr -s ' ') # remove multiple whitespaces
+#v="${v#"${v%%[![:space:]]*}"}"  # remove leading whitespace characters
+#v="${v%"${v##*[![:space:]]}"}"  # remove trailing whitespace characters
 
-    local var="$*"
+autoload -Uz echoer
 
-    # remove leading whitespace characters
-    var="${var#"${var%%[![:space:]]*}"}"
-    # remove trailing whitespace characters
-    var="${var%"${var##*[![:space:]]}"}"
-    printf '%s' "$var" | tr -s ' '
+function _trim-whitespace() {
+    if [[ $# == 0 ]] { echoer "🚫 ERROR: no args, no stdin 🚫"; return 12; }
+    local v=$*
+    v=$(echo "$v" | tr -s ' ' | tr -d $'\n'); v=${v%% } ; v=${v## };
+    printf '%s\n' "${(p)v}"
 }
 
-trim-whitespace "$@"
+
+function _trim-whitespace-args() {
+    local lines=$(echo "$*")
+    for line (${(f)lines}) {
+        _trim-whitespace "${line}"
+    }
+}
+
+function _trim-whitespace-stdin() {
+    while IFS= read -r LINE; do
+        _trim-whitespace "$LINE";
+    done < /dev/stdin
+}
+
+
+if [[ -p /dev/stdin ]]; then
+    _trim-whitespace-stdin
+else
+    _trim-whitespace-args "$@"
+fi | head -c-1
