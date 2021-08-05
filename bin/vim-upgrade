@@ -80,12 +80,13 @@ function() {
     local yarn_reqs=$(cat ${ASDF_YARN_DEFAULT_PACKAGES_FILE:-~/.default-yarn-packages} | xargs)
     for v (${(z)node_versions}) {
         asdf shell nodejs "$v"
-        asdf exec yarn global add "${(z)yarn_reqs[@]}"
+        #asdf exec yarn global add "${(z)yarn_reqs[@]}"
+        asdf exec npm install -g "${(z)yarn_reqs[@]}"
         #asdf exec yarn global upgrade
     }
     asdf shell nodejs --unset
     asdf reshim nodejs "$v"
-    asdf reshim yarn
+    #asdf reshim yarn
 
     log_section_end "$section"
 }

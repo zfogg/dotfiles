@@ -321,6 +321,7 @@ function() {
     if [[ -f $ssh_keyid_file ]] { keys+="$ssh_keyid_file" }
     export GPG_AGENT_INFO="~/.gnupg/S.gpg-agent:$(pgrep gpg-agent):1"
     local life=28800
+    #--systemd \
     eval "`keychain \
       --dir "${XDG_CACHE_HOME:-~/.cache}"/.keychain \
       --confhost \
