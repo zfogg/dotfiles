@@ -235,8 +235,8 @@ export GO111MODULE='auto' # on | off | auto
 function() {
   autoload -Uz is-at-least
   local asdf_root="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}"
-  local node_root=$asdf_root/installs/nodejs
-  local node_versions=($(env CLICOLOR= command -p ls -d "$asdf_root"/installs/nodejs/*.*.*(oanF[@])))
+  local node_root="$asdf_root"/installs/nodejs
+  local node_versions=($(print -l "$node_root"/*.*.*(oanF[@]) | sed 's/\/$//' | sort -V))
   local node_version_new=$(basename "${node_versions[-1]}")
   local node_version_file="$HOME/.node_version_latest"
   if [[ ! -f $node_version_file && -d $node_versions[-1] ]]; then
