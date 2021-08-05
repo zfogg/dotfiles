@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-source "${HOME}/.profile"
+#source "${HOME}/.profile"
 
 source "$SYSCONFDIR/profile.d/bash_completion.sh"
 
