@@ -101,7 +101,10 @@ endfunc
 
 func! z#constants#globals#Nodejs()
   try
-    if exists('$NODE_VERSION_LATEST')
+    if exists('$BREW') && filereadable(expand($BREW).'/bin/neovim-node-host')
+      let l:node_host = 'neovim-node-host'
+      let l:host_path = expand($BREW).'/bin'
+    elseif exists('$NODE_VERSION_LATEST')
       let l:node_host = 'neovim-node-host'
       let l:host_path = expand($NODE_VERSION_LATEST).'/.npm/bin'
     elseif has('unix')
