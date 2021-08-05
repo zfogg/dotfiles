@@ -7,7 +7,6 @@
 
 # Set root for OS
 # ---------
-#set -x
 local _z_fzf_root=/dev/null
 if [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
   _z_fzf_root=/usr/share/fzf
@@ -24,8 +23,7 @@ function() {
 
 # Key bindings
 # ------------
-set +x
 function() {
-  local completion="${_z_fzf_root}/key-bindings.zsh"
+  local keybindings="${_z_fzf_root}/key-bindings.zsh"
   [[ -f $keybindings ]] && source "$keybindings"
 }
