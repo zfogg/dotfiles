@@ -308,25 +308,28 @@ function() {
 # crypto auth agents {{{
 function() {
   #export SSH_AUTH_SOCK=/Users/zfogg/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh
+  #local keys="${(f)ssh_keys}"
+  #local ssh_keys="$(for x in `\ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
+  #export GPG_TTY="$(tty)"
+  # INFO: ^ moved to ~/.zshenv so p10k won't make me not a TTY
+  # INFO: https://unix.stackexchange.com/a/608843/99026
   if command_exists keychain; then
-    local keys="${(f)ssh_keys}"
+    typeset -a keys=()
     local gpg_keyid_file="$HOME"/.gnupg/.keyid
-    if [[ -f $gpg_keyid_file ]]; then
-      keys+="$gpg_keyid_file"
-    fi
-    local ssh_keys="$(for x in `\ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
+    local ssh_keyid_file="$HOME"/.ssh/.keyid
+    if [[ -f $gpg_keyid_file ]] { keys+=`cat "$gpg_keyid_file"` }
+    if [[ -f $ssh_keyid_file ]] { keys+="$ssh_keyid_file" }
     export GPG_AGENT_INFO="~/.gnupg/S.gpg-agent:$(pgrep gpg-agent):1"
     local life=28800
     eval "`keychain \
+      --dir "${XDG_CACHE_HOME:-~/.cache}"/.keychain \
       --confhost \
       --quick \
       --eval \
-      --agents ssh,gpg \
+      --noask \
       --timeout "$life" \
-      --inherit any-once "${(f)keys}"`"
-    #export GPG_TTY="$(tty)"
-    # INFO: ^ moved to ~/.zshenv so p10k won't make me not a TTY
-    # INFO: https://unix.stackexchange.com/a/608843/99026
+      --agents ssh,gpg \
+      --inherit any-once "${(@f)keys}"`"
   fi
 }
 # }}}
