@@ -12,6 +12,8 @@
   typeset -xUT INFOPATH infopath
 # }}}
 
+#print -rl -- "${fpath[@]#/usr/local/share/zsh/site-functions}"
+#sleep 10
 
 function() { # {{{ BEFORE platform-specifics
   path=(
@@ -19,7 +21,7 @@ function() { # {{{ BEFORE platform-specifics
   )
 
   fpath=(
-    /usr/share/zsh/site-functions
+    #/usr/share/zsh/site-functions
     "$fpath[@]"
   )
 
@@ -89,7 +91,8 @@ function () { # {{{ platform-specifics
 
     fpath=(
       $BREW/share/zsh/{site-functions,functions}
-      "$fpath[@]"
+      ${(@f)fpath#/usr/local/share/zsh/site-functions}
+      #"$fpath[@]"
     )
 
     #echo "LINUX=$LINUX"; echo "$FPATH" | tr ':' '\n'; echo 'BREAK' echo; echo;
