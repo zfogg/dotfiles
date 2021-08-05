@@ -391,8 +391,16 @@ export GENCOMPL_PY='python2'
 
 
 # gpg {{{
-# INFO: moved to ~/.zshrc + `keychain`
-#export GPG_TTY="$(tty)"
+# INFO: https://unix.stackexchange.com/a/608843/99026
+function() {
+  setopt LOCAL_OPTIONS EXTENDED_GLOB
+  case $(tty) in
+    (/dev/pts/[0-9]##) ;& # WSL
+    (/dev/ttys[0-9]##) ;& # macOS
+    (/dev/tty/[0-9]##) export GPG_TTY="$(tty)";;
+   (*) ;;
+  esac
+}
 # gpg }}}
 
 

@@ -317,7 +317,6 @@ function() {
     local ssh_keys="$(for x in `\ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
     export GPG_AGENT_INFO="~/.gnupg/S.gpg-agent:$(pgrep gpg-agent):1"
     local life=28800
-    #eval "`keychain --quiet \
     eval "`keychain \
       --confhost \
       --quick \
@@ -325,7 +324,9 @@ function() {
       --agents ssh,gpg \
       --timeout "$life" \
       --inherit any-once "${(f)keys}"`"
-    export GPG_TTY=`tty`
+    #export GPG_TTY="$(tty)"
+    # INFO: ^ moved to ~/.zshenv so p10k won't make me not a TTY
+    # INFO: https://unix.stackexchange.com/a/608843/99026
   fi
 }
 # }}}
