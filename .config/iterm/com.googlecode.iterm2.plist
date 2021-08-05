@@ -47,7 +47,7 @@
 	<key>CmdClickWhenInactiveInvokesSemanticHistory</key>
 	<false/>
 	<key>Command</key>
-	<string>/usr/local/bin/zsh</string>
+	<string></string>
 	<key>CommandSelection</key>
 	<true/>
 	<key>CompactMinimalTabBarHeight</key>

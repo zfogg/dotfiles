@@ -82,8 +82,8 @@ function() { # ls
   local LSPRG_ARGS='-LhHGtc'
 
   if command_exists lsd; then
-    local LSDPRG_PRG="command `command which lsd`"
-    local LSDPRG_ARGS="`
+    export LSDPRG_PRG="command `command which lsd`"
+    export LSDPRG_ARGS="`
     printf '--blocks=user,group,size,date,name'
     printf ' --human-readable --size=short'
     printf ' --sort=time --date=relative --reverse'
@@ -95,15 +95,11 @@ function() { # ls
 
     functions -UzWT lsd
     function lsd() {
-      if [[ -v LSD_DEBUG ]] { set -x }
       readonly func_args="${${@:1}:-.}"
       typeset cmd="${LSDPRG_PRG}" args="${LSDPRG_ARGS}"
       typeset -aU paths=($(trim-whitespace "${func_args[@]}" | xargs printf "%s\n"))
       if [[ ${#paths[@]} -le 0 ]] { paths="${PWD:-/dev/null}" }
-      if [[ -v LSD_DEBUG ]] { set +x;
-        >&2 echo $'$paths:\n' "$(printf "\t%q\n" `trim-whitespace "${paths[@]}"`)"
-      }
-      eval "${cmd} ${args} ${paths}"; #set +x;
+      eval "${(Q)cmd} ${(Q)args[@]} ${(qqqq)paths[@]}"; #set +x;
     }
 
   elif command_exists gls && [[ $OSX == 1 ]] ; then
@@ -286,6 +282,7 @@ function trimpath {
 #function gpip3() {env PIP_REQUIRE_VIRTUALENV='' python -m pip3 "$@"}
 
 # asdf-vm
+
 #alias   pip='python  -m pip'
 alias  gpip='python  -m pip'
 
@@ -316,6 +313,7 @@ alias setx-wrap='(){ set -x; $@; set +x }'
 if [[ $OSX == $TRUE ]]; then
   alias locate=`command -pv locate`
   alias updatedb='/usr/libexec/locate.updatedb'
+  alias dirname='command -p dirname'
 fi
 # }}}
 
