@@ -74,6 +74,8 @@ Plug 'junegunn/vim-plug'
     Plug 'jaawerth/nrun.vim'
 
     " completion
+    Plug 'hrsh7th/nvim-compe', PIf(has('nvim'))
+    Plug 'ray-x/lsp_signature.nvim', PIf(has('nvim'))
     if has('unix')
         Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
             \ 'branch': 'next',
@@ -86,30 +88,30 @@ Plug 'junegunn/vim-plug'
             \ 'do':     'powershell -executionpolicy bypass -File install.ps1',
         \ })
     endif
-    Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
+    "Plug 'Shougo/denite.nvim', PIf(has('nvim'), {'do': ':UpdateRemotePlugins'})
 
     " deoplete
     "Plug 'roxma/nvim-completion-manager', PIf(has('nvim'))
-    if has('nvim')
-        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    else
-        Plug 'Shougo/deoplete.nvim'
-        Plug 'roxma/nvim-yarp'
-        Plug 'roxma/vim-hug-neovim-rpc'
-    endif
-    Plug 'zchee/deoplete-zsh',        PIf(PHas('deoplete.nvim'),                    {'for': ['zsh']})
-    Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
-    Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
+    "if has('nvim')
+        "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    "else
+        "Plug 'Shougo/deoplete.nvim'
+        "Plug 'roxma/nvim-yarp'
+        "Plug 'roxma/vim-hug-neovim-rpc'
+    "endif
+    "Plug 'zchee/deoplete-zsh',        PIf(PHas('deoplete.nvim'),                    {'for': ['zsh']})
+    "Plug 'zchee/deoplete-go',         PIf(PHas('deoplete.nvim'),                    {'for': ['go'], 'do': 'make'})
+    "Plug 'zchee/deoplete-jedi',       PIf(PHas('deoplete.nvim')  && has('python3'), {'for': ft['py']})
     "Plug 'zchee/deoplete-clang',      PIf(PHas('deoplete.nvim')  && has('unix'),    {'for': ft['cx'], })
-    Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
+    "Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
     "Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
     "Plug 'wokalski/autocomplete-flow', PIf(PHas('deoplete.nvim'))
-    "Plug 'codota/tabnine-vim'
-    if has('win32') || has('win64')
-        Plug 'tbodt/deoplete-tabnine', {'do': 'powershell.exe .\install.ps1'}
-    else
-        Plug 'tbodt/deoplete-tabnine', {'do': './install.sh'}
-    endif
+    Plug 'codota/tabnine-vim'
+    "if has('win32') || has('win64')
+        "Plug 'tbodt/deoplete-tabnine', {'do': 'powershell.exe .\install.ps1'}
+    "else
+        "Plug 'tbodt/deoplete-tabnine', {'do': './install.sh'}
+    "endif
 
     Plug 'racer-rust/vim-racer', { 'for': ['rust'], }
 
@@ -125,7 +127,7 @@ Plug 'junegunn/vim-plug'
     "Plug 'Shougo/neosnippet-snippets', PIf(has('nvim') && PHas('neosnippet'))
 
     " etc
-    Plug 'ervandew/supertab'
+    "Plug 'ervandew/supertab'
     Plug 'tpope/vim-rsi'
     Plug 'embear/vim-localvimrc'
 " }}}
