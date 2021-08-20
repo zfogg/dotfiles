@@ -148,6 +148,8 @@ alias zless="$PAGER"
 alias htop="command sudo htop"
 
 alias psef="ps -ef"
+alias pseh="ps -eH --sort=%cpu,%mem --format pid,user,pcpu,pmem,start_time,args"
+alias psps="ps --forest --cumulative --sort=+%cpu,+%mem --format pid,user,pcpu,pmem,thcount,start_time,args aaxx"
 
 if command_exists fzf; then
   alias -g F='| fzf'
