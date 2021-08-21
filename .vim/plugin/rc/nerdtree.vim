@@ -2,6 +2,7 @@
 scriptencoding utf-8
 
 
+if !PHas('nerdtree') | finish | endif
 if exists('g:vimpager') | finish | endif
 
 

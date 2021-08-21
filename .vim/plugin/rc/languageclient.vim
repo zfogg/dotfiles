@@ -2,4 +2,4 @@
 scriptencoding utf-8
 
 
-if ! z#util#HasPlugin('LanguageClient-neovim') | finish | endif
+if !PHas('LanguageClient-neovim') | finish | endif

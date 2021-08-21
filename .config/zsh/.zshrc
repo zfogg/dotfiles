@@ -32,6 +32,7 @@ export ANTIGEN_HS_SANDBOX='stack'
 source "$HOME/.zsh/antigen-hs/init.zsh"
 # }}}
 
+
 # $ZDOTDIR/z/ {{{
 # path, manpath, fpath, infopath
 source "$ZDOTDIR/z/path.zsh"

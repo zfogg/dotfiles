@@ -64,6 +64,10 @@ Plug 'junegunn/vim-plug'
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight', PIf(
                 \PHas('nerdtree') && PHas('vim-devicons'), {})
 
+    "Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+
+    Plug 'mbbill/undotree'
+
     " sessions
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-session'
@@ -74,8 +78,29 @@ Plug 'junegunn/vim-plug'
     Plug 'jaawerth/nrun.vim'
 
     " completion
-    Plug 'hrsh7th/nvim-compe', PIf(has('nvim'))
-    Plug 'ray-x/lsp_signature.nvim', PIf(has('nvim'))
+    "Plug 'hrsh7th/nvim-compe',       PIf(has('nvim'))
+    "Plug 'andersevenrud/compe-tmux', PIf(PHas('nvim-compe'))
+    "Plug 'tamago324/compe-zsh',      PIf(PHas('nvim-compe'))
+    "Plug 'nvim-lua/plenary.nvim',    PIf(PHas('nvim-compe'))
+    "Plug 'Shougo/deol.nvim',         PIf(PHas('nvim-compe')) " recommended to use together.
+
+    Plug 'ms-jpq/coq_nvim',      PIf(has('nvim'), {'branch': 'coq'})
+    Plug 'ms-jpq/coq.artifacts', PIf(PHas('coq_nvim'), {'branch': 'artifacts'})
+
+    " LSP - language server protocol
+    Plug 'neovim/nvim-lsp',                 PIf(has('nvim'))
+    Plug 'neovim/nvim-lspconfig',           PIf(PHas('nvim-lsp'))
+    "Plug 'kabouzeid/nvim-lspinstall',       PIf(PHas('nvim-lsp'))
+    Plug 'williamboman/nvim-lsp-installer', PIf(PHas('nvim-lsp') && PHas('nvim-lspconfig'))
+    Plug 'ray-x/lsp_signature.nvim',        PIf(has('nvim'))
+
+    "Plug 'codota/tabnine-vim'
+    "Plug 'tzachar/compe-tabnine', PIf(PHas('nvim-compe'), {
+        "\ 'do': './install.sh',
+    "\ })
+
+    Plug 'nvim-treesitter/nvim-treesitter', PIf(has('nvim'), {'do': ':TSUpdate'}) " We recommend updating the parsers on update
+
     if has('unix')
         Plug 'autozimu/LanguageClient-neovim', PIf(has('nvim'), {
             \ 'branch': 'next',
@@ -106,14 +131,13 @@ Plug 'junegunn/vim-plug'
     "Plug 'carlitux/deoplete-ternjs',  PIf(PHas('deoplete.nvim'),                    {'for': ft['js'], })
     "Plug 'fszymanski/deoplete-emoji', PIf(PHas('deoplete.nvim')  && has('mac'))
     "Plug 'wokalski/autocomplete-flow', PIf(PHas('deoplete.nvim'))
-    Plug 'codota/tabnine-vim'
     "if has('win32') || has('win64')
         "Plug 'tbodt/deoplete-tabnine', {'do': 'powershell.exe .\install.ps1'}
     "else
         "Plug 'tbodt/deoplete-tabnine', {'do': './install.sh'}
     "endif
 
-    Plug 'racer-rust/vim-racer', { 'for': ['rust'], }
+    "Plug 'racer-rust/vim-racer', { 'for': ['rust'], }
 
     Plug 'Shougo/echodoc.vim'
 
@@ -205,10 +229,6 @@ Plug 'junegunn/vim-plug'
     Plug 'isobit/vim-caddyfile'
     Plug 'wgwoods/vim-systemd-syntax' " systemctl / systemd
     Plug 'tomlion/vim-solidity' " ethereum's solidity
-    " LSP - language server protocol
-    Plug 'neovim/nvim-lsp',           PIf(has('nvim'))
-    Plug 'neovim/nvim-lspconfig',     PIf(PHas('nvim-lsp'))
-    Plug 'kabouzeid/nvim-lspinstall', PIf(PHas('nvim-lsp'))
 " }}}
 
 
@@ -236,7 +256,12 @@ Plug 'junegunn/vim-plug'
     Plug 'b4winckler/vim-angry'
     Plug 'tommcdo/vim-exchange'
     "Plug 'cohama/lexima.vim'
-    Plug 'Raimondi/delimitMate'
+    "Plug 'Raimondi/delimitMate'
+    if has('nvim')
+        Plug 'windwp/nvim-autopairs', { 'do': ':UpdateRemotePlugins' }
+    else
+        Plug 'jiangmiao/auto-pairs'
+    endif
     Plug 'jiangmiao/auto-pairs'
     Plug 'scrooloose/nerdcommenter'
     "Plug 'wellle/targets.vim'

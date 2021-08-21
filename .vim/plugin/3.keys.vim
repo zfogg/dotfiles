@@ -43,17 +43,20 @@ nnoremap <Leader>q :q<CR>
 
 " vimrc
 if exists('g:myvimrc_f') && filereadable(g:myvimrc_f)
-    exe 'nn <silent> <Leader>v :'
-        \.'silent! $tabe! '.g:myvimrc_f        .' <Bar> '
-        \.'silent! NERDTreeFromBookmark vimrc' .' <Bar> '
-        \.'wincmd p'                           .' <Bar> '
-        \.'<CR>'
+    if PHas('nerdtree')
+        exe 'nn <silent> <Leader>v :'
+            \.'silent! $tabe! '.g:myvimrc_f        .' <Bar> '
+            \.'silent! NERDTreeFromBookmark vimrc' .' <Bar> '
+            \.'wincmd p'                           .' <Bar> '
+            \.'<CR>'
+    endif
     exe 'nn <silent> <Leader>V :'
         \.'so '.g:myvimrc_f                    .' <Bar> '
         \.'redraw!'                            .' <Bar> '
         \.'echom "⚠️  vimrc reloaded ‼️"'         .' <Bar> '
         \.'<CR>'
 endif
+
 " Disabled default commands. {{{
     nnoremap Q       <Nop>
     noremap  <Up>    <Nop>

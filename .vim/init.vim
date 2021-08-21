@@ -6,7 +6,7 @@ try
     call z#rc#Init()
 catch
     echom v:errmsg
-    "echom 'z#rc#Init() error :/'
+    echom 'z#rc#Init() error :/'
 finally
     packloadall
     runtime plugins.vim
