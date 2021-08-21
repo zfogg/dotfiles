@@ -192,7 +192,6 @@ function () {
 # 3rd-party {{{
 # FIXME: should be shell agnostic
 # INFO: ~/.config/bash_completion
-
 function() {
   local bash_completion="${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
   [[ -r $bash_completion ]] && source "$bash_completion"
@@ -202,5 +201,14 @@ function() {
   local pip_complete_file="$HOME/.zsh/site-functions/_pip"
   if (( $+commands[pip] )) && [[ -f $pip_complete_file ]] \
     source "$pip_complete_file"
+}
+
+# INFO: https://github.com/tamago324/compe-zsh
+function() {
+  typeset -gx COMPE_ZSH_CACHE_DIR=${COMPE_ZSH_CACHE_DIR:-"${XDG_CACHE_HOME:-"$HOME/.cache"}/compe/zsh"}
+  local compe_cache="$COMPE_ZSH_CACHE_DIR"
+  if [ -d $compe_cache ]; then
+    export FPATH="${compe_cache}:${FPATH}"
+  fi
 }
 # 3rd-party }}}

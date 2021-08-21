@@ -3,6 +3,7 @@ scriptencoding utf-8
 
 
 if !has('nvim') | finish | endif
+if !PHas('nvim-lspinstall') | finish | endif
 
 
 lua << EOF
