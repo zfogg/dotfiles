@@ -52,7 +52,9 @@ set viewoptions+=cursor,curdir,folds
 
     if has('nvim')
         set wildoptions=pum
-        set pumheight=7
+        "set pumheight=7
+        set pumheight=25
+        set pumwidth=48
         set pumblend=32
     endif
 

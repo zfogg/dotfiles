@@ -32,17 +32,17 @@ if !has('nvim') ||
 "endfor
 
 " python
-for p in z#constants#globals#Ft().py
-  let s:sources[p] = ['jedi']                    + s:sources._
-  let s:omnifns[p] = ['pythonComplete#Complete'] + s:omnifns._
-endfor
-let g:deoplete#sources#jedi#statement_length = 75
-let g:deoplete#sources#jedi#enable_cache     = 1
-let g:deoplete#sources#jedi#show_docstring   = 1
-NOTE: how to debug
-let g:deoplete#enable_profile = 0
-call deoplete#custom#source('jedi', 'debug_enabled', 0)
-call deoplete#enable_logging('DEBUG', '/tmp/deoplete.log')
+"for p in z#constants#globals#Ft().py
+"  let s:sources[p] = ['jedi']                    + s:sources._
+"  let s:omnifns[p] = ['pythonComplete#Complete'] + s:omnifns._
+"endfor
+"let g:deoplete#sources#jedi#statement_length = 75
+"let g:deoplete#sources#jedi#enable_cache     = 1
+"let g:deoplete#sources#jedi#show_docstring   = 1
+"NOTE: how to debug
+"let g:deoplete#enable_profile = 0
+"call deoplete#custom#source('jedi', 'debug_enabled', 0)
+"call deoplete#enable_logging('DEBUG', '/tmp/deoplete.log')
 
 " vim
 "for v in z#constants#globals#Ft().vim

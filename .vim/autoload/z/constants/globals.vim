@@ -146,7 +146,7 @@ func! z#constants#globals#Ruby()
     let g:ruby_host_prog = l:host_path.'/'.l:ruby_host
   finally
     if exists('g:ruby_host_prog') && !filereadable(g:ruby_host_prog)
-      echom 'Z:NotFound neovim-ruby-host'.g:ruby_host_prog
+      echom "Z:NotFound g:neovim-ruby-host='".g:ruby_host_prog."'"
       unlet g:ruby_host_prog
     endif
   endtry

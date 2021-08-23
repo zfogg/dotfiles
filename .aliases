@@ -32,11 +32,15 @@ alias cp="cp -iv"
 alias mv="mv -iv"
 alias rm="rm -iv"
 
+#if [[ $OSX == $TRUE ]]; then
+#  export VIMRUNTIME="${BREW}/share/nvim/runtime"
+#fi
 alias vim="$EDITOR"
 alias  vi="$EDITOR"
 alias   v="$EDITOR"
-compdefas "$EDITOR" vim vi v
-
+alias  vv="/usr/bin/env command -p vim"
+#alias  vv="/usr/bin/env VIMRUNTIME=${BREW}/share/vim/vim82 command -p vim"
+compdefas "$EDITOR" vim vi v vv
 
 alias -g NULL='>/dev/null'
 alias -g NULL1='1>/dev/null'
@@ -313,8 +317,8 @@ alias setx-wrap='(){ set -x; $@; set +x }'
 
 # Coreutils (macOS / OSX) {{{
 if [[ $OSX == $TRUE ]]; then
-  alias locate=`command -pv locate`
-  alias updatedb='/usr/libexec/locate.updatedb'
+  #alias locate=`command -pv locate`
+  #alias updatedb='/usr/libexec/locate.updatedb'
   alias dirname='command -p dirname'
 fi
 # }}}

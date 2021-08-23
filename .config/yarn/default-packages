@@ -16,3 +16,12 @@ typescript-language-server
 vscode-css-languageserver-bin
 vscode-html-languageserver-bin
 vscode-json-languageserver
+vscode-langservers-extracted
+dockerfile-language-server-nodejs
+graphql-language-service-cli
+vim-language-server
+stylelint-lsp
+dockerfile-language-server-nodejs
+yaml-language-server
+pyright
+yaml-language-server

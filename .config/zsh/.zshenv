@@ -141,6 +141,11 @@ elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
   export ITERM_DOTAPP="true"
 fi
 
+#export LOCATE_PATH="/var/db/locate.database"
+#if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+#  export LOCATE_PATH="$HOME/.cache/locatedb.n"
+#elif [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
+#fi
 #setopt allexport
 # terminal }}}
 
@@ -421,7 +426,8 @@ export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
 if [[ $LINUX == $TRUE ]]; then
   export ASDF_DIR="/opt/asdf-vm"
 elif [[ $OSX == $TRUE ]]; then
-  export ASDF_DIR="$BREW/opt/asdf"
+  #export ASDF_DIR="$BREW/opt/asdf"
+  export ASDF_DIR="$HOME/.asdf"
 else
   export ASDF_DIR="$HOME/.asdf"
 fi
@@ -493,5 +499,11 @@ export SONAR="$BREW/opt/sonar-scanner/libexec/bin"
 # wxWidgets (for Audacity) {{{
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
   export WX_CONFIG="$BREW/x86_64/bin/wx-config"
+fi
+# }}}
+
+# wxWidgets (for Audacity) {{{
+if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+  export SDKROOT="`xcrun --show-sdk-path`"
 fi
 # }}}
