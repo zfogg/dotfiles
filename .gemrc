@@ -11,3 +11,4 @@ install: --no-rdoc --no-ri
 update: --no-rdoc --no-ri
 
 # vim: set filetype=yaml:
+gem: -n/usr/local/bin

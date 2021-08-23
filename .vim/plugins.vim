@@ -139,6 +139,8 @@ Plug 'junegunn/vim-plug'
 
     "Plug 'racer-rust/vim-racer', { 'for': ['rust'], }
 
+    Plug 'dstein64/nvim-scrollview', PIf(has('nvim'))
+
     Plug 'Shougo/echodoc.vim'
 
     Plug 'Shougo/context_filetype.vim'
@@ -154,10 +156,16 @@ Plug 'junegunn/vim-plug'
     "Plug 'ervandew/supertab'
     Plug 'tpope/vim-rsi'
     Plug 'embear/vim-localvimrc'
+
+    Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
+    Plug 'lukas-reineke/indent-blankline.nvim', PIf(has('nvim'))
+
+    "Plug 'nvim-treesitter/nvim-treesitter', { 'do' : ':TSUpdate' }
 " }}}
 
 
 " Language support. {{{
+    Plug 'euclidianAce/BetterLua.vim'
     Plug 'chr4/nginx.vim'
     Plug 'wavded/vim-stylus',             {'for': ft['stylus']}
     Plug 'lumiliet/vim-twig',             {'for': ft['twig']}
@@ -229,6 +237,15 @@ Plug 'junegunn/vim-plug'
     Plug 'isobit/vim-caddyfile'
     Plug 'wgwoods/vim-systemd-syntax' " systemctl / systemd
     Plug 'tomlion/vim-solidity' " ethereum's solidity
+    " LSP - language server protocol
+    Plug 'neovim/nvim-lsp',           PIf(has('nvim') && has('lua'))
+    Plug 'neovim/nvim-lspconfig',     PIf(PHas('nvim-lsp'))
+    Plug 'kabouzeid/nvim-lspinstall', PIf(PHas('nvim-lsp'))
+    Plug 'ojroques/nvim-lspfuzzy',    PIf(PHas('nvim-lsp'))
+
+    Plug 'deoplete-plugins/deoplete-lsp', PIf((PHas('nvim-lsp') && PHas('deoplete.nvim')), {
+        \ 'do': 'GO111MODULE=on go get golang.org/x/tools/gopls@latest',
+    \ })
 " }}}
 
 
@@ -236,8 +253,8 @@ Plug 'junegunn/vim-plug'
     Plug 'chriskempson/base16-vim'
     Plug 'vim-scripts/AfterColors.vim'
     Plug 'fedorenchik/AnsiEsc'
-    Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'luochen1990/rainbow', PIf(v:false, {})
+    "Plug 'nathanaelkane/vim-indent-guides'
+    "Plug 'luochen1990/rainbow', PIf(v:false, {})
     "Plug 'ap/vim-css-color',          { 'for': ft['styles'] }
     Plug 'arakashic/chromatica.nvim', { 'for': ft['cx']  }
     "Plug 'qstrahl/vim-matchmaker'

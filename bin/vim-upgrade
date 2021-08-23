@@ -38,11 +38,12 @@ function log_section_end() {
 }
 
 
-if [[ $OSX == 1 ]]; then
-    source $BREW/opt/asdf/asdf.sh
-elif [[ $LINUX == 1 ]]; then
-    source      /opt/asdf-vm/asdf.sh
-fi
+function() {
+    local osasdfdir=
+    if   [[ $OSX == 1   ]]; then oasdfdir="$BREW/opt/asdf";
+    elif [[ $LINUX == 1 ]]; then oasdfdir="/opt/asdf-vm"; fi
+    source "${ASDF_DIR:-$osasdfdir}/asdf.sh"
+}
 
 
 function() {
@@ -81,7 +82,7 @@ function() {
     for v (${(z)node_versions}) {
         asdf shell nodejs "$v"
         #asdf exec yarn global add "${(z)yarn_reqs[@]}"
-        asdf exec npm install -g "${(z)yarn_reqs[@]}"
+        asdf exec npm install -g --force "${(z)yarn_reqs[@]}"
         #asdf exec yarn global upgrade
     }
     asdf shell nodejs --unset

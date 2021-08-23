@@ -13,3 +13,5 @@ tox
 pylint
 pygments
 pygments-base16
+cmake-language-server
+jedi-language-server
