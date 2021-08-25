@@ -94,6 +94,13 @@ Plug 'junegunn/vim-plug'
     Plug 'williamboman/nvim-lsp-installer', PIf(PHas('nvim-lsp') && PHas('nvim-lspconfig'))
     Plug 'ray-x/lsp_signature.nvim',        PIf(has('nvim'))
     Plug 'onsails/lspkind-nvim',            PIf(has('nvim'))
+    Plug 'RishabhRD/popfix',                PIf(has('nvim'))
+    Plug 'RishabhRD/nvim-lsputils',         PIf(has('nvim'))
+
+    Plug 'jose-elias-alvarez/null-ls.nvim',              PIf(PHas('nvim-lsp'))
+        \ | Plug 'nvim-lua/plenary.nvim',                PIf(PHas('nvim-lsp'))
+        \ | Plug 'lewis6991/gitsigns.nvim',              PIf(PHas('nvim-lsp'))
+        \ | Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', PIf(PHas('nvim-lsp'))
 
     "Plug 'codota/tabnine-vim'
     "Plug 'tzachar/compe-tabnine', PIf(PHas('nvim-compe'), {
@@ -165,6 +172,8 @@ Plug 'junegunn/vim-plug'
     Plug 'lukas-reineke/indent-blankline.nvim', PIf(has('nvim'))
 
     "Plug 'nvim-treesitter/nvim-treesitter', { 'do' : ':TSUpdate' }
+
+    "Plug 'liuchengxu/vim-which-key', PIf(v:false, {'on': ['WhichKey', 'WhichKey!']})
 " }}}
 
 
