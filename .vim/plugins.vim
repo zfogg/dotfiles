@@ -93,6 +93,7 @@ Plug 'junegunn/vim-plug'
     "Plug 'kabouzeid/nvim-lspinstall',       PIf(PHas('nvim-lsp'))
     Plug 'williamboman/nvim-lsp-installer', PIf(PHas('nvim-lsp') && PHas('nvim-lspconfig'))
     Plug 'ray-x/lsp_signature.nvim',        PIf(has('nvim'))
+    Plug 'onsails/lspkind-nvim',            PIf(has('nvim'))
 
     "Plug 'codota/tabnine-vim'
     "Plug 'tzachar/compe-tabnine', PIf(PHas('nvim-compe'), {
@@ -136,6 +137,9 @@ Plug 'junegunn/vim-plug'
     "else
         "Plug 'tbodt/deoplete-tabnine', {'do': './install.sh'}
     "endif
+    "Plug 'deoplete-plugins/deoplete-lsp', PIf((PHas('nvim-lsp') && PHas('deoplete.nvim')), {
+        "\ 'do': 'GO111MODULE=on go get golang.org/x/tools/gopls@latest',
+    "\ })
 
     "Plug 'racer-rust/vim-racer', { 'for': ['rust'], }
 
@@ -237,15 +241,6 @@ Plug 'junegunn/vim-plug'
     Plug 'isobit/vim-caddyfile'
     Plug 'wgwoods/vim-systemd-syntax' " systemctl / systemd
     Plug 'tomlion/vim-solidity' " ethereum's solidity
-    " LSP - language server protocol
-    Plug 'neovim/nvim-lsp',           PIf(has('nvim') && has('lua'))
-    Plug 'neovim/nvim-lspconfig',     PIf(PHas('nvim-lsp'))
-    Plug 'kabouzeid/nvim-lspinstall', PIf(PHas('nvim-lsp'))
-    Plug 'ojroques/nvim-lspfuzzy',    PIf(PHas('nvim-lsp'))
-
-    Plug 'deoplete-plugins/deoplete-lsp', PIf((PHas('nvim-lsp') && PHas('deoplete.nvim')), {
-        \ 'do': 'GO111MODULE=on go get golang.org/x/tools/gopls@latest',
-    \ })
 " }}}
 
 

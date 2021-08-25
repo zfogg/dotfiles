@@ -62,8 +62,9 @@ set viewoptions+=cursor,curdir,folds
     set complete+=i
     set complete-=t
     "set completeopt=menuone,preview,noinsert,noselect
-    "set completeopt=menu,menuone,preview,noinsert,noselect
-    set completeopt=menuone,preview,noinsert,noselect
+    set completeopt=menu,menuone,preview,noinsert,noselect
+    "set completeopt=menuone,preview,noinsert,noselect
+    "set completeopt=menu,menuone,preview
     set conceallevel=2 concealcursor=nvic
 
     let s:unix_dictionary='/usr/share/dict/words'

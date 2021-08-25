@@ -2,7 +2,8 @@
 scriptencoding utf-8
 
 
-if !PHas('lsp_signature.nvim') | finish | endif
+if v:true | finish | endif
+"if !PHas('lsp_signature.nvim') | finish | endif
 
 lua << EOF
 require "lsp_signature".setup({
