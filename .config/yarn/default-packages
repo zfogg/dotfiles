@@ -1,14 +1,15 @@
 neovim
 eslint
+eslint_d
 eslint-plugin-node
 eslint-plugin-prettier
 eslint-plugin-react
-eslint_d
 eslint-lsp
 stylelint-lsp
 jsonlint
 prettier
 tern
+pyright
 typescript
 javascript-typescript-langserver
 vim-language-server
@@ -23,4 +24,3 @@ tailwindcss-language-server
 sql-language-server
 dockerfile-language-server-nodejs
 graphql-language-service-cli
-pyright
