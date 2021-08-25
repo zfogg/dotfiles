@@ -89,7 +89,7 @@ function() {
   if [[ -d $XDG_DATA_HOME/asdf ]]; then
     eval "$(asdf exec direnv hook zsh)"
     #source "$BREW/opt/asdf/asdf.sh"
-    function direnv() { asdf exec direnv "$@"; }
+    #function direnv() { asdf exec direnv "$@"; }
 
     #local asdf_java=${ASDF_DATA_DIR:-~/.asdf}/plugins/java
     #if [[ -d $asdf_java ]]; then

@@ -201,6 +201,16 @@ export GHQ_ROOT="$HOME/src"
 # ghq }}}
 
 
+# DISPLAY / WSL (genie) {{{
+function() {
+  local genie_display_sh=/etc/profile.d/genie-display.sh
+  if [[ -f $genie_display_sh && -x $genie_display_sh ]]; then
+    . "$genie_display_sh"
+  fi
+}
+# DISPLAY / WSL (genie) }}}
+
+
 # groovy {{{
 #export GROOVY_HOME="$BREW/opt/groovy/libexec"
 #
@@ -495,6 +505,7 @@ export HBASE_CONF_DIR="${HBASE_HOME}/conf"
 export SONAR_HOME="$BREW/opt/sonar-scanner/libexec"
 export SONAR="$BREW/opt/sonar-scanner/libexec/bin"
 # }}}
+
 
 # wxWidgets (for Audacity) {{{
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then

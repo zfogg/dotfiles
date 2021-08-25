@@ -80,6 +80,7 @@ function () { # {{{ platform-specifics
     fi
 
     path=(
+      #$HOME/.ghcup/bin
       $BREW/lib/colorgcc/bin
       $BREW/lib/ccache/bin
       $BREW/local/{bin,sbin}
