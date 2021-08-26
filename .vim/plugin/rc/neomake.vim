@@ -32,6 +32,8 @@ if z#util#HasPlugin('neomake')
     hi NeomakeErrorSign   term=bold gui=bold ctermfg=red    guifg=red
     hi NeomakeWarningSign term=bold gui=bold ctermfg=yellow guifg=yellow
 
+    let g:neomake_vim_enabled_makers = ['vint']
+
     aug RcPlugin__neomake
         au!
         if z#util#HasPlugin('nrun.vim')

@@ -49,6 +49,6 @@ if 1 == vim.fn.PHas('null-ls.nvim') then
     null_ls.config({
         sources = sources,
     })
-    --require('lspconfig')['null-ls'].setup{}
+    require('lspconfig')['null-ls'].setup{}
 end
 EOF

@@ -97,10 +97,10 @@ Plug 'junegunn/vim-plug'
     Plug 'RishabhRD/popfix',                PIf(has('nvim'))
     Plug 'RishabhRD/nvim-lsputils',         PIf(has('nvim'))
 
-    Plug 'jose-elias-alvarez/null-ls.nvim',              PIf(PHas('nvim-lsp'))
-        \ | Plug 'nvim-lua/plenary.nvim',                PIf(PHas('nvim-lsp'))
-        \ | Plug 'lewis6991/gitsigns.nvim',              PIf(PHas('nvim-lsp'))
-        \ | Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', PIf(PHas('nvim-lsp'))
+    Plug 'nvim-lua/plenary.nvim',                PIf(has('nvim'))
+    Plug 'lewis6991/gitsigns.nvim',              PIf(has('nvim'))
+    Plug 'jose-elias-alvarez/null-ls.nvim',      PIf(has('nvim'))
+    Plug 'jose-elias-alvarez/nvim-lsp-ts-utils', PIf(PHas('nvim-lsp'))
 
     "Plug 'codota/tabnine-vim'
     "Plug 'tzachar/compe-tabnine', PIf(PHas('nvim-compe'), {
