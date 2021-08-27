@@ -62,6 +62,9 @@ bundles = [
         , (bundle "agkozak/zsh-z")
             { fpathLocations = [""] }
 
+        --, (bundle "b4b4r07/emoji-cli")
+            --{ fpathLocations = [""] }
+
         --, (bundle "Tarrasch/zsh-autoenv")
             --{ fpathLocations = [] }
 

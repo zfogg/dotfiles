@@ -201,14 +201,21 @@ export GHQ_ROOT="$HOME/src"
 # ghq }}}
 
 
-# DISPLAY / WSL (genie) {{{
+# WSL (genie, vcxsrv, etc) {{{
 function() {
   local genie_display_sh=/etc/profile.d/genie-display.sh
   if [[ -f $genie_display_sh && -x $genie_display_sh ]]; then
     . "$genie_display_sh"
   fi
 }
-# DISPLAY / WSL (genie) }}}
+
+function() {
+  local vcxsrv_sh=/etc/profile.d/vcxsrv.sh
+  if [[ -f $vcxsrv_sh && -x $vcxsrv_sh ]]; then
+    . "$vcxsrv_sh"
+  fi
+}
+# WSL (genie, vcxsrv, etc) }}}
 
 
 # groovy {{{
