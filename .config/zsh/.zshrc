@@ -358,3 +358,15 @@ fi
 
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/home/zfogg/.cache/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+
+# INFO: https://github.com/b4b4r07/emoji-cli
+#export EMOJI_CLI_FILTER='fzf-tmux -d 15%:fzf:peco:percol'
+EMOJI_CLI_PATH="$HOME/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-b4b4r07-SLASH-emoji-cli/emoji-cli.plugin.zsh"
+if [[ -f $EMOJI_CLI_PATH ]]; then
+  export EMOJI_CLI_FILTER='fzf:peco:percol'
+  export EMOJI_CLI_KEYBIND='^s'
+  export EMOJI_CLI_USE_EMOJI=1
+  source "$EMOJI_CLI_PATH"
+  bindkey -r "${EMOJI_CLI_KEYBIND:-^s}"
+  bindkey -v "${EMOJI_CLI_KEYBIND:-^s}" emoji::cli
+fi

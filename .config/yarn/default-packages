@@ -24,3 +24,6 @@ tailwindcss-language-server
 sql-language-server
 dockerfile-language-server-nodejs
 graphql-language-service-cli
+@typescript-eslint/eslint-plugin@latest
+@typescript-eslint/parser@latest
+eslint@latest
