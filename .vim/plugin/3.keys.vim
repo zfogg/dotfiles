@@ -43,13 +43,13 @@ nnoremap <Leader>q :q<CR>
 
 " vimrc
 if exists('g:myvimrc_f') && filereadable(g:myvimrc_f)
-    if PHas('nerdtree')
+    "if PHas('nerdtree')
         exe 'nn <silent> <Leader>v :'
             \.'silent! $tabe! '.g:myvimrc_f        .' <Bar> '
             \.'silent! NERDTreeFromBookmark vimrc' .' <Bar> '
             \.'wincmd p'                           .' <Bar> '
             \.'<CR>'
-    endif
+    "endif
     exe 'nn <silent> <Leader>V :'
         \.'so '.g:myvimrc_f                    .' <Bar> '
         \.'redraw!'                            .' <Bar> '
@@ -213,6 +213,9 @@ endif
             set inccommand=nosplit
         endif
     endif
+
+    nnoremap <Leader>n<Space>     :NERDTreeToggle<CR>:wincmd p<CR>
+    nnoremap <Leader>nn           :call z#nerdtree#AutoCwd()<CR>
 " }}}
 
 

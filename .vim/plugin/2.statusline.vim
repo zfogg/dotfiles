@@ -5,10 +5,10 @@ scriptencoding utf-8
 " NOTE: requires any 'powerline' font
 
 
-aug RcPlugin__statusline_highlight
-    au!
+"aug RcPlugin__statusline_highlight
+    "au!
     "au VimEnter,Colorscheme * call z#statusline#Highlight()
-aug END
+"aug END
 
 
 set statusline= " {{{
@@ -22,7 +22,7 @@ set stl+=\ %{(substitute(
     \expand('%:h:t').'/'.expand('%:t'),
     \'^\.\/','',''))}
 set stl+=%(\ %)
-if has('nvim')
+if has('nvim') && z#util#HasPlugin('neomake')
     set stl+=%(%#ErrorMsg#%{
         \neomake#statusline#QflistStatus('qf\ :')
     \}%)
@@ -47,17 +47,19 @@ set stl+=%(\ %{
     \}\ %)
 
 " encoding and format
-set stl+=%(\ %{
-    \(&ft!=''?
-        \WebDevIconsGetFileTypeSymbol():
-        \'[none]').
-    \(&bomb\|\|'^$\|utf-8'!~#&fenc?
-        \&fenc.(&bomb?'-bom':''):
-        \'').
-    \('unix'!=#&ff?
-        \('\ '.WebDevIconsGetFileFormatSymbol()):
-        \'')
-    \}\ %)
+if z#util#HasPlugin('neomake')
+    set stl+=%(\ %{
+        \(&ft!=''?
+            \WebDevIconsGetFileTypeSymbol():
+            \'[none]').
+        \(&bomb\|\|'^$\|utf-8'!~#&fenc?
+            \&fenc.(&bomb?'-bom':''):
+            \'').
+        \('unix'!=#&ff?
+            \('\ '.WebDevIconsGetFileFormatSymbol()):
+            \'')
+        \}\ %)
+endif
 
 " cursor
 set stl+=%(%*%3l\ %3p%%\ %)
