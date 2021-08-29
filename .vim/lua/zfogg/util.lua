@@ -1,4 +1,4 @@
--- lua/util.lua
+-- lua/zfogg/util.lua
 
 -- INFO: https://github.com/nanotee/nvim-lua-guide#tips-3
 function _G.put(...)

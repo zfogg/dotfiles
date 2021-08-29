@@ -1,6 +1,6 @@
--- lua/plugins.lua
+-- lua/zfogg/plugins.lua
 -- vim: fdm=marker:
-require('util')
+require 'zfogg.util'
 
 local ft = vim.fn['z#constants#globals#Ft']()
 -- for k,v in pairs(ft) do print(k,v) end
