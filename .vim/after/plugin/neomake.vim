@@ -2,6 +2,7 @@
 scriptencoding utf-8
 
 if !has('nvim') | finish | endif
+if !z#util#HasPlugin('neomake') | finish | endif
 
 "\ 'TextChanged':  {'delay': 0},
 if has('win32')

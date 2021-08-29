@@ -1,6 +1,9 @@
 # plug.vim
 autoload/plug.vim.old
 
+# packer.nvim
+plugin/packer_compiled.lua
+
 bundle/
 sessions/
 .cache/
