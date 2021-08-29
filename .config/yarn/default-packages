@@ -27,3 +27,4 @@ graphql-language-service-cli
 @typescript-eslint/eslint-plugin@latest
 @typescript-eslint/parser@latest
 eslint@latest
+yaml-language-server
