@@ -11,7 +11,7 @@ if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
         || ba-err 10 '' "${0:t}" "pbpaste" 'unavailable'
 elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
     command_exists xclip \
-        && DISPLAY=:0 xclip -out \
+        && DISPLAY="${DISPLAY:-:0}" xclip -out \
         || ba-err 10 '' "${0:t}" "xclip" 'unavailable'
 else
     ba-err 11 '' "${0:t}" "\$$OSX \$$LINUX" 'wrong os'

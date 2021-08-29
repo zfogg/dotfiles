@@ -2,10 +2,10 @@
 
 direnv latest 2.28.0
 java   latest adoptopenjdk-16.0.1+9 adoptopenjdk-15.0.2+7 adoptopenjdk-9.0.0+181 adoptopenjdk-8.0.292+10
-nodejs latest 16.6.1 15.14.0 lts 14.17.4
+nodejs latest 16.8.0 15.14.0 lts 14.17.4
 yarn   latest 1.22.11
 python latest 3.9.6 pypy-c-jit-latest pypy3.7-c-jit-latest 3.7.11 2.7.18 system
 ruby   latest 3.0.2 2.7.4
-rust   latest stable 1.54.0 beta
+rust   latest stable 1.54.0 beta nightly
 golang latest 1.16.6
 deno   latest 1.12.2
