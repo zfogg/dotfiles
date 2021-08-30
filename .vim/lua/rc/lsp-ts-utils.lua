@@ -1,11 +1,5 @@
-" plugin/rc/nvim-lsp-ts-utils
-scriptencoding utf-8
+-- lua/rc/lsp-ts-utils.lua
 
-
-if !PHas('nvim-lsp-ts-utils') | finish | endif
-
-
-lua << EOF
 -- enable null-ls integration (optional)
 if 1 == vim.fn.PHas('null-ls.nvim') then
     local null_ls = require('null-ls')
@@ -51,4 +45,3 @@ if 1 == vim.fn.PHas('null-ls.nvim') then
     })
     require('lspconfig')['null-ls'].setup{}
 end
-EOF

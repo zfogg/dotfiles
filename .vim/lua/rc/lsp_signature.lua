@@ -1,11 +1,4 @@
-" plugin/rc/lsp_signature
-scriptencoding utf-8
-
-
-if v:true | finish | endif
-"if !PHas('lsp_signature.nvim') | finish | endif
-
-lua << EOF
+-- lua/rc/lsp_signature.lua
 require "lsp_signature".setup({
   bind = true, -- This is mandatory, otherwise border config won't get registered.
                -- If you want to hook lspsaga or other signature handler, pls set to false
@@ -42,4 +35,3 @@ require "lsp_signature".setup({
   shadow_guibg = 'Black', -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
   toggle_key = nil -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
 })
-EOF
