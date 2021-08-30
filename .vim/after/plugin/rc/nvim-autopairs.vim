@@ -2,24 +2,21 @@
 scriptencoding utf-8
 
 
+finish
 if !has('nvim') | finish | endif
 if !PHas('nvim-autopairs') | finish | endif
 
 
 lua << EOF
-if 1 == vim.fn.PHas('compe-zsh') then
-  require("nvim-autopairs.completion.compe").setup({
-    map_cr = true, --  map <CR> on insert mode
-    map_complete = true, -- it will auto insert `(` after select function or method item
-    auto_select = false,  -- auto select first item
-  })
-end
+require('nvim-autopairs').setup({
+  check_ts = true,
+  map_bs = true,
+  map_complete = true, -- it will auto insert `(` after select function or method item
+  auto_select = true,  -- auto select first item
+})
 
 if 1 == vim.fn.PHas('coq_nvim') then
   local remap = vim.api.nvim_set_keymap
-  local npairs = require('nvim-autopairs')
-  npairs.setup({ map_bs = false })
-
   vim.g.coq_settings = { keymap = { recommended = false } }
 
   -- these mappings are coq recommended mappings unrelated to nvim-autopairs
@@ -53,21 +50,22 @@ if 1 == vim.fn.PHas('coq_nvim') then
     end
   end
   remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })
+  --vim.api.nvim_del_keymap('n', '<c-h>')
 end
 
 if 1 == vim.fn.PHas('nvim-treesitter') then
-  local npairs = require('nvim-autopairs')
-  npairs.setup({
-      check_ts = true,
-      ts_config = {
-          --lua = {'string'},-- it will not add pair on that treesitter node
-          --javascript = {'template_string'},
-          --java = false,-- don't check treesitter on java
-      },
-  })
+  --local npairs = require('nvim-autopairs')
+  --npairs.setup({
+  --    check_ts = true,
+  --    ts_config = {
+  --        --lua = {'string'},-- it will not add pair on that treesitter node
+  --        --javascript = {'template_string'},
+  --        --java = false,-- don't check treesitter on java
+  --    },
+  --})
 
   require('nvim-treesitter.configs').setup {
-      autopairs = {enable = true},
+    autopairs = {enable = true},
   }
 
   --local ts_conds = require('nvim-autopairs.ts-conds')

@@ -2,152 +2,173 @@
 -- vim: fdm=marker:
 require 'zfogg.util'
 
-local ft = vim.fn['z#constants#globals#Ft']()
+local fn = vim.fn
+local ft = fn['z#constants#globals#Ft']()
 -- for k,v in pairs(ft) do print(k,v) end
 
+-- INFO: https://github.com/wbthomason/packer.nvim/#quickstart
+vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
 
--- INFO: https://github.com/wbthomason/packer.nvim
-local fn = vim.fn
 require('packer').startup(function(use) -- {{{
   -- integrate with other programs {{{
-  use 'wbthomason/packer.nvim' -- Packer can manage itself
+    use 'wbthomason/packer.nvim' -- Packer can manage itself
 
-  use { 'Shougo/vimproc.vim', run = 'make', };
-  use { 'tpope/vim-git' };
-  use { 'tpope/vim-fugitive' };
-  --use { 'airblade/vim-gitgutter'
-  --  requires = {
-  --    { 'gilligan/textobj-gitgutter', },
-  --  },
-  --};
-  use { 'mhinz/vim-signify' };
-  use { 'whiteinge/diffconflicts' };
+    --use { 'Shougo/vimproc.vim', run = 'make', };
+    use { 'tpope/vim-git' };
+    use { 'tpope/vim-fugitive' };
+    --use { 'airblade/vim-gitgutter'
+    --  requires = {
+    --    { 'gilligan/textobj-gitgutter', },
+    --  },
+    --};
+    use { 'mhinz/vim-signify' };
+    use { 'whiteinge/diffconflicts' };
 
-  use { 'tmux-plugins/vim-tmux', ft={'tmux'}, };
-  use { 'tmux-plugins/vim-tmux-focus-events' };
-  use { 'christoomey/vim-tmux-navigator' };
+    use { 'tmux-plugins/vim-tmux', ft={'tmux'}, };
+    use { 'tmux-plugins/vim-tmux-focus-events' };
+    use { 'christoomey/vim-tmux-navigator' };
   -- }}}
 
   -- Add features and functionality. {{{
-  -- fzf
-  --if has({ 'mac' };)
-  --let s:fzfd = expand("$BREW/opt/fzf")
-  --if !isdirectory(s:fzfd) | throw { 'Z:NotFound fzf_dir: ' };.s:fzfd | endif
-  --exe "use { '".s:fzfd."', { 'do' };: { -> fzf#install } })"
-  --elseif has({ 'unix') || has('win32' };)
-  --if has({ 'unix') || has('win32' };)
-  --use { 'junegunn/fzf', PIf(executable('fzf'), { 'do' };: { -> fzf#install() } })
-  --use { 'junegunn/fzf', PIf(executable('fzf' };))
-  --use { 'junegunn/fzf.vim', PIf(executable('fzf' };))
-  use { 'junegunn/fzf',
-    run = './install --all',
-    requires = {
-      {'junegunn/fzf.vim', run = ':call fzf#install()', },
-      {'yuki-ycino/fzf-preview.vim', },
-    },
-  };
-  --endif
-
-  --use { 'easymotion/vim-easymotion' };
-
-  -- nerdtree
-  use { 'scrooloose/nerdtree',
-    cmd = {'NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFromBookmark'},
-    requires = {
-      {'jistr/vim-nerdtree-tabs', },
-      {'scrooloose/nerdcommenter', },
-      {'taiansu/nerdtree-ag',         cond = "PExe('ag')", },
-      {'Xuyuanp/nerdtree-git-plugin', cond = "PExe('git')", },
-      {'tiagofumo/vim-nerdtree-syntax-highlight',
-        requires = {{'ryanoasis/vim-devicons', }, },
+    -- fzf
+    --if has({ 'mac' };)
+    --let s:fzfd = expand("$BREW/opt/fzf")
+    --if !isdirectory(s:fzfd) | throw { 'Z:NotFound fzf_dir: ' };.s:fzfd | endif
+    --exe "use { '".s:fzfd."', { 'do' };: { -> fzf#install } })"
+    --elseif has({ 'unix') || has('win32' };)
+    --if has({ 'unix') || has('win32' };)
+    --use { 'junegunn/fzf', PIf(executable('fzf'), { 'do' };: { -> fzf#install() } })
+    --use { 'junegunn/fzf', PIf(executable('fzf' };))
+    --use { 'junegunn/fzf.vim', PIf(executable('fzf' };))
+    use { 'junegunn/fzf',
+      run = './install --all',
+      requires = {
+        {'junegunn/fzf.vim', run = ':call fzf#install()', },
+        {'yuki-ycino/fzf-preview.vim', },
       },
-    },
-  };
-
-  --use { 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps' };}
-
-  use { 'mbbill/undotree' };
-
-  -- sessions
-  use { 'xolox/vim-misc' };
-  use { 'xolox/vim-session' };
-
-  -- making / linting
-  use { 'Shougo/neoinclude.vim' };
-  use { 'neomake/neomake' };
-  use { 'sbdchd/neoformat' };
-  use { 'jaawerth/nrun.vim' };
-
-  use { 'ms-jpq/coq_nvim',
-    branch = 'coq',
-    requires = {
-      {'ms-jpq/coq.artifacts', branch = 'artifacts', },
-    },
-  };
-
-  -- LSP - language server protocol
-  use { 'neovim/nvim-lsp',
-    requires = {
-      {'kabouzeid/nvim-lspinstall', },
-      {'williamboman/nvim-lsp-installer', },
-      {'ray-x/lsp_signature.nvim', },
-      {'RishabhRD/nvim-lsputils',
-        requires = {{'RishabhRD/popfix', }, },
-      },
-      {'jose-elias-alvarez/nvim-lsp-ts-utils',
-        requires = {{'jose-elias-alvarez/null-ls.nvim', }, },
-      },
-    },
-  };
-
-  use { 'lewis6991/gitsigns.nvim',
-    requires = {
-      {'nvim-lua/plenary.nvim', },
     };
-  };
+    --endif
 
-  --use { 'codota/tabnine-vim' };
-  --use { 'tzachar/compe-tabnine', PIf(PHas('nvim-compe' };), {
-  --\ { 'do': './install.sh' };,
-  --\ })
+    --use { 'easymotion/vim-easymotion' };
 
-  use { 'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
-    requires = {
-      {'tjdevries/colorbuddy.vim', },
-    },
-  };
+    -- nerdtree
+    use { 'scrooloose/nerdtree',
+      cmd = {'NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFromBookmark'},
+      requires = {
+        {'jistr/vim-nerdtree-tabs', },
+        {'scrooloose/nerdcommenter', },
+        {'taiansu/nerdtree-ag',         cond = "PExe('ag')", },
+        {'Xuyuanp/nerdtree-git-plugin', cond = "PExe('git')", },
+        {'tiagofumo/vim-nerdtree-syntax-highlight',
+          requires = {{'ryanoasis/vim-devicons', }, },
+        },
+      },
+    };
 
-  use { 'autozimu/LanguageClient-neovim',
-    branch = 'next',
-    run = 'bash install.sh && yarn global add flow-bin typescript',
-  };
-  --elseif has({ 'win32' };)
-  --use { 'autozimu/LanguageClient-neovim', PIf(has('nvim' };), {
-  --\ { 'branch': 'next' };,
-  --\ { 'do':     'powershell -executionpolicy bypass -File install.ps1' };,
-  --\ })
-  --endif
+    --use { 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps' };}
 
-  use { 'dstein64/nvim-scrollview' };
+    use { 'mbbill/undotree' };
 
-  use { 'Shougo/echodoc.vim' };
-  use { 'Shougo/context_filetype.vim' };
-  use { 'Shougo/neco-syntax' };
-  use { 'Shougo/neco-vim' };
-  --use { 'eagletmt/neco-ghc',  {'for' : ['haskell' };]}
+    -- sessions
+    use { 'xolox/vim-misc' };
+    use { 'xolox/vim-session' };
 
-  -- snippets
-  --use { 'Shougo/neosnippet', PIf(has('nvim' };))
-  --use { 'Shougo/neosnippet-snippets', PIf(has('nvim') && PHas('neosnippet' };))
+    -- making / linting
+    use { 'neomake/neomake',
+      requires = {
+        {'Shougo/neoinclude.vim', },
+        {'sbdchd/neoformat', },
+        {'jaawerth/nrun.vim', },
+      },
+    };
+    use {'dense-analysis/ale',
+      ft = {
+        'sh', 'zsh', 'bash',
+        'c', 'cpp', 'objc', 'swift', 'objcpp', 'ch', 'cmake',
+        'rust', 'go',
+        'sql', 'pgsql',
+        'toml', 'yaml', 'json', 'markdown', 'apiblueprint',
+        'python', 'python3',
+        'html', 'xml',
+        'javascript', 'typescript',
+        'javascript.jsx', 'typescript.tsx',
+        'css', 'sass', 'scss', 'less', 'stylus',
+        'vim', 'lua',
+      },
+      cmd = 'ALEEnable',
+      config = 'vim.cmd[[ALEEnable]]',
+      requires = {
+        {'prabirshrestha/vim-lsp', },
+        {'rhysd/vim-lsp-ale', },
+      },
+    }
 
-  -- etc
-  --use { 'ervandew/supertab' };
-  use { 'tpope/vim-rsi' };
-  use { 'embear/vim-localvimrc' };
+    use { 'ms-jpq/coq_nvim',
+      branch = 'coq',
+      requires = {
+        {'ms-jpq/coq.artifacts', branch = 'artifacts', },
+      },
+    };
 
-  use { 'liuchengxu/vim-clap', run = ':call clap#installer#force_download()', };
-  use { 'lukas-reineke/indent-blankline.nvim' };
+    -- LSP - language server protocol
+    use { 'neovim/nvim-lsp',
+      requires = {
+        {'neovim/nvim-lspconfig', },
+        {'williamboman/nvim-lsp-installer', },
+        {'ray-x/lsp_signature.nvim', },
+        {'RishabhRD/nvim-lsputils',
+          requires = {{'RishabhRD/popfix', }, },
+        },
+        {'jose-elias-alvarez/nvim-lsp-ts-utils',
+          requires = {{'jose-elias-alvarez/null-ls.nvim', }, },
+        },
+      },
+    };
+
+    use { 'lewis6991/gitsigns.nvim',
+      requires = {
+        {'nvim-lua/plenary.nvim', },
+      };
+    };
+
+    --use { 'codota/tabnine-vim' };
+    --use { 'tzachar/compe-tabnine', PIf(PHas('nvim-compe' };), {
+    --\ { 'do': './install.sh' };,
+    --\ })
+
+    use { 'nvim-treesitter/nvim-treesitter',
+      run = ':TSUpdate',
+      requires = {
+        {'tjdevries/colorbuddy.vim', },
+      },
+    };
+
+    use { 'autozimu/LanguageClient-neovim',
+      branch = 'next',
+      run = 'bash install.sh && yarn global add flow-bin typescript',
+    };
+    --elseif has({ 'win32' };)
+    --use { 'autozimu/LanguageClient-neovim', PIf(has('nvim' };), {
+    --\ { 'branch': 'next' };,
+    --\ { 'do':     'powershell -executionpolicy bypass -File install.ps1' };,
+    --\ })
+    --endif
+
+    use { 'dstein64/nvim-scrollview' };
+
+    use { 'Shougo/echodoc.vim' };
+    use { 'Shougo/context_filetype.vim' };
+    --use { 'Shougo/neco-syntax' };
+    --use { 'Shougo/neco-vim' };
+    --use { 'eagletmt/neco-ghc',  {'for' : ['haskell' };]}
+
+    -- etc
+    --use { 'ervandew/supertab' };
+    use { 'tpope/vim-rsi' };
+    use { 'embear/vim-localvimrc' };
+
+    use { 'liuchengxu/vim-clap', run = ':call clap#installer#force_download()', };
+    use { 'lukas-reineke/indent-blankline.nvim' };
   -- }}}
 
   -- Language support. {{{
@@ -163,8 +184,7 @@ require('packer').startup(function(use) -- {{{
     --use { 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs' };})
     use { 'lvht/phpcd.vim',
       cond = "PExe('composer')",
-      ft = ft['php'],
-      run = 'composer install',
+      ft = ft['php'], run = 'composer install',
     };
     use { 'othree/html5.vim' };
     use { 'lifepillar/pgsql.vim', ft = ft['sql'], };
@@ -178,10 +198,7 @@ require('packer').startup(function(use) -- {{{
     use { 'pangloss/vim-javascript',     ft = ft['js'], };
     use { 'leafgarland/typescript-vim',  ft = ft['ts'], };
     use { 'peitalin/vim-jsx-typescript', ft = ft['ts'], };
-    use { 'prettier/vim-prettier',
-      run = 'yarn install',
-      ft = ccat(ft['js'], ft['ts']),
-    };
+    use { 'prettier/vim-prettier', ft = ccat(ft['js'], ft['ts']), run = 'yarn install', };
     --use { 'prettier/vim-prettier',         {'do': 'yarn install' };}
         --{ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html' };] }
     use { 'hashivim/vim-terraform', ft = {'terraform', 'json'}, };
@@ -198,22 +215,17 @@ require('packer').startup(function(use) -- {{{
     use { 'plasticboy/vim-markdown', ft = {'markdown'}, };
     use { 'nelstrom/vim-markdown-folding', ft = {'markdown'}, };
     -- web
-    --use { 'saltstack/salt-vim', {'for': ['sls' };]}
+    use { 'saltstack/salt-vim', ft = {'sls', }, };
     use { 'lepture/vim-jinja', ft = ft['jinja'], };
-    --use { 'mattn/emmet-vim',    {'for': ft['markup'] + ft['styles'] + ['jsx', 'tsx' };]}
     use { 'mattn/emmet-vim' };
     --use { 'styled-components/vim-styled-components', { 'branch': 'main', 'for': ft['js' };] }
 
     -- clang
     use { 'libclang-vim/libclang-vim', ft = ft['cx'], };
-    --use { 'justmao945/vim-clang',      {'for': ft['cx' };]}
 
     use { 'kchmck/vim-coffee-script', ft = {'coffee'}, };
     use { 'tweekmonster/braceless.vim' };
-    --use { 'vim-scripts/openvpn' };
-    --use { 'vim-utils/vim-man' };
-    --use { 'chrisbra/csv.vim',       {'for': ['csv' };]}
-    use { 'chrisbra/csv.vim' };
+    use { 'chrisbra/csv.vim',       ft = {'csv',}, };
     use { 'cespare/vim-toml',       ft = {'toml'}, };
     use { 'digitaltoad/vim-pug',    ft = ft['jade'], };
     use { 'tpope/vim-afterimage',   ft = ft['image'], };
@@ -270,7 +282,7 @@ require('packer').startup(function(use) -- {{{
     use { 'kana/vim-textobj-indent' };
     use { 'kana/vim-textobj-line' };
     use { 'kana/vim-textobj-syntax' };
-    --use { 'kana/vim-textobj-lastpat' };
+    use { 'kana/vim-textobj-lastpat' };
     use { 'kana/vim-textobj-fold' };
     use { 'kana/vim-textobj-function' };
     use { 'thinca/vim-textobj-between' };
