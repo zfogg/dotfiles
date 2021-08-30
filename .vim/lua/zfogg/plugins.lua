@@ -232,7 +232,7 @@ require('packer').startup(function(use) -- {{{
     use { 'tpope/vim-rsi' };
     use { 'embear/vim-localvimrc' };
 
-    use { 'liuchengxu/vim-clap', run = ':call clap#installer#force_download()', };
+    use { 'liuchengxu/vim-clap', run = ':call clap#installer#download_binary()', };
     use { 'lukas-reineke/indent-blankline.nvim' };
   -- }}}
 
