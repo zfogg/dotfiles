@@ -33,6 +33,11 @@ require('packer').startup(function(use) -- {{{
   -- }}}
 
   -- Add features and functionality. {{{
+    use { 'glepnir/dashboard-nvim',
+      setup = (function()
+        vim.cmd [[ let g:dashboard_default_executive = 'telescope' ]]
+      end),
+    };
     -- Search
     use {
       {
@@ -89,6 +94,10 @@ require('packer').startup(function(use) -- {{{
     --endif
 
     --use { 'easymotion/vim-easymotion' };
+
+    use { 'romgrk/barbar.nvim',
+      requires = {'kyazdani42/nvim-web-devicons'},
+    };
 
     -- nerdtree
     use { 'scrooloose/nerdtree',
@@ -156,7 +165,9 @@ require('packer').startup(function(use) -- {{{
     use { 'neovim/nvim-lsp',
       requires = {
         {'neovim/nvim-lspconfig', },
-        {'ray-x/lsp_signature.nvim', },
+        {'ray-x/lsp_signature.nvim',
+          config = [[require('rc.lsp_signature')]],
+        },
         {'onsails/lspkind-nvim', },
         {'kosayoda/nvim-lightbulb', },
         {'RishabhRD/nvim-lsputils',
@@ -164,6 +175,7 @@ require('packer').startup(function(use) -- {{{
         },
         {'jose-elias-alvarez/nvim-lsp-ts-utils',
           requires = {{'jose-elias-alvarez/null-ls.nvim', }, },
+          config = [[require('rc.lsp-ts-utils')]],
         },
       },
     };
@@ -179,18 +191,18 @@ require('packer').startup(function(use) -- {{{
     };
 
     use { 'lewis6991/gitsigns.nvim',
+      config = [[
+        vim.cmd('let b:rcplugin_gitsigns = 1')
+        require('gitsigns').setup()
+      ]],
       requires = {
         {'nvim-lua/plenary.nvim', },
-      };
+      },
     };
-
-    --use { 'codota/tabnine-vim' };
-    --use { 'tzachar/compe-tabnine', PIf(PHas('nvim-compe' };), {
-    --\ { 'do': './install.sh' };,
-    --\ })
 
     use { 'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
+      config = [[require('rc.treesitter')]],
       requires = {
         {'tjdevries/colorbuddy.vim', },
       },
@@ -325,10 +337,13 @@ require('packer').startup(function(use) -- {{{
     use { 'tommcdo/vim-exchange' };
     --use { 'cohama/lexima.vim' };
     --use { 'Raimondi/delimitMate' };
-    use { 'windwp/nvim-autopairs', run = ':UpdateRemotePlugins', };
+    use { 'windwp/nvim-autopairs',
+      run = ':UpdateRemotePlugins',
+      config = [[require('rc.autopairs')]],
+    };
     --use { 'jiangmiao/auto-pairs' };
-    --use { 'wellle/targets.vim' };
-    use { 'tpope/vim-surround' };
+    use { 'wellle/targets.vim', };
+    use { 'tpope/vim-surround', };
 
     -- textobj
     use { 'kana/vim-textobj-user' };

@@ -1,14 +1,7 @@
-" plugin/rc/nvim-autopairs
-scriptencoding utf-8
+-- lua/rc/autopairs.lua
+local npairs = require('nvim-autopairs')
 
-
-finish
-if !has('nvim') | finish | endif
-if !PHas('nvim-autopairs') | finish | endif
-
-
-lua << EOF
-require('nvim-autopairs').setup({
+npairs.setup({
   check_ts = true,
   map_bs = true,
   map_complete = true, -- it will auto insert `(` after select function or method item
@@ -77,4 +70,3 @@ if 1 == vim.fn.PHas('nvim-treesitter') then
   --    :with_pair(ts_conds.is_not_ts_node({'function'}))
   --})
 end
-EOF

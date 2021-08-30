@@ -4,12 +4,12 @@ local lsp_installer = require'nvim-lsp-installer'
 --local configs       = require'lspconfig/configs'
 local util          = require'lspconfig/util'
 
-vim.api.nvim_command(':source ~/.vim/after/plugin/rc/nvim-lsp-ts-utils.vim')
+vim.api.nvim_command(':source ~/.vim/lua/rc/lsp-ts-utils.lua')
 --require('lspconfig')['null-ls'].setup{}
 
 --require('lang.keymappings')
 
-function common_on_attach(client, bufnr)
+local function common_on_attach(client, bufnr)
   -- ... set up buffer keymaps, etc.
 
   if 1 == vim.fn.PHas('lsp_signature.nvim') then

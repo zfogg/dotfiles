@@ -22,22 +22,3 @@ let g:coq_settings = get(g:, 'coq_settings', {
         \ 'jump_to_mark':    '<C-S-y>',
         \ },
     \ })
-
-
-" FIXME
-finish
-
-lua << EOF
---local coq  = require'coq'
---local lsp  = require'lspconfig'
---local lspi    = require'lspinstall'
---local servers = lspi.installed_servers()
---local lspi    = require'nvim-lsp-installer'
---local servers = lspi.get_installed_servers()
-
---vim.schedule(function()
---  for _,s in pairs(servers) do
---    lsp[s.name].setup(coq.lsp_ensure_capabilities{})
---  end
---end)
-EOF

@@ -1,12 +1,5 @@
-" plugin/rc/nvim-compe
-scriptencoding utf-8
+-- lua/rc/compe.lua
 
-
-if !has('nvim') | finish | endif
-if !PHas('nvim-compe') | finish | endif
-
-
-lua << EOF
 if 1 == vim.fn.PHas('nvim-compe') then
   require'compe'.setup({
     enabled          = true;
@@ -98,12 +91,3 @@ if 1 == vim.fn.PHas('nvim-compe') then
   vim.api.nvim_set_keymap("i", "<CR>",      "compe#confirm('<CR>')",  {expr = true})
   vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()",       {expr = true })
 end
-EOF
-
-"inoremap <silent><expr> <C-Space> compe#complete()
-"inoremap <silent><expr> <CR>      compe#confirm(PHas('nvim-autopairs') ? luaeval("require 'nvim-autopairs'.autopairs_cr()") : '<CR>')
-
-"inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-"inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-"inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-
