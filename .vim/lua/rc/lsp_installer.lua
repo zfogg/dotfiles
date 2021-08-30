@@ -1,18 +1,11 @@
-" plugin/rc/nvim-lsp-installer
-scriptencoding utf-8
-
-
-
-if !PHas('nvim-lsp-installer') | finish | endif
-
-lua << EOF
+-- lua/rc/telescope.lua
 local lsp_installer = require'nvim-lsp-installer'
-local lsp           = require'lspconfig'
+--local lsp           = require'lspconfig'
 --local configs       = require'lspconfig/configs'
 local util          = require'lspconfig/util'
 
 vim.api.nvim_command(':source ~/.vim/after/plugin/rc/nvim-lsp-ts-utils.vim')
-require('lspconfig')['null-ls'].setup{}
+--require('lspconfig')['null-ls'].setup{}
 
 --require('lang.keymappings')
 
@@ -368,4 +361,3 @@ end
 
 vim.o.shortmess = vim.o.shortmess .. "c"
 
-EOF

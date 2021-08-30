@@ -74,39 +74,39 @@ set viewoptions+=cursor,curdir,folds
 
     let s:vim_data_dirs = {}
     let s:editor_name = fnamemodify($VIM, ':t')
-    for [s:dir_name, s:dir_path] in items({
-        \ 'undo'   : 'undo',
-        \ 'swap'   : 'swap',
-        \ 'backup' : 'backup',
-    \ })
-        "let s:dir = g:dotvim_f.'/'.s:dir_path
-        if has('unix')
-            let s:data_home = z#util#GetSetEnv('XDG_DATA_HOME', $HOME.'/.local/share')
-            "if isdirectory(s:data_home)
-            let s:dir = $XDG_DATA_HOME.'/'.s:editor_name.'/'.s:dir_path
-        elseif has('win32')
-            let s:dir = $LOCALAPPDATA.'/'.s:editor_name.'-data'.'/'.s:dir_path
-        endif
-        if !isdirectory(s:dir) | call mkdir(s:dir, "p") | endif
-        let s:vim_data_dirs[s:dir_name] = s:dir
-    endfor
+    "for [s:dir_name, s:dir_path] in items({
+        "\ 'undo'   : 'undo',
+        "\ 'swap'   : 'swap',
+        "\ 'backup' : 'backup',
+    "\ })
+        ""let s:dir = g:dotvim_f.'/'.s:dir_path
+        "if has('unix')
+            "let s:data_home = z#util#GetSetEnv('XDG_DATA_HOME', $HOME.'/.local/share')
+            ""if isdirectory(s:data_home)
+            "let s:dir = $XDG_DATA_HOME.'/'.s:editor_name.'/'.s:dir_path
+        "elseif has('win32')
+            "let s:dir = $LOCALAPPDATA.'/'.s:editor_name.'-data'.'/'.s:dir_path
+        "endif
+        "if !isdirectory(s:dir) | call mkdir(s:dir, "p") | endif
+        "let s:vim_data_dirs[s:dir_name] = s:dir
+    "endfor
 
-    if has('persistent_undo')
-        set undofile
-        let &undodir = z#util#TempDirs('', s:vim_data_dirs['undo'])
-    endif
+    "if has('persistent_undo')
+        "set undofile
+        "let &undodir = z#util#TempDirs('', s:vim_data_dirs['undo'])
+    "endif
 
-    let &directory = z#util#TempDirs('//', s:vim_data_dirs['swap'])
-    set swapfile
+    "let &directory = z#util#TempDirs('//', s:vim_data_dirs['swap'])
+    "set swapfile
 
-    let g:omni_sql_no_default_maps = 1
+    "let g:omni_sql_no_default_maps = 1
 
-    let &backupdir = z#util#TempDirs('', s:vim_data_dirs['backup'])
-    if has('wildignore')
-        let &backupskip = &backupskip.','.s:vim_data_dirs['undo']  .'/*'
-        let &backupskip = &backupskip.','.s:vim_data_dirs['swap']  .'/*'
-        let &backupskip = &backupskip.','.s:vim_data_dirs['backup'].'/*'
-    endif
+    "let &backupdir = z#util#TempDirs('', s:vim_data_dirs['backup'])
+    "if has('wildignore')
+        "let &backupskip = &backupskip.','.s:vim_data_dirs['undo']  .'/*'
+        "let &backupskip = &backupskip.','.s:vim_data_dirs['swap']  .'/*'
+        "let &backupskip = &backupskip.','.s:vim_data_dirs['backup'].'/*'
+    "endif
 " }}} undo / redo, swap, backup
 
 

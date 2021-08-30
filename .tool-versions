@@ -9,3 +9,5 @@ ruby   latest 3.0.2 2.7.4
 rust   latest stable 1.54.0 beta nightly
 golang latest 1.16.6
 deno   latest 1.12.2
+#lua    latest latest:5.3
+lua    latest:5.3 5.3.6

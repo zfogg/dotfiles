@@ -27,19 +27,58 @@ require('packer').startup(function(use) -- {{{
     use { 'tmux-plugins/vim-tmux', ft={'tmux'}, };
     use { 'tmux-plugins/vim-tmux-focus-events' };
     use { 'christoomey/vim-tmux-navigator' };
+
+    use { 'Olical/vim-enmasse', cmd = 'EnMasse', };
+    use { 'kevinhwang91/nvim-bqf', };
   -- }}}
 
   -- Add features and functionality. {{{
-    -- fzf
-    --if has({ 'mac' };)
-    --let s:fzfd = expand("$BREW/opt/fzf")
-    --if !isdirectory(s:fzfd) | throw { 'Z:NotFound fzf_dir: ' };.s:fzfd | endif
-    --exe "use { '".s:fzfd."', { 'do' };: { -> fzf#install } })"
-    --elseif has({ 'unix') || has('win32' };)
-    --if has({ 'unix') || has('win32' };)
-    --use { 'junegunn/fzf', PIf(executable('fzf'), { 'do' };: { -> fzf#install() } })
-    --use { 'junegunn/fzf', PIf(executable('fzf' };))
-    --use { 'junegunn/fzf.vim', PIf(executable('fzf' };))
+    -- Search
+    use {
+      {
+        'nvim-telescope/telescope.nvim',
+        setup = [[require('rc.telescope_setup')]],
+        config = [[require('rc.telescope')]],
+        cmd = 'Telescope',
+        module = 'telescope',
+        requires = {
+          'nvim-lua/popup.nvim',
+          'nvim-lua/plenary.nvim',
+          'telescope-frecency.nvim',
+          'telescope-fzf-native.nvim',
+        },
+        wants = {
+          'popup.nvim',
+          'plenary.nvim',
+          'telescope-frecency.nvim',
+          'telescope-fzf-native.nvim',
+        },
+      },
+      { 'nvim-telescope/telescope-frecency.nvim', after = 'telescope.nvim', requires = 'tami5/sql.nvim', },
+      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', },
+    }
+
+    -- Project Management/Sessions
+    use {
+      'dhruvasagar/vim-prosession',
+      after = 'vim-obsession',
+      requires = { { 'tpope/vim-obsession', cmd = 'Prosession' } },
+      --config = [[require('config.prosession')]],
+    }
+
+    use { 'AndrewRadev/bufferize.vim', };
+
+    use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 10]] }
+
+    use { 'folke/lua-dev.nvim', ft = 'lua', };
+
+    -- Undo tree
+    use {
+      'mbbill/undotree',
+      cmd = 'UndotreeToggle',
+      config = [[vim.g.undotree_SetFocusWhenToggle = 1]],
+    }
+
     use { 'junegunn/fzf',
       run = './install --all',
       requires = {
@@ -67,11 +106,9 @@ require('packer').startup(function(use) -- {{{
 
     --use { 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps' };}
 
-    use { 'mbbill/undotree' };
-
     -- sessions
     use { 'xolox/vim-misc' };
-    use { 'xolox/vim-session' };
+    --use { 'xolox/vim-session' };
 
     -- making / linting
     use { 'neomake/neomake',
@@ -102,6 +139,11 @@ require('packer').startup(function(use) -- {{{
         {'rhysd/vim-lsp-ale', },
       },
     }
+    use { 'jackguo380/vim-lsp-cxx-highlight',
+      requires = {
+        { 'neovim/nvim-lsp', },
+      },
+    };
 
     use { 'ms-jpq/coq_nvim',
       branch = 'coq',
@@ -114,14 +156,25 @@ require('packer').startup(function(use) -- {{{
     use { 'neovim/nvim-lsp',
       requires = {
         {'neovim/nvim-lspconfig', },
-        {'williamboman/nvim-lsp-installer', },
         {'ray-x/lsp_signature.nvim', },
+        {'onsails/lspkind-nvim', },
+        {'kosayoda/nvim-lightbulb', },
         {'RishabhRD/nvim-lsputils',
           requires = {{'RishabhRD/popfix', }, },
         },
         {'jose-elias-alvarez/nvim-lsp-ts-utils',
           requires = {{'jose-elias-alvarez/null-ls.nvim', }, },
         },
+      },
+    };
+
+    use { 'williamboman/nvim-lsp-installer',
+      config = [[require('rc.lsp_installer')]],
+      requires = {
+        'neovim/nvim-lsp',
+      },
+      wants = {
+        'nvim-lsp',
       },
     };
 
@@ -182,10 +235,10 @@ require('packer').startup(function(use) -- {{{
     --use { 'lvht/phpfold.vim',              {'for': ft['php' };]}
     --use { 'miya0001/vim-dict-wordpress',   {'for': ft['php' };]}
     --use { 'roxma/LanguageServer-php-neovim',  PIf(has('nvim'), {'do': 'composer install && composer run-script parse-stubs' };})
-    use { 'lvht/phpcd.vim',
-      cond = "PExe('composer')",
-      ft = ft['php'], run = 'composer install',
-    };
+    --use { 'lvht/phpcd.vim',
+      --cond = "PExe('composer')",
+      --ft = ft['php'], run = 'composer install',
+    --};
     use { 'othree/html5.vim' };
     use { 'lifepillar/pgsql.vim', ft = ft['sql'], };
     --use { 'sheerun/vim-polyglot' };
