@@ -22,9 +22,9 @@ set stl+=\ %{(substitute(
     \expand('%:h:t').'/'.expand('%:t'),
     \'^\.\/','',''))}
 set stl+=%(\ %)
-if has('nvim') && z#util#HasPlugin('neomake')
+if has('nvim')
     set stl+=%(%#ErrorMsg#%{
-        \neomake#statusline#QflistStatus('qf\ :')
+        \ale#statusline#Count(bufnr('%')).total
     \}%)
 endif
 set stl+=%(%1*%)

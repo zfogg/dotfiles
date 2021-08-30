@@ -120,13 +120,13 @@ require('packer').startup(function(use) -- {{{
     --use { 'xolox/vim-session' };
 
     -- making / linting
-    use { 'neomake/neomake',
-      requires = {
-        {'Shougo/neoinclude.vim', },
-        {'sbdchd/neoformat', },
-        {'jaawerth/nrun.vim', },
-      },
-    };
+    --use { 'neomake/neomake',
+      --requires = {
+        --{'Shougo/neoinclude.vim', },
+        --{'sbdchd/neoformat', },
+        --{'jaawerth/nrun.vim', },
+      --},
+    --};
     use {'dense-analysis/ale',
       ft = {
         'sh', 'zsh', 'bash',
