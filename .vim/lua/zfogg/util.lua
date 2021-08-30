@@ -13,7 +13,7 @@ function _G.put(...)
 end
 
 function _G.PHas(plugin)
-  local pp = packer_plugins[plugin]
+  local pp = _G.packer_plugins[plugin]
   return pp and pp.loaded
 end
 

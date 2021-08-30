@@ -2,8 +2,13 @@
 
 vim.fn['z#rc#Init']()
 
-vim.cmd [[packadd packer.nvim]]
-vim.cmd [[packadd vimball]]
+vim.cmd [[
+packadd packer.nvim
+packadd vimball
+]]
 
 require 'zfogg'
-vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
+
+vim.cmd [[
+silent! helptags ALL
+]]

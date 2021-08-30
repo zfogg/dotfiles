@@ -3,7 +3,7 @@
 scriptencoding utf-8
 
 
-func! PHas(...) abort
+func! PHas(plugin) abort
   "return call(function('z#util#HasPlugin'), a:000)
-  return v:null != luaeval('packer_plugins["'.a:0.'"]')
+  return !empty(luaeval('packer_plugins["'.a:plugin.'"]'))
 endfunc
