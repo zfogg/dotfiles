@@ -22,11 +22,11 @@ set stl+=\ %{(substitute(
     \expand('%:h:t').'/'.expand('%:t'),
     \'^\.\/','',''))}
 set stl+=%(\ %)
-if has('nvim')
-    set stl+=%(%#ErrorMsg#%{
-        \ale#statusline#Count(bufnr('%')).total
-    \}%)
-endif
+"if has('nvim')
+    "set stl+=%(%#ErrorMsg#%{
+        "\ale#statusline#Count(bufnr('%')).total
+    "\}%)
+"endif
 set stl+=%(%1*%)
 
 " META: center
