@@ -128,6 +128,12 @@ require('packer').startup(function(use) -- {{{
       --},
     --};
     use {'dense-analysis/ale',
+      cmd = 'ALEEnable',
+      config = 'vim.cmd[[ALEEnable]]',
+      requires = {
+        {'prabirshrestha/vim-lsp', },
+        {'rhysd/vim-lsp-ale', },
+      },
       ft = {
         'sh', 'zsh', 'bash',
         'c', 'cpp', 'objc', 'swift', 'objcpp', 'ch', 'cmake',
@@ -140,12 +146,6 @@ require('packer').startup(function(use) -- {{{
         'javascript.jsx', 'typescript.tsx',
         'css', 'sass', 'scss', 'less', 'stylus',
         'vim', 'lua',
-      },
-      cmd = 'ALEEnable',
-      config = 'vim.cmd[[ALEEnable]]',
-      requires = {
-        {'prabirshrestha/vim-lsp', },
-        {'rhysd/vim-lsp-ale', },
       },
     }
     use { 'jackguo380/vim-lsp-cxx-highlight',

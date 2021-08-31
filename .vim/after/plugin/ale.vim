@@ -2,7 +2,7 @@
 scriptencoding utf-8
 
 
-if !PHas('vim-lsp-ale') | finish | endif
+"if !PHas('vim-lsp-ale') | finish | endif
 
 let g:lsp_diagnostics_enabled              = 1
 let g:lsp_diagnostics_echo_cursor          = 1
