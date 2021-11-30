@@ -22,6 +22,7 @@ vscode-json-languageserver
 vscode-langservers-extracted
 tailwindcss-language-server
 dockerfile-language-server-nodejs
+graphql
 graphql-language-service-cli
 @typescript-eslint/eslint-plugin@latest
 @typescript-eslint/parser@latest

@@ -99,6 +99,8 @@ require('packer').startup(function(use) -- {{{
       requires = {'kyazdani42/nvim-web-devicons'},
     };
 
+    use { 'voldikss/vim-floaterm' };
+
     -- nerdtree
     use { 'scrooloose/nerdtree',
       cmd = {'NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFromBookmark'},
@@ -131,8 +133,8 @@ require('packer').startup(function(use) -- {{{
       cmd = 'ALEEnable',
       config = 'vim.cmd[[ALEEnable]]',
       requires = {
-        {'prabirshrestha/vim-lsp', },
-        {'rhysd/vim-lsp-ale', },
+        --{'prabirshrestha/vim-lsp', },
+        --{'rhysd/vim-lsp-ale', },
       },
       ft = {
         'sh', 'zsh', 'bash',

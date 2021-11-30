@@ -1,13 +1,15 @@
 # vim: filetype=config:
 
-direnv latest 2.28.0
-java   latest adoptopenjdk-16.0.1+9 adoptopenjdk-15.0.2+7 adoptopenjdk-9.0.0+181 adoptopenjdk-8.0.292+10
-nodejs latest 16.8.0 15.14.0 lts 14.17.4
-yarn   latest 1.22.11
-python latest 3.9.6 pypy-c-jit-latest pypy3.7-c-jit-latest 3.7.11 2.7.18 system
-ruby   latest 3.0.2 2.7.4
-rust   latest stable 1.54.0 beta nightly
-golang latest 1.16.6
-deno   latest 1.12.2
+direnv latest latest:2 2.29.0
+java   latest adoptopenjdk-16.0.1+9
+nodejs latest lts lts-argon lts-erbium lts-fermium lts-gallium
+#nodejs latest 17.1.0 16.13.0 lts 14.18.1
+yarn   latest latest:1.22 1.22.17
+python latest 3.10.0 pypy-c-jit-latest pypy3.7-c-jit-latest 2.7.18 system
+ruby   latest latest:3 3.0.3 latest:2 2.7.5
+rust   latest stable latest:1.56 beta nightly
+golang latest 1.17.3
+deno   latest 1.16.3
+lua    latest 5.4.3 5.3.6
 #lua    latest latest:5.3
-lua    latest:5.3 5.3.6
+pnpm   latest 6.23.2

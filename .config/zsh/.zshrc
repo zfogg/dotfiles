@@ -336,6 +336,7 @@ function() {
       --noask \
       --timeout "$life" \
       --agents ssh,gpg \
+      --quiet \
       --inherit any-once "${(@f)keys}"`"
   fi
 }

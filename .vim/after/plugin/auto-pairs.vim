@@ -1,7 +1,7 @@
 " plugin/rc/auto-pairs
 scriptencoding utf-8
 
-if !PHas('auto-pairs') | finish | endif
+if !has('nvim') && !PHas('auto-pairs') | finish | endif
 
 " NOTE: for neomake / deoplete / neosnippet
 "   https://github.com/jiangmiao/auto-pairs/issues/91
