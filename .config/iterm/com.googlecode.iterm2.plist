@@ -33,7 +33,7 @@
 	<key>BellRateLimit</key>
 	<real>0.5</real>
 	<key>BootstrapDaemon</key>
-	<false/>
+	<true/>
 	<key>BracketedPasteMode</key>
 	<true/>
 	<key>CheckTestRelease</key>
@@ -47,7 +47,7 @@
 	<key>CmdClickWhenInactiveInvokesSemanticHistory</key>
 	<false/>
 	<key>Command</key>
-	<string></string>
+	<string>/usr/local/bin/zsh</string>
 	<key>CommandSelection</key>
 	<true/>
 	<key>CompactMinimalTabBarHeight</key>
@@ -12603,7 +12603,7 @@
 	<key>DisableAdaptiveFrameRateInInteractiveApps</key>
 	<true/>
 	<key>DisableCustomBoxDrawing</key>
-	<false/>
+	<true/>
 	<key>DisableDECRQCRA</key>
 	<true/>
 	<key>DisableFullscreenTransparency</key>
@@ -12625,13 +12625,13 @@
 	<key>DoubleClickPerformsSmartSelection</key>
 	<true/>
 	<key>DrawOutlineAroundCursor</key>
-	<false/>
+	<true/>
 	<key>EchoProbeDuration</key>
 	<real>0.18000000715255737</real>
 	<key>EliminateCloseButtons</key>
 	<false/>
 	<key>EnableAPIServer</key>
-	<false/>
+	<true/>
 	<key>EnableDivisionView</key>
 	<true/>
 	<key>EnableProxyIcon</key>
@@ -12643,8 +12643,10 @@
 	<key>ExcludeBackgroundColorsFromCopiedStyle</key>
 	<true/>
 	<key>ExperimentalKeyHandling</key>
-	<false/>
+	<true/>
 	<key>ExperimentalOptimizationsEnabled</key>
+	<true/>
+	<key>FastForegroundJobUpdates</key>
 	<true/>
 	<key>FindDelaySeconds</key>
 	<real>3</real>
@@ -12657,7 +12659,7 @@
 	<key>FocusReportingEnabled</key>
 	<true/>
 	<key>ForceAntialiasingOnRetina</key>
-	<false/>
+	<true/>
 	<key>FsTabDelay</key>
 	<real>1</real>
 	<key>FullHeightCursor</key>
@@ -13004,7 +13006,7 @@
 	<key>HotkeyTermAnimationDuration</key>
 	<real>0.75</real>
 	<key>IRMemory</key>
-	<integer>2</integer>
+	<integer>8</integer>
 	<key>IdleTimeSeconds</key>
 	<real>90</real>
 	<key>IgnoreHardNewlinesInURLs</key>
@@ -13016,7 +13018,7 @@
 	<key>JobName</key>
 	<false/>
 	<key>KillSessionsOnLogout</key>
-	<true/>
+	<false/>
 	<key>LeftCommand</key>
 	<integer>7</integer>
 	<key>LeftOption</key>
@@ -13369,7 +13371,7 @@
 			<key>Cursor Type</key>
 			<integer>2</integer>
 			<key>Custom Command</key>
-			<string>Custom Shell</string>
+			<string>No</string>
 			<key>Custom Directory</key>
 			<string>Advanced</string>
 			<key>Default Bookmark</key>
@@ -13909,7 +13911,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<false/>
 			<key>Normal Font</key>
-			<string>MesloLGMDZNerdFontComplete-Regular 14</string>
+			<string>MesloLGS-NF-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -16288,7 +16290,7 @@
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>ShowHintsInSplitPaneMenuItems</key>
 	<true/>
 	<key>ShowMetalFPSmeter</key>
@@ -16299,6 +16301,8 @@
 	<false/>
 	<key>ShowSessionRestoredBanner</key>
 	<true/>
+	<key>ShowTimestampsByDefault</key>
+	<false/>
 	<key>ShowYellowMarkForJobStoppedBySignal</key>
 	<true/>
 	<key>SlowFrameRate</key>
@@ -16365,6 +16369,10 @@
 	<false/>
 	<key>TmuxVariableWindowSizesSupported</key>
 	<true/>
+	<key>TmuxWindowsShouldCloseAfterDetach</key>
+	<false/>
+	<key>TolerateUnrecognizedTmuxCommands</key>
+	<true/>
 	<key>ToolbeltTools</key>
 	<array>
 		<string>Jobs</string>
@@ -16396,6 +16404,8 @@
 		<key>x-man-page</key>
 		<string>C94EB68C-5703-49D9-A20F-ACE71D1F9261</string>
 	</dict>
+	<key>UnderlineCursorHeight</key>
+	<real>3</real>
 	<key>UnderlineCursorOffset</key>
 	<real>-2</real>
 	<key>UnderlineHyperlinks</key>
@@ -16438,6 +16448,8 @@
 	<string>$MANPAGER %@ || sleep 1.5</string>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
+	<key>Vs16Supported</key>
+	<true/>
 	<key>WebKitDefaultFontSize</key>
 	<integer>11</integer>
 	<key>WebKitStandardFont</key>
@@ -16453,7 +16465,7 @@
 	<key>ZeroWidthSpaceAdvancesCursor</key>
 	<false/>
 	<key>ZippyTextDrawing</key>
-	<true/>
+	<false/>
 	<key>disableMetalWhenUnplugged</key>
 	<true/>
 	<key>findIgnoreCase_iTerm</key>

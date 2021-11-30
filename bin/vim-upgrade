@@ -75,19 +75,24 @@ function() {
     log_section_start "$section"
 
     asdf plugin-update nodejs && asdf install nodejs
-    asdf plugin-update yarn   && asdf install yarn
+    #asdf plugin-update yarn   && asdf install yarn
+    asdf plugin-update pnpm   && asdf install pnpm
 
-    local node_versions=$(cat ~/.tool-versions | grep nodejs | sed 's/nodejs\ //' | tac -rs '\s\+')
+    local node_versions=$(cat ~/.tool-versions | grep '^nodejs' | sed 's/nodejs\ //' | tac -rs '\s\+')
     local yarn_reqs=$(cat ${ASDF_YARN_DEFAULT_PACKAGES_FILE:-~/.default-yarn-packages} | xargs)
     for v (${(z)node_versions}) {
         asdf shell nodejs "$v"
-        asdf exec yarn global add ${(z)yarn_reqs[@]}
+        #asdf exec yarn global add ${(z)yarn_reqs[@]}
         #asdf exec npm install -g --force "${(z)yarn_reqs[@]}"
-        asdf exec yarn global upgrade
+        #asdf exec yarn global upgrade
     }
     asdf shell nodejs --unset
     asdf reshim nodejs "$v"
-    asdf reshim yarn
+    #asdf reshim yarn
+    asdf exec pnpm install --global ${(z)yarn_reqs[@]}
+    asdf exec pnpm up -g
+    asdf exec pnpm store prune
+    asdf reshim pnpm
 
     log_section_end "$section"
 }
@@ -201,11 +206,16 @@ function() {
         if which -p nvim >/dev/null && [[ -d $neovim_brew_cache ]]; then
             cd "$neovim_brew_cache"
             git fetch origin --tags --force
-            cd -
-            brew upgrade neovim --fetch-HEAD --keep-tmp
+            make CMAKE_BUILD_TYPE=Release || make clean
+            make install
+            rehash
+            #cd -
+            #brew upgrade neovim --fetch-HEAD --keep-tmp \
+                #|| brew upgrade neovim --fetch-HEAD
         elif `which -p nvim >/dev/null`; then
             #brew uninstall neovim --ignore-dependencies
-            brew reinstall --keep-tmp neovim
+            brew reinstall --keep-tmp neovim \
+                || brew reinstall neovim --fetch-HEAD
         else
             brew install --fetch-HEAD --keep-tmp neovim --HEAD
         fi

@@ -1,13 +1,13 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */home/zfogg/.local/share/nvim/site/pack/packer/start/fzf/bin* ]]; then
-  export PATH="${PATH:+${PATH}:}/home/zfogg/.local/share/nvim/site/pack/packer/start/fzf/bin"
+if [[ ! "$PATH" == */Users/zfogg/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/start/fzf/bin* ]]; then
+  export PATH="${PATH:+${PATH}:}/Users/zfogg/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/start/fzf/bin"
 fi
 
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "/home/zfogg/.local/share/nvim/site/pack/packer/start/fzf/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "/Users/zfogg/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/start/fzf/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
 # ------------
-source "/home/zfogg/.local/share/nvim/site/pack/packer/start/fzf/shell/key-bindings.zsh"
+source "/Users/zfogg/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/start/fzf/shell/key-bindings.zsh"
