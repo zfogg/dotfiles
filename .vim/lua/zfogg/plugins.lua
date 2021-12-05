@@ -38,6 +38,9 @@ require('packer').startup(function(use) -- {{{
         vim.cmd [[ let g:dashboard_default_executive = 'telescope' ]]
       end),
     };
+
+    use { 'wakatime/vim-wakatime', };
+
     -- Search
     use {
       {

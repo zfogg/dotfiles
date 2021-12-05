@@ -22,7 +22,8 @@
     	pruneTags = true
     	output    = compact
 [commit]
-    	gpgsign = true
+    	;gpgsign = true
+    	gpgsign = false
 [push]
     	default = simple
 [pull]
