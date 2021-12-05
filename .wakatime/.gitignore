@@ -1,0 +1,7 @@
+.wakatime.cfg
+.wakatime-internal.cfg
+.wakatime.bdb
+.wakatime.data
+.wakatime.db
+.wakatime.log
+wakatime-cli-*

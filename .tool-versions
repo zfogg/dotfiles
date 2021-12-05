@@ -2,8 +2,7 @@
 
 direnv latest latest:2 2.29.0
 java   latest adoptopenjdk-16.0.1+9
-nodejs latest lts lts-argon lts-erbium lts-fermium lts-gallium
-#nodejs latest 17.1.0 16.13.0 lts 14.18.1
+nodejs latest 17.2.0 16.13.0 lts lts-argon lts-erbium lts-fermium lts-gallium
 yarn   latest latest:1.22 1.22.17
 python latest 3.10.0 pypy-c-jit-latest pypy3.7-c-jit-latest 2.7.18 system
 ruby   latest latest:3 3.0.3 latest:2 2.7.5
@@ -13,3 +12,4 @@ deno   latest 1.16.3
 lua    latest 5.4.3 5.3.6
 #lua    latest latest:5.3
 pnpm   latest 6.23.2
+nodejs lts

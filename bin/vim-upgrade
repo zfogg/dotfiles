@@ -58,6 +58,7 @@ function() {
 
 
 function() {
+    return
     local section="Python, Pyenv, pip"
     log_section_start "$section"
 
@@ -75,24 +76,28 @@ function() {
     log_section_start "$section"
 
     asdf plugin-update nodejs && asdf install nodejs
-    #asdf plugin-update yarn   && asdf install yarn
-    asdf plugin-update pnpm   && asdf install pnpm
+    asdf plugin-update yarn   && asdf install yarn
+    #asdf plugin-update pnpm   && asdf install pnpm
 
-    local node_versions=$(cat ~/.tool-versions | grep '^nodejs' | sed 's/nodejs\ //' | tac -rs '\s\+')
+    #set -x
+    local node_versions=$(cat ~/.tool-versions | grep -i '^nodejs ' | sed 's/nodejs\ //' | tac -rs '\s\+' | head -n1)
+    #set -x
     local yarn_reqs=$(cat ${ASDF_YARN_DEFAULT_PACKAGES_FILE:-~/.default-yarn-packages} | xargs)
     for v (${(z)node_versions}) {
         asdf shell nodejs "$v"
-        #asdf exec yarn global add ${(z)yarn_reqs[@]}
+        asdf exec yarn global add ${(z)yarn_reqs[@]} || true
         #asdf exec npm install -g --force "${(z)yarn_reqs[@]}"
         #asdf exec yarn global upgrade
     }
     asdf shell nodejs --unset
     asdf reshim nodejs "$v"
-    #asdf reshim yarn
-    asdf exec pnpm install --global ${(z)yarn_reqs[@]}
-    asdf exec pnpm up -g
-    asdf exec pnpm store prune
-    asdf reshim pnpm
+    #set +x
+    asdf reshim yarn
+    #asdf exec pnpm install --global ${(z)yarn_reqs[@]}
+    #asdf exec pnpm up -g
+    #asdf exec pnpm store prune
+    #asdf reshim pnpm
+    #set +x
 
     log_section_end "$section"
 }
