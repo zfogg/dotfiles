@@ -11,7 +11,7 @@ local servers = {
   --'clojure_lsp',
   --'denols',
   'dockerls',
-  'efm',
+  --'efm',
   'eslintls',
   --'elixirls',
   --'elmls',

@@ -4,56 +4,13 @@ local lsp_installer = require'nvim-lsp-installer'
 --local configs       = require'lspconfig/configs'
 local util          = require'lspconfig/util'
 
-vim.api.nvim_command(':source ~/.vim/lua/rc/lsp-ts-utils.lua')
+--vim.api.nvim_command(':source ~/.vim/lua/rc/lsp-ts-utils.lua')
 --require('lspconfig')['null-ls'].setup{}
 
 --require('lang.keymappings')
 
 local function common_on_attach(client, bufnr)
   -- ... set up buffer keymaps, etc.
-
-  if 1 == vim.fn.PHas('lsp_signature.nvim') then
-    require "lsp_signature".on_attach({
-      bind = true, -- This is mandatory, otherwise border config won't get registered.
-                  -- If you want to hook lspsaga or other signature handler, pls set to false
-      doc_lines = 2, -- will show two lines of comment/doc(if there are more than two lines in doc, will be truncated);
-                    -- set to 0 if you DO NOT want any API comments be shown
-                    -- This setting only take effect in insert mode, it does not affect signature help in normal
-                    -- mode, 10 by default
-
-      floating_window = true, -- show hint in a floating window, set to false for virtual text only mode
-      fix_pos = false,  -- set to true, the floating window will not auto-close until finish all parameters
-      hint_enable = true, -- virtual hint enable
-      hint_prefix = "🐼 ",  -- Panda for parameter
-      hint_scheme = "String",
-      use_lspsaga = false,  -- set to true if you want to use lspsaga popup
-      hi_parameter = "Search", -- how your parameter will be highlight
-      max_height = 12, -- max height of signature floating_window, if content is more than max_height, you can scroll down
-                      -- to view the hiding contents
-      max_width = 120,  -- max_width of signature floating_window, line will be wrapped if exceed max_width
-      handler_opts = {
-        border = "single",   -- double, single, shadow, none
-      },
-
-      trigger_on_newline = false, -- set to true if you need multiple line parameter, sometime show signature on new line can be confusing, set it to false for #58
-      extra_trigger_chars = {}, -- Array of extra characters that will trigger signature completion, e.g., {"(", ","}
-      -- deprecate !!
-      -- decorator = {"`", "`"}  -- this is no longer needed as nvim give me a handler and it allow me to highlight active parameter in floating_window
-      zindex = 200, -- by default it will be on top of all floating windows, set to 50 send it to bottom
-      debug = false, -- set to true to enable debug logging
-      log_path = "debug_log_file_path", -- debug log path
-
-      padding = '', -- character to pad on left and right of signature can be ' ', or '|'  etc
-
-      shadow_blend = 36, -- if you using shadow as border use this set the opacity
-      shadow_guibg = 'Black', -- if you using shadow as border use this set the color e.g. 'Green' or '#121315'
-      toggle_key = nil, -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
-      handler_opts = {
-        border = "single",
-      }
-    }, bufnr)
-  end
-
 
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -98,11 +55,11 @@ local function common_on_attach(client, bufnr)
       hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
+      "augroup lsp_document_highlight
+      "  autocmd! * <buffer>
+      "  autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+      "  autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      "augroup END
     ]], false)
   end
 end
@@ -313,7 +270,7 @@ end
 
 -- symbols-outline.nvim
 vim.g.symbols_outline = {
-    highlight_hovered_item = true,
+    highlight_hovered_item = false,
     show_guides = true,
     auto_preview = false, -- experimental
     position = 'right',
@@ -331,33 +288,67 @@ vim.g.symbols_outline = {
 -- LSP Enable diagnostics
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
     vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
+        virtual_text = true,
         underline = true,
         signs = true,
-        update_in_insert = false
+        update_in_insert = false,
     })
 
 -- Send diagnostics to quickfix list
-do
-    local method = "textDocument/publishDiagnostics"
-    local default_handler = vim.lsp.handlers[method]
-    vim.lsp.handlers[method] = function(err, method, result, client_id, bufnr,
-                                        config)
-        default_handler(err, method, result, client_id, bufnr, config)
-        local diagnostics = vim.lsp.diagnostic.get_all()
-        local qflist = {}
-        for bufnr, diagnostic in pairs(diagnostics) do
-            for _, d in ipairs(diagnostic) do
-                d.bufnr = bufnr
-                d.lnum = d.range.start.line + 1
-                d.col = d.range.start.character + 1
-                d.text = d.message
-                table.insert(qflist, d)
-            end
-        end
-        vim.lsp.util.set_qflist(qflist)
-    end
-end
+--do
+--:qqq
+    --local method = "textDocument/publishDiagnostics"
+    --local default_handler = vim.lsp.handlers[method]
+    --vim.lsp.handlers[method] = function(err, method, result, client_id, bufnr,
+                                        --config)
+        --default_handler(err, method, result, client_id, bufnr, config)
+        --local diagnostics = vim.lsp.diagnostic.get_all()
+        --local qflist = {}
+        --for bufnr, diagnostic in pairs(diagnostics) do
+            --for _, d in ipairs(diagnostic) do
+                --d.bufnr = bufnr
+                --d.lnum = d.range.start.line + 1
+                --d.col = d.range.start.character + 1
+                --d.text = d.message
+                --table.insert(qflist, d)
+            --end
+        --end
+        --vim.lsp.util.set_qflist(qflist)
+    --end
+--end
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text     = true,
+    underline        = true,
+    signs            = true,
+    update_in_insert = true,
+  })
+
+-- INFO: https://raw.githubusercontent.com/beauwilliams/Dotfiles/d521519388b4b371fed17177d68c662ff94f1055/Vim/nvim/.baks/lua/lsp.luadisabled
+--vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+--vim.lsp.diagnostic.on_publish_diagnostics, {
+  --update_in_insert = false,
+  --virtual_text = {
+    --prefix = ""
+  --}
+--})
+vim.fn.sign_define("LspDiagnosticsSignError", {
+  text = "",
+  texthl = "LspDiagnosticsSignError"
+})
+vim.fn.sign_define("LspDiagnosticsSignWarning", {
+  text = "",
+  texthl = "LspDiagnosticsSignWarning"
+})
+vim.fn.sign_define("LspDiagnosticsSignInformation", {
+  text = "",
+  texthl = "LspDiagnosticsSignInformation"
+})
+vim.fn.sign_define("LspDiagnosticsSignHint", {
+  text = "➤",
+  texthl = "LspDiagnosticsSignHint"
+})
 
 vim.o.shortmess = vim.o.shortmess .. "c"
 
