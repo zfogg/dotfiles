@@ -1,0 +1,7 @@
+-- lua/lspconfig.lua
+local lsp           = require'lspconfig'
+local configs       = require'lspconfig/configs'
+local util          = require'lspconfig/util'
+
+
+lsp.sumneko_lua.setup({})

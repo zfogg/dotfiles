@@ -26,20 +26,22 @@ require('packer').startup(function(use) -- {{{
 
     use { 'tmux-plugins/vim-tmux', ft={'tmux'}, };
     use { 'tmux-plugins/vim-tmux-focus-events' };
-    use { 'christoomey/vim-tmux-navigator' };
+    use { 'christoomey/vim-tmux-navigator',
+      after = { 'coq_nvim' },
+    };
 
     use { 'Olical/vim-enmasse', cmd = 'EnMasse', };
     use { 'kevinhwang91/nvim-bqf', };
   -- }}}
 
   -- Add features and functionality. {{{
-    use { 'glepnir/dashboard-nvim',
-      setup = (function()
-        vim.cmd [[ let g:dashboard_default_executive = 'telescope' ]]
-      end),
-    };
+    --use { 'glepnir/dashboard-nvim',
+      --setup = (function()
+        --vim.cmd [[ let g:dashboard_default_executive = 'telescope' ]]
+      --end),
+    --};
 
-    use { 'wakatime/vim-wakatime', };
+    --use { 'wakatime/vim-wakatime', };
 
     -- Search
     use {
@@ -98,9 +100,9 @@ require('packer').startup(function(use) -- {{{
 
     --use { 'easymotion/vim-easymotion' };
 
-    use { 'romgrk/barbar.nvim',
-      requires = {'kyazdani42/nvim-web-devicons'},
-    };
+    --use { 'romgrk/barbar.nvim',
+      --requires = {'kyazdani42/nvim-web-devicons'},
+    --};
 
     use { 'voldikss/vim-floaterm' };
 
@@ -169,9 +171,13 @@ require('packer').startup(function(use) -- {{{
     -- LSP - language server protocol
     use { 'neovim/nvim-lsp',
       requires = {
-        {'neovim/nvim-lspconfig', },
+        {'neovim/nvim-lspconfig',
+          config = [[require('rc.lspconfig')]],
+          ft = { 'lua', },
+        },
         {'ray-x/lsp_signature.nvim',
           config = [[require('rc.lsp_signature')]],
+          after = { 'ale', },
         },
         {'onsails/lspkind-nvim', },
         {'kosayoda/nvim-lightbulb', },
@@ -180,7 +186,7 @@ require('packer').startup(function(use) -- {{{
         },
         {'jose-elias-alvarez/nvim-lsp-ts-utils',
           requires = {{'jose-elias-alvarez/null-ls.nvim', }, },
-          config = [[require('rc.lsp-ts-utils')]],
+          config = [[require('rc.null-ls')]],
         },
       },
     };
@@ -224,9 +230,14 @@ require('packer').startup(function(use) -- {{{
     --\ })
     --endif
 
-    use { 'dstein64/nvim-scrollview' };
+    --use { 'dstein64/nvim-scrollview' };
 
-    use { 'Shougo/echodoc.vim' };
+    use { 'Shougo/echodoc.vim',
+      config = [[
+        vim.cmd('let g:echodoc#enable_at_startup=1')
+        vim.cmd('let g:echodoc#type="virtual"')
+      ]]
+    };
     use { 'Shougo/context_filetype.vim' };
     --use { 'Shougo/neco-syntax' };
     --use { 'Shougo/neco-vim' };
@@ -392,7 +403,7 @@ require('packer').startup(function(use) -- {{{
       use { 'pbrisbin/vim-mkdir' };
       --use { 'AndrewRadev/switch.vim' };
       use { 'vim-utils/vim-vertical-move' };
-      use { 'tpope/vim-unimpaired' };
+      --use { 'tpope/vim-unimpaired' };
   -- }}}
 end) -- }}}
 

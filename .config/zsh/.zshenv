@@ -158,6 +158,10 @@ fi
 export _GIT_PATHSPEC=':!package-lock.json:!yarn.lock'
 export _GIT_MERGE_VIEW="enable"
 #export _GIT_MERGE_VIEW="exclusive"
+
+if command_exists delta; then
+  export GIT_PAGER=delta
+fi
 # }}}
 
 
@@ -368,15 +372,15 @@ export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --
 # export LESS='-F -i -J -M -R -W -x4 -X -z-4'
 
 #if command_exists nvimpager; then
-#  export PAGER='nvimpager'
+ #export PAGER='nvimpager'
 #elif command_exists delta; then
-#  export PAGER='delta'
-#elif command_exists page; then
-#  export PAGER='page -q 90000'
-#elif command_exists nvim; then
-#  export PAGER='nvim -R +AnsiEsc'
+  #export PAGER='delta'
+#if command_exists page; then
+  #export PAGER='page -q 90000'
+#if command_exists nvim; then
+  #export PAGER='nvim -R +AnsiEsc'
 #else
-#  export PAGER='less'
+  #export PAGER='less'
 #fi
 # editor, pager }}}
 

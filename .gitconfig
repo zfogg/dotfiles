@@ -22,8 +22,8 @@
     	pruneTags = true
     	output    = compact
 [commit]
-    	;gpgsign = true
-    	gpgsign = false
+    	gpgsign = true
+    	;gpgsign = false
 [push]
     	default = simple
 [pull]
@@ -60,8 +60,8 @@
     	keepBackup    = true
 
 [difftool "nvim"]
-    	;cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
-    	cmd = vim -d \"$LOCAL\" \"$REMOTE\"
+    	cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
+    	;cmd = vim -d \"$LOCAL\" \"$REMOTE\"
     	trustExitCode = true
 [difftool "vimdiff3"]
     	path = nvim
