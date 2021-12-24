@@ -1,12 +1,13 @@
 If ($host.Name -eq 'ConsoleHost') {Import-Module PSReadline}
 
 
-try { $null = gcm pshazz -ea stop; pshazz init } catch { }
+#try { $null = gcm pshazz -ea stop; pshazz init } catch { }
 
 #$DefaultUser = 'zachf'
 Import-Module posh-git
 Import-Module oh-my-posh
-Set-Theme Paradox
+#Set-Theme Paradox
+#oh-my-posh --init --shell pwsh --config ~/.omp.pwsh.yaml | Invoke-Expression
 
 
 # Chocolatey profile
@@ -33,3 +34,4 @@ If (-Not (Test-Path Variable:PSise)) {
   Set-Alias ls Get-ChildItemColorFormatWide -option AllScope
 }
 
+$(/usr/local/bin/brew shellenv) | Invoke-Expression
