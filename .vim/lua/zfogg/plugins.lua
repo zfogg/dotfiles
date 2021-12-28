@@ -139,8 +139,10 @@ require('packer').startup(function(use) -- {{{
       config = [[
         vim.cmd('ALEEnable')
         require('rc.ale')
+        require("nvim-ale-diagnostic")
       ]],
       requires = {
+        {'nathanmsmith/nvim-ale-diagnostic', },
         --{'prabirshrestha/vim-lsp', },
         --{'rhysd/vim-lsp-ale', },
       },

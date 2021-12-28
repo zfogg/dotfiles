@@ -101,7 +101,8 @@ endif
     "nnoremap <C-S-{> :lnext<CR>
     "nnoremap <C-S-}> :lprevious<CR>
     nnoremap <Leader>, :lnext<CR>
-    nnoremap <Leader>< :lprevious<CR>
+    "nnoremap <Leader>< :lprevious<CR>
+    nnoremap mm        :lprevious<CR>
 
     " A 'scrolling' effect.
     " FIXME: doesn't really work with in my iTerm+tmux setup.
