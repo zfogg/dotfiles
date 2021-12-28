@@ -336,17 +336,27 @@ do
   end
 end
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    --virtual_text     = true,
-    virtual_text     = {
-      prefix = "",
-      spacing = 4,
-    },
-    underline        = true,
-    signs            = true,
-    update_in_insert = true,
-  })
+if 1 == vim.fn.PHas("nvim-ale-diagnostic") then
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text     = false,
+      underline        = false,
+      signs            = false,
+      update_in_insert = false,
+    })
+else
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      --virtual_text     = true,
+      virtual_text     = {
+        prefix = "",
+        spacing = 4,
+      },
+      underline        = true,
+      signs            = true,
+      update_in_insert = true,
+    })
+end
 
 -- INFO: https://raw.githubusercontent.com/beauwilliams/Dotfiles/d521519388b4b371fed17177d68c662ff94f1055/Vim/nvim/.baks/lua/lsp.luadisabled
 --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(

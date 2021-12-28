@@ -1,6 +1,8 @@
 -- lua/rc/ale.lua
 
 vim.cmd [[
+let s:show=PHas('nvim-ale-diagnostic')
+
 let g:ale_enabled=1
 
 let g:ale_solidity_solc_executable='solc'
@@ -15,9 +17,9 @@ let g:ale_lint_on_enter=1
 let g:ale_lint_on_save=1
 
 let g:ale_set_highlights=1
-let g:ale_set_signs=0
-let g:ale_echo_cursor=1
-let g:ale_virtualtext_cursor=0
+let g:ale_set_signs=s:show
+let g:ale_echo_cursor=s:show
+let g:ale_virtualtext_cursor=s:show
 let g:ale_cursor_detail=1
 let g:ale_set_balloons=1
 
