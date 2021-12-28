@@ -126,7 +126,7 @@ lsp_installer.on_server_ready(function(server)
       'javascript.jsx',
       'typescript',
       'typescriptreact',
-      'typescript.tsx'
+      'typescript.tsx',
     };
     opts.root_dir = util.root_pattern(
       '.eslintrc',
@@ -135,6 +135,20 @@ lsp_installer.on_server_ready(function(server)
       '.eslintrc.yaml',
       '.eslintignore',
       'package.json',
+      '.git'
+    );
+  elseif server.name == 'solidity_ls' then
+    opts.cmd = {
+      'solc',
+      '@openzeppelin=node_modules/@openzeppelin',
+      '--lsp',
+    };
+    opts.filetypes = {
+      'solidity',
+    };
+    opts.root_dir = util.root_pattern(
+      '.solhint.json',
+      '.soliumrc.json',
       '.git'
     );
   elseif server.name == 'sumneko_lua' then
@@ -153,6 +167,11 @@ lsp_installer.on_server_ready(function(server)
       },
     }
   elseif server.name == 'tsserver' then
+    opts.filetypes = {
+      'typescript',
+      'typescriptreact',
+      'typescript.tsx',
+    };
     function tsserver_on_attach(client, bufnr)
       if 1 == vim.fn.PHas('nvim-lsp-ts-utils') then
         -- disable tsserver formatting if you plan on formatting via null-ls
@@ -209,6 +228,7 @@ lsp_installer.on_server_ready(function(server)
       end
       common_on_attach(client, bufnr)
     end
+
     opts.on_attach = tsserver_on_attach
   end
 
@@ -270,56 +290,59 @@ end
 
 -- symbols-outline.nvim
 vim.g.symbols_outline = {
-    highlight_hovered_item = false,
-    show_guides = true,
-    auto_preview = false, -- experimental
-    position = 'right',
-    keymaps = {
-        close = "<Esc>",
-        goto_location = "<Cr>",
-        focus_location = "o",
-        hover_symbol = "<C-space>",
-        rename_symbol = "r",
-        code_actions = "a"
-    },
-    lsp_blacklist = {}
+  highlight_hovered_item = false,
+  show_guides = true,
+  auto_preview = false, -- experimental
+  position = 'right',
+  keymaps = {
+    close          = "<Esc>",
+    goto_location  = "<Cr>",
+    focus_location = "o",
+    hover_symbol   = "<C-space>",
+    rename_symbol  = "r",
+    code_actions   = "a"
+  },
+  lsp_blacklist = {}
 }
 
 -- LSP Enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] =
-    vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = true,
-        underline = true,
-        signs = true,
-        update_in_insert = false,
-    })
+--vim.lsp.handlers["textDocument/publishDiagnostics"] =
+    --vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+        --virtual_text = true,
+        --underline = true,
+        --signs = true,
+        --update_in_insert = false,
+    --})
 
 -- Send diagnostics to quickfix list
---do
---:qqq
-    --local method = "textDocument/publishDiagnostics"
-    --local default_handler = vim.lsp.handlers[method]
-    --vim.lsp.handlers[method] = function(err, method, result, client_id, bufnr,
-                                        --config)
-        --default_handler(err, method, result, client_id, bufnr, config)
-        --local diagnostics = vim.lsp.diagnostic.get_all()
-        --local qflist = {}
-        --for bufnr, diagnostic in pairs(diagnostics) do
-            --for _, d in ipairs(diagnostic) do
-                --d.bufnr = bufnr
-                --d.lnum = d.range.start.line + 1
-                --d.col = d.range.start.character + 1
-                --d.text = d.message
-                --table.insert(qflist, d)
-            --end
-        --end
-        --vim.lsp.util.set_qflist(qflist)
-    --end
---end
+do
+  local method = "textDocument/publishDiagnostics"
+  local default_handler = vim.lsp.handlers[method]
+  vim.lsp.handlers[method] = function(err, method, result, client_id, bufnr,
+    config)
+    default_handler(err, method, result, client_id, bufnr, config)
+    local diagnostics = vim.lsp.diagnostic.get_all()
+    local qflist = {}
+    for bufnr, diagnostic in pairs(diagnostics) do
+      for _, d in ipairs(diagnostic) do
+        d.bufnr = bufnr
+        d.lnum = d.range.start.line + 1
+        d.col = d.range.start.character + 1
+        d.text = d.message
+        table.insert(qflist, d)
+      end
+    end
+    vim.lsp.util.set_qflist(qflist)
+  end
+end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text     = true,
+    --virtual_text     = true,
+    virtual_text     = {
+      prefix = "",
+      spacing = 4,
+    },
     underline        = true,
     signs            = true,
     update_in_insert = true,
@@ -333,6 +356,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     --prefix = ""
   --}
 --})
+
 vim.fn.sign_define("LspDiagnosticsSignError", {
   text = "",
   texthl = "LspDiagnosticsSignError"

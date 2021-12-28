@@ -1,4 +1,4 @@
-" ftplugin/sh
+" after/ftplugin/sh
 scriptencoding utf-8
 
 

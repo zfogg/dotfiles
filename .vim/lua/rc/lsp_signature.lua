@@ -13,7 +13,7 @@ require "lsp_signature".setup({
   -- will set to true when fully tested, set to false will use whichever side has more space
   -- this setting will be helpful if you do not want the PUM and floating win overlap
   fix_pos = false,  -- set to true, the floating window will not auto-close until finish all parameters
-  hint_enable = true, -- virtual hint enable
+  hint_enable = false, -- virtual hint enable
   hint_prefix = "🐼 ",  -- Panda for parameter
   hint_scheme = "String",
   use_lspsaga = false,  -- set to true if you want to use lspsaga popup

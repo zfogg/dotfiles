@@ -136,7 +136,10 @@ require('packer').startup(function(use) -- {{{
     --};
     use {'dense-analysis/ale',
       cmd = 'ALEEnable',
-      config = 'vim.cmd[[ALEEnable]]',
+      config = [[
+        vim.cmd('ALEEnable')
+        require('rc.ale')
+      ]],
       requires = {
         --{'prabirshrestha/vim-lsp', },
         --{'rhysd/vim-lsp-ale', },
@@ -153,6 +156,7 @@ require('packer').startup(function(use) -- {{{
         'javascript.jsx', 'typescript.tsx',
         'css', 'sass', 'scss', 'less', 'stylus',
         'vim', 'lua',
+        'solidity',
       },
     }
     use { 'jackguo380/vim-lsp-cxx-highlight',
@@ -232,12 +236,12 @@ require('packer').startup(function(use) -- {{{
 
     --use { 'dstein64/nvim-scrollview' };
 
-    use { 'Shougo/echodoc.vim',
-      config = [[
-        vim.cmd('let g:echodoc#enable_at_startup=1')
-        vim.cmd('let g:echodoc#type="virtual"')
-      ]]
-    };
+    --use { 'Shougo/echodoc.vim',
+    --  config = [[
+    --    vim.cmd('set noshowmode')
+    --    vim.cmd('let g:echodoc#enable_at_startup=1')
+    --  ]]
+    --};
     use { 'Shougo/context_filetype.vim' };
     --use { 'Shougo/neco-syntax' };
     --use { 'Shougo/neco-vim' };

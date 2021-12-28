@@ -535,8 +535,8 @@ fi
 
 
 # wakatime {{{
-export ZSH_WAKATIME_PROJECT_DETECTION=true
-export ZSH_WAKATIME_BIN="${BREW}/bin/wakatime-cli"
-export WAKATIME_HOME=~/.wakatime
+#export ZSH_WAKATIME_PROJECT_DETECTION=true
+#export ZSH_WAKATIME_BIN="${BREW}/bin/wakatime-cli"
+#export WAKATIME_HOME=~/.wakatime
 # }}}
 
