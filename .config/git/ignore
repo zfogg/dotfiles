@@ -1,7 +1,6 @@
 .git/
 node_modules/
 bower_components/
-packages/
 vendor/
 cache/
 .atom/.apm/

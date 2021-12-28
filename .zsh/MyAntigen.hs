@@ -71,7 +71,7 @@ bundles = [
         --, (bundle "lukechilds/zsh-nvm")
             --{ fpathLocations = [] }
 
-        , (bundle "sobolevn/wakatime-zsh-plugin")
+        --, (bundle "sobolevn/wakatime-zsh-plugin")
             --{ fpathLocations = [] }
     ]
 
