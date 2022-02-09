@@ -268,12 +268,19 @@ if command_exists fzf; then
 
       zstyle ':completion:*' fzf-search-display true
 
-      zstyle ':completion::*:(-command-):*'                     fzf-search-display true
-      zstyle ':completion::*:(-command-):*'                     fzf-completion-opts --preview='eval eval echo {1}'
+      #zstyle ':completion::*:(-command-):*'                     fzf-search-display true
+      #zstyle ':completion::*:(-command-):*'                     fzf-completion-opts --preview='eval eval echo "\$"{1}'
       zstyle ':completion::*:(-parameter-|-brace-parameter-):*' fzf-search-display true
-      zstyle ':completion::*:(-parameter-|-brace-parameter-):*' fzf-completion-opts --preview='eval eval echo {1}'
+      zstyle ':completion::*:(-parameter-|-brace-parameter-):*' fzf-completion-opts --preview='eval eval echo "\$"{1}'
       zstyle ':completion::*:(export|unset|expand):*'           fzf-search-display true
-      zstyle ':completion::*:(export|unset|expand):*'           fzf-completion-opts --preview='eval eval echo {1}'
+      #zstyle ':completion::*:(export|unset|expand):*'           fzf-completion-opts --preview="eval eval echo $'$'{1}"
+      #zstyle ':completion::*:(export|unset|expand):*'           fzf-completion-opts --preview='echo $(eval eval echo {1})$(eval echo "\$"$(eval echo $(echo {1} | tr -d $"=")))'
+      zstyle ':completion::*:(export|unset|expand):*'           fzf-completion-opts --preview='
+      local cmd=$(echo $(eval eval echo {1} | tr -d $"="))
+      local val=$(echo $(eval echo "\$"$(eval echo $(echo {1} | tr -d $"="))))
+      echo "$cmd"
+      [[ ! -z $val ]] && echo "$val"
+      '
 
       zstyle ':completion:*:*:ls:*'                             fzf-search-display true
       zstyle ':completion::*:ls::*'                             fzf-completion-opts --preview='eval head {1}'
