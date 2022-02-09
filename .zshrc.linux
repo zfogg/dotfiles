@@ -1,0 +1,296 @@
+#!/usr/bin/env zsh
+# vim: set fdm=marker:
+
+
+# oh-my-zsh {{{
+# Path to your oh-my-zsh installation.
+export ZSH="/home/zfogg/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+#ZSH_THEME="robbyrussell"
+#ZSH_THEME="sporty_256"
+ZSH_THEME="ys"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
+# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git)
+plugins+=(zsh-autosuggestions)
+plugins+=(zsh-syntax-highlighting)
+plugins+=(zsh-history-substring-search)
+plugins+=(zsh-vim-mode)
+plugins+=(keys)
+
+source $ZSH/oh-my-zsh.sh
+# }}}
+
+
+# User configuration {{{
+if command_exists zshz; then
+  compdefas zshz z
+fi
+
+if command_exists direnv; then
+  eval "$(direnv hook zsh)"
+fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# }}}
+
+
+# Aliases {{{
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+function compdefas() { # INFO: https://unix.stackexchange.com/a/6340/99026
+  local a; a="$1"; shift
+  compdef "$_comps[$a]" "${(@)*}=$a"
+}
+alias sudo='nocorrect sudo -E '
+alias s='sudo'; compdefas sudo s
+alias htop="command sudo htop"
+
+function command_exists () { command -v "$1" 2> /dev/null >&2 }
+
+function compdefas() {
+  # INFO: https://unix.stackexchange.com/a/6340/99026
+  local a
+  a="$1"
+  shift
+  compdef "$_comps[$a]" "${(@)*}=$a"
+}
+
+alias   v='$EDITOR'
+alias  vi='$EDITOR'
+alias vim='$EDITOR'
+compdefas "$EDITOR" v vi vim
+
+alias zshrc='$EDITOR ~/.zshrc'
+
+function() { # grc
+  [[ `alias whois` == (whois=\'grc)* ]] && return
+  local grc_shell=/etc/grc."$(echo $SHELL | xargs basename)"
+  [[ -f $grc_shell ]] && source "$grc_shell"
+  local colourify='grc -es --colour=auto'
+  alias colourify="$colourify"
+  alias du="$colourify du"
+}
+
+alias ls >/dev/null && unalias ls
+alias ls="lsd --blocks=user,group,size,date,name --human-readable --size=short --timesort --date=relative --reverse --group-dirs=none --classify"
+#alias ls='ls -h --color=auto'
+alias  l='ls -1'
+alias ll='ls -1l'
+alias la='ls -1lA'
+alias lt='ls -1Al --tree --depth=2 --total-size'
+compdefas lsd ls l ll la lt
+
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -iv"
+
+#alias tmux="tmux -2"
+# }}}
+
+
+# arch, pacman, paccache {{{
+if [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
+  autoload -Uz add-zsh-hook
+  zshcache_time="$(date +%s%N)"
+  function rehash_precmd() {
+    if [[ -a /var/cache/zsh/pacman ]]; then
+      local paccache_time=$(date -r /var/cache/zsh/pacman +%s%N)
+      if (( zshcache_time < paccache_time )); then
+        rehash
+        zshcache_time="$paccache_time"
+      fi
+    fi
+  }
+  add-zsh-hook -Uz precmd rehash_precmd
+fi
+# }}}
+
+
+# FZF {{{
+if command_exists fzf; then
+  _fzf_compgen_path() {
+    eval "${FZF_DEFAULT_COMMAND} ${1}"
+  }
+
+  _fzf_compgen_dir() {
+    eval "${FZF_DEFAULT_COMMAND} ${1} --null | xargs -0 dirname | sort | uniq | tail -n+2"
+  }
+
+  function() {
+    export FZF_HISTORY_DIR="${XDG_DATA_HOME:-${HOME}/.fzf}/fzf"
+    [[ -d $FZF_HISTORY_DIR ]] || mkdir -p "$FZF_HISTORY_DIR"
+    export FZF_HISTORY_FILE="${FZF_HISTORY_DIR}/history"
+    export FZF_COMPLETION_TRIGGER=';;'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_CTRL_T_OPTS="
+      --preview '(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200'
+    "
+
+    export FZF_FILE_PREVIEW_OPT="(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200"
+    export FZF_CTRL_Z_KEYBINDS="
+    --bind=ctrl-d:half-page-down \
+    --bind=ctrl-u:half-page-up \
+    --bind=ctrl-space:toggle-preview \
+    "
+
+    export FZF_CTRL_R_OPTS="
+      --no-preview \
+      --multi \
+      --history=${FZF_HISTORY_FILE} \
+      ${CTRL_Z_KEYBINDS}
+      --bind=alt-n:down \
+      --bind=alt-p:up \
+    "
+
+    export FZF_DEFAULT_OPTS="
+      --ansi \
+      --layout=reverse \
+      --info=inline \
+      --height=100% \
+      --multi \
+      ${CTRL_Z_KEYBINDS}
+      --bind ctrl-u:toggle-all
+      --no-mouse \
+    "
+
+    #if command_exists fd; then
+      #export FZF_DEFAULT_COMMAND='fd --type f'
+    #fi
+    [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+    #local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
+    #find "${fzfetc[@]}" &>/dev/null \
+      #&& source "${fzfetc[@]}"
+
+    # FZF_ALT_C_COMMAND
+    if command_exists fd; then
+      export FZF_ALT_C_COMMAND='fd --type d'
+    fi
+    export FZF_ALT_C_OPTS="
+      --preview '(tree -C {}) 2>/dev/null | head -200'
+    "
+    # / ALT-C -> CTRL-G
+    bindkey -r '\ec'
+    bindkey '^G' fzf-cd-widget
+
+    # / CTRL-T -> CTRL-P
+    bindkey -r '^T'
+    bindkey -r '^F'
+    bindkey -v '^F' fzf-file-widget
+  }
+
+  function vo() {
+    $EDITOR -o "`rgf | fzf --preview=$FZF_FILE_PREVIEW_OPT`"
+  }
+
+  function() {
+    if [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
+      local fzf_tab_completion_f="/usr/share/fzf-tab-completion/zsh/fzf-zsh-completion.sh"
+    elif [[ ${OSX:-0} == ${TRUE:-1} ]]; then
+      local fzf_tab_completion_f="$HOME/src/github.com/lincheney/fzf-tab-completion/zsh/fzf-zsh-completion.sh"
+    fi
+    if [[ -f $fzf_tab_completion_f ]]; then
+      source $fzf_tab_completion_f
+      function smart_completion() {
+        if [[ "$LBUFFER" =~ [a-zA-Z0-9]$ ]]; then
+          _main_complete
+        else
+          fzf_completion
+        fi
+      }
+      zle -C fzf_completion complete-word smart_completion
+
+      #bindkey '^I' fzf_completion
+
+      zstyle ':completion:*' fzf-search-display true
+
+      zstyle ':completion::*:(-command-):*'                     fzf-search-display true
+      zstyle ':completion::*:(-command-):*'                     fzf-completion-opts --preview='eval eval echo {1}'
+      zstyle ':completion::*:(-parameter-|-brace-parameter-):*' fzf-search-display true
+      zstyle ':completion::*:(-parameter-|-brace-parameter-):*' fzf-completion-opts --preview='eval eval echo {1}'
+      zstyle ':completion::*:(export|unset|expand):*'           fzf-search-display true
+      zstyle ':completion::*:(export|unset|expand):*'           fzf-completion-opts --preview='eval eval echo {1}'
+
+      zstyle ':completion:*:*:ls:*'                             fzf-search-display true
+      zstyle ':completion::*:ls::*'                             fzf-completion-opts --preview='eval head {1}'
+
+      zstyle ':completion:*:*:cd:*'                             fzf-search-display true
+
+      zstyle ':completion:*:*:git:*'                            fzf-search-display true
+      zstyle ':completion::*:git::git,add,*'                    fzf-search-display true
+      # preview a `git status` when completing git add
+      zstyle ':completion::*:git::git,add,*'                    fzf-completion-opts --preview='git -c color.status=always status --short'
+      # if other subcommand to git is given, show a git diff or git log
+      zstyle ':completion::*:git::*,[a-z]*'                     fzf-completion-opts --preview='
+      eval set -- {+1}
+      for arg in "$@"; do
+        { git diff --color=always -- "$arg" | git log --color=always "$arg" } 2>/dev/null
+        done'
+    fi
+  }
+fi
+# }}}

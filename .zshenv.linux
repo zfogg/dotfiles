@@ -1,0 +1,103 @@
+#!/usr/bin/env zsh
+# vim: set fdm=marker sw=2:
+#   ~/.zshenv
+
+
+# pre-config funcs {{{
+function command_exists() {
+  command -v "$1" 2>/dev/null 1>&2
+}
+# }}}
+
+
+# {{{ INFO: zfogg's vars
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_DATA_HOME="${HOME}/.local/share"
+
+export  TRUE='1'
+export FALSE='0'
+
+export OSX="$(
+  [[ $OSTYPE =~ "darwin" ]]
+  [[ $? == "0" ]] \
+    && echo "${TRUE:-1}" \
+    || echo "${FALSE-0}")"
+
+export LINUX="$(
+  [[ $OSTYPE =~ "linux" ]]
+  [[ $? == "0" ]] \
+    && echo "${TRUE:-1}" \
+    || echo "${FALSE-0}")"
+
+if [[ $LINUX == $TRUE ]]; then
+  export XDG_RUNTIME_DIR=/run/user/$UID
+fi
+
+export DOTFILES=~/.dotfiles
+export DOTVIM=~/.vim
+export MYVIMRC="$DOTVIM/init.vim"
+
+unset MAILCHECK
+
+#export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh"
+#export   ZSHRC="$ZDOTDIR/.zshrc"
+unsetopt GLOBAL_RCS
+
+if [[ $OSX == $TRUE ]]; then
+  export BREW='/usr/local'
+  export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
+elif [[ $LINUX == $TRUE ]]; then
+  export BREW='/usr'
+else
+  export BREW='/usr/local'
+fi
+
+export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --chop-long-lines --HILITE-UNREAD --tabs=4 --no-init --window=-4'
+
+if command_exists nvim; then
+  export EDITOR='nvim'
+elif command_exists vim; then
+  export EDITOR='vim'
+elif command_exists vi; then
+  export EDITOR='vi'
+else
+  export EDITOR='nano'
+fi
+
+export VISUAL="$EDITOR"
+
+export LANG=en_US.UTF-8
+export ARCHFLAGS="-arch x86_64"
+# }}}
+
+
+# {{{ INFO: $PATH
+typeset -U path
+
+path=(
+  "$path[@]"
+)
+
+# FIXME: idk bunyan ccache broke
+#if command -v colorgcc ccache 2> /dev/null >&2; then
+if false; then
+  export CCACHE_PATH=$BREW/bin
+  path=(
+    $BREW/lib/colorgcc/bin
+    $BREW/lib/ccache/bin
+    "$path[@]"
+  )
+fi
+
+path=(
+  $HOME/.local/share/gem/ruby/3.0.0/bin
+  $BREW/local/{bin,sbin}
+  $BREW/{bin,sbin}
+  "$path[@]"
+  /bin
+  /sbin
+)
+
+export PATH
+# }}}
