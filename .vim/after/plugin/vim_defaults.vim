@@ -1,13 +1,13 @@
-" vim_defaults
+" after/plugin/vim_defaults
 scriptencoding utf-8
 
 
-"let g:loaded_python_provider  = 0
+" {{{ INFO: options to disable
+let g:loaded_python_provider  = 0
 "let g:loaded_python3_provider = 0
 "let g:loaded_ruby_provider    = 0
 "let g:loaded_node_provider    = 0
 let g:loaded_perl_provider    = 0
-
 
 " https://github.com/mhinz/vim-galore#standard-plugins
 let g:loaded_getscriptPlugin  = v:true
@@ -17,10 +17,9 @@ let g:loaded_rrhelper         = v:true
 "let g:loaded_spellfile_plugin = v:true
 let g:loaded_vimballPlugin    = v:true
 
-
-let g:loaded_netrw                         = v:true              " $VIMRUNTIME/autoload/netrw.vim
-let g:loaded_netrwFileHandlers             = v:true              " $VIMRUNTIME/autoload/netrwFileHandlers.vim
-let g:loaded_netrwSettings                 = v:true              " $VIMRUNTIME/autoload/netrwSettings.vim
+"let g:loaded_netrw                         = v:true              " $VIMRUNTIME/autoload/netrw.vim
+"let g:loaded_netrwFileHandlers             = v:true              " $VIMRUNTIME/autoload/netrwFileHandlers.vim
+"let g:loaded_netrwSettings                 = v:true              " $VIMRUNTIME/autoload/netrwSettings.vim
 "let g:loaded_sql_completion                = 160                 " $VIMRUNTIME/autoload/sqlcomplete.vim
 "let g:loaded_sql_completion                = v:true              " $VIMRUNTIME/autoload/sqlcomplete.vim
 let g:loaded_tar                           = v:true              " $VIMRUNTIME/autoload/tar.vim
@@ -33,7 +32,7 @@ let loaded_matchit                         = v:true              " $VIMRUNTIME/p
 "let g:loaded_matchparen                    = v:true              " $VIMRUNTIME/plugin/matchparen.vim
 let g:loaded_matchparen                    = v:true                   " NOTE: https://github.com/itchyny/vim-parenmatch
 "let g:loaded_netrwPlugin                   = '156'               " $VIMRUNTIME/plugin/netrwPlugin.vim
-let g:loaded_netrwPlugin                   = v:true
+"let g:loaded_netrwPlugin                   = v:true
 let loaded_rrhelper                        = v:true              " $VIMRUNTIME/plugin/rrhelper.vim
 let loaded_spellfile_plugin                = v:true              " $VIMRUNTIME/plugin/spellfile.vim
 "let g:loaded_tarPlugin                     = 'v29'               " $VIMRUNTIME/plugin/tarPlugin.vim
@@ -64,9 +63,10 @@ let g:menutrans_no_file                    = v:true              " $VIMRUNTIME/m
 let g:menutrans_spell_change_ARG_to        = v:true              " $VIMRUNTIME/menu.vim
 let g:menutrans_spell_add_ARG_to_word_list = v:true              " $VIMRUNTIME/menu.vim
 let g:menutrans_spell_ignore_ARG           = v:true              " $VIMRUNTIME/menu.vim
+" }}
 
 
-" {{{ INFO ~/.plugins/rc/
+" {{{ INFO: ~/.plugins/rc/
 let s:rc = {}
 
 " INFO: ~/.vim/plugin/rc/cursorline.vim
@@ -74,5 +74,4 @@ let s:rc.cursor_line = {
     \ 'auto': v:true,
     \ 'restore': v:true,
     \}
-
 " }}
