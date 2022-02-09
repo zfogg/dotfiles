@@ -358,8 +358,14 @@ else
   export EDITOR='nano'
 fi
 
-if [[ -v NVIM || -v VIM ]]; then
-  export MANPAGER="$EDITOR -c 'set ft=man' -"
+# INFO: old lol
+#export MANPAGER="$EDITOR -c 'set ft=man' -"
+
+# INFO: new lmaoo
+if [[ -v NVIM ]]; then
+  export MANPAGER="nvim +Man!"
+elif [[ -v VIM ]]; then
+  export MANPAGER="vim -c 'set ft=man' -"
 fi
 
 export VISUAL="$EDITOR"
@@ -527,16 +533,8 @@ fi
 # }}}
 
 
-# wxWidgets (for Audacity) {{{
+# xcode $SDKROOT {{{
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
   export SDKROOT="`xcrun --show-sdk-path`"
 fi
 # }}}
-
-
-# wakatime {{{
-#export ZSH_WAKATIME_PROJECT_DETECTION=true
-#export ZSH_WAKATIME_BIN="${BREW}/bin/wakatime-cli"
-#export WAKATIME_HOME=~/.wakatime
-# }}}
-

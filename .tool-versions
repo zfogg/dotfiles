@@ -2,7 +2,7 @@
 
 direnv latest latest:2 2.29.0
 java   latest adoptopenjdk-16.0.1+9
-nodejs latest 17.2.0 16.13.0 lts 14.16.1
+nodejs latest 17.3.0 16.13.0 lts 14.16.1
 yarn   latest latest:1.22 1.22.17
 python latest 3.10.0 pypy-c-jit-latest pypy3.7-c-jit-latest 2.7.18 system
 ruby   latest latest:3 3.0.3 latest:2 2.7.5

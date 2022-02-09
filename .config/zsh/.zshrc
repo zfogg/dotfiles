@@ -190,9 +190,14 @@ if command_exists fzf; then
     export FZF_ALT_C_OPTS="
       --preview '(tree -C {}) 2>/dev/null | head -200'
     "
-    # / ALT-C -> CTRL-.
+    # / ALT-C -> CTRL-G
     bindkey -r '\ec'
-    bindkey '^z' fzf-cd-widget
+    bindkey '^G' fzf-cd-widget
+
+    # / CTRL-T -> CTRL-P
+    bindkey -r '^T'
+    bindkey -r '^F'
+    bindkey -v '^F' fzf-file-widget
   }
   function vo() {
     $EDITOR -o "`rgf | fzf --preview=$FZF_FILE_PREVIEW_OPT`"
@@ -214,7 +219,7 @@ fi
 #function npx()  { nvmRC npx;  npx  "$@"; }
 # node, npm, nvm }}}
 
-# node, npm, nvm {{{
+# python, pip, pyenv {{{
 #function() {
   #if [[ -d $PYENV_ROOT ]] && command_exists pyenv && command_exists pyenv-virtualenv; then
     #eval "$(pyenv            init -)"
@@ -254,8 +259,6 @@ fi
 #  source "${VIRTUAL_ENV}/bin/activate"
 #fi
 # python, pip, pyenv }}}
-
-
 # plugins }}}
 
 
@@ -313,6 +316,17 @@ function() {
 
 # crypto auth agents {{{
 function() {
+  local sfa_script=$(which ssh-find-agent.sh)
+  [[ -x "$sfa_script" ]] && source "$sfa_script"
+  ssh_find_agent -a || \
+    eval $(ssh-agent) > /dev/null
+  pgrep gpg-agent >/dev/null || \
+    gpg-agent --daemon --default-cache-ttl 1728000 --max-cache-ttl 1728000
+  export GPG_AGENT_INFO=$(gpgconf --list-dirs agent-socket)
+  export GPG_TTY=$(tty)
+}
+
+function() {
   #export SSH_AUTH_SOCK=/Users/zfogg/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh
   #local keys="${(f)ssh_keys}"
   #local ssh_keys="$(for x in `\ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
@@ -323,21 +337,21 @@ function() {
     typeset -a keys=()
     local gpg_keyid_file="$HOME"/.gnupg/.keyid
     local ssh_keyid_file="$HOME"/.ssh/.keyid
-    if [[ -f $gpg_keyid_file ]] { keys+=`cat "$gpg_keyid_file"` }
+    if [[ -f $gpg_keyid_file ]] { keys+=$(cat "$gpg_keyid_file") }
     if [[ -f $ssh_keyid_file ]] { keys+="$ssh_keyid_file" }
-    export GPG_AGENT_INFO="~/.gnupg/S.gpg-agent:$(pgrep gpg-agent):1"
     local life=28800
     #--systemd \
-    eval "`keychain \
+    #--noask \
+    #--quick \
+    eval $(keychain \
       --dir "${XDG_CACHE_HOME:-~/.cache}"/.keychain \
       --confhost \
-      --quick \
       --eval \
-      --noask \
       --timeout "$life" \
       --agents ssh,gpg \
       --quiet \
-      --inherit any-once "${(@f)keys}"`"
+      --inherit any \
+      "${(@f)keys}")
   fi
 }
 # }}}
@@ -371,3 +385,12 @@ HEROKU_AC_ZSH_SETUP_PATH=/home/zfogg/.cache/heroku/autocomplete/zsh_setup && tes
   #bindkey -r "${EMOJI_CLI_KEYBIND:-^s}"
   #bindkey -v "${EMOJI_CLI_KEYBIND:-^s}" emoji::cli
 #fi
+
+
+# ishan / quackduck: magic
+function() {
+  local magicf=~/bin/magic.sh
+  if [[ -f $magicf ]]; then
+    source "$magicf"
+  fi
+}
