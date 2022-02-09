@@ -33,48 +33,6 @@ source "$HOME/.zsh/antigen-hs/init.zsh"
 # }}}
 
 
-# $ZDOTDIR/z/ {{{
-# path, manpath, fpath, infopath
-source "$ZDOTDIR/z/path.zsh"
-
-# bindkey, zle
-source "$ZDOTDIR/z/keys.zsh"
-
-# history
-source "$ZDOTDIR/z/history.zsh"
-
-# ls colors, highlighting
-source "$ZDOTDIR/z/theme.zsh"
-
-# completions, complist, compinit, compdef
-source "$ZDOTDIR/z/complete.zsh"
-# $ZDOTDIR/z/ }}}
-
-
-# terminfo, iTerm2 integration {{{
-function() {
-  if [[ -v TERM && $TERM != "" ]]; then
-    local dot_ti="$HOME/.terminfo/$TERM.ti"
-    if [[ ! -f $dot_ti ]]; then
-      infocmp "$TERM" > "$dot_ti"
-      [[ $? == 0 ]] \
-        && 2>/dev/null tic "$dot_ti" \
-        || 1>&2 echo "tic error - \$TERM='$TERM'"
-    fi
-  fi
-}
-
-if [[ ${OSX:-0} == ${TRUE:-1} && -v ITERM_SESSION_ID ]]; then
-  function() {
-    local iterm2_integration="$HOME/.iterm2_shell_integration.${SHELL_NAME:t}"
-    [[ -f $iterm2_integration  ]] && source "$iterm2_integration"
-    # INFO: github.com/garabik/grc
-    #[[ -f $BREW/etc/grc.bashrc ]] && source "$BREW/etc/grc.bashrc"
-  }
-fi
-# }}}
-
-
 # plugins {{{
 #if command_exists direnv; then
   export AUTOENV_DISABLED=0
@@ -260,6 +218,48 @@ fi
 #fi
 # python, pip, pyenv }}}
 # plugins }}}
+
+
+# $ZDOTDIR/z/ {{{
+# path, manpath, fpath, infopath
+source "$ZDOTDIR/z/path.zsh"
+
+# bindkey, zle
+source "$ZDOTDIR/z/keys.zsh"
+
+# history
+source "$ZDOTDIR/z/history.zsh"
+
+# ls colors, highlighting
+source "$ZDOTDIR/z/theme.zsh"
+
+# completions, complist, compinit, compdef
+source "$ZDOTDIR/z/complete.zsh"
+# $ZDOTDIR/z/ }}}
+
+
+# terminfo, iTerm2 integration {{{
+function() {
+  if [[ -v TERM && $TERM != "" ]]; then
+    local dot_ti="$HOME/.terminfo/$TERM.ti"
+    if [[ ! -f $dot_ti ]]; then
+      infocmp "$TERM" > "$dot_ti"
+      [[ $? == 0 ]] \
+        && 2>/dev/null tic "$dot_ti" \
+        || 1>&2 echo "tic error - \$TERM='$TERM'"
+    fi
+  fi
+}
+
+if [[ ${OSX:-0} == ${TRUE:-1} && -v ITERM_SESSION_ID ]]; then
+  function() {
+    local iterm2_integration="$HOME/.iterm2_shell_integration.${SHELL_NAME:t}"
+    [[ -f $iterm2_integration  ]] && source "$iterm2_integration"
+    # INFO: github.com/garabik/grc
+    #[[ -f $BREW/etc/grc.bashrc ]] && source "$BREW/etc/grc.bashrc"
+  }
+fi
+# }}}
 
 
 # arch, pacman, paccache {{{

@@ -24,3 +24,6 @@ set skip-completed-text on
 set input-meta on
 set output-meta on
 set convert-meta on
+
+$include function rl_custom_complete /usr/local/lib/librl_custom_complete.dylib
+"\t": rl_custom_complete
