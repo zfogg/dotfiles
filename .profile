@@ -2,12 +2,12 @@
 
 
 function current_shell() {
-    current_shell=`ps -p $$ | awk '$1 != "PID" {print $(NF)}' | grep -Eo '(sh|bash|zsh|fish)'`
-    basename "$current_shell"
+  current_shell=`ps -p $$ | awk '$1 != "PID" {print $(NF)}' | grep -Eo '(sh|bash|zsh|fish)'`
+  basename "$current_shell"
 }
 
 function command_exists() {
-    command -v "$1" 2>/dev/null 1>&2
+  command -v "$1" 2>/dev/null 1>&2
 }
 
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -18,28 +18,28 @@ export  TRUE='1'
 export FALSE='0'
 
 export OSX=$(
-  if [[ $OSTYPE =~ darwin ]]; then
-    echo "${TRUE:-1}"
-  else
-    echo "${FALSE-0}"
-  fi
+if [[ $OSTYPE =~ darwin ]]; then
+  echo "${TRUE:-1}"
+else
+  echo "${FALSE-0}"
+fi
 )
 
 export LINUX=$(
-  if [[ "$OSTYPE" =~ linux ]]; then
-    echo "${TRUE:-1}"
-  else
-    echo "${FALSE-0}"
-  fi
+if [[ "$OSTYPE" =~ linux ]]; then
+  echo "${TRUE:-1}"
+else
+  echo "${FALSE-0}"
+fi
 )
 
 if [[ $OSX == "$TRUE" ]]; then
-    export BREW='/usr/local'
-    export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
+  export BREW='/usr/local'
+  export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
 elif [ "$LINUX" = "$TRUE" ]; then
-    export BREW='/usr'
+  export BREW='/usr'
 else
-    export BREW='/usr/local'
+  export BREW='/usr/local'
 fi
 
 if [[ $OSX = "$TRUE" ]]; then

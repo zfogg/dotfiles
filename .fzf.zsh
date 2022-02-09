@@ -1,29 +1,13 @@
 # Setup fzf
 # ---------
-
-#if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-#export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
-#fi
-
-# Set root for OS
-# ---------
-local _z_fzf_root=/dev/null
-if [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
-  _z_fzf_root=/usr/share/fzf
-elif [[ $OSX == $TRUE ]]; then
-  _z_fzf_root=/usr/local/opt/fzf/shell
+if [[ ! "$PATH" == */Users/zfogg/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/start/fzf/bin* ]]; then
+  export PATH="${PATH:+${PATH}:}/Users/zfogg/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/start/fzf/bin"
 fi
 
 # Auto-completion
 # ---------------
-function() {
-  local completion="${_z_fzf_root}/completion.zsh"
-  [[ $- == *i* && -f $completion ]] && source "$completion" 2>/dev/null
-}
+[[ $- == *i* ]] && source "/Users/zfogg/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/start/fzf/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
 # ------------
-function() {
-  local keybindings="${_z_fzf_root}/key-bindings.zsh"
-  [[ -f $keybindings ]] && source "$keybindings"
-}
+source "/Users/zfogg/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/start/fzf/shell/key-bindings.zsh"

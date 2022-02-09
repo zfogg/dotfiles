@@ -43,13 +43,13 @@ nnoremap <Leader>q :q<CR>
 
 " vimrc
 if exists('g:myvimrc_f') && filereadable(g:myvimrc_f)
-    if PHas('nerdtree')
+    "if PHas('nerdtree')
         exe 'nn <silent> <Leader>v :'
             \.'silent! $tabe! '.g:myvimrc_f        .' <Bar> '
             \.'silent! NERDTreeFromBookmark vimrc' .' <Bar> '
             \.'wincmd p'                           .' <Bar> '
             \.'<CR>'
-    endif
+    "endif
     exe 'nn <silent> <Leader>V :'
         \.'so '.g:myvimrc_f                    .' <Bar> '
         \.'redraw!'                            .' <Bar> '
@@ -101,7 +101,8 @@ endif
     "nnoremap <C-S-{> :lnext<CR>
     "nnoremap <C-S-}> :lprevious<CR>
     nnoremap <Leader>, :lnext<CR>
-    nnoremap <Leader>< :lprevious<CR>
+    "nnoremap <Leader>< :lprevious<CR>
+    nnoremap mm        :lprevious<CR>
 
     " A 'scrolling' effect.
     " FIXME: doesn't really work with in my iTerm+tmux setup.
@@ -213,24 +214,27 @@ endif
             set inccommand=nosplit
         endif
     endif
+
+    nnoremap <Leader>n<Space>     :NERDTreeToggle<CR>:wincmd p<CR>
+    nnoremap <Leader>nn           :call z#nerdtree#AutoCwd()<CR>
 " }}}
 
 
 " files - search, sort, find, open {{{
-    if z#util#HasPlugin('fzf.vim')
-        nnoremap <C-f>     :Rg! 
-        nnoremap <Leader>f :execute ':Rg! <C-r><C-w>'<Cr>
-        nnoremap <C-g>     :GFiles<Cr>
-        nnoremap <C-p>     :Files<Cr>
+    "if z#util#HasPlugin('fzf.vim')
+    "    nnoremap <C-f>     :Rg! 
+    "    nnoremap <Leader>f :execute ':Rg! <C-r><C-w>'<Cr>
+    "    nnoremap <C-g>     :GFiles<Cr>
+    "    nnoremap <C-p>     :Files<Cr>
 
-        " Mapping selecting mappings
-        nmap <leader><tab> <plug>(fzf-maps-n)
-        xmap <leader><tab> <plug>(fzf-maps-x)
-        omap <leader><tab> <plug>(fzf-maps-o)
+    "    " Mapping selecting mappings
+    "    nmap <leader><tab> <plug>(fzf-maps-n)
+    "    xmap <leader><tab> <plug>(fzf-maps-x)
+    "    omap <leader><tab> <plug>(fzf-maps-o)
 
-        " Insert mode completion
-        imap <c-x><c-k> <plug>(fzf-complete-word)
-        imap <c-x><c-f> <plug>(fzf-complete-path)
-        imap <c-x><c-l> <plug>(fzf-complete-line)
-    endif
+    "    " Insert mode completion
+    "    imap <c-x><c-k> <plug>(fzf-complete-word)
+    "    imap <c-x><c-f> <plug>(fzf-complete-path)
+    "    imap <c-x><c-l> <plug>(fzf-complete-line)
+    "endif
 " }}}

@@ -7,6 +7,7 @@
 # custom functions from $FPATH (prolly ~/.zsh/site-functions)
 autoload -Uz \
   ppvar \
+  gco \
   trim-whitespace
 
 
@@ -230,7 +231,8 @@ alias  gp='git push'
 alias grv='git remote -v'
 alias gst='git status'
 alias  ga='git add'
-alias gco='git checkout'
+# INFO: autoload this
+#alias gco='git checkout'
 alias gcm='git checkout master'
 
 compdefas git gc gca gd gdd gl gp grv gst ga gco gcm

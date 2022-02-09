@@ -183,4 +183,3 @@ function() { # {{{ AFTER platform-specifics
   export CLASSPATH
   export INFOPATH
 # }}}
-

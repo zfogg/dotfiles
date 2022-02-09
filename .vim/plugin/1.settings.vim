@@ -62,9 +62,9 @@ set viewoptions+=cursor,curdir,folds
     set complete+=i
     set complete-=t
     "set completeopt=menuone,preview,noinsert,noselect
-    set completeopt=menu,menuone,preview,noinsert,noselect
+    "set completeopt=menu,menuone,preview,noinsert,noselect
     "set completeopt=menuone,preview,noinsert,noselect
-    "set completeopt=menu,menuone,preview
+    set completeopt=menu,menuone,preview
     set conceallevel=2 concealcursor=nvic
 
     let s:unix_dictionary='/usr/share/dict/words'
@@ -74,34 +74,33 @@ set viewoptions+=cursor,curdir,folds
 
     let s:vim_data_dirs = {}
     let s:editor_name = fnamemodify($VIM, ':t')
-    for [s:dir_name, s:dir_path] in items({
-        \ 'undo'   : 'undo',
-        \ 'swap'   : 'swap',
-        \ 'backup' : 'backup',
-    \ })
-        "let s:dir = g:dotvim_f.'/'.s:dir_path
+    for [s:dir_name, s:dir_path] in items({ 'undo':'undo', 'swap':'swap', 'backup':'backup', })
+        ""let s:dir = g:dotvim_f.'/'.s:dir_path
         if has('unix')
             let s:data_home = z#util#GetSetEnv('XDG_DATA_HOME', $HOME.'/.local/share')
-            "if isdirectory(s:data_home)
+            ""if isdirectory(s:data_home)
             let s:dir = $XDG_DATA_HOME.'/'.s:editor_name.'/'.s:dir_path
         elseif has('win32')
             let s:dir = $LOCALAPPDATA.'/'.s:editor_name.'-data'.'/'.s:dir_path
         endif
-        if !isdirectory(s:dir) | call mkdir(s:dir, "p") | endif
+        if !isdirectory(s:dir) | call mkdir(s:dir, 'p') | endif
         let s:vim_data_dirs[s:dir_name] = s:dir
     endfor
 
     if has('persistent_undo')
         set undofile
-        let &undodir = z#util#TempDirs('', s:vim_data_dirs['undo'])
     endif
 
-    let &directory = z#util#TempDirs('//', s:vim_data_dirs['swap'])
+    if has('nvim')
+      let &undodir   = z#util#TempDirs('',   s:vim_data_dirs['undo'])
+      let &directory = z#util#TempDirs('//', s:vim_data_dirs['swap'])
+      let &backupdir = z#util#TempDirs('',   s:vim_data_dirs['backup'])
+    endif
+
     set swapfile
 
     let g:omni_sql_no_default_maps = 1
 
-    let &backupdir = z#util#TempDirs('', s:vim_data_dirs['backup'])
     if has('wildignore')
         let &backupskip = &backupskip.','.s:vim_data_dirs['undo']  .'/*'
         let &backupskip = &backupskip.','.s:vim_data_dirs['swap']  .'/*'

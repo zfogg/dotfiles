@@ -40,13 +40,15 @@ func! z#constants#globals#ConfigPaths()
     let g:dotfiles_r = fnamemodify(g:dotfiles, ':~')
 
     " dir/ ~/.vim/ 'g:dotvim'
-    let g:dotvim_l   = '.vim'
-    let g:dotvim     = exists('$DOTVIM')               ? $DOTVIM   : g:dotfiles.'/'.g:dotvim_l
+    "let g:dotvim_l   = '.vim'
+    "let g:dotvim     = exists('$DOTVIM')               ? $DOTVIM   : g:dotfiles.'/'.g:dotvim_l
+    let g:dotvim     = stdpath("config")
     let g:dotvim_f   = expand(g:dotvim)
     let g:dotvim_r   = fnamemodify(g:dotvim,   ':~')
 
     " file ~/.vim/init.vim 'g:myvimrc'
-    let g:myvimrc_l = 'init.vim'
+    "let g:myvimrc_l = 'init.vim'
+    let g:myvimrc_l = 'init.lua'
     let g:myvimrc   = g:dotvim  .'/'.g:myvimrc_l
     let g:myvimrc_f = g:dotvim_f.'/'.g:myvimrc_l
     let g:myvimrc_r = g:dotvim_r.'/'.g:myvimrc_l
