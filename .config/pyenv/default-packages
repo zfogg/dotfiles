@@ -9,3 +9,4 @@ flake8
 pep8
 tox
 pylint
+jedi<0.18.0,>=0.17.2

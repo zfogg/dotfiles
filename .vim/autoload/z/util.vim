@@ -56,6 +56,11 @@ fun! z#util#HasPlugin(name) abort
     return has_key(l:plugs, l:name)
 endfun
 
+fun! z#util#IfPlugin(cond, ...) abort
+    let l:opts = get(a:000, 0, {})
+    let l:cond = get(a:, 'cond', v:false)
+    return l:cond ? l:opts : extend(l:opts, { 'on': [], 'for': [] })
+endfun
 
 fun! z#util#GetSetEnv(env_key, env_val) abort
     let l:environ = environ()

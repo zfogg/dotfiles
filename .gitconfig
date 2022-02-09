@@ -5,9 +5,10 @@
 
 [core]
     	editor       = $EDITOR
-    	pager        = $PAGER
+    	;pager        = $PAGER
     	#pager        = $PAGER 2>/dev/null
     	;pager        = diff-so-fancy | less --tabs=4 -RFX
+    	;pager        = delta
     	eol          = lf
     	autocrlf     = input
     	excludesFile = ~/.config/git/ignore
@@ -22,6 +23,7 @@
     	output    = compact
 [commit]
     	gpgsign = true
+    	;gpgsign = false
 [push]
     	default = simple
 [pull]
@@ -58,8 +60,8 @@
     	keepBackup    = true
 
 [difftool "nvim"]
-    	;cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
-    	cmd = vim -d \"$LOCAL\" \"$REMOTE\"
+    	cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
+    	;cmd = vim -d \"$LOCAL\" \"$REMOTE\"
     	trustExitCode = true
 [difftool "vimdiff3"]
     	path = nvim
@@ -106,3 +108,55 @@
 	defaultBranch = master
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+
+
+; INFO: https://github.com/dandavison/delta {{{
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+
+[delta]
+    ;features = decorations
+    features = unobtrusive-line-numbers decorations
+    side-by-side = true
+    line-numbers = true
+    whitespace-error-style = 22 reverse
+    syntax-theme = Monokai Extended
+    navigate = true
+
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
+[delta "decorations"]
+    ;commit-decoration-style = blue ol
+    commit-decoration-style = bold yellow box ul
+    commit-style = raw
+    file-style = omit
+    ;file-style = bold yellow ul
+    file-decoration-style = none
+    hunk-header-decoration-style = yellow box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+
+[delta "unobtrusive-line-numbers"]
+    line-numbers              = true
+    line-numbers-left-format  = "{nm:>4}┊"
+    line-numbers-right-format = "{np:>4}│"
+    line-numbers-zero-style   = "#444444"
+    line-numbers-minus-style  = "#444444"
+    line-numbers-plus-style   = "#444444"
+    line-numbers-left-style   = blue
+    line-numbers-right-style  = blue
+
+[delta "line-numbers"]
+    line-numbers-minus-style  = 124
+    line-numbers-plus-style   = 28
+    line-numbers-left-style   = cyan
+    line-numbers-right-style  = cyan
+; }}}

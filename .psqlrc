@@ -17,6 +17,12 @@
 
 \set ON_ERROR_ROLLBACK interactive
 
+-- INFO: https://stackoverflow.com/a/16108898/672346
+-- \x auto
+
+-- INFO: https://stackoverflow.com/a/11183473/672346
+\set pager off
+
 -- Use best available output format
 \x auto
 \set VERBOSITY verbose

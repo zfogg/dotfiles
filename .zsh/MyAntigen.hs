@@ -18,7 +18,7 @@ import Antigen (
 
 bundles = [
           (bundle "zdharma/fast-syntax-highlighting")
-            { fpathLocations = [""] }
+            { fpathLocations = [] }
 
         , (bundle "zsh-users/zsh-history-substring-search")
             { fpathLocations = [] }
@@ -69,6 +69,9 @@ bundles = [
             --{ fpathLocations = [] }
 
         --, (bundle "lukechilds/zsh-nvm")
+            --{ fpathLocations = [] }
+
+        --, (bundle "sobolevn/wakatime-zsh-plugin")
             --{ fpathLocations = [] }
     ]
 

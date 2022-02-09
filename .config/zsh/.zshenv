@@ -158,6 +158,10 @@ fi
 export _GIT_PATHSPEC=':!package-lock.json:!yarn.lock'
 export _GIT_MERGE_VIEW="enable"
 #export _GIT_MERGE_VIEW="exclusive"
+
+if command_exists delta; then
+  export GIT_PAGER=delta
+fi
 # }}}
 
 
@@ -354,8 +358,14 @@ else
   export EDITOR='nano'
 fi
 
-if [[ -v NVIM || -v VIM ]]; then
-  export MANPAGER="$EDITOR -c 'set ft=man' -"
+# INFO: old lol
+#export MANPAGER="$EDITOR -c 'set ft=man' -"
+
+# INFO: new lmaoo
+if [[ -v NVIM ]]; then
+  export MANPAGER="nvim +Man!"
+elif [[ -v VIM ]]; then
+  export MANPAGER="vim -c 'set ft=man' -"
 fi
 
 export VISUAL="$EDITOR"
@@ -363,19 +373,21 @@ export VISUAL="$EDITOR"
 
 # INFO: https://www.topbug.net/blog/2016/09/27/make-gnu-less-more-powerful/
 # set options for less
-export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
+export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --chop-long-lines --HILITE-UNREAD --tabs=4 --no-init --window=-4'
 # or the short version
 # export LESS='-F -i -J -M -R -W -x4 -X -z-4'
 
-if command_exists nvimpager; then
-  export PAGER='nvimpager'
-elif command_exists page; then
-  export PAGER="page -q 90000"
-elif command_exists nvim; then
-  export PAGER='nvim -R +AnsiEsc'
-else
-  export PAGER='less'
-fi
+#if command_exists nvimpager; then
+ #export PAGER='nvimpager'
+#elif command_exists delta; then
+  #export PAGER='delta'
+#if command_exists page; then
+  #export PAGER='page -q 90000'
+#if command_exists nvim; then
+  #export PAGER='nvim -R +AnsiEsc'
+#else
+  #export PAGER='less'
+#fi
 # editor, pager }}}
 
 
@@ -520,7 +532,8 @@ if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
 fi
 # }}}
 
-# wxWidgets (for Audacity) {{{
+
+# xcode $SDKROOT {{{
 if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
   export SDKROOT="`xcrun --show-sdk-path`"
 fi

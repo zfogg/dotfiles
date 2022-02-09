@@ -30,10 +30,11 @@ fi
 while [ $# -gt 0 ]; do
     if [[ -e $1 ]]; then
         local filetype="${1:e}"
+        #-filter_complex "[0:v]scale=600:-1:force_original_aspect_ratio=decrease,reverse[r];  [0][r]concat=n=2:v=1:a=0,fps=20,split[s0][s1]; [s0]palettegen[p]; [s1][p]paletteuse" \
+        #-filter_complex "[0:v]scale=600:-1:force_original_aspect_ratio=1[v0]; [0]reverse[r];[0][r]concat=n=2:v=1:a=0,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
+        #-filter_complex "[0:v]scale=600:-1; [0]split[b][c];[c]reverse[r];[b][r]concat" \
         ffmpeg -i "$1" \
-            -filter_complex "[0:v]reverse,fifo[r];[0:v][0:a][r] [0:a]concat=n=2:v=1:a=1 [v] [a]" \
-            -map "[v]" \
-            -map "[a]" \
+            -filter_complex "[0]scale=600:-1[v0]; [v0]reverse[r]; [0][r]concat" \
             "${out_dir}/${1%."$filetype"}.boomerang.mp4"
     else
         echo "ERROR: bad input file: '$1'" \
