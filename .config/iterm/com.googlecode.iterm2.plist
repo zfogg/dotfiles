@@ -33,7 +33,7 @@
 	<key>BellRateLimit</key>
 	<real>0.5</real>
 	<key>BootstrapDaemon</key>
-	<false/>
+	<true/>
 	<key>BracketedPasteMode</key>
 	<true/>
 	<key>CheckTestRelease</key>
@@ -47,7 +47,7 @@
 	<key>CmdClickWhenInactiveInvokesSemanticHistory</key>
 	<false/>
 	<key>Command</key>
-	<string></string>
+	<string>/usr/local/bin/zsh</string>
 	<key>CommandSelection</key>
 	<true/>
 	<key>CompactMinimalTabBarHeight</key>
@@ -12592,6 +12592,8 @@
 	<string>Icecast: Traktor</string>
 	<key>Default Bookmark Guid</key>
 	<string>C94EB68C-5703-49D9-A20F-ACE71D1F9261</string>
+	<key>DefaultTabBarHeight</key>
+	<real>28</real>
 	<key>DefaultTabStopWidth</key>
 	<integer>2</integer>
 	<key>DimBackgroundWindows</key>
@@ -12601,15 +12603,15 @@
 	<key>DimOnlyText</key>
 	<true/>
 	<key>DisableAdaptiveFrameRateInInteractiveApps</key>
-	<true/>
-	<key>DisableCustomBoxDrawing</key>
 	<false/>
+	<key>DisableCustomBoxDrawing</key>
+	<true/>
 	<key>DisableDECRQCRA</key>
 	<true/>
 	<key>DisableFullscreenTransparency</key>
 	<true/>
 	<key>DisableMetalWhenIdle</key>
-	<true/>
+	<false/>
 	<key>DisableMetalWhenUnplugged</key>
 	<true/>
 	<key>DisablePasswordManagerAnimations</key>
@@ -12625,7 +12627,7 @@
 	<key>DoubleClickPerformsSmartSelection</key>
 	<true/>
 	<key>DrawOutlineAroundCursor</key>
-	<false/>
+	<true/>
 	<key>EchoProbeDuration</key>
 	<real>0.18000000715255737</real>
 	<key>EliminateCloseButtons</key>
@@ -12643,8 +12645,10 @@
 	<key>ExcludeBackgroundColorsFromCopiedStyle</key>
 	<true/>
 	<key>ExperimentalKeyHandling</key>
-	<false/>
+	<true/>
 	<key>ExperimentalOptimizationsEnabled</key>
+	<true/>
+	<key>FastForegroundJobUpdates</key>
 	<true/>
 	<key>FindDelaySeconds</key>
 	<real>3</real>
@@ -12657,7 +12661,7 @@
 	<key>FocusReportingEnabled</key>
 	<true/>
 	<key>ForceAntialiasingOnRetina</key>
-	<false/>
+	<true/>
 	<key>FsTabDelay</key>
 	<real>1</real>
 	<key>FullHeightCursor</key>
@@ -13004,7 +13008,7 @@
 	<key>HotkeyTermAnimationDuration</key>
 	<real>0.75</real>
 	<key>IRMemory</key>
-	<integer>2</integer>
+	<integer>8</integer>
 	<key>IdleTimeSeconds</key>
 	<real>90</real>
 	<key>IgnoreHardNewlinesInURLs</key>
@@ -13016,7 +13020,7 @@
 	<key>JobName</key>
 	<false/>
 	<key>KillSessionsOnLogout</key>
-	<true/>
+	<false/>
 	<key>LeftCommand</key>
 	<integer>7</integer>
 	<key>LeftOption</key>
@@ -13026,7 +13030,7 @@
 	<key>Log Smart Selection Debug Info</key>
 	<integer>0</integer>
 	<key>LowFiCombiningMarks</key>
-	<false/>
+	<true/>
 	<key>MaxSemanticHistoryPrefixOrSuffix</key>
 	<integer>4096</integer>
 	<key>MaxVertically</key>
@@ -13037,6 +13041,8 @@
 	<integer>2048</integer>
 	<key>MetalDeferCurrentDrawable</key>
 	<true/>
+	<key>MetalRedrawPeriod</key>
+	<real>10</real>
 	<key>MetalSlowFrameRate</key>
 	<real>30</real>
 	<key>MinCompactTabWidth</key>
@@ -13067,7 +13073,7 @@
 			<key>ASCII Anti Aliased</key>
 			<true/>
 			<key>ASCII Ligatures</key>
-			<false/>
+			<true/>
 			<key>AWDS Pane Directory</key>
 			<string></string>
 			<key>AWDS Pane Option</key>
@@ -13369,7 +13375,7 @@
 			<key>Cursor Type</key>
 			<integer>2</integer>
 			<key>Custom Command</key>
-			<string>Custom Shell</string>
+			<string>No</string>
 			<key>Custom Directory</key>
 			<string>Advanced</string>
 			<key>Default Bookmark</key>
@@ -13382,6 +13388,8 @@
 			<false/>
 			<key>Draw Powerline Glyphs</key>
 			<true/>
+			<key>Enable Triggers in Interactive Apps</key>
+			<false/>
 			<key>Flashing Bell</key>
 			<false/>
 			<key>Foreground Color</key>
@@ -13909,7 +13917,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<false/>
 			<key>Normal Font</key>
-			<string>MesloLGMDZNerdFontComplete-Regular 14</string>
+			<string>MesloLGMDZNerdFontCompleteM-Regular 14</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Toolbelt</key>
@@ -14017,27 +14025,11 @@
 				</dict>
 				<dict>
 					<key>notes</key>
-					<string>Java/Python include paths</string>
-					<key>precision</key>
-					<string>normal</string>
-					<key>regex</key>
-					<string>([[:letter:][:number:]._]+\.)+[[:letter:][:number:]._]+</string>
-				</dict>
-				<dict>
-					<key>notes</key>
 					<string>HTTP URL</string>
 					<key>precision</key>
-					<string>very_high</string>
+					<string>high</string>
 					<key>regex</key>
 					<string>((?&lt;!\()https?://([a-z0-9A-Z]+(:[a-zA-Z0-9]+)?@)?([a-z0-9A-Z][-a-z0-9A-Z]*\.)+[A-Za-z][-A-Za-z]*((:[0-9]+)?)(/[a-zA-Z0-9;/.\-_+%?&amp;@=#~()]*)?)|(https?://([a-z0-9A-Z]+(:[a-zA-Z0-9]+)?@)?([a-z0-9A-Z][-a-z0-9A-Z]*\.)+[A-Za-z][-A-Za-z]*((:[0-9]+)?)(/[a-zA-Z0-9;/.\-_+%?&amp;@=#~(]*)?)</string>
-				</dict>
-				<dict>
-					<key>notes</key>
-					<string>SSH URL</string>
-					<key>precision</key>
-					<string>very_high</string>
-					<key>regex</key>
-					<string>\bssh:([a-z0-9A-Z_]+@)?([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\b</string>
 				</dict>
 			</array>
 			<key>Space</key>
@@ -16170,6 +16162,10 @@
 	<string>,</string>
 	<key>PasteSpecialUseRegexSubstitution</key>
 	<true/>
+	<key>PathToFTP</key>
+	<string>/usr/local/bin/ftp</string>
+	<key>PathToTelnet</key>
+	<string>/usr/local/bin/telnet</string>
 	<key>PerPaneBackgroundImage</key>
 	<false/>
 	<key>PerformDictionaryLookupOnQuickLook</key>
@@ -16217,7 +16213,7 @@
 	<key>RequireAuthenticationAfterScreenLocks</key>
 	<true/>
 	<key>RequireCmdForDraggingText</key>
-	<true/>
+	<false/>
 	<key>ResetSGROnPrompt</key>
 	<true/>
 	<key>RestoreWindowContents</key>
@@ -16288,7 +16284,7 @@
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>ShowHintsInSplitPaneMenuItems</key>
 	<true/>
 	<key>ShowMetalFPSmeter</key>
@@ -16299,6 +16295,8 @@
 	<false/>
 	<key>ShowSessionRestoredBanner</key>
 	<true/>
+	<key>ShowTimestampsByDefault</key>
+	<false/>
 	<key>ShowYellowMarkForJobStoppedBySignal</key>
 	<true/>
 	<key>SlowFrameRate</key>
@@ -16365,6 +16363,10 @@
 	<false/>
 	<key>TmuxVariableWindowSizesSupported</key>
 	<true/>
+	<key>TmuxWindowsShouldCloseAfterDetach</key>
+	<false/>
+	<key>TolerateUnrecognizedTmuxCommands</key>
+	<true/>
 	<key>ToolbeltTools</key>
 	<array>
 		<string>Jobs</string>
@@ -16396,6 +16398,8 @@
 		<key>x-man-page</key>
 		<string>C94EB68C-5703-49D9-A20F-ACE71D1F9261</string>
 	</dict>
+	<key>UnderlineCursorHeight</key>
+	<real>3</real>
 	<key>UnderlineCursorOffset</key>
 	<real>-2</real>
 	<key>UnderlineHyperlinks</key>
@@ -16438,6 +16442,8 @@
 	<string>$MANPAGER %@ || sleep 1.5</string>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
+	<key>Vs16Supported</key>
+	<true/>
 	<key>WebKitDefaultFontSize</key>
 	<integer>11</integer>
 	<key>WebKitStandardFont</key>
@@ -16453,7 +16459,7 @@
 	<key>ZeroWidthSpaceAdvancesCursor</key>
 	<false/>
 	<key>ZippyTextDrawing</key>
-	<true/>
+	<false/>
 	<key>disableMetalWhenUnplugged</key>
 	<true/>
 	<key>findIgnoreCase_iTerm</key>
@@ -16515,7 +16521,7 @@
 	<key>mad_hkToggleOSXFullscreenModifiers</key>
 	<integer>2048</integer>
 	<key>metalMaximizeThroughput</key>
-	<false/>
+	<true/>
 	<key>preferIntegratedGPU</key>
 	<false/>
 </dict>
