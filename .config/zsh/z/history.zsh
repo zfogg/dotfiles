@@ -24,7 +24,11 @@ setopt   BANG_HIST
 unsetopt BEEP
 unsetopt CASE_GLOB
 setopt   CDABLEVARS
-setopt   COMPLETE_ALIASES
+
+# NOTE: makes ur dumb two-letter git aliases tab-complete its args smh
+#setopt   COMPLETE_ALIASES
+unsetopt COMPLETE_ALIASES
+
 setopt   COMPLETE_IN_WORD
 setopt   EXTENDED_GLOB
 setopt   EXTENDED_HISTORY
