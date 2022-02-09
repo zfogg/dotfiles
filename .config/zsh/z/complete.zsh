@@ -182,10 +182,10 @@ fignore+=(
 
 
 # inputrc {{{
-function () {
-  local inputrc=${INPUTRC:-$HOME/.inputrc}
-  [[ -f $inputrc ]] && source "$inputrc"
-}
+#function () {
+#  local inputrc=${INPUTRC:-$HOME/.inputrc}
+#  [[ -f $inputrc ]] && source "$inputrc"
+#}
 # }}}
 
 
@@ -209,6 +209,53 @@ function() {
   local compe_cache="$COMPE_ZSH_CACHE_DIR"
   if [ -d $compe_cache ]; then
     export FPATH="${compe_cache}:${FPATH}"
+  fi
+}
+
+# INFO: https://github.com/lincheney/fzf-tab-completion#zsh
+function() {
+  if [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
+    local fzf_tab_completion_f="/usr/share/fzf-tab-completion/zsh/fzf-zsh-completion.sh"
+  elif [[ ${OSX:-0} == ${TRUE:-1} ]]; then
+    local fzf_tab_completion_f="$HOME/src/github.com/lincheney/fzf-tab-completion/zsh/fzf-zsh-completion.sh"
+  fi
+  if [[ -f $fzf_tab_completion_f ]]; then
+    source $fzf_tab_completion_f
+    function smart_completion() {
+      if [[ "$LBUFFER" =~ [a-zA-Z0-9]$ ]]; then
+        _main_complete
+      else
+        fzf_completion
+      fi
+    }
+    zle -C fzf_completion complete-word smart_completion
+
+    #bindkey '^I' fzf_completion
+
+    zstyle ':completion:*' fzf-search-display true
+
+    zstyle ':completion::*:(-command-):*'                     fzf-search-display true
+    zstyle ':completion::*:(-command-):*'                     fzf-completion-opts --preview='eval eval echo {1}'
+    zstyle ':completion::*:(-parameter-|-brace-parameter-):*' fzf-search-display true
+    zstyle ':completion::*:(-parameter-|-brace-parameter-):*' fzf-completion-opts --preview='eval eval echo {1}'
+    zstyle ':completion::*:(export|unset|expand):*'           fzf-search-display true
+    zstyle ':completion::*:(export|unset|expand):*'           fzf-completion-opts --preview='eval eval echo {1}'
+
+    zstyle ':completion:*:*:ls:*'                             fzf-search-display true
+    zstyle ':completion::*:ls::*'                             fzf-completion-opts --preview='eval head {1}'
+
+    zstyle ':completion:*:*:cd:*'                             fzf-search-display true
+
+    zstyle ':completion:*:*:git:*'                            fzf-search-display true
+    zstyle ':completion::*:git::git,add,*'                    fzf-search-display true
+    # preview a `git status` when completing git add
+    zstyle ':completion::*:git::git,add,*'                    fzf-completion-opts --preview='git -c color.status=always status --short'
+    # if other subcommand to git is given, show a git diff or git log
+    zstyle ':completion::*:git::*,[a-z]*'                     fzf-completion-opts --preview='
+    eval set -- {+1}
+    for arg in "$@"; do
+      { git diff --color=always -- "$arg" | git log --color=always "$arg" } 2>/dev/null
+      done'
   fi
 }
 # 3rd-party }}}

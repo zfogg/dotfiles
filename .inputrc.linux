@@ -1,0 +1,29 @@
+set completion-ignore-case on
+
+set show-all-if-ambiguous on
+
+set mark-symlinked-directories on
+
+set editing-mode vi
+set blink-matching-paren on
+
+#"\e[B": history-search-forward
+#"\e[A": history-search-backward
+
+set match-hidden-files off
+
+set page-completions off
+
+set completion-query-items 120
+
+set colored-stats on
+set visible-stats on
+
+set skip-completed-text on
+
+set input-meta on
+set output-meta on
+set convert-meta on
+
+$include function rl_custom_complete /usr/lib/librl_custom_complete.so
+C-i rl_custom_complete
