@@ -90,11 +90,21 @@ endif
 
 
 " Cursor motion. {{{
-    call z#keys#Tmux()
+    if exists('g:vscode')
+        nmap <C-h> <Cmd>call VSCodeNotify('workbench.action.focusLeftGroup')<CR>
+        nmap <C-j> <Cmd>call VSCodeNotify('workbench.action.focusBelowGroup')<CR>
+        nmap <C-k> <Cmd>call VSCodeNotify('workbench.action.focusAboveGroup')<CR>
+        nmap <C-l> <Cmd>call VSCodeNotify('workbench.action.focusRightGroup')<CR>
+    else
+        call z#keys#Tmux()
+    endif
 
     " j and k just work on long wrapped lines.
-    noremap j gj
-    noremap k gk
+    if exists('g:vscode')
+    else
+        noremap j gj
+        noremap k gk
+    endif
 
     " Scroll through items in the locations list.
     "INFO: can't map some keys :( use <Leader> I guess
@@ -164,19 +174,35 @@ endif
 " }}}
 
 " Tabs and splits. {{{
-    nnoremap <Leader><C-t> :tabnew<CR>
-    nnoremap <Leader>x     :tabclose<CR>
-    nnoremap <Leader>j     :tabprevious<CR>
-    nnoremap <Leader>k     :tabnext<CR>
-    " Resize splits.
-    nnoremap <S-Up>    5<C-W>+
-    nnoremap <S-Down>  5<C-W>-
-    nnoremap <S-Right> 5<C-W>>
-    nnoremap <S-Left>  5<C-W><
-    nnoremap   <Up>     <C-W>+
-    nnoremap   <Down>   <C-W>-
-    nnoremap   <Right>  <C-W>>
-    nnoremap   <Left>   <C-W><
+    if exists('g:vscode')
+        nnoremap <Leader><C-t> <Cmd>call VSCodeNotify('workbench.action.newWindowTab')<CR>
+        nnoremap <Leader>x     <Cmd>call VSCodeNotify('keyboard-quickfix.openQuickFix')<CR>
+        nnoremap <Leader>j     <Cmd>call VSCodeNotify('workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup')<CR>
+        nnoremap <Leader>k     <Cmd>call VSCodeNotify('workbench.action.quickOpenLeastRecentlyUsedEditorInGroup')<CR>
+        " Resize splits.
+        "nnoremap <S-Up>
+        "nnoremap <S-Down>
+        "nnoremap <S-Right>
+        "nnoremap <S-Left>
+        "nnoremap   <Up>
+        "nnoremap   <Down>
+        "nnoremap   <Right>
+        "nnoremap   <Left>
+    else
+        nnoremap <Leader><C-t> :tabnew<CR>
+        nnoremap <Leader>x     :tabclose<CR>
+        nnoremap <Leader>j     :tabprevious<CR>
+        nnoremap <Leader>k     :tabnext<CR>
+        " Resize splits.
+        nnoremap <S-Up>    5<C-W>+
+        nnoremap <S-Down>  5<C-W>-
+        nnoremap <S-Right> 5<C-W>>
+        nnoremap <S-Left>  5<C-W><
+        nnoremap   <Up>     <C-W>+
+        nnoremap   <Down>   <C-W>-
+        nnoremap   <Right>  <C-W>>
+        nnoremap   <Left>   <C-W><
+    endif
 " }}}
 
 " :make. {{{
@@ -208,15 +234,10 @@ endif
     nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
     nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
 
-    if !z#util#HasPlugin('traces.vim')
-        " INFO: https://github.com/markonm/traces.vim#neovim-v023
-        if exists('&inccommand')
-            set inccommand=nosplit
-        endif
+    " INFO: https://github.com/markonm/traces.vim#neovim-v023
+    if exists('&inccommand')
+        set inccommand=nosplit
     endif
-
-    nnoremap <Leader>n<Space>     :NERDTreeToggle<CR>:wincmd p<CR>
-    nnoremap <Leader>nn           :call z#nerdtree#AutoCwd()<CR>
 " }}}
 
 
@@ -237,4 +258,11 @@ endif
     "    imap <c-x><c-f> <plug>(fzf-complete-path)
     "    imap <c-x><c-l> <plug>(fzf-complete-line)
     "endif
+" }}}
+
+
+" VSCode {{{
+if exists('g:vscode')
+    nnoremap z= <Cmd>call VSCodeNotify('keyboard-quickfix.openQuickFix')<CR>
+endif
 " }}}

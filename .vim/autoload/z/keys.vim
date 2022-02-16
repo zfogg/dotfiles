@@ -16,12 +16,16 @@ func! z#keys#Tmux() abort
         nnoremap <silent> <C-l> :TmuxNavigateRight<CR>
         nnoremap <silent> <C-\> :TmuxNavigatePrevious<CR>
     end
+
     if has('nvim')
-        "let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1 " change cursor to bar in insert mode
-        tmap          <Esc> <C-\><C-n>
-        tmap <silent> jj    <C-\><C-n>{}k$
-        tmap <silent> <C-j> jj<C-j>
-        tmap <silent> <C-k> jj<C-k>
-        tmap <silent> <C-l> jj<C-l>
+        if exists('g:vscode')
+        else
+            "let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1 " change cursor to bar in insert mode
+            tmap          <Esc> <C-\><C-n>
+            tmap <silent> jj    <C-\><C-n>{}k$
+            tmap <silent> <C-j> jj<C-j>
+            tmap <silent> <C-k> jj<C-k>
+            tmap <silent> <C-l> jj<C-l>
+        endif
     end
 endfunc

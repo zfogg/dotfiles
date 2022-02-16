@@ -247,7 +247,9 @@ if 1 == vim.fn.PHas('lspkind-nvim') then
     -- enables text annotations
     --
     -- default: true
-    with_text = true,
+    -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+    mode = 'symbol_text', -- INFO: https://github.com/onsails/lspkind-nvim/blob/master/lua/lspkind/init.lua#L123
+    --with_text = true, -- INFO: deprecated
     --with_text = false,
     -- default symbol map
     -- can be either 'default' (requires nerd-fonts font) or
@@ -256,6 +258,8 @@ if 1 == vim.fn.PHas('lspkind-nvim') then
     -- default: 'default'
     preset = 'default',
     -- override preset symbols
+    --
+    maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
     --
     -- default: {}
     --symbol_map = {

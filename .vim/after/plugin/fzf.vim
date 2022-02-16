@@ -2,7 +2,7 @@
 scriptencoding utf-8
 
 
-let g:fzf_preview_window = 'right:60%'
+let g:fzf_preview_window = ['right:60%', 'ctrl-/']
 let g:fzf_buffers_jump = 1
 if exists('$FZF_HISTORY_DIR')
   let g:fzf_history_dir = expand('$FZF_HISTORY_DIR')
@@ -42,9 +42,12 @@ let g:fzf_action = {
 
 " hide status line
 if has('nvim') && !exists('g:fzf_layout')
-  autocmd! FileType fzf
-  autocmd  FileType fzf set laststatus=0 noshowmode noruler
-    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+  aug fzf-custom
+    au!
+    autocmd! FileType fzf
+    autocmd  FileType fzf set laststatus=0 noshowmode noruler
+        \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+  aug END
 endif
 
 if executable('rg')
