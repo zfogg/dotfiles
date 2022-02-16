@@ -25,9 +25,12 @@ require('packer').startup(function(use) -- {{{
     use { 'whiteinge/diffconflicts' };
 
     use { 'tmux-plugins/vim-tmux', ft={'tmux'}, };
-    use { 'tmux-plugins/vim-tmux-focus-events' };
+    use { 'tmux-plugins/vim-tmux-focus-events',
+      enable=(not vim.g.vscode and vim.fn.has('nvim')),
+    };
     use { 'christoomey/vim-tmux-navigator',
-      after = { 'coq_nvim' },
+      enable=(not vim.g.vscode and vim.fn.has('nvim')),
+      after={ 'coq_nvim' },
     };
 
     use { 'Olical/vim-enmasse', cmd = 'EnMasse', };
@@ -106,19 +109,50 @@ require('packer').startup(function(use) -- {{{
 
     use { 'voldikss/vim-floaterm' };
 
-    -- nerdtree
-    use { 'scrooloose/nerdtree',
-      cmd = {'NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFromBookmark'},
+    -- fern
+    use { 'lambdalisue/fern.vim',
+      --cmd = { 'Fern', 'FernDo', },
+      config = [[
+        vim.cmd('nnoremap <Leader>n<Space>     :Fern . -drawer -wait -reveal=% -toggle<CR>')
+        vim.cmd('nnoremap <Leader>nn           :Fern . -drawer -wait -reveal=%<CR>')
+      ]],
       requires = {
-        {'jistr/vim-nerdtree-tabs', },
-        {'scrooloose/nerdcommenter', },
-        {'taiansu/nerdtree-ag',         cond = "PExe('ag')", },
-        {'Xuyuanp/nerdtree-git-plugin', cond = "PExe('git')", },
-        {'tiagofumo/vim-nerdtree-syntax-highlight',
-          requires = {{'ryanoasis/vim-devicons', }, },
+        {'antoinemadec/FixCursorHold.nvim', },
+        {'lambdalisue/fern-git-status.vim', cond="PExe('git')", },
+        {'lambdalisue/fern-hijack.vim', },
+        {'yuki-yano/fern-preview.vim', },
+        {'lambdalisue/fern-renderer-nerdfont.vim', requires={
+          {'lambdalisue/nerdfont.vim', },
+          {'lambdalisue/glyph-palette.vim', }, },
         },
+        {'lambdalisue/fern-ssh', },
+        {'lambdalisue/fern-mapping-project-top.vim', },
+        {'hrsh7th/fern-mapping-collapse-or-leave.vim', },
+        {'LumaKernel/fern-mapping-fzf.vim', enable=(false), requires={
+          'junegunn/fzf', }, },
       },
     };
+
+    use { 'scrooloose/nerdcommenter', };
+
+    -- nerdtree
+    --use { 'scrooloose/nerdtree',
+      --disable={vim.g.vscode},
+      --cmd = {'NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFromBookmark'},
+      --config = [[
+        --vim.cmd('nnoremap <Leader>n<Space>     :NERDTreeToggle<CR>:wincmd p<CR>')
+        --vim.cmd('nnoremap <Leader>nn           :call z#nerdtree#AutoCwd()<CR>')
+      --]],
+      --requires = {
+        --{'jistr/vim-nerdtree-tabs', },
+        --{'scrooloose/nerdcommenter', },
+        --{'taiansu/nerdtree-ag',         cond = "PExe('ag')", },
+        --{'Xuyuanp/nerdtree-git-plugin', cond = "PExe('git')", },
+        --{'tiagofumo/vim-nerdtree-syntax-highlight',
+          --requires = {{'ryanoasis/vim-devicons', }, },
+        --},
+      --},
+    --};
 
     --use { 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps' };}
 
