@@ -7,9 +7,14 @@ local util          = require'lspconfig/util'
 --require('lang.keymappings')
 
 function _G.HoverFixed()
-  vim.api.nvim_command('set eventignore=CursorHold')
-  vim.lsp.buf.hover()
-  vim.api.nvim_command('au CursorMoved <buffer> ++once set eventignore=""')
+  --vim.api.nvim_command('set eventignore=CursorHold')
+  --vim.lsp.buf.hover()
+  --vim.api.nvim_command('au CursorMoved <buffer> ++once set eventignore=""')
+  --vim.lsp.buf.hover()
+  --vim.diagnostic.open_float()
+  --local bfrn = vim.api.nvim_buf_get_number(0)
+  --local row = vim.fn.line('.')
+  --local col = vim.fn.col('.')
 end
 
 local function common_on_attach(client, bufnr)
@@ -214,7 +219,6 @@ lsp_installer.on_server_ready(function(server)
         },
       },
     }
-    _G.pp(opts.settings.Lua)
   elseif server.name == 'rls' then
     opts.settings = {
       rust = {
@@ -348,11 +352,18 @@ if 1 == vim.fn.PHas('lspkind-nvim') then
   })
 end
 
+
+vim.diagnostic.get(0, {
+  virtual_text = true,
+   severity    = vim.diagnostic.severity.WARN,
+})
+
 -- symbols-outline.nvim
 vim.g.symbols_outline = {
   highlight_hovered_item = false,
   show_guides = true,
-  auto_preview = false, -- experimental
+  --auto_preview = false, -- experimental
+  auto_preview = true, -- experimental
   position = 'right',
   keymaps = {
     close          = "<Esc>",
@@ -376,46 +387,39 @@ vim.g.symbols_outline = {
 
 -- Send diagnostics to quickfix list
 do
+  -- INFO: set a handeler for "textDocument/publishDiagnostics" BEFORE the quickfix/locationlist handler
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      underline        = true,
+      signs            = true,
+      update_in_insert = false,
+      virtual_text     = false,
+      --virtual_text = {
+        --prefix  = "",
+        --spacing = 4,
+      --},
+  })
+
+  -- INFO: https://raw.githubusercontent.com/beauwilliams/Dotfiles/d521519388b4b371fed17177d68c662ff94f1055/Vim/nvim/.baks/lua/lsp.luadisabled
+  --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  --vim.lsp.diagnostic.on_publish_diagnostics, {
+    --update_in_insert = false,
+    --virtual_text = {
+      --prefix = ""
+    --}
+  --})
+
+  -- INFO: set a handeler for "textDocument/publishDiagnostics" AFTER this quickfix/locationlist handler
   local method = "textDocument/publishDiagnostics"
   local default_handler = vim.lsp.handlers[method]
-  vim.lsp.handlers[method] = function(err, method2, result, client_id, bufnr,
-    config)
+  vim.lsp.handlers[method] = function(err, method2, result, client_id, bufnr, config)
     default_handler(err, method2, result, client_id, bufnr, config)
     local diagnostics = vim.diagnostic.get()
-    local qflist = {}
-    for bn, diagnostic in pairs(diagnostics) do
-      for _, d in ipairs(diagnostic) do
-        d.bufnr = bn
-        d.lnum = d.range.start.line + 1
-        d.col = d.range.start.character + 1
-        d.text = d.message
-        table.insert(qflist, d)
-      end
-    end
-    vim.lsp.util.setqflist(qflist)
+    local qflist = vim.diagnostic.toqflist(diagnostics)
+    qflist.open = false
+    vim.diagnostic.setqflist(qflist)
   end
 end
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline        = true,
-    signs            = true,
-    update_in_insert = false,
-    --virtual_text     = true,
-    virtual_text = {
-      prefix  = "",
-      spacing = 4,
-    },
-})
-
--- INFO: https://raw.githubusercontent.com/beauwilliams/Dotfiles/d521519388b4b371fed17177d68c662ff94f1055/Vim/nvim/.baks/lua/lsp.luadisabled
---vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
---vim.lsp.diagnostic.on_publish_diagnostics, {
-  --update_in_insert = false,
-  --virtual_text = {
-    --prefix = ""
-  --}
---})
 
 vim.fn.sign_define("LspDiagnosticsSignError", {
   text = "",
