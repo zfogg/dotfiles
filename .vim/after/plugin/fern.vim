@@ -58,6 +58,7 @@ function! s:init_fern() abort
   nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
   " Let you move to a right split lol
   silent! unmap <buffer> <C-l>
+  silent! unmap <buffer> <C-h>
 
   nmap <buffer><expr>
       \ <Plug>(fern-my-expand-or-collapse)
@@ -67,7 +68,22 @@ function! s:init_fern() abort
       \   "\<Plug>(fern-action-collapse)",
       \ )
 
-  nmap <buffer><nowait> l <Plug>(fern-my-expand-or-collapse)
+  "nmap <buffer><nowait> l <Plug>(fern-my-expand-or-collapse)
+
+  nmap <buffer><expr>
+      \ <Plug>(fern-my-expand-or-enter)
+      \ fern#smart#drawer(
+      \   "\<Plug>(fern-action-open-or-expand)",
+      \   "\<Plug>(fern-action-open-or-enter)",
+      \ )
+  nmap <buffer><expr>
+      \ <Plug>(fern-my-collapse-or-leave)
+      \ fern#smart#drawer(
+      \   "\<Plug>(fern-action-collapse)",
+      \   "\<Plug>(fern-action-leave)",
+      \ )
+  nmap <buffer><nowait> l <Plug>(fern-my-expand-or-enter)
+  nmap <buffer><nowait> h <Plug>(fern-my-collapse-or-leave)
 
   " INFO: https://github.com/lambdalisue/fern.vim/wiki/Tips
   nmap <buffer> <Plug>(fern-my-enter-and-tcd)

@@ -47,6 +47,19 @@ function _G.vimreload()
   end
 end
 
+function _G.dump(o)
+  if type(o) == 'table' then
+    local s = '{ '
+    for k,v in pairs(o) do
+      if type(k) ~= 'number' then k = '"'..k..'"' end
+      s = s .. '['..k..'] = ' .. dump(v) .. ','
+    end
+    return s .. '} '
+  else
+    return tostring(o)
+  end
+end
+
 local function opt(o, v, scopes)
   scopes = scopes or {o_s}
   for _, s in ipairs(scopes) do s[o] = v end

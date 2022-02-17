@@ -6,6 +6,7 @@ plugin/packer_compiled.lua
 
 bundle/
 sessions/
+session/
 .cache/
 
 # swap

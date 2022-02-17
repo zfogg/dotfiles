@@ -8,8 +8,25 @@ let g:indent_blankline_show_trailing_blankline_indent = v:true
 "let g:indent_blankline_char = '▏'
 let g:indent_blankline_char_list = ['┃', '┇', '⎪', '┇', '▏', '⎹']
 let g:indent_blankline_show_end_of_line = v:true
-let g:indent_blankline_use_treesitter = v:false
-let g:indent_blankline_filetype_exclude = ["help","dashboard","dashpreview","NvimTree","coc-explorer","startify","vista","sagahover","nerdtree"]
+let g:indent_blankline_use_treesitter   = v:true
+
+let g:indent_blankline_filetype_exclude = [
+  		\ 'nerdtree',
+  		\ 'packer',
+  		\ 'fern',
+  		\ 'lspinfo',
+  		\ 'packer',
+  		\ 'checkhealth',
+  		\ 'help',
+  		\ '',
+		\ ]
+let g:indent_blankline_buftype_exclude = [
+		\ 'help',
+		\ 'nofile',
+		\ 'quickfix',
+		\ 'terminal',
+		\ 'prompt',
+		\ ]
 
  "let g:indent_blankline_context_patterns = [
 		 "\ 'class', 'function', 'method',

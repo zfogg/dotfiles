@@ -6,9 +6,6 @@ local fn = vim.fn
 local ft = fn['z#constants#globals#Ft']()
 -- for k,v in pairs(ft) do print(k,v) end
 
--- INFO: https://github.com/wbthomason/packer.nvim/#quickstart
-vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
-
 require('packer').startup(function(use) -- {{{
   -- integrate with other programs {{{
     use 'wbthomason/packer.nvim' -- Packer can manage itself
@@ -30,7 +27,6 @@ require('packer').startup(function(use) -- {{{
     };
     use { 'christoomey/vim-tmux-navigator',
       enable=(not vim.g.vscode and vim.fn.has('nvim')),
-      after={ 'coq_nvim' },
     };
 
     use { 'Olical/vim-enmasse', cmd = 'EnMasse', };
@@ -113,7 +109,7 @@ require('packer').startup(function(use) -- {{{
     use { 'lambdalisue/fern.vim',
       --cmd = { 'Fern', 'FernDo', },
       config = [[
-        vim.cmd('nnoremap <Leader>n<Space>     :Fern . -drawer -wait -reveal=% -toggle<CR>')
+        vim.cmd('nnoremap <Leader>n<Space>     :Fern . -drawer       -reveal=% -toggle<CR>')
         vim.cmd('nnoremap <Leader>nn           :Fern . -drawer -wait -reveal=%<CR>')
       ]],
       requires = {
@@ -135,76 +131,18 @@ require('packer').startup(function(use) -- {{{
 
     use { 'scrooloose/nerdcommenter', };
 
-    -- nerdtree
-    --use { 'scrooloose/nerdtree',
-      --disable={vim.g.vscode},
-      --cmd = {'NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFromBookmark'},
-      --config = [[
-        --vim.cmd('nnoremap <Leader>n<Space>     :NERDTreeToggle<CR>:wincmd p<CR>')
-        --vim.cmd('nnoremap <Leader>nn           :call z#nerdtree#AutoCwd()<CR>')
-      --]],
-      --requires = {
-        --{'jistr/vim-nerdtree-tabs', },
-        --{'scrooloose/nerdcommenter', },
-        --{'taiansu/nerdtree-ag',         cond = "PExe('ag')", },
-        --{'Xuyuanp/nerdtree-git-plugin', cond = "PExe('git')", },
-        --{'tiagofumo/vim-nerdtree-syntax-highlight',
-          --requires = {{'ryanoasis/vim-devicons', }, },
-        --},
-      --},
-    --};
-
     --use { 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps' };}
 
     -- sessions
     use { 'xolox/vim-misc' };
-    --use { 'xolox/vim-session' };
-
-    -- making / linting
-    --use { 'neomake/neomake',
-      --requires = {
-        --{'Shougo/neoinclude.vim', },
-        --{'sbdchd/neoformat', },
-        --{'jaawerth/nrun.vim', },
-      --},
-    --};
-    use {'dense-analysis/ale',
-      cmd = 'ALEEnable',
-      config = [[
-        vim.cmd('ALEEnable')
-        require('rc.ale')
-        require("nvim-ale-diagnostic")
-      ]],
-      requires = {
-        {'nathanmsmith/nvim-ale-diagnostic', },
-        --{'prabirshrestha/vim-lsp', },
-        --{'rhysd/vim-lsp-ale', },
-      },
-      ft = {
-        'sh', 'zsh', 'bash',
-        'c', 'cpp', 'objc', 'swift', 'objcpp', 'ch', 'cmake',
-        'rust', 'go',
-        'sql', 'pgsql',
-        'toml', 'yaml', 'json', 'markdown', 'apiblueprint',
-        'python', 'python3',
-        'html', 'xml',
-        'javascript', 'typescript',
-        'javascript.jsx', 'typescript.tsx',
-        'css', 'sass', 'scss', 'less', 'stylus',
-        'vim', 'lua',
-        'solidity',
-      },
-    }
-    use { 'jackguo380/vim-lsp-cxx-highlight',
-      requires = {
-        { 'neovim/nvim-lsp', },
-      },
-    };
 
     use { 'ms-jpq/coq_nvim',
       branch = 'coq',
+      run = 'python3 -m coq deps',
       requires = {
-        {'ms-jpq/coq.artifacts', branch = 'artifacts', },
+        {'ms-jpq/coq.artifacts', },
+        {'ms-jpq/coq.thirdparty', },
+        {'neovim/nvim-lspconfig', },
       },
     };
 
@@ -212,44 +150,38 @@ require('packer').startup(function(use) -- {{{
     use { 'neovim/nvim-lsp',
       requires = {
         {'neovim/nvim-lspconfig',
-          config = [[require('rc.lspconfig')]],
-          ft = { 'lua', },
-        },
+          config = [[require('rc.lspconfig')]], },
         {'ray-x/lsp_signature.nvim',
-          config = [[require('rc.lsp_signature')]],
-          after = { 'ale', },
-        },
+          config = [[require('rc.lsp_signature')]], },
         {'onsails/lspkind-nvim', },
         {'kosayoda/nvim-lightbulb', },
         {'RishabhRD/nvim-lsputils',
-          requires = {{'RishabhRD/popfix', }, },
-        },
-        {'jose-elias-alvarez/nvim-lsp-ts-utils',
-          requires = {{'jose-elias-alvarez/null-ls.nvim', }, },
+          requires = {'RishabhRD/popfix', }, },
+        {'jose-elias-alvarez/null-ls.nvim',
           config = [[require('rc.null-ls')]],
-        },
+          requires = { 'nvim-lua/plenary.nvim', }, },
       },
     };
 
     use { 'williamboman/nvim-lsp-installer',
       config = [[require('rc.lsp_installer')]],
-      requires = {
-        'neovim/nvim-lsp',
-      },
-      wants = {
-        'nvim-lsp',
-      },
+      requires = { 'neovim/nvim-lspconfig', },
     };
 
-    use { 'lewis6991/gitsigns.nvim',
-      config = [[
-        vim.cmd('let b:rcplugin_gitsigns = 1')
-        require('gitsigns').setup()
-      ]],
-      requires = {
-        {'nvim-lua/plenary.nvim', },
-      },
-    };
+    --use { 'jackguo380/vim-lsp-cxx-highlight',
+      --requires = {
+        --{ 'neovim/nvim-lsp', },
+      --}, };
+
+    --use { 'lewis6991/gitsigns.nvim',
+      --config = [[
+        --vim.cmd('let b:rcplugin_gitsigns = 1')
+        --require('gitsigns').setup()
+      --]],
+      --requires = {
+        --{'nvim-lua/plenary.nvim', },
+      --},
+    --};
 
     use { 'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
@@ -259,16 +191,10 @@ require('packer').startup(function(use) -- {{{
       },
     };
 
-    use { 'autozimu/LanguageClient-neovim',
-      branch = 'next',
-      run = 'bash install.sh && yarn global add flow-bin typescript',
-    };
-    --elseif has({ 'win32' };)
-    --use { 'autozimu/LanguageClient-neovim', PIf(has('nvim' };), {
-    --\ { 'branch': 'next' };,
-    --\ { 'do':     'powershell -executionpolicy bypass -File install.ps1' };,
-    --\ })
-    --endif
+    --use { 'autozimu/LanguageClient-neovim',
+      --branch = 'next',
+      --run = 'bash install.sh',
+    --};
 
     --use { 'dstein64/nvim-scrollview' };
 
@@ -289,7 +215,9 @@ require('packer').startup(function(use) -- {{{
     use { 'embear/vim-localvimrc' };
 
     use { 'liuchengxu/vim-clap', run = ':call clap#installer#download_binary()', };
-    use { 'lukas-reineke/indent-blankline.nvim' };
+    use { 'lukas-reineke/indent-blankline.nvim',
+      --config=[[ ]],
+    };
   -- }}}
 
   -- Language support. {{{
@@ -398,7 +326,7 @@ require('packer').startup(function(use) -- {{{
       config = [[require('rc.autopairs')]],
     };
     --use { 'jiangmiao/auto-pairs' };
-    use { 'wellle/targets.vim', };
+    --use { 'wellle/targets.vim', };
     use { 'tpope/vim-surround', };
 
     -- textobj
@@ -448,26 +376,13 @@ require('packer').startup(function(use) -- {{{
 end) -- }}}
 
 
--- INFO: https://github.com/savq/paq-nvim#bootstrapping {{{
-  --local fn = vim.fn
-  --local install_path = fn.stdpath('data') .. '/site/pack/paqs/start/paq-nvim'
-  --if fn.empty(fn.glob(install_path)) > 0 then
-    --fn.system({'git', 'clone', '--depth=1', 'https://github.com/savq/paq-nvim.git', install_path})
-  --end
+vim.cmd([[
+aug rc_packer_plugins
+  au!
+  au User PackerComplete call z#util#Helptags()
+  au User PackerCompileDone call z#util#Helptags()
+  " INFO: https://github.com/wbthomason/packer.nvim/#quickstart
+  au BufWritePost <afile> source <afile> | PackerCompile
+aug END
+]])
 
-  --require 'paq' {
-    --{'savq/paq-nvim'};
-
-    -- integrate with other programs {{{
-    --{'Shougo/vimproc.vim'};
-    --{'rizzatti/dash.vim'};
-    --{'tpope/vim-git'};
-    --{'tpope/vim-fugitive'};
-    --{'mhinz/vim-signify'};
-    --{'whiteinge/diffconflicts'};
-    --{'tmux-plugins/vim-tmux'};
-    --{'tmux-plugins/vim-tmux-focus-events'};
-    --{'christoomey/vim-tmux-navigator'};
-    -- }}}
-  --}
--- }}}

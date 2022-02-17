@@ -1,13 +1,16 @@
 -- lua/rc/telescope.lua
 local lsp_installer = require'nvim-lsp-installer'
---local lsp           = require'lspconfig'
+local lsp           = require'lspconfig'
 --local configs       = require'lspconfig/configs'
 local util          = require'lspconfig/util'
 
---vim.api.nvim_command(':source ~/.vim/lua/rc/lsp-ts-utils.lua')
---require('lspconfig')['null-ls'].setup{}
-
 --require('lang.keymappings')
+
+function _G.HoverFixed()
+  vim.api.nvim_command('set eventignore=CursorHold')
+  vim.lsp.buf.hover()
+  vim.api.nvim_command('au CursorMoved <buffer> ++once set eventignore=""')
+end
 
 local function common_on_attach(client, bufnr)
   -- ... set up buffer keymaps, etc.
@@ -20,6 +23,7 @@ local function common_on_attach(client, bufnr)
   end
 
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_command('au CursorHold * lua _G.HoverFixed()')
 
   -- Mappings.
   local opts = {noremap = true, silent = true}
@@ -37,7 +41,7 @@ local function common_on_attach(client, bufnr)
   buf_set_keymap('n', '<leader>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>',                                     opts)
   buf_set_keymap('n', '<leader>lrf', '<cmd>lua vim.lsp.buf.references()<CR>',                                 opts)
   buf_set_keymap('n', '<leader>ld',  '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>',               opts)
-  buf_set_keymap('n', '<leader>ll',  '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>',                         opts)
+  buf_set_keymap('n', '<leader>ll',  '<cmd>lua vim.lsp.diagnostic.setloclist()<CR>',                          opts)
   buf_set_keymap('n', '<leader>lca', '<cmd>lua vim.lsp.buf.code_action()<CR>',                                opts)
 
   -- Set some keybinds conditional on server capabilities
@@ -55,11 +59,11 @@ local function common_on_attach(client, bufnr)
       hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-      "augroup lsp_document_highlight
-      "  autocmd! * <buffer>
-      "  autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-      "  autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      "augroup END
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        "autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
     ]], false)
   end
 end
@@ -237,7 +241,6 @@ lsp_installer.on_server_ready(function(server)
   if 1 == vim.fn.PHas('coq_nvim') and not server.name == 'eslintls' then
     server:setup(require('coq').lsp_ensure_capabilities(opts))
   end
-    
 
   vim.cmd [[ do User LspAttachBuffers ]]
 end)
@@ -336,31 +339,21 @@ do
         table.insert(qflist, d)
       end
     end
-    vim.lsp.util.set_qflist(qflist)
+    vim.lsp.util.setqflist(qflist)
   end
 end
 
-if 1 == vim.fn.PHas("nvim-ale-diagnostic") then
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      virtual_text     = false,
-      underline        = false,
-      signs            = false,
-      update_in_insert = false,
-    })
-else
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      --virtual_text     = true,
-      virtual_text     = {
-        prefix = "",
-        spacing = 4,
-      },
-      underline        = true,
-      signs            = true,
-      update_in_insert = true,
-    })
-end
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    underline        = true,
+    signs            = true,
+    update_in_insert = false,
+    --virtual_text     = true,
+    virtual_text = {
+      prefix  = "",
+      spacing = 4,
+    },
+})
 
 -- INFO: https://raw.githubusercontent.com/beauwilliams/Dotfiles/d521519388b4b371fed17177d68c662ff94f1055/Vim/nvim/.baks/lua/lsp.luadisabled
 --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -389,4 +382,3 @@ vim.fn.sign_define("LspDiagnosticsSignHint", {
 })
 
 vim.o.shortmess = vim.o.shortmess .. "c"
-

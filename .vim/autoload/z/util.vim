@@ -67,34 +67,41 @@ fun! z#util#GetSetEnv(env_key, env_val) abort
     let l:env_key = get(a:, 'env_key', '')
     let l:env_val = get(a:, 'env_val', '')
     try
-        if empty(l:env_key) | throw "EmptyEnvKey" | endif
+        if empty(l:env_key) | throw 'EmptyEnvKey' | endif
         let l:env_val = get(l:environ, l:env_key, l:env_val)
     catch /^EmptyEnvKey/
         echom "empty env_key = '".l:env_key."'"
     finally
         if !has_key(l:environ, l:env_key)
-            exec "let $".l:env_key." = '".l:env_val."'"
+            exec 'let $'.l:env_key." = '".l:env_val."'"
         endif
     endtry
     return eval('$'.l:env_key)
 endfun
 
-
-" FIXME
-fun! z#util#Shiftwidth() abort
-    " INFO: :help 'shiftwidth()'
-    let l:sw =<< trim END
-        if exists('*shiftwidth')
-            func s:sw()
-                return shiftwidth()
-            endfunc
-        else
-            func s:sw()
-                return &sw
-            endfunc
-        endif
-    END
-    let l:swt = map(copy(l:sw), {_, v -> v})
-    return join(l:swt, "\n")
+func! z#util#Helptags() abort
+    packadd packer.nvim
+    packadd vimball
+    for p in glob('~/.local/share/nvim/site/pack/packer/opt/*', 1, 1)
+        exe 'packadd ' . fnamemodify(p, ':t')
+    endfor
+    helptags ALL
 endfun
 
+" FIXME
+"fun! z#util#Shiftwidth() abort
+    "" INFO: :help 'shiftwidth()'
+    "let l:sw =<< trim END
+        "if exists('*shiftwidth')
+            "func s:sw()
+                "return shiftwidth()
+            "endfunc
+        "else
+            "func s:sw()
+                "return &sw
+            "endfunc
+        "endif
+    "END
+    "let l:swt = map(copy(l:sw), {_, v -> v})
+    "return join(l:swt, "\n")
+"endfun

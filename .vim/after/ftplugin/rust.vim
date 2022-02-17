@@ -14,14 +14,8 @@ setl hidden
 "nnoremap <buffer> gx    <Plug>(rust-def-vertical)
 "nnoremap <buffer> <S-k> <Plug>(rust-doc)
 
-if z#util#HasPlugin('LanguageClient-neovim')
-    nnoremap <buffer> <silent> K    :call LanguageClient_textDocument_hover()<CR>
-    nnoremap <buffer> <silent> gd   :call LanguageClient_textDocument_definition()<CR>
-    "nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()
-endif
-
-
 aug Rust_LanguageClient_AutoDef
-    au! CursorHold <buffer>
+    au!
+    au CursorHold <buffer>
     au CursorHold <buffer> :normal K<CR>
 aug END
