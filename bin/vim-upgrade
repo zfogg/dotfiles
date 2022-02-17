@@ -58,7 +58,6 @@ function() {
 
 
 function() {
-    return
     local section="Python, Pyenv, pip"
     log_section_start "$section"
 
@@ -157,6 +156,7 @@ function() { # Rust, rustup, Cargo
 
 
 function() { # Ruby, Gem
+    return # FIXME: lmao
     local section="Ruby, Gem"
     log_section_start "$section"
 
@@ -219,8 +219,7 @@ function() {
                 #|| brew upgrade neovim --fetch-HEAD
         elif `which -p nvim >/dev/null`; then
             #brew uninstall neovim --ignore-dependencies
-            brew reinstall --keep-tmp neovim \
-                || brew reinstall neovim --fetch-HEAD
+            brew upgrade neovim --fetch-HEAD
         else
             brew install --fetch-HEAD --keep-tmp neovim --HEAD
         fi
@@ -241,9 +240,11 @@ function() {
     local section="Editor Plugins"
     log_section_start "$section"
 
-    local editor=${EDITOR:-nvim}
-
-    ${editor} --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+    #--headless
+    #-c 'let g:LanguageClient_autoStart=0' \
+    command ${EDITOR:-nvim} \
+        -c 'autocmd User PackerComplete quitall' \
+        -c 'PackerSync'
 
     log_section_end "$section"
 }

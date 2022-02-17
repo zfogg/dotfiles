@@ -60,7 +60,7 @@ fi
 
 export DOTFILES=~/.dotfiles
 export DOTVIM=~/.vim
-export MYVIMRC="$DOTVIM/init.vim"
+export MYVIMRC="$DOTVIM/init.lua"
 
 unset MAILCHECK
 
