@@ -389,6 +389,7 @@ HEROKU_AC_ZSH_SETUP_PATH=/home/zfogg/.cache/heroku/autocomplete/zsh_setup && tes
 
 # ishan / quackduck: magic
 function() {
+  return
   local magicf=~/bin/magic.sh
   if [[ -f $magicf ]]; then
     source "$magicf"
