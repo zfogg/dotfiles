@@ -4,4 +4,4 @@ local configs       = require'lspconfig/configs'
 local util          = require'lspconfig/util'
 
 
-lsp.sumneko_lua.setup({})
+--lsp.sumneko_lua.setup({})

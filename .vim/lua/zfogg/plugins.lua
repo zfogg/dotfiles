@@ -6,6 +6,12 @@ local fn = vim.fn
 local ft = fn['z#constants#globals#Ft']()
 -- for k,v in pairs(ft) do print(k,v) end
 
+local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
+end
+
+
 require('packer').startup(function(use) -- {{{
   -- integrate with other programs {{{
     use 'wbthomason/packer.nvim' -- Packer can manage itself
@@ -79,7 +85,18 @@ require('packer').startup(function(use) -- {{{
 
     use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 10]] }
 
-    use { 'folke/lua-dev.nvim', ft = 'lua', };
+    use { 'folke/lua-dev.nvim',
+      ft = 'lua',
+      config = [[
+        --INFO: https://github.com/sumneko/lua-language-server/issues/496#issuecomment-855462295
+        local lua_settings = require('lua-dev').setup().settings.Lua
+        --lua_settings.workspace.library['/usr/share/nvim/runtime']           = nil
+        --lua_settings.workspace.library['/usr/share/nvim/runtime/lua']       = true
+        --lua_settings.workspace.library['/usr/local/share/nvim/runtime']     = nil
+        --lua_settings.workspace.library['/usr/local/share/nvim/runtime/lua'] = true
+        --lua_settings.workspace.library['/usr/local/share/nvim/runtime/lua/vim/lsp'] = true
+      ]],
+    };
 
     -- Undo tree
     use {
@@ -140,8 +157,8 @@ require('packer').startup(function(use) -- {{{
       branch = 'coq',
       run = 'python3 -m coq deps',
       requires = {
-        {'ms-jpq/coq.artifacts', },
-        {'ms-jpq/coq.thirdparty', },
+        {'ms-jpq/coq.artifacts', branch='artifacts', },
+        {'ms-jpq/coq.thirdparty', branch='3p', },
         {'neovim/nvim-lspconfig', },
       },
     };
@@ -173,15 +190,15 @@ require('packer').startup(function(use) -- {{{
         --{ 'neovim/nvim-lsp', },
       --}, };
 
-    --use { 'lewis6991/gitsigns.nvim',
-      --config = [[
-        --vim.cmd('let b:rcplugin_gitsigns = 1')
-        --require('gitsigns').setup()
-      --]],
-      --requires = {
-        --{'nvim-lua/plenary.nvim', },
-      --},
-    --};
+  use { 'lewis6991/gitsigns.nvim',
+    config = [[
+      vim.cmd('let b:rcplugin_gitsigns = 1')
+      require('gitsigns').setup()
+    ]],
+    requires = {
+      {'nvim-lua/plenary.nvim', },
+    },
+  };
 
     use { 'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
@@ -382,7 +399,6 @@ aug rc_packer_plugins
   au User PackerComplete call z#util#Helptags()
   au User PackerCompileDone call z#util#Helptags()
   " INFO: https://github.com/wbthomason/packer.nvim/#quickstart
-  au BufWritePost <afile> source <afile> | PackerCompile
+  au BufWritePost plugins.lua source <afile> | PackerCompile | echom "hi"
 aug END
 ]])
-
