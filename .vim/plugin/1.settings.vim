@@ -69,42 +69,29 @@ set viewoptions+=cursor,curdir,folds
 
     let s:unix_dictionary='/usr/share/dict/words'
     if has('unix') && filereadable(s:unix_dictionary)
-        execute 'set dictionary+='.s:unix_dictionary
+        let &dictionary=s:unix_dictionary
     endif
-
-    let s:vim_data_dirs = {}
-    let s:editor_name = fnamemodify($VIM, ':t')
-    for [s:dir_name, s:dir_path] in items({ 'undo':'undo', 'swap':'swap', 'backup':'backup', })
-        ""let s:dir = g:dotvim_f.'/'.s:dir_path
-        if has('unix')
-            let s:data_home = z#util#GetSetEnv('XDG_DATA_HOME', $HOME.'/.local/share')
-            ""if isdirectory(s:data_home)
-            let s:dir = $XDG_DATA_HOME.'/'.s:editor_name.'/'.s:dir_path
-        elseif has('win32')
-            let s:dir = $LOCALAPPDATA.'/'.s:editor_name.'-data'.'/'.s:dir_path
-        endif
-        if !isdirectory(s:dir) | call mkdir(s:dir, 'p') | endif
-        let s:vim_data_dirs[s:dir_name] = s:dir
-    endfor
 
     if has('persistent_undo')
         set undofile
     endif
 
-    if has('nvim')
-      let &undodir   = z#util#TempDirs('',   s:vim_data_dirs['undo'])
-      let &directory = z#util#TempDirs('//', s:vim_data_dirs['swap'])
-      let &backupdir = z#util#TempDirs('',   s:vim_data_dirs['backup'])
-    endif
-
     set swapfile
+    set backupdir-=.
+    set directory-=.
+    set backupdir-=.
+    "set   undodir+=$TMPDIR.'/'
+    "set directory+=$TMPDIR.'/'
+    "set backupdir+=$TMPDIR.'/'
 
     let g:omni_sql_no_default_maps = 1
 
     if has('wildignore')
-        let &backupskip = &backupskip.','.s:vim_data_dirs['undo']  .'/*'
-        let &backupskip = &backupskip.','.s:vim_data_dirs['swap']  .'/*'
-        let &backupskip = &backupskip.','.s:vim_data_dirs['backup'].'/*'
+        let s:backupskip_dirs = []
+        for s:dir_name in split(&undodir, ',') + split(&directory, ',') + split(&backupdir, ',')
+            call add(s:backupskip_dirs, fnamemodify(s:dir_name, ':p:h').'/*')
+        endfor
+        let &backupskip.=join(s:backupskip_dirs, ',')
     endif
 " }}} undo / redo, swap, backup
 
@@ -116,12 +103,12 @@ set viewoptions+=cursor,curdir,folds
     set autoindent                 " Always set autoindenting on.
     set lazyredraw                 " For better macro performance.
     set ttimeoutlen=100            " Time (ms) for a key code sequence to complete.
-    augroup RcSettings_timeoutlen
-        au!
-        " The time (ms) for a mapped sequence to complete.
-        autocmd InsertEnter * set timeoutlen=400
-        autocmd InsertLeave * set timeoutlen=900
-    augroup END
+    "augroup RcSettings_timeoutlen
+        "au!
+        "" The time (ms) for a mapped sequence to complete.
+        "autocmd InsertEnter * set timeoutlen=400
+        "autocmd InsertLeave * set timeoutlen=900
+    "augroup END
 " }}} Moving around and editing
 
 
@@ -226,6 +213,7 @@ set viewoptions+=cursor,curdir,folds
     "let g:vimsyn_folding='afp'
     let g:fastfold_skip_filetypes = [
         \ 'taglist'
+        \,'fern'
         \,'nerdtree'
         \,'help'
         \,'vim'
@@ -234,7 +222,7 @@ set viewoptions+=cursor,curdir,folds
 
 
 " Reading and writing. {{{
-    set   autowrite      " Never write a file unless I request it.
+    set noautowrite      " Never write a file unless I request it.
     set noautowriteall   " NEVER.
     set noautoread       " Don't automatically re-read changed files.
     set modeline         " Allow vim options to be embedded in files.
@@ -336,7 +324,7 @@ set viewoptions+=cursor,curdir,folds
             \ },
             \ 'cache_enabled': 1,
         \ }
-    elseif has("unix")
+    elseif has('unix')
         let g:clipboard = {
             \ 'name': 'xclip',
             \ 'copy': {
