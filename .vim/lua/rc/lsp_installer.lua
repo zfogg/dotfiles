@@ -66,6 +66,11 @@ local function common_on_attach(client, bufnr)
       augroup END
     ]], false)
   end
+
+  -- INFO: https://github.com/jubnzv/virtual-types.nvim
+  --if vim.fn.PHas('virtualtypes.nvim') then
+    --require('virtualtypes').on_attach(client, bufnr)
+  --end
 end
 
 
@@ -104,7 +109,7 @@ lsp_installer.on_server_ready(function(server)
   local opts = {
     on_attach = common_on_attach,
     flags = {
-      debounce_text_changes = 400,
+      debounce_text_changes = 130,
     },
     capabilities = capabilities,
   };
@@ -194,8 +199,8 @@ lsp_installer.on_server_ready(function(server)
         },
         workspace = {
           maxPreload      = 2000,
-          preloadFileSize = 200,
-          checkThirdParty = true,
+          preloadFileSize = 750,
+          checkThirdParty = false,
           -- Make the server aware of Neovim runtime files
           --library = vim.api.nvim_get_runtime_file('', true),
           library = {
@@ -209,6 +214,7 @@ lsp_installer.on_server_ready(function(server)
         },
       },
     }
+    _G.pp(opts.settings.Lua)
   elseif server.name == 'rls' then
     opts.settings = {
       rust = {
