@@ -33,6 +33,24 @@ source "$HOME/.zsh/antigen-hs/init.zsh"
 # }}}
 
 
+# $ZDOTDIR/z/ {{{
+# path, manpath, fpath, infopath
+source "$ZDOTDIR/z/path.zsh"
+
+# bindkey, zle
+source "$ZDOTDIR/z/keys.zsh"
+
+# history
+source "$ZDOTDIR/z/history.zsh"
+
+# ls colors, highlighting
+source "$ZDOTDIR/z/theme.zsh"
+
+# completions, complist, compinit, compdef
+source "$ZDOTDIR/z/complete.zsh"
+# $ZDOTDIR/z/ }}}
+
+
 # plugins {{{
 #if command_exists direnv; then
   export AUTOENV_DISABLED=0
@@ -218,24 +236,6 @@ fi
 #fi
 # python, pip, pyenv }}}
 # plugins }}}
-
-
-# $ZDOTDIR/z/ {{{
-# path, manpath, fpath, infopath
-source "$ZDOTDIR/z/path.zsh"
-
-# bindkey, zle
-source "$ZDOTDIR/z/keys.zsh"
-
-# history
-source "$ZDOTDIR/z/history.zsh"
-
-# ls colors, highlighting
-source "$ZDOTDIR/z/theme.zsh"
-
-# completions, complist, compinit, compdef
-source "$ZDOTDIR/z/complete.zsh"
-# $ZDOTDIR/z/ }}}
 
 
 # terminfo, iTerm2 integration {{{
