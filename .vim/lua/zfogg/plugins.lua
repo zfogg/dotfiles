@@ -88,13 +88,6 @@ require('packer').startup(function(use) -- {{{
     use { 'folke/lua-dev.nvim',
       ft = 'lua',
       config = [[
-        --INFO: https://github.com/sumneko/lua-language-server/issues/496#issuecomment-855462295
-        local lua_settings = require('lua-dev').setup().settings.Lua
-        --lua_settings.workspace.library['/usr/share/nvim/runtime']           = nil
-        --lua_settings.workspace.library['/usr/share/nvim/runtime/lua']       = true
-        --lua_settings.workspace.library['/usr/local/share/nvim/runtime']     = nil
-        --lua_settings.workspace.library['/usr/local/share/nvim/runtime/lua'] = true
-        --lua_settings.workspace.library['/usr/local/share/nvim/runtime/lua/vim/lsp'] = true
       ]],
     };
 
@@ -163,11 +156,16 @@ require('packer').startup(function(use) -- {{{
       },
     };
 
-    -- LSP - language server protocol
-    use { 'neovim/nvim-lsp',
+    use { 'jubnzv/virtual-types.nvim',
       requires = {
-        {'neovim/nvim-lspconfig',
-          config = [[require('rc.lspconfig')]], },
+        { 'neovim/nvim-lspconfig', },
+      },
+    };
+
+    -- LSP - language server protocol
+    use {'neovim/nvim-lspconfig',
+      config = [[require('rc.lspconfig')]],
+      requires = {
         {'ray-x/lsp_signature.nvim',
           config = [[require('rc.lsp_signature')]], },
         {'onsails/lspkind-nvim', },
@@ -178,6 +176,10 @@ require('packer').startup(function(use) -- {{{
           config = [[require('rc.null-ls')]],
           requires = { 'nvim-lua/plenary.nvim', }, },
       },
+    };
+
+    use { 'weilbith/nvim-code-action-menu',
+      cmd = 'CodeActionMenu',
     };
 
     use { 'williamboman/nvim-lsp-installer',
@@ -399,6 +401,6 @@ aug rc_packer_plugins
   au User PackerComplete call z#util#Helptags()
   au User PackerCompileDone call z#util#Helptags()
   " INFO: https://github.com/wbthomason/packer.nvim/#quickstart
-  au BufWritePost plugins.lua source <afile> | PackerCompile | echom "hi"
+  au BufWritePost plugins.lua source <afile> | PackerCompile
 aug END
 ]])
