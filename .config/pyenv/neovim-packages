@@ -21,3 +21,4 @@ vim-vint
 reorder-python-imports
 mypy
 yamllint
+neovim-remote

@@ -60,6 +60,11 @@ function _G.dump(o)
   end
 end
 
+function _G.pp(o)
+  --print(_G.dump(o))
+  print(vim.inspect(o))
+end
+
 local function opt(o, v, scopes)
   scopes = scopes or {o_s}
   for _, s in ipairs(scopes) do s[o] = v end

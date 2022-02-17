@@ -1,6 +1,6 @@
 -- lua/rc/telescope.lua
 local lsp_installer = require'nvim-lsp-installer'
-local lsp           = require'lspconfig'
+--local lsp           = require'lspconfig'
 --local configs       = require'lspconfig/configs'
 local util          = require'lspconfig/util'
 
@@ -23,7 +23,7 @@ local function common_on_attach(client, bufnr)
   end
 
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-  vim.api.nvim_command('au CursorHold * lua _G.HoverFixed()')
+  --vim.api.nvim_command('au CursorHold * lua _G.HoverFixed()')
 
   -- Mappings.
   local opts = {noremap = true, silent = true}
@@ -56,8 +56,8 @@ local function common_on_attach(client, bufnr)
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceRead  cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceText  cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
       augroup lsp_document_highlight
         autocmd! * <buffer>
@@ -72,27 +72,27 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- Code actions
 capabilities.textDocument.codeAction = {
-    dynamicRegistration = true,
-    codeActionLiteralSupport = {
-        codeActionKind = {
-            valueSet = (function()
-                local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
-                table.sort(res)
-                return res
-            end)()
-        }
+  dynamicRegistration = true,
+  codeActionLiteralSupport = {
+    codeActionKind = {
+      valueSet = (function()
+        local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
+        table.sort(res)
+        return res
+      end)()
     }
+  }
 }
 
-capabilities.textDocument.completion.completionItem.documentationFormat = { 'markdown', 'plaintext' }
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+capabilities.textDocument.completion.completionItem.documentationFormat     = { 'markdown', 'plaintext' }
+capabilities.textDocument.completion.completionItem.snippetSupport          = true
+capabilities.textDocument.completion.completionItem.preselectSupport        = true
+capabilities.textDocument.completion.completionItem.insertReplaceSupport    = true
+capabilities.textDocument.completion.completionItem.labelDetailsSupport     = true
+capabilities.textDocument.completion.completionItem.deprecatedSupport       = true
 capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-capabilities.textDocument.completion.completionItem.resolveSupport = {
+capabilities.textDocument.completion.completionItem.tagSupport              = { valueSet = { 1 } }
+capabilities.textDocument.completion.completionItem.resolveSupport          = {
   properties = {
     'documentation',
     'detail',
@@ -104,7 +104,7 @@ lsp_installer.on_server_ready(function(server)
   local opts = {
     on_attach = common_on_attach,
     flags = {
-      debounce_text_changes = 500,
+      debounce_text_changes = 400,
     },
     capabilities = capabilities,
   };
@@ -156,11 +156,58 @@ lsp_installer.on_server_ready(function(server)
       '.git'
     );
   elseif server.name == 'sumneko_lua' then
+    -- https://github.com/sumneko/lua-language-server/wiki/Build-and-Run-(Standalone)
+    USER = vim.fn.expand('$USER')
+
+    local sumneko_root_path = ""
+    local sumneko_binary = ""
+
+    if vim.fn.has("mac") == 1 or vim.fn.has("unix") == 1 then
+      sumneko_root_path = vim.fn.expand("~/src/github.com/sumneko/lua-language-server")
+      sumneko_binary    = sumneko_root_path.."/bin/lua-language-server"
+    else
+      print("Unsupported system for sumneko")
+    end
+
+    local runtime_path = vim.split(package.path, ';')
+    table.insert(runtime_path, 'lua/?.lua')
+    table.insert(runtime_path, 'lua/?/init.lua')
+    --table.insert(runtime_path, vim.fn.expand('~/.local/share/asdf/installs/lua/5.4.4/share/lua/lua/5.4/?.lua'))
+    --table.insert(runtime_path, vim.fn.expand('~/.local/share/asdf/installs/lua/5.4.4/share/lua/lua/5.4/?/init.lua'))
+
+    opts.cmd = {
+      sumneko_binary, "-E", sumneko_root_path.."/bin/main.lua", "--logpath ~/sumneko.log",
+    }
     opts.settings = {
       Lua = {
-        runtime = { version = "LuaJIT", path = vim.split(package.path, ';'), },
-        diagnostics = { enable = true, globals = { "vim" }, }
-      }
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+          version = 'LuaJIT',
+          --version = 'Lua 5.4',
+          -- Setup your lua path
+          path = runtime_path,
+        },
+        diagnostics = {
+          enabled = true,
+          -- Get the language server to recognize the `vim` global
+          globals = { 'vim', },
+        },
+        workspace = {
+          maxPreload      = 2000,
+          preloadFileSize = 200,
+          checkThirdParty = true,
+          -- Make the server aware of Neovim runtime files
+          --library = vim.api.nvim_get_runtime_file('', true),
+          library = {
+            [vim.fn.expand('$VIMRUNTIME/lua')]         = true,
+            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+            --[vim.fn.expand('~/.local/share/asdf/installs/lua/5.4.4/luarocks')] = true,
+          },
+        },
+        telemetry = {
+          enable = false,
+        },
+      },
     }
   elseif server.name == 'rls' then
     opts.settings = {
@@ -176,7 +223,7 @@ lsp_installer.on_server_ready(function(server)
       'typescriptreact',
       'typescript.tsx',
     };
-    function tsserver_on_attach(client, bufnr)
+    local tsserver_on_attach = function(client, bufnr)
       if 1 == vim.fn.PHas('nvim-lsp-ts-utils') then
         -- disable tsserver formatting if you plan on formatting via null-ls
         client.resolved_capabilities.document_formatting = false
@@ -205,7 +252,7 @@ lsp_installer.on_server_ready(function(server)
           eslint_bin = 'eslint_d', -- INFO: OR 'eslint'
           eslint_config_fallback = os.getenv('HOME')..'/.dotfiles/.eslintrc.json',
           eslint_disable_if_no_config = true,
-          eslint_enable_diagnostics = true,
+          eslint_enable_diagno4tics = true,
           eslint_show_rule_id = true,
           -- formatting
           enable_formatting = false,
@@ -325,14 +372,14 @@ vim.g.symbols_outline = {
 do
   local method = "textDocument/publishDiagnostics"
   local default_handler = vim.lsp.handlers[method]
-  vim.lsp.handlers[method] = function(err, method, result, client_id, bufnr,
+  vim.lsp.handlers[method] = function(err, method2, result, client_id, bufnr,
     config)
-    default_handler(err, method, result, client_id, bufnr, config)
-    local diagnostics = vim.lsp.diagnostic.get_all()
+    default_handler(err, method2, result, client_id, bufnr, config)
+    local diagnostics = vim.diagnostic.get()
     local qflist = {}
-    for bufnr, diagnostic in pairs(diagnostics) do
+    for bn, diagnostic in pairs(diagnostics) do
       for _, d in ipairs(diagnostic) do
-        d.bufnr = bufnr
+        d.bufnr = bn
         d.lnum = d.range.start.line + 1
         d.col = d.range.start.character + 1
         d.text = d.message
