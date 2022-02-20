@@ -456,7 +456,7 @@ if [[ $LINUX == $TRUE ]]; then
   export ASDF_DIR="/opt/asdf-vm"
 elif [[ $OSX == $TRUE ]]; then
   #export ASDF_DIR="$BREW/opt/asdf"
-  export ASDF_DIR="$HOME/.asdf"
+  export ASDF_DIR="$BREW/opt/asdf/libexec"
 else
   export ASDF_DIR="$HOME/.asdf"
 fi

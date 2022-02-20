@@ -2,7 +2,7 @@
 scriptencoding utf-8
 
 
-if ! z#util#HasPlugin('vim-signify') | finish | endif
+if !PHas('vim-signify') | finish | endif
 
 
 let g:signify_vcs_list = [

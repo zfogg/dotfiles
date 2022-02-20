@@ -2,6 +2,6 @@
 scriptencoding utf-8
 
 
-if z#util#HasPlugin('typescript-vim')
-    let g:typescript_compiler_binary = 'tsc'
-endif
+if !PHas('typescript-vim') | finish | endif
+
+let g:typescript_compiler_binary = 'tsc'

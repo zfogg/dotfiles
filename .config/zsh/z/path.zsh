@@ -139,11 +139,11 @@ function() { # {{{ AFTER platform-specifics
       "$path[@]")
   fi
 
-  if [[ -d ~/.asdf/completions ]]; then
-    fpath=(
-      $HOME/.asdf/completions
-      "$fpath[@]")
-  fi
+  #if [[ -d ~/.asdf/completions ]]; then
+    #fpath=(
+      #$HOME/.asdf/completions
+      #"$fpath[@]")
+  #fi
 
   #if [[ -v ANDROID_HOME ]]; then
     #path=(

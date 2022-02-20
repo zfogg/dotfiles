@@ -2,6 +2,8 @@
 scriptencoding utf-8
 
 
+if !PHas('vim-session') | finish | endif
+
 let g:session_default_name      = 'default'           " When you don't name your session.
 let g:session_command_aliases   = 1                   " Use commands prefixed with 'Session'.
 let g:session_autosave          = 'yes'               " Save on exit sans prompt.

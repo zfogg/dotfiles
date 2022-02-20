@@ -17,6 +17,23 @@ function _G.HoverFixed()
   --local col = vim.fn.col('.')
 end
 
+-- Show diagnostics in a pop-up window on hover
+_G.LspDiagnosticsPopupHandler = function()
+  local current_cursor = vim.api.nvim_win_get_cursor(0)
+  local last_popup_cursor = vim.w.lsp_diagnostics_last_cursor or {nil, nil}
+  -- Show the popup diagnostics window,
+  -- but only once for the current cursor location (unless moved afterwards).
+  if not (current_cursor[1] == last_popup_cursor[1] and current_cursor[2] == last_popup_cursor[2]) then
+    vim.w.lsp_diagnostics_last_cursor = current_cursor
+    --if #vim.diagnostic.get() > 0 then
+    --if #vim.diagnostic.get(0, {lnum = vim.fn.line('.')+1}) > 0 then
+      vim.diagnostic.open_float(0, {scope="cursor"})   -- for neovim 0.6.0+, replaces show_{line,position}_diagnostics
+    --else
+      --vim.lsp.buf.hover()
+    --end
+  end
+end
+
 local function common_on_attach(client, bufnr)
   -- ... set up buffer keymaps, etc.
 
@@ -29,6 +46,12 @@ local function common_on_attach(client, bufnr)
 
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
   --vim.api.nvim_command('au CursorHold * lua _G.HoverFixed()')
+  vim.cmd [[
+  augroup LSPDiagnosticsOnHover
+    autocmd!
+    autocmd CursorHold * lua _G.LspDiagnosticsPopupHandler()
+  augroup END
+  ]]
 
   -- Mappings.
   local opts = {noremap = true, silent = true}
@@ -229,6 +252,9 @@ lsp_installer.on_server_ready(function(server)
     }
   elseif server.name == 'tsserver' then
     opts.filetypes = {
+      'javascript',
+      'javascriptreact',
+      'javascript.jsx',
       'typescript',
       'typescriptreact',
       'typescript.tsx',

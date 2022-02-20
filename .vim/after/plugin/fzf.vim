@@ -2,6 +2,9 @@
 scriptencoding utf-8
 
 
+if !PHas('fzf.vim') | finish | endif
+
+
 let g:fzf_preview_window = ['right:60%', 'ctrl-/']
 let g:fzf_buffers_jump = 1
 if exists('$FZF_HISTORY_DIR')
@@ -69,3 +72,22 @@ if executable('rg')
         \ <bang>0)
   endif
 endif
+
+
+" FIXME: from plugin/3.keys.vim
+" files - search, sort, find, open {{{
+"    nnoremap <C-f>     :Rg! 
+"    nnoremap <Leader>f :execute ':Rg! <C-r><C-w>'<Cr>
+"    nnoremap <C-g>     :GFiles<Cr>
+"    nnoremap <C-p>     :Files<Cr>
+
+"    " Mapping selecting mappings
+"    nmap <leader><tab> <plug>(fzf-maps-n)
+"    xmap <leader><tab> <plug>(fzf-maps-x)
+"    omap <leader><tab> <plug>(fzf-maps-o)
+
+"    " Insert mode completion
+"    imap <c-x><c-k> <plug>(fzf-complete-word)
+"    imap <c-x><c-f> <plug>(fzf-complete-path)
+"    imap <c-x><c-l> <plug>(fzf-complete-line)
+" }}}

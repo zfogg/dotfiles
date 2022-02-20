@@ -61,21 +61,12 @@ source "$ZDOTDIR/z/complete.zsh"
 #fi
 
 function() {
-  [[ -f $ASDF_DIR/asdf.sh ]] && source "$ASDF_DIR/asdf.sh"
-  if [[ -d $XDG_DATA_HOME/asdf ]]; then
+  local asdf_dir=${ASDF_DIR:-/dev/null}
+  local asdf_sh=${asdf_dir}/asdf.sh
+  if [[ -d $asdf_dir && -f $asdf_sh ]]; then
+    source $asdf_sh;
     eval "$(asdf exec direnv hook zsh)"
-    #source "$BREW/opt/asdf/asdf.sh"
-    #function direnv() { asdf exec direnv "$@"; }
-
-    #local asdf_java=${ASDF_DATA_DIR:-~/.asdf}/plugins/java
-    #if [[ -d $asdf_java ]]; then
-    #  source "$asdf_java/set-java-home.zsh"
-    #fi
   fi
-  #path=(
-    #$HOME/.yarn/bin
-    #"$path[@]")
-  #export PATH
 }
 
 #if command_exists jenv; then
