@@ -2,6 +2,17 @@
 scriptencoding utf-8
 
 
+if !PHas('fern.vim') | finish | endif
+
+nnoremap <Leader>n<Space>     :Fern . -drawer       -reveal=% -toggle<CR>
+nnoremap <Leader>nn           :Fern . -drawer -wait -reveal=%<BAR>wincmd p<CR>
+
+if PHas('fern-renderer-nerdfont.vim')
+  let g:fern#renderer = "nerdfont"
+endif
+
+let g:fern#disable_viewer_auto_duplication=1
+
 " INFO: https://github.com/lambdalisue/fern.vim
 
 augroup glyph-palette-custom
@@ -13,21 +24,21 @@ augroup END
 
 let g:fern_custom_isFloating = v:false
 function! Fern_ShowFloatingPreview()
-    if g:fern_custom_isFloating == v:false
-        let g:fern_custom_isFloating = v:true
-        call fern#action#call('preview:auto:toggle')
-    endif
+  if g:fern_custom_isFloating == v:false
+    let g:fern_custom_isFloating = v:true
+    call fern#action#call('preview:auto:toggle')
+  endif
 endfunction
 function! Fern_ToggleFloatingPreview()
-    call fern#action#call('preview:toggle')
+  call fern#action#call('preview:toggle')
 endfunction
 function! Fern_AutoToggleFloatingPreview()
-    if g:fern_custom_isFloating == v:true
-        g:fern_custom_isFloating = v:false
-    else
-        g:fern_custom_isFloating = v:true
-    endif
-    call fern#action#call('preview:auto:toggle')
+  if g:fern_custom_isFloating == v:true
+    let g:fern_custom_isFloating = v:false
+  else
+    let g:fern_custom_isFloating = v:true
+  endif
+  call fern#action#call('preview:auto:toggle')
 endfunction
 
 
@@ -136,7 +147,6 @@ function! s:init_fern() abort
 
   nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
   nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
-
 endfunction
 
 augroup fern-custom

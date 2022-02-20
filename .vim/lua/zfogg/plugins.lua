@@ -12,7 +12,15 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 
-require('packer').startup(function(use) -- {{{
+local packer_startup_opts = {
+  config = {
+    display = {
+      open_fn = require('packer.util').float,
+    },
+  },
+}
+
+require('packer').startup({function(use) -- {{{
   -- integrate with other programs {{{
     use 'wbthomason/packer.nvim' -- Packer can manage itself
 
@@ -35,7 +43,7 @@ require('packer').startup(function(use) -- {{{
       enable=(not vim.g.vscode and vim.fn.has('nvim')),
     };
 
-    use { 'Olical/vim-enmasse', cmd = 'EnMasse', };
+    use { 'Olical/vim-enmasse', opt=true, cmd='EnMasse', };
     use { 'kevinhwang91/nvim-bqf', };
   -- }}}
 
@@ -46,55 +54,64 @@ require('packer').startup(function(use) -- {{{
       --end),
     --};
 
-    --use { 'wakatime/vim-wakatime', };
+    use { 'lewis6991/gitsigns.nvim',
+      config = [[
+        vim.cmd('let b:rcplugin_gitsigns = 1')
+        require('gitsigns').setup()
+      ]],
+      requires = {
+        { 'nvim-lua/plenary.nvim', }, },
+    };
 
     -- Search
     use {
-      {
-        'nvim-telescope/telescope.nvim',
+      { 'nvim-telescope/telescope.nvim',
         setup = [[require('rc.telescope_setup')]],
         config = [[require('rc.telescope')]],
+        opt = true,
         cmd = 'Telescope',
         module = 'telescope',
         requires = {
-          'nvim-lua/popup.nvim',
-          'nvim-lua/plenary.nvim',
-          'telescope-frecency.nvim',
-          'telescope-fzf-native.nvim',
+          { 'nvim-lua/popup.nvim', opt=true, },
+          { 'nvim-lua/plenary.nvim', opt=true, },
+          { 'telescope-frecency.nvim',  opt=true, },
+          { 'telescope-fzf-native.nvim',  opt=true, },
         },
         wants = {
           'popup.nvim',
-          'plenary.nvim',
           'telescope-frecency.nvim',
           'telescope-fzf-native.nvim',
         },
       },
-      { 'nvim-telescope/telescope-frecency.nvim', after = 'telescope.nvim', requires = 'tami5/sql.nvim', },
-      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', },
+      { 'nvim-telescope/telescope-frecency.nvim',
+        after = 'telescope.nvim',
+        requires = 'tami5/sql.nvim', },
+      { 'nvim-telescope/telescope-fzf-native.nvim',
+        run = 'make', },
     }
 
     -- Project Management/Sessions
     use {
       'dhruvasagar/vim-prosession',
       after = 'vim-obsession',
-      requires = { { 'tpope/vim-obsession', cmd = 'Prosession' } },
+      requires = { { 'tpope/vim-obsession', opt=true, cmd='Prosession' } },
       --config = [[require('config.prosession')]],
     }
 
     use { 'AndrewRadev/bufferize.vim', };
 
-    use { 'dstein64/vim-startuptime', cmd = 'StartupTime', config = [[vim.g.startuptime_tries = 10]] }
-
-    use { 'folke/lua-dev.nvim',
-      ft = 'lua',
-      config = [[
-      ]],
+    use { 'dstein64/vim-startuptime',
+      cmd='StartupTime',
+      opt=true,
+      config = [[vim.g.startuptime_tries = 10]],
     };
+
+    use { 'folke/lua-dev.nvim', ft = 'lua', };
 
     -- Undo tree
     use {
       'mbbill/undotree',
-      cmd = 'UndotreeToggle',
+      opt = true, cmd = 'UndotreeToggle',
       config = [[vim.g.undotree_SetFocusWhenToggle = 1]],
     }
 
@@ -117,14 +134,10 @@ require('packer').startup(function(use) -- {{{
 
     -- fern
     use { 'lambdalisue/fern.vim',
-      --cmd = { 'Fern', 'FernDo', },
-      config = [[
-        vim.cmd('nnoremap <Leader>n<Space>     :Fern . -drawer       -reveal=% -toggle<CR>')
-        vim.cmd('nnoremap <Leader>nn           :Fern . -drawer -wait -reveal=%<CR>')
-      ]],
+      opt = true, cmd = { 'Fern', 'FernDo', },
       requires = {
         {'antoinemadec/FixCursorHold.nvim', },
-        {'lambdalisue/fern-git-status.vim', cond="PExe('git')", },
+        {'lambdalisue/fern-git-status.vim', },
         {'lambdalisue/fern-hijack.vim', },
         {'yuki-yano/fern-preview.vim', },
         {'lambdalisue/fern-renderer-nerdfont.vim', requires={
@@ -134,7 +147,7 @@ require('packer').startup(function(use) -- {{{
         {'lambdalisue/fern-ssh', },
         {'lambdalisue/fern-mapping-project-top.vim', },
         {'hrsh7th/fern-mapping-collapse-or-leave.vim', },
-        {'LumaKernel/fern-mapping-fzf.vim', enable=(false), requires={
+        {'LumaKernel/fern-mapping-fzf.vim', enable=false, requires={
           'junegunn/fzf', }, },
       },
     };
@@ -174,12 +187,13 @@ require('packer').startup(function(use) -- {{{
           requires = {'RishabhRD/popfix', }, },
         {'jose-elias-alvarez/null-ls.nvim',
           config = [[require('rc.null-ls')]],
-          requires = { 'nvim-lua/plenary.nvim', }, },
+          requires = { 'nvim-lua/plenary.nvim', },
+        }
       },
     };
 
     use { 'weilbith/nvim-code-action-menu',
-      cmd = 'CodeActionMenu',
+      opt=true, cmd = 'CodeActionMenu',
     };
 
     use { 'williamboman/nvim-lsp-installer',
@@ -191,16 +205,6 @@ require('packer').startup(function(use) -- {{{
       --requires = {
         --{ 'neovim/nvim-lsp', },
       --}, };
-
-  use { 'lewis6991/gitsigns.nvim',
-    config = [[
-      vim.cmd('let b:rcplugin_gitsigns = 1')
-      require('gitsigns').setup()
-    ]],
-    requires = {
-      {'nvim-lua/plenary.nvim', },
-    },
-  };
 
     use { 'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
@@ -341,7 +345,6 @@ require('packer').startup(function(use) -- {{{
     --use { 'cohama/lexima.vim' };
     --use { 'Raimondi/delimitMate' };
     use { 'windwp/nvim-autopairs',
-      run = ':UpdateRemotePlugins',
       config = [[require('rc.autopairs')]],
     };
     --use { 'jiangmiao/auto-pairs' };
@@ -349,23 +352,26 @@ require('packer').startup(function(use) -- {{{
     use { 'tpope/vim-surround', };
 
     -- textobj
-    use { 'kana/vim-textobj-user' };
-    use { 'kana/vim-textobj-indent' };
-    use { 'kana/vim-textobj-line' };
-    use { 'kana/vim-textobj-syntax' };
-    use { 'kana/vim-textobj-lastpat' };
-    use { 'kana/vim-textobj-fold' };
-    use { 'kana/vim-textobj-function' };
-    use { 'thinca/vim-textobj-between' };
-    use { 'glts/vim-textobj-comment' };
-    use { 'saaguero/vim-textobj-pastedtext' };
-    use { 'paulhybryant/vim-textobj-path' };
-    use { 'beloglazov/vim-textobj-quotes' };
-    use { 'saihoooooooo/vim-textobj-space' };
-    use { 'jceb/vim-textobj-uri' };
-    use { 'Julian/vim-textobj-variable-segment' };
-    use { 'libclang-vim/vim-textobj-clang', ft = ft['cx'], };
-    use { 'libclang-vim/vim-textobj-function-clang', ft = ft['cx'], };
+    use { 'kana/vim-textobj-user',
+      requires = {
+        { 'kana/vim-textobj-indent' },
+        { 'kana/vim-textobj-line' },
+        { 'kana/vim-textobj-syntax' },
+        { 'kana/vim-textobj-lastpat' },
+        { 'kana/vim-textobj-fold' },
+        { 'kana/vim-textobj-function' },
+        { 'thinca/vim-textobj-between' },
+        { 'glts/vim-textobj-comment' },
+        { 'saaguero/vim-textobj-pastedtext' },
+        { 'paulhybryant/vim-textobj-path' },
+        { 'beloglazov/vim-textobj-quotes' },
+        { 'saihoooooooo/vim-textobj-space' },
+        { 'jceb/vim-textobj-uri' },
+        { 'Julian/vim-textobj-variable-segment' },
+        { 'libclang-vim/vim-textobj-clang', ft = ft['cx'], },
+        { 'libclang-vim/vim-textobj-function-clang', ft = ft['cx'], },
+      },
+    };
 
     use { 'bruno-/vim-space' };
     use { 'Konfekt/FastFold' };
@@ -392,15 +398,24 @@ require('packer').startup(function(use) -- {{{
       use { 'vim-utils/vim-vertical-move' };
       --use { 'tpope/vim-unimpaired' };
   -- }}}
-end) -- }}}
+
+  end,
+  config = {
+    display = {
+      open_fn = function()
+        return require('packer.util').float({ border = 'single' })
+      end,
+    },
+}, }) -- }}}
 
 
 vim.cmd([[
 aug rc_packer_plugins
   au!
-  au User PackerComplete call z#util#Helptags()
-  au User PackerCompileDone call z#util#Helptags()
+  "au User PackerComplete    call z#util#Helptags() | UpdateRemotePlugins
+  "au User PackerCompileDone call z#util#Helptags()
   " INFO: https://github.com/wbthomason/packer.nvim/#quickstart
+  "au BufWritePost plugins.lua source <afile> | echom expand('PackerCompile...') | PackerCompile
   au BufWritePost plugins.lua source <afile> | PackerCompile
 aug END
 ]])

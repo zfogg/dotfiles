@@ -47,19 +47,19 @@ set stl+=%(\ %{
     \}\ %)
 
 " encoding and format
-if z#util#HasPlugin('neomake')
-    set stl+=%(\ %{
-        \(&ft!=''?
-            \WebDevIconsGetFileTypeSymbol():
-            \'[none]').
-        \(&bomb\|\|'^$\|utf-8'!~#&fenc?
-            \&fenc.(&bomb?'-bom':''):
-            \'').
-        \('unix'!=#&ff?
-            \('\ '.WebDevIconsGetFileFormatSymbol()):
-            \'')
-        \}\ %)
-endif
+"if PHas('neomake')
+"    set stl+=%(\ %{
+"        \(&ft!=''?
+"            \WebDevIconsGetFileTypeSymbol():
+"            \'[none]').
+"        \(&bomb\|\|'^$\|utf-8'!~#&fenc?
+"            \&fenc.(&bomb?'-bom':''):
+"            \'').
+"        \('unix'!=#&ff?
+"            \('\ '.WebDevIconsGetFileFormatSymbol()):
+"            \'')
+"        \}\ %)
+"endif
 
 " cursor
 set stl+=%(%*%3l\ %3p%%\ %)
