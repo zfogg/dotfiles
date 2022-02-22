@@ -174,20 +174,36 @@ lsp_installer.on_server_ready(function(server)
       'package.json',
       '.git'
     );
-  elseif server.name == 'solidity_ls' then
-    opts.cmd = {
-      'solc',
-      '@openzeppelin=node_modules/@openzeppelin',
-      '--lsp',
-    };
-    opts.filetypes = {
-      'solidity',
-    };
+
+  elseif server.name == 'solc' then
+    --opts.cmd = {
+      --'solc',
+      --'--lsp',
+    --};
+    --opts.filetypes = {
+      --'solidity',
+    --};
     opts.root_dir = util.root_pattern(
       '.solhint.json',
       '.soliumrc.json',
       '.git'
     );
+
+  elseif server.name == 'solang' then
+    --opts.cmd = {
+      --'solang',
+      --'--language-server',
+      --'--target', 'ewasm',
+    --};
+    --opts.filetypes = {
+      --'solidity',
+    --};
+    opts.root_dir = util.root_pattern(
+      '.solhint.json',
+      '.soliumrc.json',
+      '.git'
+    );
+
   elseif server.name == 'sumneko_lua' then
     -- https://github.com/sumneko/lua-language-server/wiki/Build-and-Run-(Standalone)
     USER = vim.fn.expand('$USER')
@@ -205,8 +221,6 @@ lsp_installer.on_server_ready(function(server)
     local runtime_path = vim.split(package.path, ';')
     table.insert(runtime_path, 'lua/?.lua')
     table.insert(runtime_path, 'lua/?/init.lua')
-    --table.insert(runtime_path, vim.fn.expand('~/.local/share/asdf/installs/lua/5.4.4/share/lua/lua/5.4/?.lua'))
-    --table.insert(runtime_path, vim.fn.expand('~/.local/share/asdf/installs/lua/5.4.4/share/lua/lua/5.4/?/init.lua'))
 
     opts.cmd = {
       sumneko_binary, "-E", sumneko_root_path.."/bin/main.lua", "--logpath ~/sumneko.log",
@@ -220,21 +234,24 @@ lsp_installer.on_server_ready(function(server)
           -- Setup your lua path
           path = runtime_path,
         },
+        completion = {
+          callSnippet = 'Both',
+        },
         diagnostics = {
           enabled = true,
           -- Get the language server to recognize the `vim` global
-          globals = { 'vim', },
+          globals = { 'vim', 'use', },
         },
         workspace = {
-          maxPreload      = 2000,
-          preloadFileSize = 750,
+          maxPreload      = 10000,
+          preloadFileSize = 10000,
           checkThirdParty = false,
           -- Make the server aware of Neovim runtime files
           --library = vim.api.nvim_get_runtime_file('', true),
           library = {
             [vim.fn.expand('$VIMRUNTIME/lua')]         = true,
             [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-            --[vim.fn.expand('~/.local/share/asdf/installs/lua/5.4.4/luarocks')] = true,
+            ----[vim.fn.expand('~/.local/share/asdf/installs/lua/5.4.4/luarocks')] = true,
           },
         },
         telemetry = {
@@ -242,6 +259,12 @@ lsp_installer.on_server_ready(function(server)
         },
       },
     }
+
+    opts.root_dir = util.root_pattern(
+      '.luarc.json',
+      '.git'
+    );
+
   elseif server.name == 'rls' then
     opts.settings = {
       rust = {
