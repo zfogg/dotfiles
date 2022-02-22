@@ -22,24 +22,24 @@ augroup glyph-palette-custom
 augroup END
 
 
-let g:fern_custom_isFloating = v:false
-function! Fern_ShowFloatingPreview()
-  if g:fern_custom_isFloating == v:false
-    let g:fern_custom_isFloating = v:true
-    call fern#action#call('preview:auto:toggle')
-  endif
-endfunction
-function! Fern_ToggleFloatingPreview()
-  call fern#action#call('preview:toggle')
-endfunction
-function! Fern_AutoToggleFloatingPreview()
-  if g:fern_custom_isFloating == v:true
-    let g:fern_custom_isFloating = v:false
-  else
-    let g:fern_custom_isFloating = v:true
-  endif
-  call fern#action#call('preview:auto:toggle')
-endfunction
+"let g:fern_custom_isFloating = v:false
+"function! Fern_ShowFloatingPreview()
+  "if g:fern_custom_isFloating == v:false
+    "let g:fern_custom_isFloating = v:true
+    "call fern#action#call('preview:auto:toggle')
+  "endif
+"endfunction
+"function! Fern_ToggleFloatingPreview()
+  "call fern#action#call('preview:toggle')
+"endfunction
+"function! Fern_AutoToggleFloatingPreview()
+  "if g:fern_custom_isFloating == v:true
+    "let g:fern_custom_isFloating = v:false
+  "else
+    "let g:fern_custom_isFloating = v:true
+  "endif
+  "call fern#action#call('preview:auto:toggle')
+"endfunction
 
 
 function! s:init_fern() abort
@@ -138,10 +138,10 @@ function! s:init_fern() abort
       \   "k",
       \ )
 
-  "nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
-  nmap <silent> <buffer> p     :call Fern_ToggleFloatingPreview()<CR>
-  "nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
-  nmap <silent> <buffer> <C-p> :call Fern_AutoToggleFloatingPreview()<CR>
+  nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
+  "nmap <silent> <buffer> p     :call Fern_ToggleFloatingPreview()<CR>
+  nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
+  "nmap <silent> <buffer> <C-p> :call Fern_AutoToggleFloatingPreview()<CR>
   nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
   nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
 
