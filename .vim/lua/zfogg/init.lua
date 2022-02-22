@@ -2,6 +2,8 @@
 
 require 'zfogg.util'
 require 'zfogg.plugins'
+require 'zfogg.mappings'
+require 'zfogg.colors'
 
 vim.cmd [[
 au VimEnter * COQnow --shut-up
