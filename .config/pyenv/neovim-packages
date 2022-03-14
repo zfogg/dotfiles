@@ -6,6 +6,7 @@ virtualenv
 virtualenvwrapper
 pew
 python-language-server[all]
+python-lsp-server[all]
 jedi<0.18.0,>=0.17.2
 flake8
 pep8

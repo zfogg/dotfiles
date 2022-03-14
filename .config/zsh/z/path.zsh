@@ -2,7 +2,6 @@
 # vim: set fdm=marker:
 #   ~/.config/zsh/z/path.zsh
 
-
 # {{{ variable typesets
   # NOTE: these typesets need to appear first
   typeset -U   path
@@ -10,6 +9,9 @@
   typeset -U   manpath
   typeset -aU  infopath
   typeset -xUT INFOPATH infopath
+
+  # INFO: https://www.reddit.com/r/neovim/comments/ga0s7w/comment/foxs2m8/
+  [[ "$SHLVL" > 1 ]] && return fi
 # }}}
 
 #print -rl -- "${fpath[@]#/usr/local/share/zsh/site-functions}"
@@ -139,6 +141,12 @@ function() { # {{{ AFTER platform-specifics
       "$path[@]")
   fi
 
+  if (( ${+VIRTUAL_ENV} )); then
+    path=(
+      $VIRTUAL_ENV/bin
+      "$path[@]")
+  fi
+
   #if [[ -d ~/.asdf/completions ]]; then
     #fpath=(
       #$HOME/.asdf/completions
@@ -176,9 +184,9 @@ function() { # {{{ AFTER platform-specifics
 
 # {{{ variables exports
   # FIXME: do i even need these exports?
-  export PATH
-  export FPATH
-  export MANPATH
-  export CLASSPATH
-  export INFOPATH
+    export PATH
+    export FPATH
+    export MANPATH
+    export CLASSPATH
+    export INFOPATH
 # }}}

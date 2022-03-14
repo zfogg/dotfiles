@@ -23,6 +23,10 @@
 -- INFO: https://stackoverflow.com/a/11183473/672346
 \set pager off
 
+\setenv PAGER pspg
+\pset border 2
+\pset linestyle unicode
+
 -- Use best available output format
 \x auto
 \set VERBOSITY verbose

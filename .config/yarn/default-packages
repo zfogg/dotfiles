@@ -2,7 +2,6 @@ neovim
 typescript
 prettier
 pyright
-solc
 solium
 ethlint
 eslint_d
