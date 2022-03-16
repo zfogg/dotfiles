@@ -18,7 +18,7 @@ let g:loaded_rrhelper         = v:true
 let g:loaded_vimballPlugin    = v:true
 
 
-let g:loaded_netrw                         = v:true              " $VIMRUNTIME/autoload/netrw.vim
+"let g:loaded_netrw                         = v:true              " $VIMRUNTIME/autoload/netrw.vim
 let g:loaded_netrwFileHandlers             = v:true              " $VIMRUNTIME/autoload/netrwFileHandlers.vim
 let g:loaded_netrwSettings                 = v:true              " $VIMRUNTIME/autoload/netrwSettings.vim
 "let g:loaded_sql_completion                = 160                 " $VIMRUNTIME/autoload/sqlcomplete.vim

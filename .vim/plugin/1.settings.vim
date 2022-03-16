@@ -102,6 +102,8 @@ set viewoptions+=cursor,curdir,folds
     set backspace=indent,eol,start " Allow backspacing over autoindent, EOL, and BOL.
     set autoindent                 " Always set autoindenting on.
     set lazyredraw                 " For better macro performance.
+    set redrawtime=1200            " For better macro performance.
+    set maxmempattern=100000       " For better macro performance.
     set ttimeoutlen=100            " Time (ms) for a key code sequence to complete.
     "augroup RcSettings_timeoutlen
         "au!

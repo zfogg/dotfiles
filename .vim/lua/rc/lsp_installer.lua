@@ -151,9 +151,10 @@ lsp_installer.on_server_ready(function(server)
     --  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
     --  formatStdin = true,
     --}
-    opts.default_config = {
-      cmd = {'eslint-ls', '--stdio'};
-    }
+    --opts.default_config = {
+      --cmd = {'eslint-ls', '--stdio'};
+      --cmd = {'yarn', 'vscode-eslint-language-server', '--stdio'};
+    --}
     opts.settings = {
       format = { enable = true };
     };
