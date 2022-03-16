@@ -5,8 +5,10 @@ scriptencoding utf-8
 func! z#constants#globals#Ft()
   let g:zft = {
       \'py':     ['python', 'python3'],
-      \'js':     ['javascript', 'javascript.jsx'],
-      \'ts':     ['typescript', 'typescript.tsx'],
+      \'js':     ['javascript'],
+      \'jsx':    ['javascript.jsx', 'javascriptreact'],
+      \'ts':     ['typescript'],
+      \'tsx':    ['typescript.tsx', 'typescriptreact'],
       \'cx':     ['c', 'cpp', 'objc', 'objcpp', 'ch'],
       \'jinja':  ['jinja', 'jinja.html', 'sls'],
       \'markup': ['xml', 'html', 'jinja.html'],

@@ -134,7 +134,7 @@ require('packer').startup({function(use) -- {{{
 
     -- fern
     use { 'lambdalisue/fern.vim',
-      opt = true, cmd = { 'Fern', 'FernDo', },
+      --opt = true, cmd = { 'Fern', 'FernDo', },
       requires = {
         {'antoinemadec/FixCursorHold.nvim', },
         {'lambdalisue/fern-git-status.vim', },
@@ -267,20 +267,36 @@ require('packer').startup({function(use) -- {{{
     use { 'rust-lang/rust.vim',          ft = ft['rs'], };
     use { 'vim-scripts/applescript.vim', ft = ft['scpt'], };
     use { 'guns/vim-clojure-highlight',  ft = ft['clj'], };
-    use { 'pangloss/vim-javascript',     ft = ft['js'], };
-    use { 'leafgarland/typescript-vim',  ft = ft['ts'], };
-    use { 'peitalin/vim-jsx-typescript', ft = ft['ts'], };
-    use { 'prettier/vim-prettier', ft = ccat(ft['js'], ft['ts']), run = 'yarn install', };
+    --use { 'pangloss/vim-javascript',     ft = ft['js'], };
+    --use { 'maxmellon/vim-jsx-pretty', ft = ccat(ft['jsx'], ft['tsx']) };
+    use { 'yuezk/vim-js', };
+    use { 'HerringtonDarkholme/yats.vim', };
+    use { 'maxmellon/vim-jsx-pretty',
+      --ft = ccat(ft['jsx'], ft['tsx']),
+      requires = {
+        { 'yuezk/vim-js', },
+        { 'HerringtonDarkholme/yats.vim', },
+      },
+      config = [[
+        vim.g.vim_jsx_pretty_colorful_config = 1
+      ]],
+    };
+
+    --use { 'HerringtonDarkholme/yats.vim',  ft = ft['ts'], };
+    --use { 'leafgarland/typescript-vim',  ft = ft['ts'], };
+    --use { 'peitalin/vim-jsx-typescript', ft = ft['tsx'], };
+
+    --use { 'prettier/vim-prettier', ft = ccat(ft['js'], ft['ts']), run = 'yarn install', };
     --use { 'prettier/vim-prettier',         {'do': 'yarn install' };}
         --{ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html' };] }
     use { 'hashivim/vim-terraform', ft = {'terraform', 'json'}, };
     --use { 'Quramy/tsuquyomi' };
-    use { 'yuezk/vim-js', ft = ft['js'], };
+    --use { 'yuezk/vim-js', ft = ft['js'], };
     --use { 'HerringtonDarkholme/yats.vim' };
-    use { 'maxmellon/vim-jsx-pretty',   ft = ft['js'], };
+    --use { 'maxmellon/vim-jsx-pretty',   ft = ft['jsx'], };
     use { 'Olical/vim-syntax-expand',   ft = ft['js'], };
-    use { 'ternjs/tern_for_vim',        ft = ft['js'], run = 'npm install', };
-    use { 'othree/jspc.vim',            ft = ft['js'], };
+    --use { 'ternjs/tern_for_vim',        ft = ft['js'], run = 'npm install', };
+    --use { 'othree/jspc.vim',            ft = ft['js'], };
     use { 'itchyny/vim-haskell-indent', ft = {'haskell'}, };
     --use { 'flowtype/vim-flow',             {'for': ft['js' };]}
     -- markdown
@@ -309,7 +325,7 @@ require('packer').startup({function(use) -- {{{
     use { 'darfink/vim-plist' };
     --use { 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml' };]}
     --use { 'LnL7/vim-nix' };
-    use { 'alvan/vim-closetag', ft = {'javascript.jsx', 'typescript.tsx', 'html'}, };
+    use { 'alvan/vim-closetag', ft = {'javascriptreact', 'typescriptreact', 'html'}, };
     use { 'isobit/vim-caddyfile' };
     use { 'wgwoods/vim-systemd-syntax' }; -- systemctl / systemd
     use { 'tomlion/vim-solidity' };

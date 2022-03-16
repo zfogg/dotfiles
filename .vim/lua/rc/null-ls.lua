@@ -12,8 +12,8 @@ if 1 == vim.fn.PHas('null-ls.nvim') then
         diagnostics_format = '[#{c}] #{m} (#{s})'
       }),
 
-      require("null-ls").builtins.formatting.eslint_d,
-      require("null-ls").builtins.diagnostics.eslint_d,
+      --require("null-ls").builtins.formatting.eslint_d,
+      --require("null-ls").builtins.diagnostics.eslint_d,
 
       require("null-ls").builtins.formatting.clang_format,
 
