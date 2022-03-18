@@ -21,18 +21,20 @@ local packer_startup_opts = {
 }
 
 require('packer').startup({function(use) -- {{{
+    use { 'b0o/mapx.nvim',
+      config = [[require('rc.mapx')]],
+    };
   -- integrate with other programs {{{
     use 'wbthomason/packer.nvim' -- Packer can manage itself
 
     --use { 'Shougo/vimproc.vim', run = 'make', };
-    use { 'tpope/vim-git' };
+    --use { 'tpope/vim-git' };
     use { 'tpope/vim-fugitive' };
     --use { 'airblade/vim-gitgutter'
     --  requires = {
     --    { 'gilligan/textobj-gitgutter', },
     --  },
     --};
-    use { 'mhinz/vim-signify' };
     use { 'whiteinge/diffconflicts' };
 
     use { 'tmux-plugins/vim-tmux', ft={'tmux'}, };
@@ -55,12 +57,15 @@ require('packer').startup({function(use) -- {{{
     --};
 
     use { 'lewis6991/gitsigns.nvim',
-      config = [[
+      setup = [[
         vim.cmd('let b:rcplugin_gitsigns = 1')
-        require('gitsigns').setup()
+      ]],
+      config = [[
+        require('rc.gitsigns')
       ]],
       requires = {
-        { 'nvim-lua/plenary.nvim', }, },
+        { 'nvim-lua/plenary.nvim', },
+      },
     };
 
     -- Search
@@ -332,6 +337,14 @@ require('packer').startup({function(use) -- {{{
   -- }}}
 
   -- Beautify Vim. {{{
+    use { 'nvim-lualine/lualine.nvim',
+      config = [[require('rc.lualine')]],
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true, },
+    };
+    use { 'akinsho/bufferline.nvim',
+      config = [[require('rc.bufferline')]],
+      requires = 'kyazdani42/nvim-web-devicons',
+    };
     use { 'tjdevries/colorbuddy.vim', 
       after = {'nvim-treesitter', },
     };
