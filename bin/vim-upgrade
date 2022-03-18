@@ -84,7 +84,7 @@ function() {
     local yarn_reqs=$(cat ${ASDF_YARN_DEFAULT_PACKAGES_FILE:-~/.default-yarn-packages} | xargs)
     for v (${(z)node_versions}) {
         asdf shell nodejs "$v"
-        asdf exec yarn global add ${(z)yarn_reqs[@]} || true
+        #asdf exec yarn global add ${(z)yarn_reqs[@]} || true
         #asdf exec npm install -g --force "${(z)yarn_reqs[@]}"
         #asdf exec yarn global upgrade
     }
@@ -156,7 +156,7 @@ function() { # Rust, rustup, Cargo
 
 
 function() { # Ruby, Gem
-    return # FIXME: lmao
+    #return # FIXME: lmao
     local section="Ruby, Gem"
     log_section_start "$section"
 
