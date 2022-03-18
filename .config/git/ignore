@@ -1,5 +1,23 @@
 .git/
 node_modules/
+
+
+# INFO: https://stackoverflow.com/a/67198084/672346
+# ------- yarn -------
+# see excellent notes at: https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+# Also: `yarn.lock` and `.yarnrc.yml` (or it's older counterpart .yarnrc) "should always be stored in your repo"
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+## --> ADD if using zero-install, otherwise do NOT:
+#!.yarn/cache
+## --> ELSE ADD if NOT using yarn's zero-install:
+.pnp.*
+# ------- end yarn -------
+
 bower_components/
 vendor/
 cache/

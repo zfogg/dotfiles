@@ -1,9 +1,8 @@
 # vim: filetype=config:
 
 direnv latest latest:2 2.29.0
-java   latest adoptopenjdk-16.0.1+9
-nodejs latest 17.5.0 16.14.0 lts 14.16.1
-yarn   latest latest:1.22 1.22.17
+java   latest
+nodejs latest 17.7.1 16.14.0 14.16.1
 python latest 3.10.2 pypy-c-jit-latest pypy3.7-c-jit-latest 2.7.18 system
 ruby   latest latest:3 3.1.1
 rust   latest stable latest:1.56 beta nightly
@@ -11,4 +10,4 @@ golang latest 1.17.3
 #deno   latest 1.16.3
 lua    latest 5.4.3 5.3.6
 #lua    latest latest:5.3
-pnpm   latest 6.23.2
+#pnpm   latest 6.31.0
