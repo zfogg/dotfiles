@@ -274,6 +274,22 @@ lsp_installer.on_server_ready(function(server)
         all_features = true,
       },
     }
+  elseif server.name == 'tailwindcss' then
+    opts.settings = {
+      tailwindCSS = {
+        classAttributes = { "class", "className", "classList", "ngClass", "tw", },
+        lint = {
+          cssConflict = "warning",
+          invalidApply = "error",
+          invalidConfigPath = "error",
+          invalidScreen = "error",
+          invalidTailwindDirective = "error",
+          invalidVariant = "error",
+          recommendedVariantOrder = "warning",
+        },
+        validate = true,
+      },
+    }
   elseif server.name == 'tsserver' then
     opts.filetypes = {
       'javascript',

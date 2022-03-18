@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 # vim: set fdm=marker:
 
-
 #zmodload zsh/zprof
 
 # {{{ zsh startup debug (TOP of ~/.zshenv)

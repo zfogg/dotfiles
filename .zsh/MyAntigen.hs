@@ -17,7 +17,7 @@ import Antigen (
 
 
 bundles = [
-          (bundle "zdharma/fast-syntax-highlighting")
+          (bundle "wookayin/fast-syntax-highlighting")
             { fpathLocations = [] }
 
         , (bundle "zsh-users/zsh-history-substring-search")
@@ -27,13 +27,13 @@ bundles = [
             { fpathLocations = [] }
 
         -- INFO: aggregates zsh completions from lots of places
-        , (bundle "clarketm/zsh-completions")
-            { sourcingStrategy = filePathsSourcingStrategy [
-                ] }
-            { fpathLocations = [] }
+        {-, (bundle "clarketm/zsh-completions")-}
+            {-{ sourcingStrategy = filePathsSourcingStrategy [-}
+                {-] }-}
+            {-{ fpathLocations = [] }-}
 
-        , (bundle "RobSis/zsh-completion-generator")
-            { fpathLocations = [] }
+        {-, (bundle "RobSis/zsh-completion-generator")-}
+            {-{ fpathLocations = [] }-}
 
         {-, (bundle "nojhan/liquidprompt")-}
             {-{ fpathLocations = [] }-}
