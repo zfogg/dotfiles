@@ -5,23 +5,27 @@ let g:c_syntax_for_h = 1
 
 
 " NOTE: :help ft-syntax-omni
-aug rc_filetype_omnicomplete
-    au!
-    au FileType python     setl ofu=pythoncomplete#Complete
-    au FileType html       setl ofu=htmlcomplete#CompleteTags
-    au FileType css        setl ofu=csscomplete#CompleteCSS
-    au FileType xml        setl ofu=xmlcomplete#CompleteTags
-    "au FileType php        setl ofu=phpcomplete#CompletePHP
-    au FileType c          setl ofu=ccomplete#Complete
-    au FileType sql        setl ofu=sqlcomplete#Complete
+if has("autocmd") && exists("+omnifunc")
+    aug rc_filetype_omnicomplete
+        "au!
+        "au FileType python     setl ofu=pythoncomplete#Complete
+        "au FileType html       setl ofu=htmlcomplete#CompleteTags
+        "au FileType css        setl ofu=csscomplete#CompleteCSS
+        "au FileType xml        setl ofu=xmlcomplete#CompleteTags
+        "au FileType php        setl ofu=phpcomplete#CompletePHP
+        "au FileType c          setl ofu=ccomplete#Complete
+        "au FileType sql        setl ofu=sqlcomplete#Complete
 
-    "au FileType javascript setl ofu=javascriptcomplete#CompleteJS
+        "au FileType javascript setl ofu=javascriptcomplete#CompleteJS
 
-    au FileType *
-        \ if &ofu == '' |  setl ofu=syntaxcomplete#Complete | endif
+        autocmd Filetype *
+                \   if &omnifunc == "" |
+                \       setlocal omnifunc=syntaxcomplete#Complete |
+                \   endif
 
-    au FileType crontab setlocal nobackup nowritebackup
-aug END
+        au FileType crontab setlocal nobackup nowritebackup
+    aug END
+endif
 
 
 " INFO: https://github.com/chrisbra/csv.vim#manual-installation

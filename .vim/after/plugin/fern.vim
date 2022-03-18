@@ -107,12 +107,12 @@ function! s:init_fern() abort
       \ <Plug>(fern-wait)
       \ <Plug>(fern-action-tcd:root)
 
-  nmap <buffer><expr>
-      \ <Plug>(fern-floating-preview-or-nop)
-      \ fern#smart#leaf(
-      \   ":silent! call Fern_ShowFloatingPreview()\<CR>",
-      \   "",
-      \ )
+  "nmap <buffer><expr>
+      "\ <Plug>(fern-floating-preview-or-nop)
+      "\ fern#smart#leaf(
+      "\   ":silent! call Fern_ShowFloatingPreview()\<CR>",
+      "\   "",
+      "\ )
   "nmap <buffer><expr>
       "\ <Plug>(fern-floating-preview-or-nop)
       "\ fern#smart#leaf(
