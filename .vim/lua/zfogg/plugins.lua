@@ -21,6 +21,13 @@ local packer_startup_opts = {
 }
 
 require('packer').startup({function(use) -- {{{
+    use { 'lewis6991/impatient.nvim',
+      config = [[
+      require('impatient')
+      --require('impatient').enable_profile()
+      ]],
+    };
+
     use { 'b0o/mapx.nvim',
       config = [[require('rc.mapx')]],
     };
