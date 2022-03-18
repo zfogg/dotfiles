@@ -13,9 +13,9 @@ fi
 
 # init: zsh modules {{{
 zmodload -a zsh/zpty zpty
-zmodload -a zsh/stat stat
-zmodload -a zsh/zprof zprof
-zmodload -a zsh/mapfile mapfile
+#zmodload -a zsh/stat stat
+#zmodload -a zsh/zprof zprof
+#zmodload -a zsh/mapfile mapfile
 
 # zsh builtins
 autoload -Uz          \
@@ -306,45 +306,44 @@ function() {
 
 
 # crypto auth agents {{{
-function() {
-  local sfa_script=$(which ssh-find-agent.sh)
-  [[ -x "$sfa_script" ]] && source "$sfa_script"
-  ssh_find_agent -a || \
-    eval $(ssh-agent) > /dev/null
-  pgrep gpg-agent >/dev/null || \
-    gpg-agent --daemon --default-cache-ttl 1728000 --max-cache-ttl 1728000
-  export GPG_AGENT_INFO=$(gpgconf --list-dirs agent-socket)
-  export GPG_TTY=$(tty)
-}
-
-function() {
-  #export SSH_AUTH_SOCK=/Users/zfogg/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh
-  #local keys="${(f)ssh_keys}"
-  #local ssh_keys="$(for x in `\ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
-  #export GPG_TTY="$(tty)"
-  # INFO: ^ moved to ~/.zshenv so p10k won't make me not a TTY
-  # INFO: https://unix.stackexchange.com/a/608843/99026
-  if command_exists keychain; then
-    typeset -a keys=()
-    local gpg_keyid_file="$HOME"/.gnupg/.keyid
-    local ssh_keyid_file="$HOME"/.ssh/.keyid
-    if [[ -f $gpg_keyid_file ]] { keys+=$(cat "$gpg_keyid_file") }
-    if [[ -f $ssh_keyid_file ]] { keys+="$ssh_keyid_file" }
-    local life=28800
-    #--systemd \
-    #--noask \
-    #--quick \
-    eval $(keychain \
-      --dir "${XDG_CACHE_HOME:-~/.cache}"/.keychain \
-      --confhost \
-      --eval \
-      --timeout "$life" \
-      --agents ssh,gpg \
-      --quiet \
-      --inherit any \
-      "${(@f)keys}")
-  fi
-}
+#function() {
+#  return
+#  local sfa_script=$(which ssh-find-agent.sh)
+#  [[ -x "$sfa_script" ]] && source "$sfa_script"
+#  ssh_find_agent -a || \
+#    eval $(ssh-agent) > /dev/null
+#  pgrep gpg-agent >/dev/null || \
+#    gpg-agent --daemon --default-cache-ttl 1728000 --max-cache-ttl 1728000
+#  export GPG_AGENT_INFO=$(gpgconf --list-dirs agent-socket)
+#  export GPG_TTY=$(tty)
+#
+#  #export SSH_AUTH_SOCK=/Users/zfogg/Library/Containers/org.hejki.osx.sshce.agent/Data/socket.ssh
+#  #local keys="${(f)ssh_keys}"
+#  #local ssh_keys="$(for x in `\ls ~/.ssh/id_rsa*~*.pub`; basename "$x")"
+#  #export GPG_TTY="$(tty)"
+#  # INFO: ^ moved to ~/.zshenv so p10k won't make me not a TTY
+#  # INFO: https://unix.stackexchange.com/a/608843/99026
+#  if command_exists keychain; then
+#    typeset -a keys=()
+#    local gpg_keyid_file="$HOME"/.gnupg/.keyid
+#    local ssh_keyid_file="$HOME"/.ssh/.keyid
+#    if [[ -f $gpg_keyid_file ]] { keys+=$(cat "$gpg_keyid_file") }
+#    if [[ -f $ssh_keyid_file ]] { keys+="$ssh_keyid_file" }
+#    local life=28800
+#    #--systemd \
+#    #--noask \
+#    eval $(keychain \
+#      --dir "${XDG_CACHE_HOME:-~/.cache}"/.keychain \
+#      --confhost \
+#      --eval \
+#      --timeout "$life" \
+#      --agents ssh,gpg \
+#      --quick \
+#      --quiet \
+#      --inherit any \
+#      "${(@f)keys}")
+#  fi
+#}
 # }}}
 
 
@@ -359,7 +358,7 @@ fi
 #. /Users/zfogg/.nix-profile/etc/profile.d/nix.sh
 
 # heroku autocomplete setup
-HEROKU_AC_ZSH_SETUP_PATH=/home/zfogg/.cache/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+#HEROKU_AC_ZSH_SETUP_PATH=/home/zfogg/.cache/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 
 # INFO: https://github.com/b4b4r07/emoji-cli
 #export EMOJI_CLI_FILTER='fzf-tmux -d 15%:fzf:peco:percol'
@@ -375,10 +374,10 @@ HEROKU_AC_ZSH_SETUP_PATH=/home/zfogg/.cache/heroku/autocomplete/zsh_setup && tes
 
 
 # ishan / quackduck: magic
-function() {
-  return
-  local magicf=~/bin/magic.sh
-  if [[ -f $magicf ]]; then
-    source "$magicf"
-  fi
-}
+#function() {
+  #return
+  #local magicf=~/bin/magic.sh
+  #if [[ -f $magicf ]]; then
+    #source "$magicf"
+  #fi
+#}
