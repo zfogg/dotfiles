@@ -37,13 +37,13 @@ func! z#constants#globals#ConfigPaths()
 
     " dir/ ~/.dotfiles/ 'g:dotfiles'
     let g:dotfiles_l = '.dotfiles'
-    let g:dotfiles   = fnamemodify(exists('$DOTFILES') ? $DOTFILES : g:dotfiles_l, ':~')
+    let g:dotfiles   = fnamemodify(exists($DOTFILES) ? $DOTFILES : g:dotfiles_l, ':~')
     let g:dotfiles_f = expand(g:dotfiles)
     let g:dotfiles_r = fnamemodify(g:dotfiles, ':~')
 
     " dir/ ~/.vim/ 'g:dotvim'
     "let g:dotvim_l   = '.vim'
-    "let g:dotvim     = exists('$DOTVIM')               ? $DOTVIM   : g:dotfiles.'/'.g:dotvim_l
+    "let g:dotvim     = exists($DOTVIM)               ? $DOTVIM   : g:dotfiles.'/'.g:dotvim_l
     let g:dotvim     = stdpath("config")
     let g:dotvim_f   = expand(g:dotvim)
     let g:dotvim_r   = fnamemodify(g:dotvim,   ':~')
@@ -65,17 +65,12 @@ func! z#constants#globals#Python()
   elseif has('unix')
     let l:py2_prog = 'python2'
     let l:py3_prog = 'python3'
-    if exists('$XDG_DATA_HOME') && isdirectory(expand($XDG_DATA_HOME))
-      if executable('asdf') && isdirectory($XDG_DATA_HOME.'/asdf')
-        let l:py2_root = $XDG_DATA_HOME.'/asdf/shims'
-        let l:py3_root = $XDG_DATA_HOME.'/asdf/shims'
-      elseif exists('$WORKON_HOME') && isdirectory(expand($WORKON_HOME))
-        let l:py2_root = $WORKON_HOME.'/neovim2/bin'
-        let l:py3_root = $WORKON_HOME.'/neovim3/bin'
-      endif
-    elseif exists('$BREW')
-      let l:py2_root = $BREW.'/bin'
-      let l:py3_root = $BREW.'/bin'
+    if isdirectory(expand('$XDG_DATA_HOME').'/asdf')
+      let l:py2_root = expand('$XDG_DATA_HOME').'/asdf/shims'
+      let l:py3_root = expand('$XDG_DATA_HOME').'/asdf/shims'
+    elseif isdirectory(expand('$BREW'))
+      let l:py2_root = expand('$BREW').'/bin'
+      let l:py3_root = expand('$BREW').'/bin'
     endif
   endif
   try

@@ -9,4 +9,4 @@ scriptencoding utf-8
 "autocmd BufRead,BufNewFile *.tsx set filetype=typescript.tsx
 
 " INFO: https://github.com/peitalin/vim-jsx-typescript
-"autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact

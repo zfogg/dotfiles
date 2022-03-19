@@ -1,4 +1,4 @@
--- lua/rc/telescope_setup.lua
+-- lua/rc/telescope-setup.lua
 local map = require('zfogg.util').map
 
 local silent = { silent = true }
