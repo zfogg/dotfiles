@@ -26,7 +26,9 @@ let g:LanguageClient_serverCommands['javascript']      = ['typescript-language-s
 " choose ONE to uncomment ^
 let g:LanguageClient_serverCommands['typescript']      = g:LanguageClient_serverCommands['javascript']
 let g:LanguageClient_serverCommands['javascript.jsx']  = g:LanguageClient_serverCommands['javascript']
+let g:LanguageClient_serverCommands['javascriptreact'] = g:LanguageClient_serverCommands['javascript']
 let g:LanguageClient_serverCommands['typescript.tsx']  = g:LanguageClient_serverCommands['javascript']
+let g:LanguageClient_serverCommands['typescriptreact'] = g:LanguageClient_serverCommands['javascript']
 
 
 let g:LanguageClient_serverCommands['vim'] = ['vim-language-server', '--stdio', ]

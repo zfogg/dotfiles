@@ -1,4 +1,4 @@
-" after/syntax/typescript.tsx
+" after/syntax/typescriptreact
 scriptencoding utf-8
 
 
@@ -6,6 +6,8 @@ scriptencoding utf-8
 
 " dark red
 hi tsxTagName guifg=#E06C75
+hi tsxComponentName guifg=#E06C75
+hi tsxCloseComponentName guifg=#E06C75
 
 " orange
 hi tsxCloseString guifg=#F99575
