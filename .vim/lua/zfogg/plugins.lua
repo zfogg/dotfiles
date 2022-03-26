@@ -51,10 +51,10 @@ require('packer').startup({function(use)
 
   use { 'tmux-plugins/vim-tmux', ft={'tmux'}, };
   use { 'tmux-plugins/vim-tmux-focus-events',
-    enable=(not vim.g.vscode and vim.fn.has('nvim')),
+    disable=(vim.g.vscode and not vim.fn.has('nvim')),
   };
   use { 'christoomey/vim-tmux-navigator',
-    enable=(not vim.g.vscode and vim.fn.has('nvim')),
+    disable=(vim.g.vscode and not vim.fn.has('nvim')),
   };
 
   use { 'Olical/vim-enmasse', opt=true, cmd='EnMasse', };
@@ -62,10 +62,23 @@ require('packer').startup({function(use)
   -- }}}
 
   -- {{{ Add features and functionality.
+  --use { 'mfussenegger/nvim-dap',
+    --requires = {
+      --{ 'theHamsta/nvim-dap-virtual-text', },
+      --{ 'nvim-treesitter/nvim-treesitter', },
+    --},
+  --};
+
+  use { 'dense-analysis/ale',
+    setup  = [[require('rc.ale').setup()]],
+    config = [[require('rc.ale').config()]],
+  };
+
   use { 'simrat39/symbols-outline.nvim',
-    setup  = [[require('rc.symbols-outline-setup')]],
-    config = [[require('rc.symbols-outline')]],
-  }
+    cmd = {'SymbolsOutline', 'SymbolsOutlineOpen', 'SymbolsOutlineClose', },
+    setup  = [[require('rc.symbols-outline').setup()]],
+    config = [[require('rc.symbols-outline').config()]],
+  };
 
   use { 'lewis6991/gitsigns.nvim',
     setup = [[
@@ -82,16 +95,15 @@ require('packer').startup({function(use)
   -- Search
   use {
     { 'nvim-telescope/telescope.nvim',
-      setup = [[require('rc.telescope-setup')]],
-      config = [[require('rc.telescope')]],
-      opt = true,
-      cmd = 'Telescope',
+      setup  = [[require('rc.telescope').setup()]],
+      config = [[require('rc.telescope').config()]],
+      --cmd = 'Telescope',
       module = 'telescope',
       requires = {
-        { 'nvim-lua/popup.nvim', opt=true, },
-        { 'nvim-lua/plenary.nvim', opt=true, },
-        { 'telescope-frecency.nvim',  opt=true, },
-        { 'telescope-fzf-native.nvim',  opt=true, },
+        { 'nvim-lua/popup.nvim', },
+        { 'nvim-lua/plenary.nvim', },
+        { 'telescope-frecency.nvim', },
+        { 'telescope-fzf-native.nvim', },
       },
       wants = {
         'popup.nvim',
@@ -101,10 +113,15 @@ require('packer').startup({function(use)
     },
     { 'nvim-telescope/telescope-frecency.nvim',
       after = 'telescope.nvim',
-    requires = 'tami5/sql.nvim', },
+      requires = 'tami5/sql.nvim',
+      config = [[require("telescope").load_extension("frecency")]],
+    },
     { 'nvim-telescope/telescope-fzf-native.nvim',
-    run = 'make', },
-  }
+      after = 'telescope.nvim',
+      run = 'make',
+      config = [[require("telescope").load_extension("fzf")]],
+    },
+  };
 
   -- Project Management/Sessions
   use {
@@ -177,15 +194,29 @@ require('packer').startup({function(use)
 
   use { 'ms-jpq/coq_nvim',
     branch = 'coq',
-    run = 'python3 -m coq deps',
+    --event = 'InsertEnter *',
+    --opt = true,
+    --run = 'python3 -m coq deps',
+    run = ':COQdeps',
+    setup  = [[require("rc.coq").setup()]],
+    config = [[require("rc.coq").config()]],
     requires = {
       {'ms-jpq/coq.artifacts', branch='artifacts', },
       {'ms-jpq/coq.thirdparty', branch='3p', },
+    },
+    wants = {
       {'neovim/nvim-lspconfig', },
     },
   };
 
   use { 'jubnzv/virtual-types.nvim',
+    requires = {
+      { 'neovim/nvim-lspconfig', },
+    },
+  };
+
+  use { 'j-hui/fidget.nvim',
+    config = [[require("fidget").setup({})]],
     requires = {
       { 'neovim/nvim-lspconfig', },
     },
@@ -256,7 +287,8 @@ require('packer').startup({function(use)
 
   use { 'liuchengxu/vim-clap', run = ':call clap#installer#download_binary()', };
   use { 'lukas-reineke/indent-blankline.nvim',
-    --config=[[ ]],
+    setup=[[require('rc.indent-blankline').setup()]],
+    config=[[require('rc.indent-blankline').config()]],
   };
   -- }}}
 
@@ -276,8 +308,13 @@ require('packer').startup({function(use)
   --ft = ft['php'], run = 'composer install',
   --};
   use { 'othree/html5.vim' };
-  use { 'lifepillar/pgsql.vim', ft = ft['sql'], };
-  use { 'sheerun/vim-polyglot' };
+  use { 'lifepillar/pgsql.vim',
+    ft = ft['sql'],
+  };
+  use { 'sheerun/vim-polyglot',
+    opt = true,
+    disable = true,
+  };
   --use { 'lambdalisue/vim-pyenv',         {'for': ft['py' };]}
   use { 'python-mode/python-mode', ft = ft['py'], };
   use { 'gisphm/vim-gitignore' };
@@ -304,6 +341,7 @@ require('packer').startup({function(use)
   use { 'peitalin/vim-jsx-typescript',
     requires = {
       { 'leafgarland/typescript-vim', },
+      { 'p00f/nvim-ts-rainbow', },
     },
   };
 
@@ -342,8 +380,8 @@ require('packer').startup({function(use)
   use { 'tpope/vim-afterimage',   ft = ft['image'], };
   use { 'kylef/apiblueprint.vim', ft = {'apiblueprint'}, };
 
-  use { 'PProvost/vim-ps1' };
-  use { 'PotatoesMaster/i3-vim-syntax', ft = 'i3', };
+  use { 'PProvost/vim-ps1', ft = {'ps1', 'ps1xml', },  };
+  use { 'PotatoesMaster/i3-vim-syntax', ft = {'i3', }, };
   --use { 'darfink/vim-plist',      {'for': ['plist' };]}
   use { 'darfink/vim-plist' };
   --use { 'PProvost/vim-ps1',       {'for': ['ps1', 'xml', 'ps1xml' };]}
@@ -360,9 +398,22 @@ require('packer').startup({function(use)
     ]],
     ft = { 'javascriptreact', 'typescriptreact', 'html', },
   };
+  
+  use { 'RRethy/nvim-treesitter-endwise',
+    wants = 'nvim-treesitter',
+    event = 'InsertEnter',
+  };
+  use { 'windwp/nvim-ts-autotag',
+    wants = 'nvim-treesitter',
+    event = 'InsertEnter',
+    config = function()
+      require('nvim-ts-autotag').setup { enable = true }
+    end,
+  }
+  
   use { 'isobit/vim-caddyfile' };
   use { 'wgwoods/vim-systemd-syntax' }; -- systemctl / systemd
-  use { 'tomlion/vim-solidity' };
+  --use { 'tomlion/vim-solidity' };
   -- }}}
 
   -- {{{ Beautify Vim.
@@ -378,6 +429,10 @@ require('packer').startup({function(use)
     after = {'nvim-treesitter', },
   };
   use { 'chriskempson/base16-vim' };
+  use { 'EdenEast/nightfox.nvim',
+    setup  = [[require('rc.nightfox').setup()]],
+    config = [[require('rc.nightfox').config()]],
+  };
   use { 'vim-scripts/AfterColors.vim' };
   use { 'fedorenchik/AnsiEsc' };
   --use { 'nathanaelkane/vim-indent-guides' };
@@ -403,7 +458,12 @@ require('packer').startup({function(use)
   --use { 'cohama/lexima.vim' };
   --use { 'Raimondi/delimitMate' };
   use { 'windwp/nvim-autopairs',
-    config = [[require('rc.autopairs')]],
+    requires = {
+      'nvim-treesitter',
+      'coq_nvim',
+    },
+    setup  = [[require('rc.autopairs').setup()]],
+    config = [[require('rc.autopairs').config()]],
   };
   --use { 'jiangmiao/auto-pairs' };
   --use { 'wellle/targets.vim', };

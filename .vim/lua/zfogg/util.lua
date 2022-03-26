@@ -86,4 +86,30 @@ local function map(modes, lhs, rhs, opts)
   for _, mode in ipairs(modes) do map_key(mode, lhs, rhs, opts) end
 end
 
-return {opt = opt, autocmd = autocmd, map = map}
+local function tmerge(t1, t2)
+  for k,v in pairs(t2) do
+    if type(v) == "table" then
+      if type(t1[k] or false) == "table" then
+        tableMerge(t1[k] or {}, t2[k] or {})
+      else
+        t1[k] = v
+      end
+    else
+      t1[k] = v
+    end
+  end
+  return t1
+end
+
+local function extend(t1, t2)
+  return table.move(t2, 1, #t2, #t1 + 1, t1)
+end
+
+
+return {
+  opt = opt,
+  autocmd = autocmd,
+  map = map,
+  tmerge = tmerge,
+  extend = extend,
+}

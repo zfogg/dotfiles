@@ -177,29 +177,35 @@ lsp_installer.on_server_ready(function(server)
     );
 
   elseif server.name == 'solc' then
-    --opts.cmd = {
-      --'solc',
-      --'--lsp',
-    --};
+    opts.cmd = {
+      'solc',
+      '@openzeppelin=node_modules/@openzeppelin',
+      'hardhat=node_modules/hardhat',
+      '--lsp',
+    };
     --opts.filetypes = {
       --'solidity',
     --};
     opts.root_dir = util.root_pattern(
+      'package.json',
+      'package-lock.json',
       '.solhint.json',
       '.soliumrc.json',
       '.git'
     );
 
   elseif server.name == 'solang' then
-    --opts.cmd = {
-      --'solang',
-      --'--language-server',
-      --'--target', 'ewasm',
-    --};
-    --opts.filetypes = {
-      --'solidity',
-    --};
+    opts.cmd = {
+      'solang',
+      '--language-server',
+      '--target', 'ewasm',
+    };
+    opts.filetypes = {
+      'solidity',
+    };
     opts.root_dir = util.root_pattern(
+      'package.json',
+      'package-lock.json',
       '.solhint.json',
       '.soliumrc.json',
       '.git'
