@@ -17,6 +17,9 @@ endif
 set updatetime=220         " for CursorHold autocmd (milliseconds)
 let g:netrw_dirhistmax=0   " http://www.vim.org/scripts/script.php?script_id=1075
 
+" FIXME: danger lol
+set exrc
+set secure
 
 " for :mksession
 set sessionoptions-=blank,buffers,localoptions,help

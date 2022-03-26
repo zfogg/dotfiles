@@ -8,7 +8,7 @@ nnoremap <Leader>n<Space>     :Fern . -drawer       -reveal=% -toggle<CR>
 nnoremap <Leader>nn           :Fern . -drawer -wait -reveal=%<BAR>wincmd p<CR>
 
 if PHas('fern-renderer-nerdfont.vim')
-  let g:fern#renderer = "nerdfont"
+  let g:fern#renderer = 'nerdfont'
 endif
 
 let g:fern#disable_viewer_auto_duplication=1
@@ -66,7 +66,8 @@ function! s:init_fern() abort
   nmap <buffer> q :<C-u>quit<CR>
 
   " Use 'select' instead of 'edit' for default 'open' action
-  nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
+  "nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
+  nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:right)
   " Let you move to a right split lol
   silent! unmap <buffer> <C-l>
   silent! unmap <buffer> <C-h>
