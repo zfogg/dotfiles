@@ -75,7 +75,7 @@ function() {
     log_section_start "$section"
 
     asdf plugin-update nodejs && asdf install nodejs
-    asdf plugin-update yarn   && asdf install yarn
+    #asdf plugin-update yarn   && asdf install yarn
     #asdf plugin-update pnpm   && asdf install pnpm
 
     #set -x
@@ -85,13 +85,13 @@ function() {
     for v (${(z)node_versions}) {
         asdf shell nodejs "$v"
         #asdf exec yarn global add ${(z)yarn_reqs[@]} || true
-        #asdf exec npm install -g --force "${(z)yarn_reqs[@]}"
         #asdf exec yarn global upgrade
+        asdf exec npm install -g --force "${(z)yarn_reqs[@]}"
+        asdf shell nodejs --unset
+        #asdf reshim nodejs "$v"
     }
-    asdf shell nodejs --unset
-    asdf reshim nodejs "$v"
     #set +x
-    asdf reshim yarn
+    #asdf reshim yarn
     #asdf exec pnpm install --global ${(z)yarn_reqs[@]}
     #asdf exec pnpm up -g
     #asdf exec pnpm store prune
@@ -197,40 +197,43 @@ function() {
     local section="OS package manager"
     log_section_start "$section"
 
-    if [[ $OSTYPE =~ "darwin" ]]; then # OSX
-        # local brew_reqs=(
-        #     vim
-        #     neovim
-        # )
-        # for r in ${brew_reqs}; do
-        #     brew ls --versions "$r" > /dev/null || brew install "$r"
-        # done
+    echo "skipping ..." && sleep 0.1
+    echo "skipping ..." && sleep 0.1
+    echo "skipping ..." && sleep 0.1
+    #if [[ $OSTYPE =~ "darwin" ]]; then # OSX
+        ## local brew_reqs=(
+        ##     vim
+        ##     neovim
+        ## )
+        ## for r in ${brew_reqs}; do
+        ##     brew ls --versions "$r" > /dev/null || brew install "$r"
+        ## done
 
-        # FIXME: brew sux
-        local neovim_brew_cache="$HOME/Library/Caches/Homebrew/neovim--git"
-        if which -p nvim >/dev/null && [[ -d $neovim_brew_cache ]]; then
-            cd "$neovim_brew_cache"
-            git fetch origin --tags --force
-            make CMAKE_BUILD_TYPE=Release || make clean
-            make install
-            rehash
-            #cd -
-            #brew upgrade neovim --fetch-HEAD --keep-tmp \
-                #|| brew upgrade neovim --fetch-HEAD
-        elif `which -p nvim >/dev/null`; then
-            #brew uninstall neovim --ignore-dependencies
-            brew upgrade neovim --fetch-HEAD
-        else
-            brew install --fetch-HEAD --keep-tmp neovim --HEAD
-        fi
+        ## FIXME: brew sux
+        #local neovim_brew_cache="$HOME/Library/Caches/Homebrew/neovim--git"
+        #if which -p nvim >/dev/null && [[ -d $neovim_brew_cache ]]; then
+            #cd "$neovim_brew_cache"
+            #git fetch origin --tags --force
+            #make CMAKE_BUILD_TYPE=Release || make clean
+            #make install
+            #rehash
+            ##cd -
+            ##brew upgrade neovim --fetch-HEAD --keep-tmp \
+                ##|| brew upgrade neovim --fetch-HEAD
+        #elif `which -p nvim >/dev/null`; then
+            ##brew uninstall neovim --ignore-dependencies
+            #brew upgrade neovim --fetch-HEAD
+        #else
+            #brew install --fetch-HEAD --keep-tmp neovim --HEAD
+        #fi
 
-    elif [[ -f /etc/manjaro-release ]]; then # Manjaro (Arch-based)
-        # local pamac_reqs=(
-        #     neovim-nightly)
-        # for r in ${pamac_reqs};
-        #     echo "> pamac reinstall ${r}"
-        #     pacman -Q "$r" || pamac reinstall "$r"
-    fi
+    #elif [[ -f /etc/manjaro-release ]]; then # Manjaro (Arch-based)
+        ## local pamac_reqs=(
+        ##     neovim-nightly)
+        ## for r in ${pamac_reqs};
+        ##     echo "> pamac reinstall ${r}"
+        ##     pacman -Q "$r" || pamac reinstall "$r"
+    #fi
 
     log_section_end "$section"
 }

@@ -231,6 +231,7 @@ fi
 
 # terminfo, iTerm2 integration {{{
 function() {
+  return # FIXME: lol
   if [[ -v TERM && $TERM != "" ]]; then
     local dot_ti="$HOME/.terminfo/$TERM.ti"
     if [[ ! -f $dot_ti ]]; then

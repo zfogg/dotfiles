@@ -20,3 +20,4 @@ dockerfile-language-server-nodejs
 graphql-language-service-cli
 yaml-language-server
 dot-language-server
+solhint

@@ -192,10 +192,10 @@ fignore+=(
 # 3rd-party {{{
 # FIXME: should be shell agnostic
 # INFO: ~/.config/bash_completion
-function() {
-  local bash_completion="${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
-  [[ -r $bash_completion ]] && source "$bash_completion"
-}
+#function() {
+  #local bash_completion="${XDG_CONFIG_HOME:-$HOME/.config}/bash_completion"
+  #[[ -r $bash_completion ]] && source "$bash_completion"
+#}
 
 function() {
   local pip_complete_file="$HOME/.zsh/site-functions/_pip"
@@ -263,6 +263,14 @@ function() {
     for arg in "$@"; do
       { git diff --color=always -- "$arg" | git log --color=always "$arg" } 2>/dev/null
       done'
+  fi
+
+  #[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+}
+
+function() {
+  if command_exists kitty; then
+    kitty + complete setup zsh | source /dev/stdin
   fi
 }
 # 3rd-party }}}

@@ -41,10 +41,10 @@ function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/opt/ccache/libexec
-      $BREW/opt/{findutils,coreutils,libtool}/libexec/gnubin
-      $BREW/opt/{make,grep,ed,gawk}/libexec/gnubin
-      $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
-      $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
+      #$BREW/opt/{findutils,coreutils,libtool}/libexec/gnubin
+      #$BREW/opt/{make,grep,ed,gawk}/libexec/gnubin
+      #$BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
+      #$BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
       $BREW/{bin,sbin}
       /Library/Developer/CommandLineTools/usr/bin
       "$path[@]"
@@ -56,10 +56,10 @@ function () { # {{{ platform-specifics
       "$fpath[@]")
 
     manpath=(
-      $BREW/opt/{findutils,coreutils,libtool}/libexec/gnuman
-      $BREW/opt/{make,grep,ed,gawk}/libexec/gnuman
-      $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnuman
-      $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/share/man
+      #$BREW/opt/{findutils,coreutils,libtool}/libexec/gnuman
+      #$BREW/opt/{make,grep,ed,gawk}/libexec/gnuman
+      #$BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnuman
+      #$BREW/opt/{curl,gnu-getopt,file-formula,unzip}/share/man
       $BREW/share/man
       "$manpath[@]")
 
@@ -125,6 +125,7 @@ function() { # {{{ AFTER platform-specifics
     $HOME/.{cabal,cargo}/bin
     $HOME/.minikube/bin
     $HOME/.krew/bin
+    $HOME/.local/share/asdf/shims
     #/nix/var/nix/profiles/default/bin
     #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
     #$HOME/.rbenv/shims
