@@ -5,7 +5,7 @@
 # kitty {{{
 function _() {
     if command_exists kitty; then
-        kitty + complete setup "$(current_shell)" | source /dev/stdin
+        kitty + complete setup bash | source /dev/stdin
     fi
 } && _; unset -f _
 # }}}

@@ -348,13 +348,13 @@ source "$ZDOTDIR/z/path.zsh"
 
 # editor, pager {{{
 if command_exists nvim; then
-  export NVIM='nvim'
+  export NVIM=$(which nvim)
   export EDITOR="$NVIM"
 elif command_exists vim; then
-  export VIM='vim'
+  export VIM=$(which vim)
   export EDITOR="$VIM"
 else
-  export EDITOR='nano'
+  export EDITOR=$(which nano)
 fi
 
 # INFO: old lol
@@ -362,9 +362,9 @@ fi
 
 # INFO: new lmaoo
 if [[ -v NVIM ]]; then
-  export MANPAGER="nvim +Man!"
+  export MANPAGER="${NVIM} +Man!"
 elif [[ -v VIM ]]; then
-  export MANPAGER="vim -c 'set ft=man' -"
+  export MANPAGER="${VIM} -c 'set ft=man' -"
 fi
 
 export VISUAL="$EDITOR"
@@ -464,7 +464,7 @@ export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=".tool-versions"
 export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="$HOME/.default-python-packages"
 #export ASDF_NPM_DEFAULT_PACKAGES_FILE="$HOME/.default-npm-packages"
 export ASDF_YARN_DEFAULT_PACKAGES_FILE="$HOME/.default-yarn-packages"
-#export ASDF_NPM_DEFAULT_PACKAGES_FILE="$ASDF_YARN_DEFAULT_PACKAGES_FILE"
+export ASDF_NPM_DEFAULT_PACKAGES_FILE="$ASDF_YARN_DEFAULT_PACKAGES_FILE"
 export ASDF_CONCURRENCY="${CORES:-4}"
 
 export RUSTUP_INIT_SKIP_PATH_CHECK='yes'

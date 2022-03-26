@@ -3,7 +3,7 @@
 direnv latest latest:2 2.29.0
 java   latest
 nodejs latest 17.7.1 16.14.0 14.16.1
-python latest 3.10.2 pypy-c-jit-latest pypy3.7-c-jit-latest 2.7.18 system
+python system
 ruby   latest latest:3 3.1.1
 rust   latest stable latest:1.56 beta nightly
 golang latest 1.17.3
