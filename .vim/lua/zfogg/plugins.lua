@@ -54,7 +54,12 @@ require('packer').startup({function(use)
     disable=(vim.g.vscode and not vim.fn.has('nvim')),
   };
   use { 'christoomey/vim-tmux-navigator',
-    disable=(vim.g.vscode and not vim.fn.has('nvim')),
+    opt = true,
+    disable=((vim.g.vscode == nil and not vim.env.TMUX)),
+  };
+
+  use { 'knubie/vim-kitty-navigator',
+    disable=(not (vim.env.TERM ~= "-kitty")),
   };
 
   use { 'Olical/vim-enmasse', opt=true, cmd='EnMasse', };

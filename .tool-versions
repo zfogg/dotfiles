@@ -1,9 +1,9 @@
 # vim: filetype=config:
 
 direnv latest latest:2 2.29.0
-java   latest
-nodejs 17.7.2
-python system
+#java   latest
+nodejs latest 17.7.2 17.7.1 16.14.0 14.16.1
+python latest 3.10.4 system
 ruby   latest latest:3 3.1.1
 rust   latest stable latest:1.56 beta nightly
 golang latest 1.17.3
