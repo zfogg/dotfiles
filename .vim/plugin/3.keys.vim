@@ -96,8 +96,8 @@ endif
         nmap <C-j> <Cmd>call VSCodeNotify('workbench.action.focusBelowGroup')<CR>
         nmap <C-k> <Cmd>call VSCodeNotify('workbench.action.focusAboveGroup')<CR>
         nmap <C-l> <Cmd>call VSCodeNotify('workbench.action.focusRightGroup')<CR>
-    else
-        call z#keys#Tmux()
+    "else
+        "call z#keys#Tmux()
     endif
 
     " j and k just work on long wrapped lines.
