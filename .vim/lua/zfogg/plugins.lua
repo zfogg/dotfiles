@@ -11,6 +11,10 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
 end
 
+-- FIXME: why can't these be local?
+inTmux  = string.len(vim.env.TMUX or '') > 0
+inKitty = string.len(vim.env.TERM or '') > 0 and (not (vim.env.TERM:match("-kitty$")) == nil)
+inVscode = not (vim.g.vscode == nil)
 
 local packer_startup_opts = {
   config = {
@@ -53,13 +57,24 @@ require('packer').startup({function(use)
   use { 'tmux-plugins/vim-tmux-focus-events',
     disable=(vim.g.vscode and not vim.fn.has('nvim')),
   };
+
+  local e = vim.env
+
   use { 'christoomey/vim-tmux-navigator',
-    opt = true,
-    disable=((vim.g.vscode == nil and not vim.env.TMUX)),
+    --opt = true,
+    --disable=(inVscode or (not inTmux)),
+    setup=function()
+      if inVscode or inKitty or (not inTmux) then
+        vim.g.tmux_navigator_no_mappings = 1
+      end
+    end,
+    config=[[
+    ]],
   };
 
   use { 'knubie/vim-kitty-navigator',
-    disable=(not (vim.env.TERM ~= "-kitty")),
+    opt = false,
+    disable=((not inKitty) or inTmux),
   };
 
   use { 'Olical/vim-enmasse', opt=true, cmd='EnMasse', };
