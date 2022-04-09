@@ -20,7 +20,7 @@ function M.setup()
     auto_preview           = true,
     position               = 'right',
     relative_width         = true,
-    width                  = 16,
+    width                  = 12,
     auto_close             = false,
     show_numbers           = false,
     show_relative_numbers  = false,

@@ -13,7 +13,7 @@ end
 
 -- FIXME: why can't these be local?
 inTmux  = string.len(vim.env.TMUX or '') > 0
-inKitty = string.len(vim.env.TERM or '') > 0 and (not (vim.env.TERM:match("-kitty$")) == nil)
+inKitty = string.len(vim.env.TERM or '') > 0 and (vim.env.TERM:match("-kitty$") == "-kitty")
 inVscode = not (vim.g.vscode == nil)
 
 local packer_startup_opts = {
@@ -71,6 +71,11 @@ require('packer').startup({function(use)
     config=[[
     ]],
   };
+
+  --print(inKitty)
+  --print(not inKitty)
+  --print(inTmux)
+  --print((not inKitty) or inTmux)
 
   use { 'knubie/vim-kitty-navigator',
     opt = false,
