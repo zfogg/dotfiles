@@ -2,12 +2,16 @@
 
 local M = {}
 
+local function keymaps()
+  local m = require('rc.mapx')
+  m.group("silent", { }, function()
+    nnoremap("<Leader>n<Space>", ":Fern . -drawer       -reveal=% -toggle<CR>")
+    nnoremap("<Leader>nn",       ":Fern . -drawer -wait -reveal=%<BAR>wincmd p<CR>")
+  end)
+end
 
 function M.setup()
   vim.cmd [[
-  nnoremap <Leader>n<Space>  :Fern . -drawer       -reveal=% -toggle<CR>
-  nnoremap <Leader>nn        :Fern . -drawer -wait -reveal=%<BAR>wincmd p<CR>
-
   if PHas('fern-renderer-nerdfont.vim')
     let g:fern#renderer = 'nerdfont'
     endif
@@ -163,36 +167,37 @@ function M.setup()
     autocmd FileType fern call fzf#vim#with_preview()
     augroup END
 
-    function! Fern_mapping_fzf_customize_option(spec)
+  function! Fern_mapping_fzf_customize_option(spec)
     let a:spec.options .= ' --multi'
     " Note that fzf#vim#with_preview comes from fzf.vim
     if exists('*fzf#vim#with_preview')
       return fzf#vim#with_preview(a:spec)
     else
       return a:spec
-      endif
-      endfunction
+    endif
+  endfunction
 
-      function! Fern_mapping_fzf_before_all(dict)
-      if !len(a:dict.lines)
-        return
-        endif
-        return a:dict.fern_helper.async.update_marks([])
-        endfunction
+  function! Fern_mapping_fzf_before_all(dict)
+    if !len(a:dict.lines)
+      return
+    endif
+    return a:dict.fern_helper.async.update_marks([])
+  endfunction
 
-        function! s:Fern_FZF_reveal(dict)
-        execute 'FernReveal -wait' a:dict.relative_path
-        execute 'normal \<Plug>(fern-action-mark:set)'
-        endfunction
+  function! s:Fern_FZF_reveal(dict)
+    execute 'FernReveal -wait' a:dict.relative_path
+    execute 'normal \<Plug>(fern-action-mark:set)'
+  endfunction
 
-        let g:Fern_mapping_fzf_file_sink = function('s:Fern_FZF_reveal')
-          let g:Fern_mapping_fzf_dir_sink  = function('s:Fern_FZF_reveal')
-            ]]
-          end
-
-
-          function M.config()
-          end
+  let g:Fern_mapping_fzf_file_sink = function('s:Fern_FZF_reveal')
+  let g:Fern_mapping_fzf_dir_sink  = function('s:Fern_FZF_reveal')
+  ]]
+  keymaps()
+end
 
 
-          return M
+function M.config()
+end
+
+
+return M
