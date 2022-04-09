@@ -192,6 +192,8 @@ require('packer').startup({function(use)
 
   -- fern
   use { 'lambdalisue/fern.vim',
+    setup  = [[require("rc.fern").setup()]],
+    config = [[require("rc.fern").config()]],
     --opt = true, cmd = { 'Fern', 'FernDo', },
     requires = {
       {'antoinemadec/FixCursorHold.nvim', },
