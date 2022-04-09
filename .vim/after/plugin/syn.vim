@@ -9,4 +9,4 @@ aug vimrc_syn_todo
           \ containedin=.*Comment,vimCommentTitle
 aug END
 
-hi def link MyTodo Todo
+"hi def link MyTodo Todo
