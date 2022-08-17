@@ -29,10 +29,10 @@ cask 'popcorn-time'
 # mas {{{
 brew "mas"
 
-#mas "Xcode",             id: 497799835
-mas "Cleaner for Xcode", id: 1296084683
+mas "Xcode",             id: 497799835
+#mas "Cleaner for Xcode", id: 1296084683
 mas "DevCleaner",        id: 1388020431
-mas "Developer",         id: 640199958
+#mas "Developer",         id: 640199958
 
 #mas "1Password 7",       id: 1333542190
 mas "WhatsApp",          id: 1147396723
@@ -42,8 +42,8 @@ mas "Discovery",         id: 1381004916
 
 mas "Messenger",         id: 1480068668
 mas "Twitter",           id: 1482454543
-mas "Vimari",            id: 1480933944
-mas "slack",             id: 803453959
+#mas "Vimari",            id: 1480933944
+#mas "slack",             id: 803453959
 # mas }}}
 
 
@@ -53,7 +53,8 @@ cask "iterm2"
 
 cask "setapp"
 
-cask "1password-beta"
+cask "1password"
+#cask "1password-beta"
 cask "1password-cli"
 cask "authy"
 cask "dropbox"
@@ -68,8 +69,8 @@ cask "iina"
 cask "vlc"
 cask "mpv"
 cask "spotify"
-cask "blackhole"
-cask "obs"
+#cask "blackhole"
+#cask "obs"
 
 cask "rectangle"
 cask "bettertouchtool"
@@ -95,13 +96,13 @@ cask "font-meslo-lg"
 cask "font-meslolg-nerd-font"
 cask "font-recursive"
 
-cask "deluge"
+#cask "deluge"
 
 cask "adoptopenjdk"
 
 cask "visual-studio-code"
 
-cask "xquartz"
+#cask "xquartz"
 
 cask "qlcolorcode"
 cask "qlstephen"
@@ -114,7 +115,7 @@ cask "qlvideo"
 
 cask "airfoil"
 
-cask "blockstack"
+#cask "blockstack"
 # cask }}}
 
 
@@ -133,7 +134,7 @@ brew "tmux"
 brew "reattach-to-user-namespace"
 brew "launchctl-completion"
 
-brew "cocoapods"
+#brew "cocoapods"
 brew "p7zip"
 
 brew "trash"
@@ -144,7 +145,7 @@ brew "vim"
 brew "neovim", args: ["HEAD"]
 
 brew "git"
-brew "git-lfs"
+#brew "git-lfs"
 brew "ghq"
 
 brew "tldr"
@@ -152,9 +153,9 @@ brew "tldr"
 brew "cabal-install"
 brew "haskell-stack"
 
-brew "python"
-brew "python@3.8"
-brew "ipython"
+#brew "python"
+#brew "python@3.8"
+#brew "ipython"
 
 brew "ccache"
 
@@ -163,11 +164,11 @@ brew "go"
 #brew "ruby"
 
 brew "cmake"
-brew "scons"
-brew "lilv"
-brew "maven"
+#brew "scons"
+#brew "lilv"
+#brew "maven"
 
-brew "nginx"
+#brew "nginx"
 
 #brew "direnv"
 
@@ -182,12 +183,12 @@ brew "nginx"
 #
 #brew "rustup-init"
 
-brew "chromaprint", args: ["ignore-dependencies"]
-brew "decklinksdk"
+#brew "chromaprint", args: ["ignore-dependencies"]
+#brew "decklinksdk"
 brew "imagemagick"
-brew "game-music-emu"
+#brew "game-music-emu"
 ALL_FFMPEG_OPTIONS = `brew options homebrew-ffmpeg/ffmpeg/ffmpeg | grep -vE '\s' | grep -- '--with-'`.gsub("--", "").split("\n")
-brew "homebrew-ffmpeg/ffmpeg/ffmpeg", args: ALL_FFMPEG_OPTIONS
+#brew "homebrew-ffmpeg/ffmpeg/ffmpeg", args: ALL_FFMPEG_OPTIONS
 brew "youtube-dl"
 
 brew "ripgrep"
@@ -209,9 +210,9 @@ brew "tree"
 brew "glances"
 
 brew "translate-shell"
-brew "mplayer"
-brew "mpv", args: ["ignore-dependencies"]
-brew "mpg123"
+#brew "mplayer"
+#brew "mpv", args: ["ignore-dependencies"]
+#brew "mpg123"
 
 brew "wget"
 brew "curl"
@@ -229,24 +230,24 @@ brew "svgo"
 brew "docker"
 brew "docker-compose"
 
-brew "wp-cli"
-brew "wp-cli-completion"
+#brew "wp-cli"
+#brew "wp-cli-completion"
 
-brew "postgresql"
-brew "mysql"
+#brew "postgresql"
+#brew "mysql"
 #brew "mariadb"
 
-brew "openjdk"
+#brew "openjdk"
 
-brew "speedtest-cli"
+#brew "speedtest-cli"
 
 brew "pulseaudio"
 brew "portaudio"
 
-brew "ykman"
-brew "ykpers"
-brew "pam_yubico"
-brew "yubico-piv-tool"
+#brew "ykman"
+#brew "ykpers"
+#brew "pam_yubico"
+#brew "yubico-piv-tool"
 
 #brew "pacaptr"
 # brew }}}
