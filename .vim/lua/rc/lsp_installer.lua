@@ -5,34 +5,6 @@
 
 --require('lang.keymappings')
 
-function _G.HoverFixed()
-  --vim.api.nvim_command('set eventignore=CursorHold')
-  --vim.lsp.buf.hover()
-  --vim.api.nvim_command('au CursorMoved <buffer> ++once set eventignore=""')
-  --vim.lsp.buf.hover()
-  --vim.diagnostic.open_float()
-  --local bfrn = vim.api.nvim_buf_get_number(0)
-  --local row = vim.fn.line('.')
-  --local col = vim.fn.col('.')
-end
-
--- Show diagnostics in a pop-up window on hover
-_G.LspDiagnosticsPopupHandler = function()
-  local current_cursor = vim.api.nvim_win_get_cursor(0)
-  local last_popup_cursor = vim.w.lsp_diagnostics_last_cursor or {nil, nil}
-  -- Show the popup diagnostics window,
-  -- but only once for the current cursor location (unless moved afterwards).
-  if not (current_cursor[1] == last_popup_cursor[1] and current_cursor[2] == last_popup_cursor[2]) then
-    vim.w.lsp_diagnostics_last_cursor = current_cursor
-    if #vim.diagnostic.get() > 0 then
-    --if #vim.diagnostic.get(0, {lnum = vim.fn.line('.')+1}) > 0 then
-      vim.diagnostic.open_float(0, {scope="cursor"})   -- for neovim 0.6.0+, replaces show_{line,position}_diagnostics
-    else
-      vim.lsp.buf.hover()
-    end
-  end
-end
-
 local function common_on_attach(client, bufnr)
   vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
   -- ... set up buffer keymaps, etc.
@@ -120,22 +92,6 @@ vim.g.symbols_outline = {
   lsp_blacklist = {}
 }
 
-
--- Send diagnostics to quickfix list
-do
-  -- INFO: set a handeler for "textDocument/publishDiagnostics" BEFORE the quickfix/locationlist handler
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      underline        = true,
-      signs            = true,
-      update_in_insert = false,
-      virtual_text     = false,
-      --virtual_text = {
-        --prefix  = "",
-        --spacing = 4,
-      --},
-  })
-end
 
 vim.fn.sign_define("LspDiagnosticsSignError", {
   text = "",
