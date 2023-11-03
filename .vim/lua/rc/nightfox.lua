@@ -21,11 +21,11 @@ function M.config()
         --reverse inverse italic standout
         --nocombine strikethrough
         comments  = "italic",
-        functions = "italic",
+        functions = "italic,undercurl",
         keywords  = "bold",
-        numbers   = "bold,italic,underdot",
+        numbers   = "bold,italic,standout,nocombine",
         strings   = "italic",
-        types     = "bold,underdash",
+        types     = "bold,underline",
         variables = "italic",
       },
       inverse = {             -- Inverse highlight for different types

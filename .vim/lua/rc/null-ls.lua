@@ -25,11 +25,12 @@ if 1 == vim.fn.PHas('null-ls.nvim') then
       require("null-ls").builtins.formatting.stylua,
       require("null-ls").builtins.diagnostics.luacheck,
 
-      require("null-ls").builtins.diagnostics.mypy,
+      --require("null-ls").builtins.diagnostics.mypy,
       require("null-ls").builtins.diagnostics.pylint,
       require("null-ls").builtins.diagnostics.flake8,
       require("null-ls").builtins.formatting.autopep8,
       require("null-ls").builtins.formatting.reorder_python_imports,
+      require("null-ls").builtins.formatting.black,
 
       require("null-ls").builtins.formatting.prismaFmt.with({
       filetypes = { "prisma", },
