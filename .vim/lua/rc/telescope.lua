@@ -8,6 +8,7 @@ function M.config()
   local actions = require("telescope.actions")
   telescope.setup({
       defaults = {
+        dynamic_preview_title = true,
         vimgrep_arguments = { "rg",
           "--color=never", "--no-heading",
           "--with-filename", "--line-number",
@@ -34,7 +35,14 @@ function M.config()
         frecency = {
           show_scores    = true,
           show_unindexed = true,
-          ignore_patterns = {"*.git/*", "*/tmp/*"}
+          ignore_patterns = {"*.git/*", "*/tmp/*"},
+          workspaces = {
+            ["vim"]           = vim.env.HOME.."/.vim",
+            ["zsh"]           = vim.env.HOME.."/.config/zsh",
+            ["bao-ui"]        = vim.env.HOME.."/src/github.com/baofinance/bao-ui",
+            ["bao-contracts"] = vim.env.HOME.."/src/github.com/baofinance/bao-contracts",
+            ["bao-distr"]     = vim.env.HOME.."/src/github.com/baofinance/bao-distribution",
+          },
         },
         fzf = {
           fuzzy     = true,
@@ -54,6 +62,9 @@ function M.config()
         lsp_implementations = { theme = 'dropdown', },
       },
     })
+
+   --require('telescope').load_extension('fzf')
+   --require('telescope').load_extension('frecency')
 end
 
 local dropdown_preview = function(key)
@@ -99,17 +110,21 @@ local keymaps = function()
     nnoremap('<C-t>t',  tsBuiltin('buffers',    u.tmerge(ts_opts, {show_all_buffers = true})))
     nnoremap('<C-t>',   tsBuiltin('buffers',    u.tmerge(ts_opts, {show_all_buffers = true})))
 
-    nnoremap('<C-t>e',  function() require('telescope').extensions.frecency.frecency(dropdown_preview('frecency')) end)
-    nnoremap('<C-e>',   function() require('telescope').extensions.frecency.frecency(dropdown_preview('frecency')) end)
-
     nnoremap('<C-t>g',  tsBuiltin('git_files',  ts_opts))
     nnoremap('<C-g>',   tsBuiltin('git_files',  ts_opts))
 
-    nnoremap('<C-t>p',  tsBuiltin('find_files', ts_opts))
-    nnoremap('<C-p>',   tsBuiltin('find_files', ts_opts))
+    nnoremap('<C-t>p',  function() require('telescope').extensions.frecency.frecency({ workspace = 'CWD' }) end)
+    nnoremap('<C-p>',   function() require('telescope').extensions.frecency.frecency({ workspace = 'CWD' }) end)
+    --nnoremap('<C-t>p',  tsBuiltin('find_files', ts_opts))
+    --nnoremap('<C-p>',   tsBuiltin('find_files', ts_opts))
 
     nnoremap('<C-t>f',  tsBuiltin('live_grep',  ts_opts))
     nnoremap('<C-f>',   tsBuiltin('live_grep',  ts_opts))
+
+    nnoremap('<C-t><space>',  function() require('telescope').extensions.emoji.emoji() end)
+
+    nnoremap('<C-t>y',  function() vim.cmd('Telescope yank_history') end)
+    nnoremap('<C-y>',   function() vim.cmd('Telescope yank_history') end)
   end)
 end
 

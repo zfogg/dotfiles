@@ -158,6 +158,8 @@ function M.setup()
 
     nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
     nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)
+
+    setlocal nonumber
   endfunction
 
   aug fern-rc-custom

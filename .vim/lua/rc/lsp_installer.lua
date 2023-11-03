@@ -1,8 +1,7 @@
 -- lua/rc/telescope.lua
-local lsp_installer = require'nvim-lsp-installer'
 --local lsp           = require'lspconfig'
 --local configs       = require'lspconfig/configs'
-local util          = require'lspconfig/util'
+--local util          = require'lspconfig/util'
 
 --require('lang.keymappings')
 
@@ -25,16 +24,17 @@ _G.LspDiagnosticsPopupHandler = function()
   -- but only once for the current cursor location (unless moved afterwards).
   if not (current_cursor[1] == last_popup_cursor[1] and current_cursor[2] == last_popup_cursor[2]) then
     vim.w.lsp_diagnostics_last_cursor = current_cursor
-    --if #vim.diagnostic.get() > 0 then
+    if #vim.diagnostic.get() > 0 then
     --if #vim.diagnostic.get(0, {lnum = vim.fn.line('.')+1}) > 0 then
       vim.diagnostic.open_float(0, {scope="cursor"})   -- for neovim 0.6.0+, replaces show_{line,position}_diagnostics
-    --else
-      --vim.lsp.buf.hover()
-    --end
+    else
+      vim.lsp.buf.hover()
+    end
   end
 end
 
 local function common_on_attach(client, bufnr)
+  vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
   -- ... set up buffer keymaps, etc.
 
   local function buf_set_keymap(...)
@@ -49,7 +49,7 @@ local function common_on_attach(client, bufnr)
   vim.cmd [[
   augroup LSPDiagnosticsOnHover
     autocmd!
-    autocmd CursorHold * lua _G.LspDiagnosticsPopupHandler()
+    "autocmd CursorHold * lua _G.LspDiagnosticsPopupHandler()
   augroup END
   ]]
 
@@ -73,16 +73,16 @@ local function common_on_attach(client, bufnr)
   buf_set_keymap('n', '<leader>lca', '<cmd>lua vim.lsp.buf.code_action()<CR>',                                opts)
 
   -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.document_formatting then
     buf_set_keymap("n", "<leader>lf",
     "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
+  elseif client.server_capabilities.document_range_formatting then
     buf_set_keymap("n", "<leader>lf",
     "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
   end
 
   -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
+  if client.server_capabilities.document_highlight then
     vim.api.nvim_exec([[
       hi LspReferenceRead  cterm=bold ctermbg=red guibg=LightYellow
       hi LspReferenceText  cterm=bold ctermbg=red guibg=LightYellow
@@ -102,337 +102,9 @@ local function common_on_attach(client, bufnr)
 end
 
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
--- Code actions
-capabilities.textDocument.codeAction = {
-  dynamicRegistration = true,
-  codeActionLiteralSupport = {
-    codeActionKind = {
-      valueSet = (function()
-        local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
-        table.sort(res)
-        return res
-      end)()
-    }
-  }
-}
-
-capabilities.textDocument.completion.completionItem.documentationFormat     = { 'markdown', 'plaintext' }
-capabilities.textDocument.completion.completionItem.snippetSupport          = true
-capabilities.textDocument.completion.completionItem.preselectSupport        = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport    = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport     = true
-capabilities.textDocument.completion.completionItem.deprecatedSupport       = true
-capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-capabilities.textDocument.completion.completionItem.tagSupport              = { valueSet = { 1 } }
-capabilities.textDocument.completion.completionItem.resolveSupport          = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  },
-}
-
-lsp_installer.on_server_ready(function(server)
-  local opts = {
-    on_attach = common_on_attach,
-    flags = {
-      debounce_text_changes = 130,
-    },
-    capabilities = capabilities,
-  };
-
-  if server.name == 'eslintls' then
-    --local eslint = {
-    --  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-    --  lintStdin = true,
-    --  lintFormats = {"%f:%l:%c: %m"},
-    --  lintIgnoreExitCode = true,
-    --  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-    --  formatStdin = true,
-    --}
-    --opts.default_config = {
-      --cmd = {'eslint-ls', '--stdio'};
-      --cmd = {'yarn', 'vscode-eslint-language-server', '--stdio'};
-    --}
-    opts.settings = {
-      format = { enable = true };
-    };
-    opts.filetypes = {
-      'javascript',
-      'javascriptreact',
-      'javascript.jsx',
-      'typescript',
-      'typescriptreact',
-      'typescript.tsx',
-    };
-    opts.root_dir = util.root_pattern(
-      '.eslintrc',
-      '.eslintrc.js',
-      '.eslintrc.json',
-      '.eslintrc.yaml',
-      '.eslintignore',
-      'package.json',
-      '.git'
-    );
-
-  elseif server.name == 'solc' then
-    opts.cmd = {
-      'solc',
-      '@openzeppelin=node_modules/@openzeppelin',
-      'hardhat=node_modules/hardhat',
-      '--lsp',
-    };
-    --opts.filetypes = {
-      --'solidity',
-    --};
-    opts.root_dir = util.root_pattern(
-      'package.json',
-      'package-lock.json',
-      '.solhint.json',
-      '.soliumrc.json',
-      '.git'
-    );
-
-  elseif server.name == 'solang' then
-    opts.cmd = {
-      'solang',
-      '--language-server',
-      '--target', 'ewasm',
-    };
-    opts.filetypes = {
-      'solidity',
-    };
-    opts.root_dir = util.root_pattern(
-      'package.json',
-      'package-lock.json',
-      '.solhint.json',
-      '.soliumrc.json',
-      '.git'
-    );
-
-  elseif server.name == 'sumneko_lua' then
-    -- https://github.com/sumneko/lua-language-server/wiki/Build-and-Run-(Standalone)
-    USER = vim.fn.expand('$USER')
-
-    local sumneko_root_path = ""
-    local sumneko_binary = ""
-
-    if vim.fn.has("mac") == 1 or vim.fn.has("unix") == 1 then
-      sumneko_root_path = vim.fn.expand("~/src/github.com/sumneko/lua-language-server")
-      sumneko_binary    = sumneko_root_path.."/bin/lua-language-server"
-    else
-      print("Unsupported system for sumneko")
-    end
-
-    local runtime_path = vim.split(package.path, ';')
-    table.insert(runtime_path, 'lua/?.lua')
-    table.insert(runtime_path, 'lua/?/init.lua')
-
-    opts.cmd = {
-      sumneko_binary, "-E", sumneko_root_path.."/bin/main.lua", "--logpath ~/sumneko.log",
-    }
-    opts.settings = {
-      Lua = {
-        runtime = {
-          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-          version = 'LuaJIT',
-          --version = 'Lua 5.4',
-          -- Setup your lua path
-          path = runtime_path,
-        },
-        completion = {
-          callSnippet = 'Both',
-        },
-        diagnostics = {
-          enabled = true,
-          -- Get the language server to recognize the `vim` global
-          globals = { 'vim', 'use', },
-        },
-        workspace = {
-          maxPreload      = 10000,
-          preloadFileSize = 10000,
-          checkThirdParty = false,
-          -- Make the server aware of Neovim runtime files
-          --library = vim.api.nvim_get_runtime_file('', true),
-          library = {
-            [vim.fn.expand('$VIMRUNTIME/lua')]         = true,
-            [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-            ----[vim.fn.expand('~/.local/share/asdf/installs/lua/5.4.4/luarocks')] = true,
-          },
-        },
-        telemetry = {
-          enable = false,
-        },
-      },
-    }
-
-    opts.root_dir = util.root_pattern(
-      '.luarc.json',
-      '.git'
-    );
-
-  elseif server.name == 'rls' then
-    opts.settings = {
-      rust = {
-        unstable_features = true,
-        build_on_save = false,
-        all_features = true,
-      },
-    }
-  elseif server.name == 'tailwindcss' then
-    opts.settings = {
-      tailwindCSS = {
-        classAttributes = { "class", "className", "classList", "ngClass", "tw", },
-        lint = {
-          cssConflict = "warning",
-          invalidApply = "error",
-          invalidConfigPath = "error",
-          invalidScreen = "error",
-          invalidTailwindDirective = "error",
-          invalidVariant = "error",
-          recommendedVariantOrder = "warning",
-        },
-        validate = true,
-      },
-    }
-  elseif server.name == 'tsserver' then
-    opts.filetypes = {
-      'javascript',
-      'javascriptreact',
-      'javascript.jsx',
-      'typescript',
-      'typescriptreact',
-      'typescript.tsx',
-    };
-    local tsserver_on_attach = function(client, bufnr)
-      if 1 == vim.fn.PHas('nvim-lsp-ts-utils') then
-        -- disable tsserver formatting if you plan on formatting via null-ls
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
-
-        local ts_utils = require('nvim-lsp-ts-utils')
-
-        -- defaults
-        ts_utils.setup{
-          debug = false,
-          disable_commands = false,
-          enable_import_on_completion = true,
-        -- import all
-          import_all_timeout = 5000, -- ms
-          import_all_priorities = {
-            buffers = 4, -- loaded buffer names
-            buffer_content = 3, -- loaded buffer content
-            local_files = 2, -- git files or files with relative path markers
-            same_file = 1, -- add to existing import statement
-          },
-          import_all_scan_buffers = 100,
-          import_all_select_source = false,
-          -- eslint
-          eslint_enable_code_actions = true,
-          eslint_enable_disable_comments = true,
-          eslint_bin = 'eslint_d', -- INFO: OR 'eslint'
-          eslint_config_fallback = os.getenv('HOME')..'/.dotfiles/.eslintrc.json',
-          eslint_disable_if_no_config = true,
-          eslint_enable_diagno4tics = true,
-          eslint_show_rule_id = true,
-          -- formatting
-          enable_formatting = false,
-          formatter = 'prettier',
-          formatter_config_fallback = nil,
-          -- update imports on file move
-          update_imports_on_move = false,
-          require_confirmation_on_move = false,
-          watch_dir = nil,
-          -- filter diagnostics
-          filter_out_diagnostics_by_severity = {},
-          filter_out_diagnostics_by_code = {},
-        }
-
-        -- required to fix code action ranges and filter diagnostics
-        ts_utils.setup_client(client)
-
-        -- no default maps, so you may want to define some here
-        local tslsp_opts = { silent = true }
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>",   tslsp_opts)
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "qq", ":TSLspFixCurrent<CR>", tslsp_opts)
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", ":TSLspRenameFile<CR>", tslsp_opts)
-        vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", ":TSLspImportAll<CR>",  tslsp_opts)
-      end
-      common_on_attach(client, bufnr)
-    end
-
-    opts.on_attach = tsserver_on_attach
-  end
-
-  server:setup(opts)
-
-  if 1 == vim.fn.PHas('coq_nvim') and not server.name == 'eslintls' then
-    server:setup(require('coq').lsp_ensure_capabilities(opts))
-  end
-
-  vim.cmd [[ do User LspAttachBuffers ]]
-end)
-
-if 1 == vim.fn.PHas('lspkind-nvim') then
-  require('lspkind').init({
-    -- enables text annotations
-    --
-    -- default: true
-    -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-    mode = 'symbol_text', -- INFO: https://github.com/onsails/lspkind-nvim/blob/master/lua/lspkind/init.lua#L123
-    --with_text = true, -- INFO: deprecated
-    --with_text = false,
-    -- default symbol map
-    -- can be either 'default' (requires nerd-fonts font) or
-    -- 'codicons' for codicon preset (requires vscode-codicons font)
-    --
-    -- default: 'default'
-    preset = 'default',
-    -- override preset symbols
-    --
-    maxwidth = 80, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-    --
-    -- default: {}
-    --symbol_map = {
-    --  Text = "",
-    --  Method = "",
-    --  Function = "",
-    --  Constructor = "",
-    --  Field = "ﰠ",
-    --  Variable = "",
-    --  Class = "ﴯ",
-    --  Interface = "",
-    --  Module = "",
-    --  Property = "ﰠ",
-    --  Unit = "塞",
-    --  Value = "",
-    --  Enum = "",
-    --  Keyword = "",
-    --  Snippet = "",
-    --  Color = "",
-    --  File = "",
-    --  Reference = "",
-    --  Folder = "",
-    --  EnumMember = "",
-    --  Constant = "",
-    --  Struct = "פּ",
-    --  Event = "",
-    --  Operator = "",
-    --  TypeParameter = "",
-    --},
-  })
-end
-
-
-vim.diagnostic.get(0, {
-  virtual_text = true,
-   severity    = vim.diagnostic.severity.WARN,
-})
-
 -- symbols-outline.nvim
 vim.g.symbols_outline = {
-  highlight_hovered_item = false,
+  highlight_hovered_item = true,
   show_guides = true,
   --auto_preview = false, -- experimental
   auto_preview = true, -- experimental
@@ -448,14 +120,6 @@ vim.g.symbols_outline = {
   lsp_blacklist = {}
 }
 
--- LSP Enable diagnostics
---vim.lsp.handlers["textDocument/publishDiagnostics"] =
-    --vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        --virtual_text = true,
-        --underline = true,
-        --signs = true,
-        --update_in_insert = false,
-    --})
 
 -- Send diagnostics to quickfix list
 do
@@ -471,26 +135,6 @@ do
         --spacing = 4,
       --},
   })
-
-  -- INFO: https://raw.githubusercontent.com/beauwilliams/Dotfiles/d521519388b4b371fed17177d68c662ff94f1055/Vim/nvim/.baks/lua/lsp.luadisabled
-  --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  --vim.lsp.diagnostic.on_publish_diagnostics, {
-    --update_in_insert = false,
-    --virtual_text = {
-      --prefix = ""
-    --}
-  --})
-
-  -- INFO: set a handeler for "textDocument/publishDiagnostics" AFTER this quickfix/locationlist handler
-  local method = "textDocument/publishDiagnostics"
-  local default_handler = vim.lsp.handlers[method]
-  vim.lsp.handlers[method] = function(err, method2, result, client_id, bufnr, config)
-    default_handler(err, method2, result, client_id, bufnr, config)
-    local diagnostics = vim.diagnostic.get()
-    local qflist = vim.diagnostic.toqflist(diagnostics)
-    qflist.open = false
-    vim.diagnostic.setqflist(qflist)
-  end
 end
 
 vim.fn.sign_define("LspDiagnosticsSignError", {
@@ -511,3 +155,4 @@ vim.fn.sign_define("LspDiagnosticsSignHint", {
 })
 
 vim.o.shortmess = vim.o.shortmess .. "c"
+

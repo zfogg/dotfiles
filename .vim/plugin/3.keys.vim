@@ -15,7 +15,7 @@ noremap ; :
 
 " Don't jump cursor when using * to search for word under cursor
 noremap * *``
-"noremap # #``
+noremap # #``
 
 " Reselect visual block after indent/outdent
 vnoremap < <gv
@@ -26,7 +26,7 @@ vnoremap > >gv
 noremap <A-S-j> a<CR><Esc>k$
 
 " Keep cursor in centre of screen after motions
-noremap n nzz
+"noremap n nzz
 noremap <C-d> <C-d>zz
 noremap <C-u> <C-u>zz
 noremap { {zz
@@ -70,7 +70,6 @@ endif
     inoremap <Right> <Nop>
 " }}}
 
-
 " Yanking and pasting. {{{
     " Easily yank from cursor to EOL.
     noremap Y y$
@@ -88,7 +87,6 @@ endif
     " Retain " register after pasting.
     xnoremap <expr> p v:register=='"'?'pgvy':'p'
 " }}}
-
 
 " Cursor motion. {{{
     if exists('g:vscode')
@@ -232,7 +230,7 @@ endif
     "nnoremap <Leader>bg :hi Normal ctermbg=NONE<CR>
 
     " Change to the directory of the current buffer's file.
-    nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
+    "nnoremap <Leader>lcd :lcd %:p:h<BAR>pwd<CR>
     nnoremap <Leader>cd  :cd  %:p:h<BAR>pwd<CR>
 
     " INFO: https://github.com/markonm/traces.vim#neovim-v023

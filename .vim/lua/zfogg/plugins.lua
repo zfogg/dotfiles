@@ -1,5 +1,5 @@
 -- lua/zfogg/plugins.lua
--- vim: fdm=marker:
+-- vim: fdm=marker ft=lua:
 require 'zfogg.util'
 
 local fn = vim.fn
@@ -58,7 +58,7 @@ require('packer').startup({function(use)
     disable=(vim.g.vscode and not vim.fn.has('nvim')),
   };
 
-  local e = vim.env
+  --local e = vim.env
 
   use { 'christoomey/vim-tmux-navigator',
     --opt = true,
@@ -78,11 +78,15 @@ require('packer').startup({function(use)
   --print((not inKitty) or inTmux)
 
   use { 'knubie/vim-kitty-navigator',
-    opt = false,
+    --opt = false,
     disable=((not inKitty) or inTmux),
   };
 
-  use { 'Olical/vim-enmasse', opt=true, cmd='EnMasse', };
+  use {
+    'Olical/vim-enmasse',
+    --opt=true,
+    cmd='EnMasse',
+  };
   use { 'kevinhwang91/nvim-bqf', };
   -- }}}
 
@@ -100,17 +104,17 @@ require('packer').startup({function(use)
   };
 
   use { 'simrat39/symbols-outline.nvim',
-    cmd = {'SymbolsOutline', 'SymbolsOutlineOpen', 'SymbolsOutlineClose', },
+    --cmd = { 'SymbolsOutline', 'SymbolsOutlineOpen', 'SymbolsOutlineClose', },
     setup  = [[require('rc.symbols-outline').setup()]],
     config = [[require('rc.symbols-outline').config()]],
   };
 
   use { 'lewis6991/gitsigns.nvim',
     setup = [[
-    vim.cmd('let b:rcplugin_gitsigns = 1')
+      vim.cmd('let b:rcplugin_gitsigns = 1')
     ]],
     config = [[
-    require('rc.gitsigns')
+      require('rc.gitsigns')
     ]],
     requires = {
       { 'nvim-lua/plenary.nvim', },
@@ -122,29 +126,37 @@ require('packer').startup({function(use)
     { 'nvim-telescope/telescope.nvim',
       setup  = [[require('rc.telescope').setup()]],
       config = [[require('rc.telescope').config()]],
-      --cmd = 'Telescope',
+      cmd = 'Telescope',
       module = 'telescope',
       requires = {
         { 'nvim-lua/popup.nvim', },
         { 'nvim-lua/plenary.nvim', },
-        { 'telescope-frecency.nvim', },
-        { 'telescope-fzf-native.nvim', },
       },
       wants = {
         'popup.nvim',
-        'telescope-frecency.nvim',
-        'telescope-fzf-native.nvim',
       },
     },
     { 'nvim-telescope/telescope-frecency.nvim',
       after = 'telescope.nvim',
-      requires = 'tami5/sql.nvim',
-      config = [[require("telescope").load_extension("frecency")]],
+      config = [[require"telescope".load_extension("frecency")]],
+      requires = {"kkharji/sqlite.lua"},
     },
     { 'nvim-telescope/telescope-fzf-native.nvim',
       after = 'telescope.nvim',
       run = 'make',
       config = [[require("telescope").load_extension("fzf")]],
+    },
+    { 'xiyaowong/telescope-emoji.nvim',
+      after = 'telescope.nvim',
+      config = [[require("telescope").load_extension("emoji")]],
+    },
+    { 'gbprod/yanky.nvim',
+      disabled = true,
+      after = 'telescope.nvim',
+      config = function()
+        require("rc.yanky")
+        require("telescope").load_extension("yank_history")
+      end,
     },
   };
 
@@ -152,7 +164,11 @@ require('packer').startup({function(use)
   use {
     'dhruvasagar/vim-prosession',
     after = 'vim-obsession',
-    requires = { { 'tpope/vim-obsession', opt=true, cmd='Prosession' } },
+    requires = {
+      'tpope/vim-obsession',
+      --opt=true,
+      cmd='Prosession'
+    },
     --config = [[require('config.prosession')]],
   }
 
@@ -169,7 +185,8 @@ require('packer').startup({function(use)
   -- Undo tree
   use {
     'mbbill/undotree',
-    opt = true, cmd = 'UndotreeToggle',
+    --opt = true,
+    cmd = 'UndotreeToggle',
     config = [[vim.g.undotree_SetFocusWhenToggle = 1]],
   }
 
@@ -229,10 +246,8 @@ require('packer').startup({function(use)
     config = [[require("rc.coq").config()]],
     requires = {
       {'ms-jpq/coq.artifacts', branch='artifacts', },
+      {'ms-jpq/coq.artifacts', branch='artifacts', },
       {'ms-jpq/coq.thirdparty', branch='3p', },
-    },
-    wants = {
-      {'neovim/nvim-lspconfig', },
     },
   };
 
@@ -244,36 +259,48 @@ require('packer').startup({function(use)
 
   use { 'j-hui/fidget.nvim',
     config = [[require("fidget").setup({})]],
+    tag = 'legacy',
     requires = {
       { 'neovim/nvim-lspconfig', },
     },
   };
 
+  use { 'williamboman/mason.nvim',
+    setup=[[require('rc.mason').setup()]],
+    config=[[require('rc.mason').config()]],
+    requires = {
+      { 'williamboman/mason-lspconfig.nvim', },
+      { 'neovim/nvim-lspconfig', },
+    },
+  };
+
+  use { 'williamboman/mason-lspconfig.nvim' };
+
   -- LSP - language server protocol
-  use {'neovim/nvim-lspconfig',
+  use { 'neovim/nvim-lspconfig',
     config = [[require('rc.lspconfig')]],
     requires = {
-      {'ray-x/lsp_signature.nvim',
-      config = [[require('rc.lsp_signature')]], },
-      {'onsails/lspkind-nvim', },
-      {'kosayoda/nvim-lightbulb', },
-      {'RishabhRD/nvim-lsputils',
-      requires = {'RishabhRD/popfix', }, },
-      {'jose-elias-alvarez/null-ls.nvim',
+      { 'onsails/lspkind-nvim', },
+      { 'kosayoda/nvim-lightbulb', },
+      { 'RishabhRD/nvim-lsputils',
+      requires = { 'RishabhRD/popfix', }, },
+      { 'jose-elias-alvarez/null-ls.nvim',
         config = [[require('rc.null-ls')]],
         requires = { 'nvim-lua/plenary.nvim', },
       }
     },
   };
 
-  use { 'weilbith/nvim-code-action-menu',
-    opt=true, cmd = 'CodeActionMenu',
+  use { 'ray-x/lsp_signature.nvim',
+    config = [[require('rc.lsp_signature')]],
+    disable = true,
   };
 
-  use { 'williamboman/nvim-lsp-installer',
-    config = [[require('rc.lsp_installer')]],
-    requires = { 'neovim/nvim-lspconfig', },
+  use { 'weilbith/nvim-code-action-menu',
+    --opt=true,
+    cmd = 'CodeActionMenu',
   };
+
 
   --use { 'jackguo380/vim-lsp-cxx-highlight',
     --requires = {
@@ -317,6 +344,19 @@ require('packer').startup({function(use)
     setup=[[require('rc.indent-blankline').setup()]],
     config=[[require('rc.indent-blankline').config()]],
   };
+
+  --use { 'puremourning/vimspector' };
+
+  --use { 'folke/noice.nvim',
+  --  disabled = true,
+  --  setup=[[require('rc.noice').setup()]],
+  --  config=[[require('rc.noice').config()]],
+  --  requires = {
+  --    'nvim-telescope/telescope.nvim',
+  --    'MunifTanjim/nui.nvim',
+  --    'rcarriga/nvim-notify',
+  --  },
+  --};
   -- }}}
 
   -- {{{ Language support.
@@ -339,9 +379,10 @@ require('packer').startup({function(use)
     ft = ft['sql'],
   };
   use { 'sheerun/vim-polyglot',
-    opt = true,
-    disable = true,
+    --opt = true,
+    --disable = false,
   };
+  --use { 'tbastos/vim-lua' };
   --use { 'lambdalisue/vim-pyenv',         {'for': ft['py' };]}
   use { 'python-mode/python-mode', ft = ft['py'], };
   use { 'gisphm/vim-gitignore' };
@@ -441,12 +482,16 @@ require('packer').startup({function(use)
   use { 'isobit/vim-caddyfile' };
   use { 'wgwoods/vim-systemd-syntax' }; -- systemctl / systemd
   --use { 'tomlion/vim-solidity' };
+  use { 'vyperlang/vim-vyper' };
   -- }}}
 
   -- {{{ Beautify Vim.
   use { 'nvim-lualine/lualine.nvim',
     config = [[require('rc.lualine')]],
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true, },
+    requires = {
+      'kyazdani42/nvim-web-devicons',
+      --opt = true,
+    },
   };
   use { 'akinsho/bufferline.nvim',
     config = [[require('rc.bufferline')]],
@@ -531,7 +576,7 @@ require('packer').startup({function(use)
   use { 'vim-scripts/visualrepeat' };
   use { 'junegunn/vim-easy-align' };
   use { 'tpope/vim-sleuth' };
-  use { 'sickill/vim-pasta' };
+  --use { 'sickill/vim-pasta' };
   --use { 'unblevable/quick-scope' };
   use { 'kana/vim-operator-user' };
   use { 'haya14busa/vim-operator-flashy' };
