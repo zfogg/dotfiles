@@ -16,7 +16,7 @@ local servers = {
   html = {},
   --hls = {},
   jsonls = {},
-  tsserver = {},
+  --tsserver = {},
   quick_lint_js = {},
   marksman = {},
   jedi_language_server = {},
@@ -30,6 +30,29 @@ local servers = {
 }
 
 function M.setup()
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      underline        = true,
+      signs            = true,
+      update_in_insert = false,
+      severity_sort    = true,
+      virtual_text     = false,
+      --virtual_text = {
+        --prefix  = "",
+        --spacing = 2,
+      --},
+  })
+
+  vim.diagnostic.config({
+    float = {
+      scope = "cursor",
+    },
+    underline = false,
+    virtual_text = false,
+    signs = true,
+    update_in_insert = false,
+    severity_sort = true,
+  })
 end
 
 function M.config()
@@ -49,6 +72,7 @@ function M.config()
       }
     }
   }
+
   capabilities.textDocument.completion.completionItem.documentationFormat     = { 'markdown', 'plaintext' }
   capabilities.textDocument.completion.completionItem.snippetSupport          = true
   capabilities.textDocument.completion.completionItem.preselectSupport        = true
@@ -94,7 +118,7 @@ function M.config()
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-    nmap('<leader>j', vim.lsp.buf.signature_help, 'Signature Documentation')
+    nmap('<leader><leader>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
     -- Set some keybinds conditional on server capabilities
     if client.server_capabilities.document_formatting then
@@ -118,18 +142,24 @@ function M.config()
         augroup END
       ]], false)
     end
+
+    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+    vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
   end
+
   local mason_lspconfig = require 'mason-lspconfig'
+  local coq = require('coq')
+  local lspconfig = require('lspconfig')
   mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
     handlers = {
       function(server_name)
-        require('lspconfig')[server_name].setup {
-          capabilities = capabilities,
-          on_attach = on_attach,
-          settings = servers[server_name],
-          filetypes = (servers[server_name] or {}).filetypes,
-        }
+        lspconfig[server_name].setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = servers[server_name],
+            filetypes = (servers[server_name] or {}).filetypes,
+          })
       end,
     },
   }
