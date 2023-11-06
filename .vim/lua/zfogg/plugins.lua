@@ -293,7 +293,10 @@ require('packer').startup({function(use)
 
   use { 'ray-x/lsp_signature.nvim',
     config = [[require('rc.lsp_signature')]],
-    disable = true,
+    --disable = false,
+    config = function()
+      require('lsp_signature').on_attach()
+    end,
   };
 
   use { 'weilbith/nvim-code-action-menu',
