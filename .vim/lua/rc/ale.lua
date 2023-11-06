@@ -43,8 +43,8 @@ function M.setup()
   let g:ale_hover_to_floating_preview=0
 
   let g:ale_open_window=0
-  let g:ale_open_list=1
-  let g:ale_keep_list_window_open=1
+  let g:ale_open_list=0
+  let g:ale_keep_list_window_open=0
   let g:ale_list_window_size=3
 
   "let g:ale_linters={

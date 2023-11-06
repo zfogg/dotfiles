@@ -109,7 +109,7 @@ endif
     "INFO: can't map some keys :( use <Leader> I guess
     "nnoremap <C-S-{> :lnext<CR>
     "nnoremap <C-S-}> :lprevious<CR>
-    nnoremap <Leader>, :lnext<CR>
+    "nnoremap <Leader>, :lnext<CR>
     "nnoremap <Leader>< :lprevious<CR>
     nnoremap mm        :lprevious<CR>
 
