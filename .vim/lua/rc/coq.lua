@@ -18,6 +18,15 @@ function M.setup()
         jump_to_mark    = '<C-S-y>';
       };
       clients = {
+        lsp = {
+          enabled = true,
+          resolve_timeout = 2,
+          weight_adjust = 1.75,
+        },
+        tree_sitter = {
+          enabled = true,
+          weight_adjust = 1.5,
+        },
         buffers = { match_syms    = true; };
         tmux    = { match_syms    = false; };
         paths   = { preview_lines = 8; };

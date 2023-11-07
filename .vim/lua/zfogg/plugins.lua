@@ -339,7 +339,7 @@ require('packer').startup({function(use)
 
   -- etc
   --use { 'ervandew/supertab' };
-  use { 'tpope/vim-rsi' };
+  --use { 'tpope/vim-rsi' }; -- NOTE: this messes with autocomplete
   use { 'embear/vim-localvimrc' };
 
   use { 'liuchengxu/vim-clap', run = ':call clap#installer#download_binary()', };
@@ -412,7 +412,6 @@ require('packer').startup({function(use)
   use { 'peitalin/vim-jsx-typescript',
     requires = {
       { 'leafgarland/typescript-vim', },
-      --{ 'p00f/nvim-ts-rainbow', },
     },
   };
 
