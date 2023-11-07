@@ -159,7 +159,7 @@ function M.config()
       ]], false)
     end
 
-    vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
+    --vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
     vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
   end
 
@@ -170,12 +170,12 @@ function M.config()
     ensure_installed = vim.tbl_keys(servers),
     handlers = {
       function(server_name)
-        lspconfig[server_name].setup({
+        lspconfig[server_name].setup(coq.lsp_ensure_capabilities({
             capabilities = capabilities,
             on_attach = on_attach,
             settings = servers[server_name],
             filetypes = (servers[server_name] or {}).filetypes,
-          })
+          }))
       end,
     },
   }
