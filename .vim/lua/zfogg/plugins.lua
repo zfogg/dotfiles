@@ -412,7 +412,7 @@ require('packer').startup({function(use)
   use { 'peitalin/vim-jsx-typescript',
     requires = {
       { 'leafgarland/typescript-vim', },
-      { 'p00f/nvim-ts-rainbow', },
+      --{ 'p00f/nvim-ts-rainbow', },
     },
   };
 

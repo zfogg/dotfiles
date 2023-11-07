@@ -92,7 +92,12 @@ function M.config()
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
   local on_attach = function(client, bufnr)
-    require("lsp_signature").on_attach()
+    require("lsp_signature").on_attach({
+        bind = true,
+        handler_opts = {
+          border = "rounded",
+        },
+      })
     -- NOTE: Remember that lua is a real programming language, and as such it is possible
     -- to define small helper and utility functions so you don't have to repeat yourself
     -- many times.
@@ -121,7 +126,15 @@ function M.config()
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-    nmap('<leader><leader>', vim.lsp.buf.signature_help, 'Signature Documentation')
+    --nmap('<leader><leader>', vim.lsp.buf.signature_help, 'Signature Documentation')
+
+    vim.keymap.set({ 'n' }, '<leader>K', function()
+      require('lsp_signature').toggle_float_win()
+    end, { silent = true, noremap = true, desc = 'toggle signature' })
+
+    vim.keymap.set({ 'n' }, '<Leader><leader>', function()
+      vim.lsp.buf.signature_help()
+    end, { silent = true, noremap = true, desc = 'toggle signature' })
 
     -- Set some keybinds conditional on server capabilities
     if client.server_capabilities.document_formatting then
