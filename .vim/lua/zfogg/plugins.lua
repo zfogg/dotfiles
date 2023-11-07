@@ -271,6 +271,8 @@ require('packer').startup({function(use)
     requires = {
       { 'williamboman/mason-lspconfig.nvim', },
       { 'neovim/nvim-lspconfig', },
+      { 'ray-x/lsp_signature.nvim' },
+      { 'ms-jpq/coq_nvim' },
     },
   };
 
