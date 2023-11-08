@@ -12,9 +12,9 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 -- FIXME: why can't these be local?
-inTmux  = string.len(vim.env.TMUX or '') > 0
-inKitty = string.len(vim.env.TERM or '') > 0 and (vim.env.TERM:match("-kitty$") == "-kitty")
-inVscode = not (vim.g.vscode == nil)
+local inTmux  = string.len(vim.env.TMUX or '') > 0
+local inKitty = string.len(vim.env.TERM or '') > 0 and (vim.env.TERM:match("-kitty$") == "-kitty")
+local inVscode = not (vim.g.vscode == nil)
 
 local packer_startup_opts = {
   config = {
@@ -150,14 +150,14 @@ require('packer').startup({function(use)
       after = 'telescope.nvim',
       config = [[require("telescope").load_extension("emoji")]],
     },
-    { 'gbprod/yanky.nvim',
-      disabled = true,
-      after = 'telescope.nvim',
-      config = function()
-        require("rc.yanky")
-        require("telescope").load_extension("yank_history")
-      end,
-    },
+    --{ 'gbprod/yanky.nvim',
+    --  disabled = true,
+    --  after = 'telescope.nvim',
+    --  config = function()
+    --    require("rc.yanky")
+    --    require("telescope").load_extension("yank_history")
+    --  end,
+    --},
   };
 
   -- Project Management/Sessions
@@ -180,7 +180,17 @@ require('packer').startup({function(use)
     config = [[vim.g.startuptime_tries = 10]],
   };
 
-  use { 'folke/lua-dev.nvim', ft = 'lua', };
+  use { 'folke/neodev.nvim', ft = 'lua',
+    config = function()
+      require('neodev').setup({})
+    end,
+    requires = {
+      'nvim-treesitter',
+      'plenary.nvim',
+      'telescope.nvim',
+      'fidget.nvim',
+    },
+  };
 
   -- Undo tree
   use {
@@ -229,7 +239,7 @@ require('packer').startup({function(use)
     },
   };
 
-  use { 'scrooloose/nerdcommenter', };
+  use { 'preservim/nerdcommenter', };
 
   --use { 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps' };}
 
@@ -273,6 +283,7 @@ require('packer').startup({function(use)
       { 'neovim/nvim-lspconfig', },
       { 'ray-x/lsp_signature.nvim' },
       { 'ms-jpq/coq_nvim' },
+      { 'folke/neodev.nvim' },
     },
   };
 
@@ -294,11 +305,9 @@ require('packer').startup({function(use)
   };
 
   use { 'ray-x/lsp_signature.nvim',
-    config = [[require('rc.lsp_signature')]],
+    setup = [[require('rc.lsp_signature').setup()]],
+    config = [[require('rc.lsp_signature').config()]],
     --disable = false,
-    config = function()
-      require('lsp_signature').on_attach()
-    end,
   };
 
   use { 'weilbith/nvim-code-action-menu',

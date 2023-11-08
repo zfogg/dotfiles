@@ -67,7 +67,12 @@ function M.config()
     },
   })
 
-  vim.cmd("colorscheme nightfox")
+  -- INFO: the options...
+  --vim.cmd("colorscheme nightfox")
+  --vim.cmd("colorscheme duskfox")
+  --vim.cmd("colorscheme nordfox")
+  vim.cmd("colorscheme terafox")
+  --vim.cmd("colorscheme carbonfox")
 end
 
 return M
