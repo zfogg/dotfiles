@@ -5,4 +5,4 @@ vim.g.did_load_filetypes = 0
 
 vim.fn['z#rc#Init']()
 
-require 'zfogg'
+require('zfogg')

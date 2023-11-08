@@ -1,9 +1,45 @@
 -- lua/rc/mason.lua
+local util = require 'lspconfig.util'
 
 local M = {}
 
 local servers = {
-  lua_ls = {},
+  lua_ls = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using
+        -- (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+      },
+      -- Make the server aware of Neovim runtime files
+      workspace = {
+        checkThirdParty = true,
+        library = {
+          vim.env.VIMRUNTIME,
+          -- "${3rd}/luv/library",
+          -- "${3rd}/busted/library",
+        },
+        -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+        -- library = vim.api.nvim_get_runtime_file("", true)
+      },
+      diagnostics = {
+        enable = true,
+        globals = {
+          'vim',
+        },
+      },
+    },
+    --root_dir = util.root_pattern(
+    --  '.luarc.json',
+    --  '.luarc.jsonc',
+    --  '.luacheckrc',
+    --  '.stylua.toml',
+    --  'stylua.toml',
+    --  'selene.toml',
+    --  'selene.yml',
+    --  '.git'
+    --)
+  },
   rust_analyzer = {},
   arduino_language_server = {},
   bashls = {},
@@ -89,9 +125,10 @@ function M.config()
     },
   }
   --  This function gets run when an LSP connects to a particular buffer.
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
   local on_attach = function(client, bufnr)
+    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
     require("lsp_signature").on_attach({
         bind = true,
         handler_opts = {
@@ -128,9 +165,12 @@ function M.config()
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
     --nmap('<leader><leader>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
-    vim.keymap.set({ 'n' }, '<leader>K', function()
+    vim.keymap.set({ 'n' }, '<leader><c-k>', function()
       require('lsp_signature').toggle_float_win()
     end, { silent = true, noremap = true, desc = 'toggle signature' })
+    --vim.keymap.set({ 'i' }, '<c-k>', function()
+    --  require('lsp_signature').toggle_float_win()
+    --end, { silent = true, noremap = true, desc = 'toggle signature' })
 
     vim.keymap.set({ 'n' }, '<Leader><leader>', function()
       vim.lsp.buf.signature_help()
@@ -139,11 +179,14 @@ function M.config()
     -- Set some keybinds conditional on server capabilities
     if client.server_capabilities.document_formatting then
       buf_set_keymap("n", "<leader>lf",
-      "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+      "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
     elseif client.server_capabilities.document_range_formatting then
       buf_set_keymap("n", "<leader>lf",
-      "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+      "<cmd>lua vim.lsp.buf.range_formatting()<CR>", {})
     end
+
+    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+    vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 
     -- Set autocommands conditional on server_capabilities
     if client.server_capabilities.document_highlight then
@@ -159,26 +202,36 @@ function M.config()
       ]], false)
     end
 
-    --vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
     vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
   end
 
-  local mason_lspconfig = require 'mason-lspconfig'
+  local mason_lspconfig = require('mason-lspconfig')
   local coq = require('coq')
   local lspconfig = require('lspconfig')
-  mason_lspconfig.setup {
-    ensure_installed = vim.tbl_keys(servers),
+  mason_lspconfig.setup({
+    --ensure_installed = vim.tbl_keys(servers),
     handlers = {
       function(server_name)
-        lspconfig[server_name].setup(coq.lsp_ensure_capabilities({
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = servers[server_name],
-            filetypes = (servers[server_name] or {}).filetypes,
-          }))
+        local opts = {
+          capabilities = capabilities,
+          on_attach = on_attach,
+          settings = servers[server_name],
+          filetypes = (servers[server_name] or {}).filetypes,
+        }
+        --if servers[server_name].root_dir then
+        --  opts.root_dir = function(fname, _)
+        --    --_G.pp(opts.root_dir(fname))
+        --    --_G.pp('filename')
+        --    _G.pp(util.find_git_ancestor(fname))
+        --    return util.find_git_ancestor(fname)
+        --    --return servers[server_name].root_dir(filename)
+        --  end
+        --end
+        lspconfig[server_name].setup(coq.lsp_ensure_capabilities(opts))
       end,
     },
-  }
+  })
 end
 
 return M
