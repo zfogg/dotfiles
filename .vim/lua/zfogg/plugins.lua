@@ -289,6 +289,18 @@ require('packer').startup({function(use)
 
   use { 'williamboman/mason-lspconfig.nvim' };
 
+  use { "jay-babu/mason-null-ls.nvim",
+    event = { 'BufReadPre', 'BufNewFile' },
+    setup = [[require('rc.null-ls').setup()]],
+    config = [[require('rc.null-ls').config()]],
+    requires = {
+      { 'williamboman/mason.nvim' },
+      { 'jose-elias-alvarez/null-ls.nvim',
+        requires = { 'nvim-lua/plenary.nvim', },
+      },
+    },
+  }
+
   -- LSP - language server protocol
   use { 'neovim/nvim-lspconfig',
     config = [[require('rc.lspconfig')]],
@@ -297,10 +309,6 @@ require('packer').startup({function(use)
       { 'kosayoda/nvim-lightbulb', },
       { 'RishabhRD/nvim-lsputils',
       requires = { 'RishabhRD/popfix', }, },
-      { 'jose-elias-alvarez/null-ls.nvim',
-        config = [[require('rc.null-ls')]],
-        requires = { 'nvim-lua/plenary.nvim', },
-      }
     },
   };
 

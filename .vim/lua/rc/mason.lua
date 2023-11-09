@@ -65,6 +65,7 @@ local servers = {
   vimls = {},
 }
 
+
 function M.setup()
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -168,9 +169,9 @@ function M.config()
     vim.keymap.set({ 'n' }, '<leader><c-k>', function()
       require('lsp_signature').toggle_float_win()
     end, { silent = true, noremap = true, desc = 'toggle signature' })
-    --vim.keymap.set({ 'i' }, '<c-k>', function()
-    --  require('lsp_signature').toggle_float_win()
-    --end, { silent = true, noremap = true, desc = 'toggle signature' })
+    vim.keymap.set({ 'i' }, '<c-k>', function()
+     require('lsp_signature').toggle_float_win()
+    end, { silent = true, noremap = true, desc = 'toggle signature' })
 
     vim.keymap.set({ 'n' }, '<Leader><leader>', function()
       vim.lsp.buf.signature_help()
