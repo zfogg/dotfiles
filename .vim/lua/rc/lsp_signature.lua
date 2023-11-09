@@ -6,6 +6,25 @@ local M = {}
 function M.setup()
 end
 
+local floating_window_off_y = function() -- adjust float windows y position. e.g. set to -2 can make floating window move up 2 lines
+  local linenr = vim.api.nvim_win_get_cursor(0)[1] -- buf line number
+  local pumheight = vim.o.pumheight
+  local winline = vim.fn.winline() -- line number in the window
+  local winheight = vim.fn.winheight(0)
+
+  -- window top
+  if winline - 1 < pumheight then
+    return pumheight
+  end
+
+  -- window bottom
+  if winheight - winline < pumheight then
+    return -pumheight
+  end
+  return 0
+end
+
+
 
 function M.config()
   require "lsp_signature".setup({
@@ -21,7 +40,8 @@ function M.config()
       floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
       floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
       floating_window_off_x = 1, -- adjust float windows x position.
-      floating_window_off_y = -10, -- adjust float windows y position.
+      --floating_window_off_y = -2, -- adjust float windows y position.
+      floating_window_off_y = floating_window_off_y, -- adjust float windows y position.
       -- will set to true when fully tested, set to false will use whichever side has more space
       -- this setting will be helpful if you do not want the PUM and floating win overlap
       fix_pos = false,  -- set to true, the floating window will not auto-close until finish all parameters
