@@ -49,6 +49,7 @@ function M.config()
         deadline = 500,
         unsafe = { "rm", "poweroff", "mv", },
       },
+      { src = "copilot", short_name = "COP", accept_key = "<c-j>" },
     })
 
   keymaps()
