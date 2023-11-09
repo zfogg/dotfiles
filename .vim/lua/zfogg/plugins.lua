@@ -246,6 +246,11 @@ require('packer').startup({function(use)
   -- sessions
   use { 'xolox/vim-misc' };
 
+  use { 'github/copilot.vim',
+    setup  = [[require("rc.copilot").setup()]],
+    config = [[require("rc.copilot").config()]],
+  };
+
   use { 'ms-jpq/coq_nvim',
     branch = 'coq',
     --event = 'InsertEnter *',
@@ -256,8 +261,11 @@ require('packer').startup({function(use)
     config = [[require("rc.coq").config()]],
     requires = {
       {'ms-jpq/coq.artifacts', branch='artifacts', },
-      {'ms-jpq/coq.artifacts', branch='artifacts', },
-      {'ms-jpq/coq.thirdparty', branch='3p', },
+      {'ms-jpq/coq.thirdparty', branch='3p',
+        requires = {
+          {'github/copilot.vim'}
+        }
+      },
     },
   };
 
