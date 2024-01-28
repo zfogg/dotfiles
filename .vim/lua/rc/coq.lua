@@ -20,7 +20,7 @@ function M.setup()
       clients = {
         lsp = {
           enabled = true,
-          resolve_timeout = 2,
+          --resolve_timeout = 2,
           weight_adjust = 1.75,
         },
         tree_sitter = {
@@ -33,6 +33,7 @@ function M.setup()
       };
     })
 end
+
 
 function M.config()
   local coq = require "coq"
