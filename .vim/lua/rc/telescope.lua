@@ -18,7 +18,6 @@ function M.config()
         layout_strategy = 'flex',
         layout_config = {
           width = 0.65,
-          width = 0.55,
           preview_cutoff = 40,
           prompt_position = "bottom",
         },
