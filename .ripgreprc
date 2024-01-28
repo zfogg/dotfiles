@@ -20,7 +20,7 @@
 
 --ignore
 #--ignore-dot
---ignore-file=/home/zfogg/.config/rg/rgignore
+--ignore-file=/Users/loomen/.config/rg/rgignore
 --ignore-parent
 --ignore-global
 --ignore-vcs
