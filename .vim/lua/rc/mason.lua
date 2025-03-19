@@ -75,10 +75,10 @@ function M.setup()
       severity_sort    = true,
       virtual_text     = false,
       --virtual_text = {
-        --prefix  = "",
-        --spacing = 2,
+      --prefix  = "",
+      --spacing = 2,
       --},
-  })
+    })
 
   vim.diagnostic.config({
     float = {
@@ -96,8 +96,9 @@ function M.config()
   require("mason").setup()
 
   -- Ensure the servers above are installed
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities.textDocument.codeAction = {
+  local capabilities                                                          = vim.lsp.protocol
+      .make_client_capabilities()
+  capabilities.textDocument.codeAction                                        = {
     dynamicRegistration = true,
     codeActionLiteralSupport = {
       codeActionKind = {
@@ -136,11 +137,11 @@ function M.config()
     require("lsp-format").on_attach(client, bufnr)
 
     require("lsp_signature").on_attach({
-        bind = true,
-        handler_opts = {
-          border = "rounded",
-        },
-      }, bufnr)
+      bind = true,
+      handler_opts = {
+        border = "rounded",
+      },
+    }, bufnr)
     -- NOTE: Remember that lua is a real programming language, and as such it is possible
     -- to define small helper and utility functions so you don't have to repeat yourself
     -- many times.
@@ -175,7 +176,7 @@ function M.config()
       require('lsp_signature').toggle_float_win()
     end, { silent = true, noremap = true, desc = 'toggle signature' })
     vim.keymap.set({ 'i' }, '<c-k>', function()
-     require('lsp_signature').toggle_float_win()
+      require('lsp_signature').toggle_float_win()
     end, { silent = true, noremap = true, desc = 'toggle signature' })
 
     vim.keymap.set({ 'n' }, '<Leader><leader>', function()
@@ -185,10 +186,10 @@ function M.config()
     -- Set some keybinds conditional on server capabilities
     if client.server_capabilities.document_formatting then
       buf_set_keymap("n", "<leader>lf",
-      "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
+        "<cmd>lua vim.lsp.buf.formatting()<CR>", {})
     elseif client.server_capabilities.document_range_formatting then
       buf_set_keymap("n", "<leader>lf",
-      "<cmd>lua vim.lsp.buf.range_formatting()<CR>", {})
+        "<cmd>lua vim.lsp.buf.range_formatting()<CR>", {})
     end
 
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
@@ -208,8 +209,9 @@ function M.config()
       ]], false)
     end
 
-    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-    vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
+    --vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+    vim.api.nvim_command('setlocal omnifunc=v:lua.vim.lsp.omnifunc')
+    vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
   end
 
   local mason_lspconfig = require('mason-lspconfig')
