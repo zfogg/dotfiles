@@ -255,7 +255,7 @@ require('packer').startup({
     };
 
     use { 'ms-jpq/coq_nvim',
-      branch   = 'coq',
+      --branch   = 'coq',
       --event = 'InsertEnter *',
       --opt = true,
       --run = 'python3 -m coq deps',
@@ -264,11 +264,6 @@ require('packer').startup({
       config   = [[require("rc.coq").config()]],
       requires = {
         { 'ms-jpq/coq.artifacts', branch = 'artifacts', },
-        { 'ms-jpq/coq.thirdparty', branch = '3p',
-          requires = {
-            { 'github/copilot.vim' }
-          }
-        },
       },
     };
 
