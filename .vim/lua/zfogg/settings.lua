@@ -13,6 +13,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     vim.cmd [[
       silent !kitty @ load-config
       redraw!
+      echom "Reloaded kitty confif"
     ]]
   end,
 })
