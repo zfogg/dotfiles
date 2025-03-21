@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   group    = kitty_augroup,
   callback = function()
     vim.cmd [[
-      silent !pkill -USR1 kitty
+      silent !kitty @ load-config
       redraw!
     ]]
   end,
