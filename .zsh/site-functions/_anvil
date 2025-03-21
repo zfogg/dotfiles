@@ -1,0 +1,120 @@
+#compdef anvil
+
+autoload -U is-at-least
+
+_anvil() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" \
+'-f+[Fetch state over a remote endpoint instead of starting from an empty state]:URL: ' \
+'--fork-url=[Fetch state over a remote endpoint instead of starting from an empty state]:URL: ' \
+'--rpc-url=[Fetch state over a remote endpoint instead of starting from an empty state]:URL: ' \
+'--timeout=[Timeout in ms for requests sent to remote JSON-RPC server in forking mode]:timeout: ' \
+'--retries=[Number of retry requests for spurious networks (timed out requests)]:retries: ' \
+'--fork-block-number=[Fetch state from a specific block number over a remote endpoint]:BLOCK: ' \
+'--fork-retry-backoff=[Initial retry backoff on encountering errors]:BACKOFF: ' \
+'--compute-units-per-second=[Sets the number of assumed available compute units per second for this provider]:CUPS: ' \
+'--gas-limit=[The block gas limit]:GAS_LIMIT: ' \
+'--gas-price=[The gas price]:GAS_PRICE: ' \
+'--block-base-fee-per-gas=[The base fee in a block]:FEE: ' \
+'--base-fee=[The base fee in a block]:FEE: ' \
+'--chain-id=[The chain ID]:CHAIN_ID: ' \
+'-p+[Port number to listen on.]:NUM: ' \
+'--port=[Port number to listen on.]:NUM: ' \
+'-a+[Number of dev accounts to generate and configure.]:NUM: ' \
+'--accounts=[Number of dev accounts to generate and configure.]:NUM: ' \
+'--balance=[The balance of every dev account in Ether.]:NUM: ' \
+'--timestamp=[The timestamp of the genesis block]:NUM: ' \
+'-m+[BIP39 mnemonic phrase used for generating accounts]:MNEMONIC: ' \
+'--mnemonic=[BIP39 mnemonic phrase used for generating accounts]:MNEMONIC: ' \
+'--derivation-path=[Sets the derivation path of the child key to be derived. \[default: m/44'\''/60'\''/0'\''/0/\]]:DERIVATION_PATH: ' \
+'--allow-origin=[Set the CORS allow_origin]:ALLOW_ORIGIN: ' \
+'--hardfork=[The EVM hardfork to use.]:HARDFORK: ' \
+'-b+[Block time in seconds for interval mining.]:SECONDS: ' \
+'--block-time=[Block time in seconds for interval mining.]:SECONDS: ' \
+'--blockTime=[Block time in seconds for interval mining.]:SECONDS: ' \
+'--config-out=[Writes output of `anvil` as json to user-specified file]:OUT_FILE: ' \
+'--host=[The host the server will listen on]:IP_ADDR: ' \
+'--order=[How transactions are sorted in the mempool]:ORDER: ' \
+'*--init=[Initialize the genesis block with the given `genesis.json` file.]:PATH: ' \
+'--ipc=[Whether to launch an ipc server.]:PATH: ' \
+'--ipcpath=[Whether to launch an ipc server.]:PATH: ' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Print version information]' \
+'--version[Print version information]' \
+'--no-storage-caching[Explicitly disables the use of RPC caching]' \
+'--steps-tracing[Enable steps tracing used for debug calls returning geth-style traces]' \
+'(--allow-origin)--no-cors[Disable CORS]' \
+'--silent[Don'\''t print anything on startup.]' \
+'(-b --block-time)--no-mining[Disable auto and interval mining, and mine on demand instead.]' \
+'(-b --block-time)--no-mine[Disable auto and interval mining, and mine on demand instead.]' \
+":: :_anvil_commands" \
+"*::: :->anvil" \
+&& ret=0
+    case $state in
+    (anvil)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:anvil-command-$line[1]:"
+        case $line[1] in
+            (completions)
+_arguments "${_arguments_options[@]}" \
+'-h[Print help information]' \
+'--help[Print help information]' \
+':shell:(bash elvish fish powershell zsh)' \
+&& ret=0
+;;
+(generate-fig-spec)
+_arguments "${_arguments_options[@]}" \
+'-h[Print help information]' \
+'--help[Print help information]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'*::subcommand -- The subcommand whose help message to display:' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+}
+
+(( $+functions[_anvil_commands] )) ||
+_anvil_commands() {
+    local commands; commands=(
+'completions:Generate shell completions script.' \
+'com:Generate shell completions script.' \
+'generate-fig-spec:Generate Fig autocompletion spec.' \
+'fig:Generate Fig autocompletion spec.' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'anvil commands' commands "$@"
+}
+(( $+functions[_anvil__completions_commands] )) ||
+_anvil__completions_commands() {
+    local commands; commands=()
+    _describe -t commands 'anvil completions commands' commands "$@"
+}
+(( $+functions[_anvil__generate-fig-spec_commands] )) ||
+_anvil__generate-fig-spec_commands() {
+    local commands; commands=()
+    _describe -t commands 'anvil generate-fig-spec commands' commands "$@"
+}
+(( $+functions[_anvil__help_commands] )) ||
+_anvil__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'anvil help commands' commands "$@"
+}
+
+_anvil "$@"
