@@ -69,7 +69,7 @@ local servers = {
 function M.setup()
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
-      underline        = true,
+      underline        = false,
       signs            = true,
       update_in_insert = false,
       severity_sort    = true,
@@ -84,7 +84,7 @@ function M.setup()
     float = {
       scope = "cursor",
     },
-    underline = false,
+    underline = true,
     virtual_text = false,
     signs = true,
     update_in_insert = false,
