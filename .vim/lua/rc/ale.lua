@@ -47,9 +47,12 @@ function M.setup()
   let g:ale_keep_list_window_open=0
   let g:ale_list_window_size=3
 
-  "let g:ale_linters={
-  "\ 'python': 'all'
-  "\ }
+  let ts_linters = ['cspell', 'deno', 'tslint', 'tsserver', 'typecheck']
+
+  let g:ale_linters={
+  \ 'python': 'all',
+  \ 'typescript': ts_linters, 'typescriptreact': ts_linters,
+  \ }
 
   " INFO: :h g:ale_open_list
   aug CloseLoclistWindowGroup
