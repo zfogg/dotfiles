@@ -51,7 +51,6 @@ function () { # {{{ platform-specifics
       $(getconf PATH | command -p tr ':' '\n'))
 
     fpath=(
-      $HOME/.zsh/osx-zsh-completions
       $BREW/share/zsh/site-functions
       "$fpath[@]")
 
@@ -165,7 +164,7 @@ function() { # {{{ AFTER platform-specifics
   #fi
 
   fpath=(
-    $HOME/.zsh/{site-functions,completions}
+    $HOME/.zsh/{site-functions}
     "$fpath[@]"
   )
 
