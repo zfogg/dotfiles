@@ -615,6 +615,13 @@ require('packer').startup({
     --use { 'AndrewRadev/switch.vim' };
     use { 'vim-utils/vim-vertical-move' };
     --use { 'tpope/vim-unimpaired' };
+
+    use {
+      "supermaven-inc/supermaven-nvim",
+      config = function()
+        require("supermaven-nvim").setup({})
+      end,
+    }
     -- }}}
   end,
   config = {
