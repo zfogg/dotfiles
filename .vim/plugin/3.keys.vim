@@ -34,7 +34,10 @@ noremap } }zz
 noremap gd gdzz
 
 " write
+" NOTE check your kitty.conf for a cmd+s mapping.
 nnoremap <Leader>w :w<CR>
+nnoremap <Leader>W :w<CR>
+inoremap <Leader>W <Esc>:w<CR>a
 "nnoremap <Leader>W :sil! w<CR>
 cnoremap w! w !sudo tee % >/dev/null
 
