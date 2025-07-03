@@ -4,7 +4,7 @@
 direnv 2.32.3
 #java   latest
 #nodejs latest 21.1.0 19.9.0 19.4.0 18.18.2
-nodejs 21.1.0 19.9.0 19.4.0 18.18.2
+nodejs 24.3.0 21.1.0 19.9.0 19.4.0 18.18.2
 
 #python latest 3.12.0 system
 python 3.12.0 system
