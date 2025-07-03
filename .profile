@@ -34,7 +34,11 @@ fi
 )
 
 if [[ $OSX == "$TRUE" ]]; then
-  export BREW='/usr/local'
+  if [[ `hostname -s` == "WorkBook-Pro" ]]; then
+    export BREW='/opt/homebrew'
+  else
+    export BREW='/usr/local'
+  fi
   export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
 elif [ "$LINUX" = "$TRUE" ]; then
   export BREW='/usr'
