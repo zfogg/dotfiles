@@ -7,7 +7,7 @@ scriptencoding utf-8
 set number numberwidth=2     " hybrid line numbers - relative & static
 set title                   " file title in the $TERM titlebar
 set showtabline=1           " show buffer tabs when more than `n`
-set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
+"set pastetoggle=<F1>        " for 'Insert' mode pasting with <S-Insert>
 set history=2048            " persist mode-cmdline history
 set noerrorbells visualbell " no system bell, no screen blink on error
 if exists('$SHELL')

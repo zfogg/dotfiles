@@ -275,10 +275,6 @@ require('packer').startup({
 
     use { 'j-hui/fidget.nvim',
       config = [[require("fidget").setup({})]],
-      tag = 'legacy',
-      requires = {
-        { 'neovim/nvim-lspconfig', },
-      },
     };
 
     use { 'williamboman/mason.nvim',

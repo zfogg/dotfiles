@@ -105,7 +105,7 @@ func! z#constants#globals#Nodejs()
       let l:host_path = expand($BREW).'/bin'
     elseif exists('$NODE_VERSION_LATEST')
       let l:node_host = 'neovim-node-host'
-      let l:host_path = expand($NODE_VERSION_LATEST).'/.npm/bin'
+      let l:host_path = expand($NODE_VERSION_LATEST).'/bin'
     elseif has('unix')
       let l:node_host = 'neovim-node-host'
       let l:which_prog = systemlist('which '.l:node_host)[0]
@@ -132,7 +132,7 @@ func! z#constants#globals#Ruby()
   try
     if exists('$XDG_DATA_HOME') && isdirectory(expand($XDG_DATA_HOME)) && isdirectory($XDG_DATA_HOME.'/asdf')
       let l:ruby_host = 'neovim-ruby-host'
-      let l:host_path = expand($XDG_DATA_HOME).'/asdf/shims'
+      let l:host_path = expand($HOME).'/.gem/bin'
     elseif has('unix')
       let l:ruby_host = 'neovim-ruby-host'
       let l:which_prog = systemlist('which '.l:ruby_host)[0]
