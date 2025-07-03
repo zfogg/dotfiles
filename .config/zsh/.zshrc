@@ -394,3 +394,5 @@ esac
 
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/Users/zfogg/.gem/bin:$PATH"
+
+export HOMEBREW_NO_ENV_HINTS=1
