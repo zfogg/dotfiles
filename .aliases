@@ -55,6 +55,10 @@ elif [[ $LINUX == $TRUE ]]; then
   compdefas pacman p
 fi
 
+if [[ $OSX == $TRUE ]]; then
+  alias nproc="sysctl -n hw.logicalcpu"
+fi
+
 alias    zshrc="$EDITOR $ZDOTDIR/.zshrc"
 alias   zshenv="$EDITOR $ZDOTDIR/.zshenv"
 alias   zlogin="$EDITOR $ZDOTDIR/.zlogin"
