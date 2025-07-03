@@ -23,3 +23,6 @@
 [submodule ".emacs.d"]
 	path = .emacs.d
 	url = https://github.com/syl20bnr/spacemacs
+[submodule ".config/kitty/deps/vim-kitty-navigator"]
+	path = .config/kitty/deps/vim-kitty-navigator
+	url = git@github.com:knubie/vim-kitty-navigator.git
