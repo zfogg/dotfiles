@@ -72,7 +72,11 @@ export   ZSHRC="$ZDOTDIR/.zshrc"
 unsetopt GLOBAL_RCS
 
 if [[ $OSX == $TRUE ]]; then
-  export BREW='/usr/local'
+  if [[ `hostname -s` == "WorkBook-Pro" ]]; then
+    export BREW='/opt/homebrew'
+  else
+    export BREW='/usr/local'
+  fi
   export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
 elif [[ $LINUX == $TRUE ]]; then
   export BREW='/usr'
@@ -391,7 +395,11 @@ export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --
 
 
 # rust {{{
-export CORES="`$BREW/bin/nproc`"
+if [[ $OSX == $TRUE ]]; then
+  export CORES="`sysctl -n hw.logicalcpu`"
+else
+  export CORES="`nproc`"
+fi
 
 #export RUSTUP_HOME=~/.rustup
 #if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
