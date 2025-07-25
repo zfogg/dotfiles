@@ -249,7 +249,7 @@ function _tree() {
   #-D -c \
   local gitignore="$HOME/.config/git/ignore"
   if [[ -f $gitignore ]];
-  then local ignores=$(cat "$gitignore" | grep -v '^$' | xargs | tr '\ ' '|')
+  then local ignores=$(cat "$gitignore" | grep -v '^$' | tr '\n' '|' | sed 's/|$//')
   else local ignores='node_modules|bower_components|vendor|bundle|target|build|public|.git|env'; fi
   command tree \
     --du \
