@@ -29,3 +29,4 @@ if [[ ! -v INSIDE_GENIE && -x /usr/bin/genie ]]; then
   fi
 fi
 
+eval "$(/opt/homebrew/bin/brew shellenv)"

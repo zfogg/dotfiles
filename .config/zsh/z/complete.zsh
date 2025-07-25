@@ -228,6 +228,7 @@ function() {
         fzf_completion
       fi
     }
+    bindkey '\t' complete-word
     zle -C fzf_completion complete-word smart_completion
 
     #bindkey '^I' fzf_completion

@@ -77,21 +77,22 @@ function() {
 #[[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
   #&& source "$BREW/etc/profile.d/z.sh"
 
+local RG_PRG='rg '
+local RG_ARGS="--column --line-number --no-heading --sortr=modified --ignore --hidden --color=always --smart-case -g'!.git'"
 function() { # grep, rg
   if command_exists rg; then
     export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
-    local RG_PRG='rg'
     local GREPPRG_PRG="$RG_PRG"
     local GREPPRG_ARGS="$RG_ARGS"
-    export FZF_DEFAULT_COMMAND="$RG_PRG --files --sortr=modified --ignore --hidden 2>/dev/null"
+    export FZF_DEFAULT_COMMAND="$RG_PRG --files $RG_ARGS 2>/dev/null "
 
   else # INFO: "command_exists grep; then"
-    local GREP_PRG='grep'
+    local GREP_PRG='grep '
     local GREP_ARGS='--color=auto'
     GREP_ARGS+=' --exclude=\*.{o,pyc,.min.js}'
     GREP_ARGS+=' --exclude-dir={.bzr,cvs,.git,.hg,.svn,node_modules}'
     local GREPPRG_PRG="$GREP_PRG"
-    local GREPPRG_ARGS=" $GREP_ARGS"
+    local GREPPRG_ARGS="$GREP_ARGS"
     export FZF_DEFAULT_COMMAND="$GREP_PRG $GREP_ARGS -g "
   fi
 
@@ -100,14 +101,18 @@ function() { # grep, rg
     || export GREPPRG="${GREPPRG:-command -p grep}"
 }
 
-
 if command_exists fzf; then
-  _fzf_compgen_path() {
-    eval "${FZF_DEFAULT_COMMAND} ${1}"
-  }
-  _fzf_compgen_dir() {
-    eval "${FZF_DEFAULT_COMMAND} ${1} --null | xargs -0 dirname | sort | uniq | tail -n+2"
-  }
+
+  if `command_exists fd`; then
+    # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
+    _fzf_compgen_path() {
+      fd --hidden --follow --exclude ".git" . "$1"
+    }
+    # Use fd to generate the list for directory completion
+    _fzf_compgen_dir() {
+      fd --type d --hidden --follow --exclude ".git" . "$1"
+    }
+  fi
   function() {
     export FZF_HISTORY_DIR="${XDG_DATA_HOME:-${HOME}/.fzf}/fzf"
     [[ -d $FZF_HISTORY_DIR ]] || mkdir -p "$FZF_HISTORY_DIR"
@@ -115,48 +120,64 @@ if command_exists fzf; then
     export FZF_COMPLETION_TRIGGER=';;'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     export FZF_CTRL_T_OPTS="
-      --preview '(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200'
+      --walker-skip .git,node_modules,target
+      --preview 'fzf-preview.sh {}'
+      --bind 'ctrl-/:change-preview-window(down|hidden|)'
+      --bind=ctrl-d:half-page-down
+      --bind=ctrl-u:half-page-up
     "
-    export FZF_FILE_PREVIEW_OPT="(bat --color=always --paging=never --number {} || tree -C {}) 2>/dev/null | head -200"
     export FZF_CTRL_Z_KEYBINDS="
-    --bind=ctrl-d:half-page-down \
-    --bind=ctrl-u:half-page-up \
-    --bind=ctrl-space:toggle-preview \
+      --bind=ctrl-n:down
+      --bind=ctrl-p:up
+      --bind=ctrl-d:half-page-down
+      --bind=ctrl-u:half-page-up
+      --bind=ctrl-space:toggle-preview
+      --bind=ctrl-a:toggle-all
     "
     export FZF_CTRL_R_OPTS="
-      --no-preview \
-      --multi \
-      --history=${FZF_HISTORY_FILE} \
-      ${CTRL_Z_KEYBINDS}
-      --bind=alt-n:down \
-      --bind=alt-p:up \
+      --multi
+      ${FZF_CTRL_Z_KEYBINDS}
     "
       #--extended-exact \
     export FZF_DEFAULT_OPTS="
-      --ansi \
-      --layout=reverse \
-      --info=inline \
-      --height=100% \
-      --multi \
-      ${CTRL_Z_KEYBINDS}
-      --bind ctrl-u:toggle-all
-      --no-mouse \
+      --ansi
+      --layout=reverse
+      --info=inline
+      --height=100%
+      --multi
+      --history=${FZF_HISTORY_FILE}
+      --history-size=10000
+      ${FZF_CTRL_Z_KEYBINDS}
     "
-    #if command_exists fd; then
-      #export FZF_DEFAULT_COMMAND='fd --type f'
-    #fi
-    [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
-    #local fzfetc=("$BREW/share/fzf/"{completion,key-bindings}.zsh)
-    #find "${fzfetc[@]}" &>/dev/null \
-      #&& source "${fzfetc[@]}"
+    export FZF_COMPLETION_PATH_OPTS='--walker file,dir,follow,hidden'
+    export FZF_COMPLETION_DIR_OPTS='--walker dir,follow,hidden'
+
+    local command_tree='(command tree --du --si --filelimit 512 -I "node_modules|build|.git|.venv|env|__pycache__" -L 5 -C {}) 2>/dev/null | head -200'
+
+    function _fzf_comprun() {
+      local command=$1
+      shift
+      local command_tree='(command tree --du --si --filelimit 512 -I "node_modules|build|.git|.venv|env|__pycache__" -L 5 -C {}) 2>/dev/null | head -200'
+      case "$command" in
+        cd)                fzf --preview "$command_tree"                        "$@" ;;
+        export|unset|echo) fzf --preview "eval 'echo \$'{}"                     "$@" ;;
+        ssh)               fzf --preview 'dog {}'                               "$@" ;;
+        *)                 fzf --preview 'fzf-preview.sh {} || $command_tree'   "$@" ;;
+      esac
+    }
 
     # FZF_ALT_C_COMMAND
     if command_exists fd; then
-      export FZF_ALT_C_COMMAND='fd --type d'
+      export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude '.git'"
     fi
     export FZF_ALT_C_OPTS="
-      --preview '(tree -C {}) 2>/dev/null | head -200'
+      --preview '$command_tree'
+      ${FZF_CTRL_Z_KEYBINDS}
     "
+
+    # [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh # INFO: this was for vim but we already do the same thing in the line below here.
+    source <(fzf --zsh)
+
     # / ALT-C -> CTRL-G
     bindkey -r '\ec'
     bindkey '^G' fzf-cd-widget
@@ -167,7 +188,28 @@ if command_exists fzf; then
     bindkey -v '^F' fzf-file-widget
   }
   function vo() {
-    $EDITOR -o "`rgf | fzf --preview=$FZF_FILE_PREVIEW_OPT`"
+    fzf --preview='fzf-preview.sh {}' --multi --bind 'enter:become(nvim {+})'
+  }
+  function vf() {
+    eval "$GREPPRG" . | fzf --delimiter : --nth 3.. --bind 'enter:become(nvim {1} +{2})'
+  }
+  # fkill - kill processes - list only the ones you can kill. Modified the earlier script.
+  function fkill() {
+    local pid
+    local pids
+    if [ "$UID" != "0" ]; then
+      local pids=$(ps aux -r -U $UID)
+    else
+      local pids=$(ps aux -r)
+    fi
+    local pid=$(echo $pids \
+      | awk '{printf "%-8s %5s %5s %5s %10s %10s %s\n", $2, $1, $3, $4, $9, $10, substr($0, index($0,$11))}' \
+      | fzf --multi --preview 'ps o args {1} | sed 1d; ps mu {1} | awk '\''{printf "%-8s %5s %5s %5s %10s %10s\n", $2, $1, $3, $4, $9, $10}'\' \
+      | awk '{print $2}')
+    if [ "x$pid" != "x" ]
+    then
+        echo $pid | xargs kill -${1:-9}
+    fi
   }
 fi
 
@@ -392,7 +434,8 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export PATH="/Users/zfogg/.gem/bin:$PATH"
+export PATH="$BREW/opt/ruby/bin:$PATH"
+export PATH="$HOME/.gem/bin:$PATH"
 
 export HOMEBREW_NO_ENV_HINTS=1
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
