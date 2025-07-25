@@ -20,6 +20,9 @@ bundles = [
           (bundle "wookayin/fast-syntax-highlighting")
             { fpathLocations = [] }
 
+        --, (bundle "Aloxaf/fzf-tab")
+        --    { fpathLocations = [] }
+
         , (bundle "zsh-users/zsh-history-substring-search")
             { fpathLocations = [] }
 

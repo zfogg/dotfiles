@@ -46,6 +46,7 @@ function () { # {{{ platform-specifics
       #$BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
       #$BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
       $BREW/{bin,sbin}
+      /usr/local/bin
       /Library/Developer/CommandLineTools/usr/bin
       "$path[@]"
       $(getconf PATH | command -p tr ':' '\n'))
