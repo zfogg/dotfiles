@@ -36,7 +36,7 @@ elif [[ ${#*} -ge 0 ]]; then
 else
     echoer "🚫 ERROR: no args, no stdin 🚫"; return 14;
 fi
-) | sed '$ { /^$/ d}' | head -c -1 # maybe trim one trailing newline
+) | sed '$ { /^$/ d; }' # remove trailing empty lines
 
 
 
