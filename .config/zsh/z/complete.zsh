@@ -158,8 +158,8 @@ zstyle :compinstall filename "${ZDOTDIR:-~/.config/zsh}/z/complete.zsh"
 # NOTE: run this BEFORE sourcing 3rd-party completions
 # compinit {{{
 function() {
-  autoload -Uz +X compinit
-  autoload -Uz +X bashcompinit
+  autoload -Uz compinit
+  autoload -Uz bashcompinit
 
   local zcompdump=$ZDOTDIR/.zcompdump
   [[ $OSX == $TRUE && -d $BREW/opt/coreutils ]] && alias date=gdate

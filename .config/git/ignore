@@ -87,3 +87,7 @@ doc/tags
 .tabnineignore
 
 .git.bfg-report/
+
+**/.claude/settings.local.json
+
+**/CLAUDE.local.md

@@ -5,10 +5,6 @@
 #set -x INFO: DEBUG
 
 # custom functions from $FPATH (prolly ~/.zsh/site-functions)
-autoload -Uz \
-  ppvar \
-  gco \
-  trim-whitespace
 
 
 function aliasof() {
@@ -76,9 +72,9 @@ function() { # grc
   [[ `alias whois` == (whois=\'grc)* ]] && return
   local grc_shell
   if [[ $OSX == $TRUE ]]; then
-    grc_shell=$BREW/etc/grc.$SHELL_NAME
+    local grc_shell=$BREW/etc/grc.$SHELL_NAME
   elif [[ $LINUX == $TRUE ]]; then
-    grc_shell=/etc/grc.$SHELL_NAME
+    local grc_shell=/etc/grc.$SHELL_NAME
   fi
   [[ -f $grc_shell ]] && source "$grc_shell"
   local colourify='grc -es --colour=auto'
@@ -150,11 +146,13 @@ alias llog='command -p log'
 alias ..='cd ..'
 alias ...='cd ../..'
 
-alias less="$PAGER"
-alias zless="$PAGER"
+if [[ -v PAGER && PAGER != "" ]]; then
+  alias less="$PAGER"
+  alias zless="$PAGER"
+fi
 
-#alias htop="htop -u $USER"
-alias htop="command sudo htop"
+alias htop="/usr/bin/env TERM=xterm-256color htop -u $USER"
+#alias htop="command sudo htop"
 
 alias psef="ps -ef"
 alias pseh="ps -eH --sort=%cpu,%mem --format pid,user,pcpu,pmem,start_time,args"

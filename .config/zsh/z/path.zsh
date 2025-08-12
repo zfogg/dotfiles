@@ -53,6 +53,7 @@ function () { # {{{ platform-specifics
 
     fpath=(
       $BREW/share/zsh/site-functions
+      $HOME/.docker/completions
       "$fpath[@]")
 
     manpath=(
@@ -165,7 +166,7 @@ function() { # {{{ AFTER platform-specifics
   #fi
 
   fpath=(
-    $HOME/.zsh/{site-functions}
+    $HOME/.zsh/site-functions
     "$fpath[@]"
   )
 
