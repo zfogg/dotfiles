@@ -2,7 +2,7 @@
 # joopal-ppvar (ppvar)
 #   pretty prints environment variables
 
-function ppvar() {
+function ppvar_main() {
   autoload -Uz echoer
   local var_name="${1:-PATH}"
   if [[ ! -v $var_name ]]; then
@@ -30,6 +30,4 @@ function ppvar() {
   return 0
 }
 
-ppvar "$@"
-
-# vim:ft=zsh:et:sts=2:sw=2
+ppvar_main "$@"

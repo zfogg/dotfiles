@@ -163,6 +163,10 @@ brew "go"
 
 #brew "ruby"
 
+brew "llvm"
+brew "clang-tidy"
+
+brew "make"
 brew "cmake"
 #brew "scons"
 #brew "lilv"
@@ -215,11 +219,12 @@ brew "translate-shell"
 #brew "mpg123"
 
 brew "wget"
+brew "ftp"
 brew "curl"
-brew "curl-openssl"
 brew "ldns"
-brew "telnet"
+brew "inetutils"
 brew "htop"
+brew "httpie"
 
 brew "grc"
 brew "bat"
@@ -228,7 +233,6 @@ brew "pygments"
 brew "svgo"
 
 brew "docker"
-brew "docker-compose"
 
 #brew "wp-cli"
 #brew "wp-cli-completion"

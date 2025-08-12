@@ -319,6 +319,12 @@ source "$HOME/.aliases"
 # }}}
 
 
+# make {{{
+if [[ $OSX == $TRUE ]]; then
+  export MAKEFLAGS="-j `nproc`"
+fi
+# make }}}
+
 # gitstatus {{{
 #function() {
   #local gitstatus_source=/dev/null
@@ -439,3 +445,5 @@ export PATH="$HOME/.gem/bin:$PATH"
 
 export HOMEBREW_NO_ENV_HINTS=1
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export AWS_PROFILE=softmax

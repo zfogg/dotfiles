@@ -10,3 +10,5 @@ source "${HOME}/.asdf/plugins/java/set-java-home.bash"
 source "${HOME}/.inputrc"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+export AWS_PROFILE=softmax

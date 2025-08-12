@@ -35,46 +35,21 @@ use_python() {
   fi
 }
 
-layout_virtualenv() {
-  local pyversion=$1
-  local pvenv=$2
-  if [[ -n $(which asdf virtualenv) ]]; then
-    asdf exec virtualenv --quiet ${pyversion} ${pvenv}-${pyversion}
-  fi
-  #asdf local --unset
-}
+layout_uv() {
+    if [[ -d ".venv" ]]; then
+        VIRTUAL_ENV="$(pwd)/.venv"
+    fi
 
-# INFO: u rly only need this lol
-layout_activate() {
-  local envbin="${PWD:-.}/env/bin"
-  if [[ -d $envbin ]]; then
-    source "$envbin/activate"
-  fi
-  unset PS1
-}
+    if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]; then
+        log_status "No virtual environment exists. Executing \`uv venv\` to create one."
+        uv venv
+        VIRTUAL_ENV="$(pwd)/.venv"
+    fi
 
-# INFO: https://github.com/direnv/direnv/wiki/Python#pyenv-virtualenv
-#function use_python() {
-#  if [ -n "$(which pyenv)" ]; then
-#    local pyversion=$1
-#    pyenv local ${pyversion}
-#  fi
-#}
-#
-#function layout_virtualenv() {
-#  local pyversion=$1
-#  local pvenv=$2
-#  if [ -n "$(which pyenv virtualenv)" ]; then
-#    pyenv virtualenv --force --quiet ${pyversion} ${pvenv}-${pyversion}
-#  fi
-#  pyenv local --unset
-#}
-#
-#function layout_activate() {
-#  if [ -n "$(which pyenv)" ]; then
-#    source $(pyenv root)/versions/$1/bin/activate
-#  fi
-#}
+    PATH_add "$VIRTUAL_ENV/bin"
+    export UV_ACTIVE=1  # or VENV_ACTIVE=1
+    export VIRTUAL_ENV
+}
 # }}}
 
 

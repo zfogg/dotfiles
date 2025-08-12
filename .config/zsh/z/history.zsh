@@ -2,8 +2,7 @@
 # vim: set fdm=marker:
 
 
-[[ -z "$HISTFILE" ]] && \
-  export HISTFILE="${ZDOTDIR:-~/.config/zsh}/history"
+export HISTFILE="${ZDOTDIR:-~/.config/zsh}/.zsh_history"
 
 # NOTE: you should set $SAVEHIST to be no more than $HISTSIZE
 #export HISTSIZE=16384       # == 128**2

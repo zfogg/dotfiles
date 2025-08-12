@@ -454,6 +454,12 @@ require('packer').startup({
     --use { 'flowtype/vim-flow',             {'for': ft['js' };]}
     -- markdown
     use { 'plasticboy/vim-markdown', ft = { 'markdown' }, };
+    use { 'dhruvasagar/vim-table-mode',
+      requires = {
+        { 'godlygeek/tabular' },
+      },
+      ft = { 'markdown' },
+    };
     use { 'nelstrom/vim-markdown-folding', ft = { 'markdown' }, };
     -- web
     use { 'saltstack/salt-vim', ft = { 'sls', }, };
