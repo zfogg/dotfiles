@@ -154,7 +154,7 @@ fi
 
 
 # git {{{
-# FIXME: encrypt this 
+# FIXME: encrypt this
 #export HOMEBREW_GITHUB_API_TOKEN='secret! 🕵'
 
 # INFO: https://git-quick-stats.sh/
@@ -261,24 +261,26 @@ export GO111MODULE='auto' # on | off | auto
   #|| export npm_config_prefix=~/.npm
 #export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 
+# ~/.node_version_latest
 function() {
-  autoload -Uz is-at-least
   local asdf_root="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}"
   local node_root="$asdf_root"/installs/nodejs
-  local node_versions=($(print -l "$node_root"/*.*.*(oanF[@]) | sed 's/\/$//' | sort -V))
-  local node_version_new=$(basename "${node_versions[-1]}")
   local node_version_file="$HOME/.node_version_latest"
-  if [[ ! -f $node_version_file && -d $node_versions[-1] ]]; then
-    echo -n "${node_root}/${node_version_new}" > "$node_version_file"
-  fi
 
-  local node_version_latest=$(basename `cat "$node_version_file"`)
-  if is-at-least $node_version_latest $node_version_new && [[ -d $node_root/$node_version_new ]]; then
-    node_version_latest=$node_version_new
-    echo -n "${node_root}/${node_version_latest}" > "$node_version_file"
-  fi
-  if [[ -f $node_version_file && $NODE_VERSION_LATEST != $node_version_latest ]]; then
-    export NODE_VERSION_LATEST="${node_root}/${node_version_latest}"
+  # Get all node versions, sort by semver, get the latest
+  if [[ -d "$node_root" ]]; then
+    local node_versions=($(ls -1 "$node_root" 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V))
+
+    if [[ ${#node_versions[@]} -gt 0 ]]; then
+      local latest_version="${node_versions[-1]}"
+      local latest_path="${node_root}/${latest_version}"
+
+      # Write the latest version to the file
+      if [[ -d "$latest_path" ]]; then
+        echo -n "$latest_version" > "$node_version_file"
+        export NODE_VERSION_LATEST="$latest_path"
+      fi
+    fi
   fi
 }
 # node }}}

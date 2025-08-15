@@ -273,13 +273,15 @@ fi
 
 # terminfo, iTerm2 integration {{{
 function() {
-  return # FIXME: lol
   if [[ -v TERM && $TERM != "" ]]; then
-    local dot_ti="$HOME/.terminfo/$TERM.ti"
-    if [[ ! -f $dot_ti ]]; then
-      infocmp "$TERM" > "$dot_ti"
+    local dot_terminfo="$HOME/.terminfo"
+    local first_char_hex=$(printf "%02x" "'${TERM[1]}")
+    local term_dot_ti="$dot_terminfo/$first_char_hex/$TERM.ti"
+    if [[ ! -f $term_dot_ti ]]; then
+      mkdir -p "$dot_terminfo/$first_char_hex"
+      infocmp "$TERM" > "$term_dot_ti"
       [[ $? == 0 ]] \
-        && 2>/dev/null tic "$dot_ti" \
+        && tic "$term_dot_ti" \
         || 1>&2 echo "tic error - \$TERM='$TERM'"
     fi
   fi

@@ -94,10 +94,6 @@
     	git remote set-branches --add origin $1; \
     	git fetch -v origin $1:$1; "
 
-
-[ghq "https://bitbucket.org/"]
-    	vcs = git
-
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -106,10 +102,23 @@
 [filter "media"]
     	clean  = git-media-clean %f
     	smudge = git-media-smudge %f
+
 [init]
 	defaultBranch = master
+
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/local/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/local/bin/gh auth git-credential
+
+
+[ghq "https://bitbucket.org/"]
+    	vcs = git
 
 
 ; INFO: https://github.com/dandavison/delta {{{
@@ -161,10 +170,4 @@
     line-numbers-plus-style   = 28
     line-numbers-left-style   = cyan
     line-numbers-right-style  = cyan
-; }}}
-[credential "https://github.com"]
-	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
+; }}} delta
