@@ -328,4 +328,8 @@ fi
 # }}}
 
 
+# Claude Code
+alias claude="$HOME/.claude/local/claude"
+
+
 #set +x INFO: DEBUG

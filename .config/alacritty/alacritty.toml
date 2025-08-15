@@ -1,0 +1,267 @@
+# Alacritty Configuration
+
+[general]
+# Live config reload
+live_config_reload = true
+
+# Offer IPC using alacritty msg (Unix only)
+ipc_socket = true
+
+[window]
+# Window padding (blank space around terminal content)
+padding = { x = 8, y = 8 }
+
+# Spread additional padding evenly
+dynamic_padding = true
+
+# Window decorations
+decorations = "Full"
+
+# Background opacity
+opacity = 0.95
+
+# Blur background (macOS/KDE Wayland)
+blur = true
+
+# Window title
+title = "Alacritty"
+dynamic_title = true
+
+# Startup mode
+startup_mode = "Windowed"
+
+# Make Option key behave as Alt (macOS)
+option_as_alt = "Both"
+
+[scrolling]
+# Scrollback buffer size
+history = 10000
+
+# Scroll multiplier
+multiplier = 3
+
+[font]
+# Normal font face
+normal = { family = "FiraCode Nerd Font Mono", style = "Regular" }
+
+# Bold font face
+bold = { family = "FiraCode Nerd Font Mono", style = "Bold" }
+
+# Italic font face
+italic = { family = "FiraCode Nerd Font Mono", style = "Italic" }
+
+# Bold italic font face
+bold_italic = { family = "FiraCode Nerd Font Mono", style = "Bold Italic" }
+
+# Font size
+size = 13.0
+
+# Letter spacing
+offset = { x = 0, y = 0 }
+
+# Glyph offset
+glyph_offset = { x = 0, y = 0 }
+
+# Use built-in font for box drawing characters
+builtin_box_drawing = true
+
+[colors]
+# Transparent background colors
+transparent_background_colors = false
+
+# Draw bold text with bright colors
+draw_bold_text_with_bright_colors = true
+
+# Default colors
+[colors.primary]
+foreground = "#d8d8d8"
+background = "#1e1e2e"
+dim_foreground = "#828482"
+
+# Cursor colors
+[colors.cursor]
+text = "CellBackground"
+cursor = "CellForeground"
+
+# Vi mode cursor
+[colors.vi_mode_cursor]
+text = "CellBackground"
+cursor = "CellForeground"
+
+# Search colors
+[colors.search]
+matches = { foreground = "#1e1e2e", background = "#f38ba8" }
+focused_match = { foreground = "#1e1e2e", background = "#f9e2af" }
+
+# Hints
+[colors.hints]
+start = { foreground = "#1e1e2e", background = "#f9e2af" }
+end = { foreground = "#1e1e2e", background = "#f38ba8" }
+
+# Line indicator
+[colors.line_indicator]
+foreground = "None"
+background = "None"
+
+# Footer bar
+[colors.footer_bar]
+foreground = "#1e1e2e"
+background = "#d8d8d8"
+
+# Selection colors
+[colors.selection]
+text = "CellBackground"
+background = "CellForeground"
+
+# Normal colors
+[colors.normal]
+black   = "#45475a"
+red     = "#f38ba8"
+green   = "#a6e3a1"
+yellow  = "#f9e2af"
+blue    = "#89b4fa"
+magenta = "#f5c2e7"
+cyan    = "#94e2d5"
+white   = "#bac2de"
+
+# Bright colors
+[colors.bright]
+black   = "#585b70"
+red     = "#f38ba8"
+green   = "#a6e3a1"
+yellow  = "#f9e2af"
+blue    = "#89b4fa"
+magenta = "#f5c2e7"
+cyan    = "#94e2d5"
+white   = "#a6adc8"
+
+# Dim colors
+[colors.dim]
+black   = "#45475a"
+red     = "#f38ba8"
+green   = "#a6e3a1"
+yellow  = "#f9e2af"
+blue    = "#89b4fa"
+magenta = "#f5c2e7"
+cyan    = "#94e2d5"
+white   = "#bac2de"
+
+[bell]
+# Visual bell animation
+animation = "EaseOutExpo"
+duration = 0
+color = "#ffffff"
+
+[selection]
+# Characters used as separators for semantic selection
+semantic_escape_chars = ",|`|:\"' ()[]{}<>\t"
+
+# Save selection to clipboard
+save_to_clipboard = true
+
+[cursor]
+# Cursor style
+style = { shape = "Block", blinking = "Off" }
+
+# Vi mode cursor style
+vi_mode_style = { shape = "Block", blinking = "Off" }
+
+# Cursor blinking interval in milliseconds
+blink_interval = 750
+
+# Time after which cursor stops blinking (0 = never stop)
+blink_timeout = 5
+
+# Unfocused hollow cursor
+unfocused_hollow = true
+
+# Cursor thickness
+thickness = 0.15
+
+[terminal]
+# Shell program
+# Defaults to user's shell, uncomment to specify:
+# shell = { program = "/bin/zsh", args = ["-l"] }
+
+# OSC 52 (clipboard) support
+osc52 = "OnlyCopy"
+
+[mouse]
+# Hide mouse cursor when typing
+hide_when_typing = true
+
+# Mouse bindings
+bindings = [
+    { mouse = "Right", action = "Paste" },
+    { mouse = "Middle", action = "PasteSelection" },
+]
+
+# Hints configuration
+[[hints.enabled]]
+command = "open"  # macOS open command
+hyperlinks = true
+post_processing = true
+persist = false
+mouse.enabled = true
+binding = { key = "U", mods = "Control|Shift" }
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^`]+"
+
+[keyboard]
+# Key bindings
+bindings = [
+    # Spawn new instance
+    { key = "N", mods = "Control|Shift", action = "SpawnNewInstance" },
+    
+    # Create new window
+    { key = "N", mods = "Command", action = "CreateNewWindow" },
+    
+    # Toggle fullscreen
+    { key = "Return", mods = "Command", action = "ToggleFullscreen" },
+    
+    # Font size
+    { key = "Plus", mods = "Command", action = "IncreaseFontSize" },
+    { key = "Minus", mods = "Command", action = "DecreaseFontSize" },
+    { key = "Key0", mods = "Command", action = "ResetFontSize" },
+    
+    # Copy/Paste
+    { key = "C", mods = "Command", action = "Copy" },
+    { key = "V", mods = "Command", action = "Paste" },
+    
+    # Search
+    { key = "F", mods = "Command", action = "SearchForward" },
+    { key = "B", mods = "Command", action = "SearchBackward" },
+    
+    # Clear
+    { key = "K", mods = "Command", action = "ClearHistory" },
+    { key = "L", mods = "Control", chars = "\f" },
+    
+    # Vi Mode
+    { key = "Space", mods = "Control|Shift", action = "ToggleViMode" },
+    
+    # Quit
+    { key = "Q", mods = "Command", action = "Quit" },
+    { key = "W", mods = "Command", action = "Quit" },
+    
+    # Tab navigation
+    { key = "Tab", mods = "Control", action = "SelectNextTab" },
+    { key = "Tab", mods = "Control|Shift", action = "SelectPreviousTab" },
+    
+    # Shift-Enter for newline without executing
+    { key = "Return", mods = "Shift", chars = "\n" },
+]
+
+[debug]
+# Log level
+log_level = "Warn"
+
+# Keep log file after quitting
+persistent_logging = false
+
+# Renderer
+renderer = "None"
+
+# Print events
+print_events = false
+
+# Highlight damage
+highlight_damage = false
