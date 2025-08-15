@@ -67,6 +67,9 @@ function() {
     source $asdf_sh;
     eval "$(asdf exec direnv hook zsh)"
   fi
+  if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc ]]; then
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+  fi
 }
 
 #if command_exists jenv; then
@@ -327,6 +330,7 @@ if [[ $OSX == $TRUE ]]; then
 fi
 # make }}}
 
+
 # gitstatus {{{
 #function() {
   #local gitstatus_source=/dev/null
@@ -432,7 +436,6 @@ fi
     #source "$magicf"
   #fi
 #}
-source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
