@@ -1,9 +1,7 @@
 #!/usr/bin/env zsh
 
 
-autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
-
 
 local out_dir="/dev/null"
 if [[ -d $1 ]]; then
@@ -12,6 +10,12 @@ if [[ -d $1 ]]; then
 else
     out_dir="$PWD"
 fi
+
+if [[ -v 1 && $1 == <0-200000> ]]; then
+  local width="${1:-600}"
+  shift
+fi
+
 
 if [[ ! -d $out_dir ]]; then
     echo "ERROR: bad output dir: '${out_dir}'" \
@@ -30,12 +34,9 @@ fi
 while [ $# -gt 0 ]; do
     if [[ -e $1 ]]; then
         local filetype="${1:e}"
-        #-filter_complex "[0:v]scale=600:-1:force_original_aspect_ratio=decrease,reverse[r];  [0][r]concat=n=2:v=1:a=0,fps=20,split[s0][s1]; [s0]palettegen[p]; [s1][p]paletteuse" \
-        #-filter_complex "[0:v]scale=600:-1:force_original_aspect_ratio=1[v0]; [0]reverse[r];[0][r]concat=n=2:v=1:a=0,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
-        #-filter_complex "[0:v]scale=600:-1; [0]split[b][c];[c]reverse[r];[b][r]concat" \
         ffmpeg -i "$1" \
-            -filter_complex "[0]scale=600:-1[v0]; [v0]reverse[r]; [0][r]concat" \
-            "${out_dir}/${1%."$filetype"}.boomerang.mp4"
+            -filter_complex "[0:v]scale="$width":-2[v0]; [0:v]scale="$width":-2,reverse[r]; [v0][r]concat" \
+            "${out_dir}/${${1:t}%."$filetype"}.boomerang.mp4"
     else
         echo "ERROR: bad input file: '$1'" \
             && exit -520
