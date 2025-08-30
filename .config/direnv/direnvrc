@@ -61,3 +61,62 @@ function use_ruby() {
   layout_ruby
 }
 # }}}
+
+
+# {{{ Recursive direnv / .envrcs
+# INFO: https://github.com/direnv/direnv/issues/190#issuecomment-2902117459
+# =====================
+# Direnv recursive mode
+# =====================
+
+# By default, direnv only loads the nearest .envrc, not all of them all the way
+# up to /, see https://github.com/direnv/direnv/issues/190 . The following code
+# solves this. Note that the code below uses `source_env <file>` to source
+# .envrc files higher up the tree which, unfortunately, circumvents direnv's
+# security framework (i.e. doesn't require `direnv allow` to have been executed
+# on the file first). I am not aware of a good solution to this, though.
+
+find_up_all() {
+    (
+        while true; do
+            if [[ -f $1 ]]; then
+                echo "$PWD/$1"
+            fi
+            if [[ $PWD == / ]] || [[ $PWD == // ]]; then
+                return 0
+            fi
+            cd ..
+        done
+    )
+}
+
+# Override/disable existing source_up commands as they should not be used
+source_up() {
+    echo "ERROR: 'source_up' was disabled by user config"
+    exit 1
+}
+source_up_if_exists() {
+    echo "ERROR: 'source_up_if_exists' was disabled by user config"
+    exit 1
+}
+
+# Source any parent .envrc files, starting from the top.
+_source_up_all() {
+    echo "INFO: Direnv recursive mode enabled by user config"
+    local file=${1:-.envrc}
+
+    # Note that the present file only ever gets executed if direnv has found an
+    # .envrc file, so find_up_all will always return at least one file.
+    local all_targets=$(find_up_all $file)
+
+    local parent_targets=$(echo "$all_targets" | sed '1d' | tac)
+    # sed removes the first line (= nearest .envrc, which will be loaded by
+    # direnv after executing the present file), tac reverse-sorts the multi-line
+    # string, so that we load the top-most .envrc first.
+
+    for i in $parent_targets; do
+        [[ -n "$i" ]] || continue
+        source_env "$i"
+    done
+}
+# }}}

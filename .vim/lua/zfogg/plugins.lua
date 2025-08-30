@@ -338,6 +338,9 @@ require('packer').startup({
       config = [[require('rc.treesitter')]],
       requires = {
         { 'tjdevries/colorbuddy.vim', },
+        { 'windwp/nvim-ts-autotag',
+          config = [[require('nvim-ts-autotag').setup { enable = true }]],
+        },
       },
     };
 
@@ -453,7 +456,8 @@ require('packer').startup({
     use { 'itchyny/vim-haskell-indent', ft = { 'haskell' }, };
     --use { 'flowtype/vim-flow',             {'for': ft['js' };]}
     -- markdown
-    use { 'plasticboy/vim-markdown', ft = { 'markdown' }, };
+    use { 'preservim/vim-markdown', ft = { 'markdown' }, };
+    use { 'MeanderingProgrammer/render-markdown.nvim', ft = { 'markdown' }, };
     use { 'dhruvasagar/vim-table-mode',
       requires = {
         { 'godlygeek/tabular' },
@@ -618,12 +622,22 @@ require('packer').startup({
     use { 'vim-utils/vim-vertical-move' };
     --use { 'tpope/vim-unimpaired' };
 
-    use {
-      "supermaven-inc/supermaven-nvim",
+    --use {
+    --  "supermaven-inc/supermaven-nvim",
+    --  config = function()
+    --    require("supermaven-nvim").setup({})
+    --  end,
+    --}
+
+    use { "monkoose/neocodeium",
+      event = "VimEnter",
       config = function()
-        require("supermaven-nvim").setup({})
+        local neocodeium = require("neocodeium")
+        neocodeium.setup()
+        vim.keymap.set("i", "<Tab>", neocodeium.accept)
       end,
     }
+
     -- }}}
   end,
   config = {
