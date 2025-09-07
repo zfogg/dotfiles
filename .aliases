@@ -21,7 +21,7 @@ function compdefas() {
   local a
   a="$1"
   shift
-  compdef "$_comps[$a]" "${(@)*}=$a"
+  [[ -n $_comps[$a] ]] && compdef "$_comps[$a]" "${(@)*}=$a"
 }
 
 #alias -g rm='trash'
@@ -37,7 +37,7 @@ alias  vi="$EDITOR"
 alias   v="$EDITOR"
 alias  vv="/usr/bin/env command -p vim"
 #alias  vv="/usr/bin/env VIMRUNTIME=${BREW}/share/vim/vim82 command -p vim"
-compdefas "$EDITOR" vim vi v vv
+compdefas vim vim vi v vv
 
 alias -g NULL='>/dev/null'
 alias -g NULL1='1>/dev/null'
@@ -60,7 +60,7 @@ alias   zshenv="$EDITOR $ZDOTDIR/.zshenv"
 alias   zlogin="$EDITOR $ZDOTDIR/.zlogin"
 alias zprofile="$EDITOR $ZDOTDIR/.zprofile"
 alias    vimrc="$EDITOR ${DOTFILES:-$HOME}/.vim/vimrc"
-compdefas "$EDITOR" zshrc zshenv zprofile vimrc
+compdefas vim zshrc zshenv zprofile vimrc
 
 if command_exists zshz; then
   compdefas zshz z
@@ -68,19 +68,29 @@ fi
 
 alias ql='quick-look'
 
-function() { # grc
-  [[ `alias whois` == (whois=\'grc)* ]] && return
-  local grc_shell
-  if [[ $OSX == $TRUE ]]; then
-    local grc_shell=$BREW/etc/grc.$SHELL_NAME
-  elif [[ $LINUX == $TRUE ]]; then
-    local grc_shell=/etc/grc.$SHELL_NAME
+# grc
+if command -v grc >/dev/null 2>&1; then
+  # Get list of commands from grc config files
+  local grc_dir="${BREW}/share/grc"
+  if [[ -d "$grc_dir" ]]; then
+    # Extract command names from conf.* files
+    for conf_file in "$grc_dir"/conf.*; do
+      [[ -f "$conf_file" ]] || continue
+      local cmd="${conf_file##*/conf.}"
+      # Skip yaml and other non-command files
+      [[ "$cmd" == "yaml" ]] && continue
+      # Create function if command exists and doesn't already have an alias
+      if (( $+commands[$cmd] )) && ! alias $cmd >/dev/null 2>&1 && ! typeset -f $cmd >/dev/null 2>&1; then
+        eval "$cmd() { grc --colour=auto \${commands[$cmd]} \"\$@\" }"
+      fi
+    done
   fi
-  [[ -f $grc_shell ]] && source "$grc_shell"
-  local colourify='grc -es --colour=auto'
+  
+  # Handle commands that may already have aliases
+  colourify='grc -es --colour=auto'
   alias colourify="$colourify"
-  alias du="$colourify du"
-}
+  # du, ls, and ping are handled separately as aliases
+fi
 
 function() { # ls
   local  LSPRG_PRG='ls'
@@ -329,7 +339,7 @@ fi
 
 
 # Claude Code
-alias claude="$HOME/.claude/local/claude"
+alias claude="$HOME/.local/bin/claude"
 
 
 #set +x INFO: DEBUG

@@ -4,7 +4,10 @@ scriptencoding utf-8
 
 
 func! PHas(plugin) abort
-  if !has('nvim') | return v:false | endif
-  "return call(function('z#util#HasPlugin'), a:000)
-  return !empty(luaeval('packer_plugins["'.a:plugin.'"]'))
+  if !has('nvim') | return 0 | endif
+  " Use the global Lua PHas function if available
+  if exists('*luaeval')
+    return luaeval('_G.PHas and _G.PHas(_A) or 0', a:plugin)
+  endif
+  return 0
 endfunc

@@ -6,11 +6,10 @@ function M.setup()
 end
 
 function M.config()
-  local util = require 'packer.util'
   require('nightfox').setup({
     options = {
       -- Compiled file's destination location
-      compile_path        = util.join_paths(vim.fn.stdpath("cache"), "nightfox"),
+      compile_path        = vim.fn.stdpath("cache") .. "/nightfox",
       compile_file_suffix = "_compiled", -- Compiled file suffix
       transparent         = false,    -- Disable setting background
       terminal_colors     = true, -- Set terminal colors (vim.g.terminal_color_*)

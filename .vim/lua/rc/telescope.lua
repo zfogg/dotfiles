@@ -90,49 +90,25 @@ end
 local ts_opts = {}
 
 local keymaps = function()
-  local m = require('rc.mapx')
   local tsBuiltin = function(key, opts)
     if key == nil then error("choose a telescope.builtin key plz!") end
     local preview = dropdown_preview(key)
     opts = vim.tbl_extend("force", preview, opts)
-    --return function(count)
     return function()
       require('telescope.builtin')[key](opts)
     end
   end
 
-  local n_keymap = function(lhs, rhs)
-    vim.api.nvim_set_keymap('n', lhs, rhs, { noremap = true, silent = true })
-  end
-
   -- Navigate buffers and repos
-  m.group('silent', { }, function()
-    --m.nnoremap('<C-S-a>', ':Telescope buffers     show_all_buffers=true  theme=get_dropdown<CR>')
-    --m.nnoremap('<C-t>t', tsBuiltin('planets',   {theme = 'get_dropdown'}))
-    m.nnoremap('<C-t><C-t>',  tsBuiltin('builtin',    ts_opts))
-
-    --m.nnoremap('<C-t>t',  tsBuiltin('buffers',    u.tmerge(ts_opts, {show_all_buffers = true})))
-    m.nnoremap('<C-t>b',  tsBuiltin('buffers',    u.tmerge(ts_opts, {show_all_buffers = true})))
-
-    m.nnoremap('<C-t>g',  tsBuiltin('git_files',  ts_opts))
-    --m.nnoremap('<C-g>',   tsBuiltin('git_files',  ts_opts))
-
-    m.nnoremap('<C-t>p',  function() require('telescope').extensions.frecency.frecency({ workspace = 'CWD' }) end)
-    m.nnoremap('<C-p>',   function() require('telescope').extensions.frecency.frecency({ workspace = 'CWD' }) end)
-    --m.nnoremap('<C-t>p',  tsBuiltin('find_files', ts_opts))
-    --m.nnoremap('<C-p>',   tsBuiltin('find_files', ts_opts))
-
-    m.nnoremap('<C-t>f',  tsBuiltin('live_grep',  ts_opts))
-    m.nnoremap('<C-f>',   tsBuiltin('live_grep',  ts_opts))
-
-    m.nnoremap('<C-t>l',  tsBuiltin('diagnostics',  ts_opts))
-
-    m.nnoremap('<C-t><space>',  function() require('telescope').extensions.emoji.emoji() end)
-
-    -- INFO: uninstalled
-    --m.nnoremap('<C-t>y',  function() vim.cmd('Telescope yank_history') end)
-    --m.nnoremap('<C-y>',   function() vim.cmd('Telescope yank_history') end)
-  end)
+  vim.keymap.set('n', '<C-t><C-t>', tsBuiltin('builtin', ts_opts), { silent = true })
+  vim.keymap.set('n', '<C-t>b', tsBuiltin('buffers', u.tmerge(ts_opts, {show_all_buffers = true})), { silent = true })
+  vim.keymap.set('n', '<C-t>g', tsBuiltin('git_files', ts_opts), { silent = true })
+  vim.keymap.set('n', '<C-t>p', function() require('telescope').extensions.frecency.frecency({ workspace = 'CWD' }) end, { silent = true })
+  vim.keymap.set('n', '<C-p>', function() require('telescope').extensions.frecency.frecency({ workspace = 'CWD' }) end, { silent = true })
+  vim.keymap.set('n', '<C-t>f', tsBuiltin('live_grep', ts_opts), { silent = true })
+  vim.keymap.set('n', '<C-f>', tsBuiltin('live_grep', ts_opts), { silent = true })
+  vim.keymap.set('n', '<C-t>l', tsBuiltin('diagnostics', ts_opts), { silent = true })
+  vim.keymap.set('n', '<C-t><space>', function() require('telescope').extensions.emoji.emoji() end, { silent = true })
 end
 
 function M.setup()

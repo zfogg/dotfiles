@@ -4,11 +4,10 @@
 local M = {}
 
 local function keymaps()
-  local m = require('rc.mapx')
-  m.nname('<Leader>m', 'symbols & tags')
-  nnoremap('<Leader>m<Space>', ':SymbolsOutline<CR>',      'silent')
-  nnoremap('<Leader>mm',       ':SymbolsOutlineOpen<CR>',  'silent')
-  nnoremap('<Leader>mq',       ':SymbolsOutlineClose<CR>', 'silent')
+  -- Use vim.keymap.set directly to avoid circular dependency with mapx
+  vim.keymap.set('n', '<Leader>m<Space>', ':SymbolsOutline<CR>',      { silent = true, desc = 'Toggle symbols outline' })
+  vim.keymap.set('n', '<Leader>mm',       ':SymbolsOutlineOpen<CR>',  { silent = true, desc = 'Open symbols outline' })
+  vim.keymap.set('n', '<Leader>mq',       ':SymbolsOutlineClose<CR>', { silent = true, desc = 'Close symbols outline' })
 end
 
 -- INFO: https://github.com/simrat39/symbols-outline.nvim#configuration

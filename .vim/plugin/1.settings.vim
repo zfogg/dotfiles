@@ -21,6 +21,11 @@ let g:netrw_dirhistmax=0   " http://www.vim.org/scripts/script.php?script_id=107
 set exrc
 set secure
 
+" Ruby host for neovim
+if has('nvim')
+  let g:ruby_host_prog = expand('~/.gem/bin/neovim-ruby-host')
+endif
+
 " for :mksession
 set sessionoptions-=blank,buffers,localoptions,help
 set sessionoptions+=curdir,globals,options,tabpages

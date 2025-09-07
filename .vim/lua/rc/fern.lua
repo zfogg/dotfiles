@@ -3,18 +3,18 @@
 local M = {}
 
 local function keymaps()
-  local m = require('rc.mapx')
-  m.group("silent", { }, function()
-    nnoremap("<Leader>n<Space>", ":Fern . -drawer       -reveal=% -toggle<CR>")
-    nnoremap("<Leader>nn",       ":Fern . -drawer -wait -reveal=%<BAR>wincmd p<CR>")
-  end)
+  -- Use vim.keymap.set directly to avoid circular dependency
+  vim.keymap.set('n', '<Leader>n<Space>', ':Fern . -drawer       -reveal=% -toggle<CR>', { silent = true })
+  vim.keymap.set('n', '<Leader>nn',       ':Fern . -drawer -wait -reveal=%<BAR>wincmd p<CR>', { silent = true })
 end
 
 function M.setup()
+  -- Use PHas function from plugin/0.util.vim
+  if PHas('fern-renderer-nerdfont.vim') == 1 then
+    vim.g['fern#renderer'] = 'nerdfont'
+  end
+
   vim.cmd [[
-  if PHas('fern-renderer-nerdfont.vim')
-    let g:fern#renderer = 'nerdfont'
-  endif
 
   let g:fern#disable_viewer_auto_duplication=1 " default=0
 
