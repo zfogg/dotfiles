@@ -2,9 +2,7 @@
 local M = {}
 
 local function keymaps()
-  local m = require('rc.mapx')
-  --m.group("expr", { }, function()
-  --end)
+  -- mapx removed, using native vim.keymap.set
 end
 
 function M.setup()

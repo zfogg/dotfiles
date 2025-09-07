@@ -1,6 +1,6 @@
 -- lua/rc/yanky.lua
 
-if 1 == vim.fn.PHas('yanky.nvim') then
+if vim.fn.PHas('yanky.nvim') == 1 then
   local utils = require("yanky.utils")
   local mapping = require("yanky.telescope.mapping")
 

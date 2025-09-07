@@ -2,14 +2,11 @@
 local M = {}
 
 local function keymaps()
-  local m = require('rc.mapx')
-  m.group("expr", { }, function()
-    -- these mappings are coq recommended mappings unrelated to nvim-autopairs
-    inoremap('<Esc>',   [[pumvisible() ? "<C-e><Esc>" : "<Esc>"]])
-    inoremap('<C-c>',   [[pumvisible() ? "<C-e><C-c>" : "<C-c>"]])
-    inoremap('<Tab>',   [[pumvisible() ? "<C-n>"      : "<Tab>"]])
-    inoremap('<S-Tab>', [[pumvisible() ? "<C-p>"      : "<BS>"]])
-  end)
+  -- these mappings are coq recommended mappings unrelated to nvim-autopairs
+  vim.keymap.set('i', '<Esc>',   [[pumvisible() ? "<C-e><Esc>" : "<Esc>"]], { expr = true })
+  vim.keymap.set('i', '<C-c>',   [[pumvisible() ? "<C-e><C-c>" : "<C-c>"]], { expr = true })
+  vim.keymap.set('i', '<Tab>',   [[pumvisible() ? "<C-n>"      : "<Tab>"]], { expr = true })
+  vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "<C-p>"      : "<BS>"]],  { expr = true })
 end
 
 function M.setup()
@@ -26,7 +23,7 @@ function M.config()
     })
   npairs.add_rules(require "nvim-autopairs.rules.endwise-lua")
 
-  if 1 == vim.fn.PHas('coq_nvim') then
+  if PHas('coq_nvim') == 1 then
     local remap = vim.api.nvim_set_keymap
     vim.g.coq_settings = vim.g.coq_settings or {}
     vim.g.coq_settings = vim.tbl_deep_extend('force', vim.g.coq_settings, {
@@ -61,7 +58,7 @@ function M.config()
     --vim.api.nvim_del_keymap('n', '<c-h>')
   end
 
-  if 1 == vim.fn.PHas('nvim-treesitter') then
+  if PHas('nvim-treesitter') == 1 then
     --local npairs = require('nvim-autopairs')
     --npairs.setup({
     --    check_ts = true,

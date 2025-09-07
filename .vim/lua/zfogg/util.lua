@@ -15,9 +15,13 @@ function _G.put(...)
   return ...
 end
 
+-- Global PHas function for checking if a plugin exists in Lazy.nvim
 function _G.PHas(plugin)
-  local pp = _G.packer_plugins[plugin]
-  return pp and pp.loaded
+  local ok, lazy = pcall(require, "lazy.core.config")
+  if ok and lazy.plugins and lazy.plugins[plugin] then
+    return 1
+  end
+  return 0
 end
 
 function _G.PExe(exe)

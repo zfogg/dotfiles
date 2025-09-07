@@ -95,9 +95,7 @@ require('bufferline').setup {
   },
 }
 
-local m = require('rc.mapx')
-m.group("silent", { }, function()
-  nnoremap('<C-b>',     ':BufferLinePick<CR>')
-  nnoremap('<Leader>j', ':BufferLineCyclePrev<CR>')
-  nnoremap('<Leader>k', ':BufferLineCycleNext<CR>')
-end)
+-- Set up keymaps directly to avoid circular dependency
+vim.keymap.set('n', '<C-b>',     ':BufferLinePick<CR>',      { silent = true })
+vim.keymap.set('n', '<Leader>j', ':BufferLineCyclePrev<CR>', { silent = true })
+vim.keymap.set('n', '<Leader>k', ':BufferLineCycleNext<CR>', { silent = true })

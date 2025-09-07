@@ -1,6 +1,6 @@
 -- lua/rc/compe.lua
 
-if 1 == vim.fn.PHas('nvim-compe') then
+if vim.fn.PHas('nvim-compe') == 1 then
   require'compe'.setup({
     enabled          = true;
     autocomplete     = true;
@@ -37,9 +37,9 @@ if 1 == vim.fn.PHas('nvim-compe') then
       vsnip     = false;
       ultisnips = false;
       luasnip   = false;
-      zsh        = 1 == vim.fn.PHas('compe-zsh');
-      tmux       = 1 == vim.fn.PHas('compe-tmux');
-      treesitter = 1 == vim.fn.PHas('nvim-treesitter');
+      zsh        = vim.fn.PHas('compe-zsh') == 1;
+      tmux       = vim.fn.PHas('compe-tmux') == 1;
+      treesitter = vim.fn.PHas('nvim-treesitter') == 1;
       tabnine    = false;
       --tabnine   = {
       --  max_line                 = 1000;
@@ -49,7 +49,7 @@ if 1 == vim.fn.PHas('nvim-compe') then
       --  sort                     = true;
       --  show_prediction_strength = true;
       --  ignore_pattern           = '';
-      --}; --1 == vim.fn.PHas('compe-tabnine');
+      --}; --vim.fn.PHas('compe-tabnine') == 1;
     };
   })
 
