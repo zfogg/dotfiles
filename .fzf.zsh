@@ -1,7 +1,9 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */Users/zfogg/.local/share/nvim/site/pack/packer/start/fzf/bin* ]]; then
-  PATH="${PATH:+${PATH}:}/Users/zfogg/.local/share/nvim/site/pack/packer/start/fzf/bin"
+xdg_data_home="${XDG_DATA_HOME:-${HOME:-}/.local/share}"
+fzf_bin_dir="$xdg_data_home/nvim/lazy/fzf/bin"
+if [[ ! "$PATH" == *$fzf_bin_dir* ]]; then
+  PATH="${PATH:+${PATH}:}$fzf_bin_dir"
 fi
 
 source <(fzf --zsh)
