@@ -52,6 +52,7 @@ function M.setup()
   let g:ale_linters={
   \ 'python': 'all',
   \ 'typescript': ts_linters, 'typescriptreact': ts_linters,
+  \ 'lua': [],
   \ }
 
   " INFO: :h g:ale_open_list

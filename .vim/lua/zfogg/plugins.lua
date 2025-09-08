@@ -5,6 +5,64 @@ require 'zfogg.util'
 local fn = vim.fn
 local ft = fn['z#constants#globals#Ft']()
 
+-- Proper LazyFile event implementation (from LazyVim)
+-- This makes startup for `nvim file.txt` as fast as just `nvim`
+local Event = require("lazy.core.handler.event")
+
+-- Add support for the LazyFile event
+Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
+Event.mappings["User LazyFile"] = Event.mappings.LazyFile
+
+-- Comprehensive file types for lazy loading LSP/treesitter
+local code_filetypes = vim.tbl_flatten({
+  ft['py'],        -- python, python3
+  ft['js'],        -- javascript  
+  ft['jsx'],       -- javascript.jsx, javascriptreact
+  ft['ts'],        -- typescript
+  ft['tsx'],       -- typescript.tsx, typescriptreact
+  ft['cx'],        -- c, cpp, objc, objcpp, ch, m, mm, h, hpp
+  ft['rs'],        -- rust
+  ft['vim'],       -- vim, vimscript
+  ft['config'],    -- toml, yaml, yml, json, jsonc, json5, markdown, md, apiblueprint, ini, cfg, conf, env
+  ft['go'],        -- go, gomod, gosum
+  ft['lua'],       -- lua
+  ft['shell'],     -- sh, bash, zsh, fish, ksh, csh, tcsh
+  ft['docker'],    -- dockerfile, Dockerfile, docker-compose.yml, docker-compose.yaml
+  ft['make'],      -- makefile, Makefile, make, mk, mak
+  ft['markup'],    -- xml, html, jinja.html, xhtml, svg
+  ft['styles'],    -- css, sass, scss, less, stylus
+  ft['sql'],       -- sql, pgsql, mysql, plsql
+  ft['jinja'],     -- jinja, jinja.html, sls
+  ft['scpt'],      -- applescript, osascript
+  ft['clj'],       -- clojure, clojurescript
+  ft['php'],       -- php, php3, php4, php5, phtml
+  ft['twig'],      -- twig, html.twig
+  ft['stylus'],    -- stylus
+  ft['smali'],     -- smali
+  ft['jade'],      -- jade, pug
+  ft['java'],      -- java, jsp, jspx
+  ft['kotlin'],    -- kotlin, kt, kts
+  ft['swift'],     -- swift
+  ft['ruby'],      -- ruby, rb, erb, rake, gemspec
+  ft['perl'],      -- perl, pl, pm
+  ft['elixir'],    -- elixir, ex, exs
+  ft['erlang'],    -- erlang, erl, hrl
+  ft['scala'],     -- scala, sc
+  ft['haskell'],   -- haskell, hs, lhs
+  ft['zig'],       -- zig
+  ft['nim'],       -- nim, nims
+  ft['crystal'],   -- crystal, cr
+  ft['julia'],     -- julia, jl
+  ft['r'],         -- r, R, Rmd, rmd
+  ft['matlab'],    -- matlab
+  ft['terraform'], -- terraform, tf, tfvars, hcl
+  ft['ansible'],   -- ansible, yaml.ansible
+  ft['graphql'],   -- graphql, gql
+  ft['proto'],     -- proto, protobuf
+  ft['solidity'],  -- solidity, sol
+  ft['vyper'],     -- vyper, vy
+})
+
 -- Install lazy.nvim if not present
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -26,19 +84,19 @@ local inVscode            = not (vim.g.vscode == nil)
 -- {{{ plugin list
 require("lazy").setup({
   -- {{{ Do me first!
-  { 'lewis6991/impatient.nvim',
-    config = function()
-      require('impatient')
-      --require('impatient').enable_profile()
-    end,
-  },
-
+  -- impatient.nvim removed - not needed with lazy.nvim which has its own cache
   -- mapx.nvim removed - repository archived, using native vim.keymap.set instead
   -- }}}
 
   -- {{{ Integrate with other programs
-  { 'tpope/vim-fugitive' },
-  { 'whiteinge/diffconflicts' },
+  { 'tpope/vim-fugitive',
+    cmd = { 'Git', 'G', 'Gstatus', 'Gdiff', 'Glog', 'Gblame', 'Gwrite', 'Gread' },
+    lazy = true,
+  },
+  { 'whiteinge/diffconflicts',
+    cmd = 'DiffConflicts',
+    lazy = true,
+  },
 
   { 'tmux-plugins/vim-tmux', ft = { 'tmux' } },
   { 'tmux-plugins/vim-tmux-focus-events',
@@ -60,17 +118,24 @@ require("lazy").setup({
   { 'Olical/vim-enmasse',
     cmd = 'EnMasse',
   },
-  { 'kevinhwang91/nvim-bqf' },
+  { 'kevinhwang91/nvim-bqf',
+    ft = 'qf',
+    lazy = true,
+  },
   -- }}}
 
   -- {{{ Add features and functionality.
   { 'dense-analysis/ale',
+    lazy = true,
+    event = "LazyFile",
     init = function() require('rc.ale').setup() end,
     config = function() require('rc.ale').config() end,
   },
 
 
   { 'lewis6991/gitsigns.nvim',
+    lazy = true,
+    event = "LazyFile",
     init = function()
       vim.cmd('let b:rcplugin_gitsigns = 1')
     end,
@@ -84,24 +149,41 @@ require("lazy").setup({
 
   -- Search
   { 'nvim-telescope/telescope.nvim',
-    init = function() require('rc.telescope').setup() end,
-    config = function() require('rc.telescope').config() end,
+    lazy = true,
     cmd = 'Telescope',
+    keys = {
+      '<C-t><C-t>',
+      '<C-t>b',
+      '<C-t>g',
+      '<C-t>p',
+      '<C-p>',
+      '<C-t>f',
+      '<C-f>',
+      '<C-t>l',
+      '<C-t><space>',
+    },
+    config = function()
+      require('rc.telescope').setup()
+      require('rc.telescope').config()
+    end,
     dependencies = {
       'nvim-lua/popup.nvim',
       'nvim-lua/plenary.nvim',
     },
   },
   { 'nvim-telescope/telescope-frecency.nvim',
+    lazy = true,
     config = function() require("telescope").load_extension("frecency") end,
     dependencies = { "kkharji/sqlite.lua", "nvim-telescope/telescope.nvim" },
   },
   { 'nvim-telescope/telescope-fzf-native.nvim',
+    lazy = true,
     build = 'make',
     config = function() require("telescope").load_extension("fzf") end,
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
   { 'xiyaowong/telescope-emoji.nvim',
+    lazy = true,
     config = function() require("telescope").load_extension("emoji") end,
     dependencies = { "nvim-telescope/telescope.nvim" },
   },
@@ -112,9 +194,15 @@ require("lazy").setup({
   },
   { 'dhruvasagar/vim-prosession',
     dependencies = { 'tpope/vim-obsession' },
+    init = function()
+      vim.g.prosession_on_startup = 0
+    end,
   },
 
-  { 'AndrewRadev/bufferize.vim' },
+  { 'AndrewRadev/bufferize.vim',
+    cmd = 'Bufferize',
+    lazy = true,
+  },
 
   { 'dstein64/vim-startuptime',
     cmd = 'StartupTime',
@@ -123,16 +211,11 @@ require("lazy").setup({
   },
 
   { 'folke/neodev.nvim',
+    lazy = true,
     ft = 'lua',
     config = function()
       require('neodev').setup({})
     end,
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-      'j-hui/fidget.nvim',
-    },
   },
 
   -- Undo tree
@@ -143,13 +226,25 @@ require("lazy").setup({
 
   { 'junegunn/fzf',
     build = './install --all',
+    cmd = 'FZF',
+    lazy = true,
     dependencies = {
-      { 'junegunn/fzf.vim', build = ':call fzf#install()' },
-      'yuki-ycino/fzf-preview.vim',
+      { 'junegunn/fzf.vim',
+        build = ':call fzf#install()',
+        cmd = { 'Files', 'Buffers', 'Rg', 'Lines', 'History', 'Commands', 'Marks', 'Windows', 'Commits', 'BLines', 'BTags', 'Tags' },
+        lazy = true,
+      },
+      { 'yuki-ycino/fzf-preview.vim',
+        cmd = { 'FzfPreviewFromResources', 'FzfPreviewBuffers', 'FzfPreviewProjectFiles' },
+        lazy = true,
+      },
     },
   },
 
-  { 'voldikss/vim-floaterm' },
+  { 'voldikss/vim-floaterm',
+    cmd = { 'FloatermNew', 'FloatermToggle', 'FloatermPrev', 'FloatermNext' },
+    lazy = true,
+  },
 
   -- fern
   { 'lambdalisue/fern.vim',
@@ -178,12 +273,23 @@ require("lazy").setup({
     },
   },
 
-  { 'preservim/nerdcommenter' },
+  { 'preservim/nerdcommenter',
+    lazy = true,
+    keys = {
+      { "<leader>c", mode = { "n", "v" } },
+    },
+  },
 
   -- sessions
-  { 'xolox/vim-misc' },
+  { 'xolox/vim-misc',
+    lazy = true,
+    event = 'VeryLazy',
+  },
 
-  { 'lukas-reineke/lsp-format.nvim' },
+  { 'lukas-reineke/lsp-format.nvim',
+    event = 'LspAttach',
+    lazy = true,
+  },
 
   { 'github/copilot.vim',
     enabled = false,
@@ -193,6 +299,8 @@ require("lazy").setup({
 
   { 'ms-jpq/coq_nvim',
     build = ':COQdeps',
+    event = 'InsertEnter',
+    lazy = true,
     init = function() require("rc.coq").setup() end,
     config = function() require("rc.coq").config() end,
     dependencies = {
@@ -201,18 +309,27 @@ require("lazy").setup({
   },
 
   { 'jubnzv/virtual-types.nvim',
+    event = 'LspAttach',
+    lazy = true,
     dependencies = {
       'neovim/nvim-lspconfig',
     },
   },
 
   { 'j-hui/fidget.nvim',
+    lazy = true,
+    event = "LspAttach",
     config = function() require("fidget").setup({}) end,
   },
 
   { 'williamboman/mason.nvim',
-    init = function() require('rc.mason').setup() end,
-    config = function() require('rc.mason').config() end,
+    lazy = true,
+    cmd = { 'Mason', 'MasonInstall', 'MasonUninstall', 'MasonUninstallAll', 'MasonLog' },
+    event = "VeryLazy",
+    config = function()
+      require('rc.mason').setup()
+      require('rc.mason').config()
+    end,
     dependencies = {
       'williamboman/mason-lspconfig.nvim',
       'neovim/nvim-lspconfig',
@@ -223,10 +340,14 @@ require("lazy").setup({
     },
   },
 
-  { 'williamboman/mason-lspconfig.nvim' },
+  { 'williamboman/mason-lspconfig.nvim',
+    lazy = true,
+  },
 
   -- LSP - language server protocol
   { 'neovim/nvim-lspconfig',
+    lazy = true,
+    event = "VeryLazy",
     config = function() require('rc.lspconfig') end,
     dependencies = {
       'onsails/lspkind-nvim',
@@ -238,6 +359,8 @@ require("lazy").setup({
   },
 
   { 'ray-x/lsp_signature.nvim',
+    event = 'LspAttach',
+    lazy = true,
     init = function() require('rc.lsp_signature').setup() end,
     config = function() require('rc.lsp_signature').config() end,
   },
@@ -247,48 +370,80 @@ require("lazy").setup({
   },
 
   { 'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    priority = 100,
     build = ':TSUpdate',
     config = function() require('rc.treesitter') end,
     dependencies = {
-      'tjdevries/colorbuddy.vim',
       { 'windwp/nvim-ts-autotag',
         config = function() require('nvim-ts-autotag').setup { enable = true } end,
       },
     },
   },
 
-  { 'Shougo/context_filetype.vim' },
-  { 'embear/vim-localvimrc' },
+  { 'Shougo/context_filetype.vim',
+    event = 'BufReadPost',
+    lazy = true,
+  },
+  { 'embear/vim-localvimrc',
+    event = 'VeryLazy',
+    lazy = true,
+  },
 
   { 'liuchengxu/vim-clap',
+    lazy = true,
+    cmd = 'Clap',
     build = ':call clap#installer#download_binary()',
   },
   { 'lukas-reineke/indent-blankline.nvim',
+    lazy = true,
+    event = { "BufReadPost", "BufNewFile" },
     init = function() require('rc.indent-blankline').setup() end,
     config = function() require('rc.indent-blankline').config() end,
   },
   -- }}}
 
   -- {{{ Language support.
-  { 'euclidianAce/BetterLua.vim' },
-  { 'chr4/nginx.vim' },
+  { 'euclidianAce/BetterLua.vim',
+    ft = 'lua',
+    lazy = true,
+  },
+  { 'chr4/nginx.vim',
+    ft = { 'nginx', 'conf' },
+    lazy = true,
+  },
   { 'wavded/vim-stylus', ft = ft['stylus'] },
   { 'lumiliet/vim-twig', ft = ft['twig'] },
-  { 'othree/html5.vim' },
+  { 'othree/html5.vim',
+    ft = { 'html', 'xhtml' },
+    lazy = true,
+  },
   { 'lifepillar/pgsql.vim', ft = ft['sql'] },
-  { 'sheerun/vim-polyglot' },
+  { 'sheerun/vim-polyglot',
+    lazy = false,
+    priority = 90,
+  },
   { 'python-mode/python-mode', ft = ft['py'] },
-  { 'gisphm/vim-gitignore' },
+  { 'gisphm/vim-gitignore',
+    ft = 'gitignore',
+    lazy = true,
+  },
   { 'rust-lang/rust.vim', ft = ft['rs'] },
   { 'vim-scripts/applescript.vim', ft = ft['scpt'] },
   { 'guns/vim-clojure-highlight', ft = ft['clj'] },
-  { 'leafgarland/typescript-vim' },
+  { 'leafgarland/typescript-vim',
+    ft = { 'typescript', 'typescriptreact' },
+    lazy = true,
+  },
   { 'peitalin/vim-jsx-typescript',
     dependencies = {
       'leafgarland/typescript-vim',
     },
   },
-  { 'fladson/vim-kitty' },
+  { 'fladson/vim-kitty',
+    ft = 'kitty',
+    lazy = true,
+  },
   { 'hashivim/vim-terraform', ft = { 'terraform', 'json' } },
   { 'Olical/vim-syntax-expand', ft = ft['js'] },
   { 'itchyny/vim-haskell-indent', ft = { 'haskell' } },
@@ -305,13 +460,19 @@ require("lazy").setup({
   -- web
   { 'saltstack/salt-vim', ft = { 'sls' } },
   { 'lepture/vim-jinja', ft = ft['jinja'] },
-  { 'mattn/emmet-vim' },
+  { 'mattn/emmet-vim',
+    lazy = true,
+    ft = { "html", "css", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  },
 
   -- clang
   { 'libclang-vim/libclang-vim', ft = ft['cx'] },
 
   { 'kchmck/vim-coffee-script', ft = { 'coffee' } },
-  { 'tweekmonster/braceless.vim' },
+  { 'tweekmonster/braceless.vim',
+    ft = { 'python', 'yaml', 'haml' },
+    lazy = true,
+  },
   { 'chrisbra/csv.vim', ft = { 'csv' } },
   { 'cespare/vim-toml', ft = { 'toml' } },
   { 'digitaltoad/vim-pug', ft = ft['jade'] },
@@ -320,7 +481,10 @@ require("lazy").setup({
 
   { 'PProvost/vim-ps1', ft = { 'ps1', 'ps1xml' } },
   { 'PotatoesMaster/i3-vim-syntax', ft = { 'i3' } },
-  { 'darfink/vim-plist' },
+  { 'darfink/vim-plist',
+    ft = 'plist',
+    lazy = true,
+  },
   { 'alvan/vim-closetag',
     init = function()
       vim.g.closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx,*.tsx'
@@ -346,48 +510,85 @@ require("lazy").setup({
     end,
   },
 
-  { 'isobit/vim-caddyfile' },
-  { 'wgwoods/vim-systemd-syntax' },
-  { 'vyperlang/vim-vyper' },
+  { 'isobit/vim-caddyfile',
+    ft = 'caddyfile',
+    lazy = true,
+  },
+  { 'wgwoods/vim-systemd-syntax',
+    ft = 'systemd',
+    lazy = true,
+  },
+  { 'vyperlang/vim-vyper',
+    ft = 'vyper',
+    lazy = true,
+  },
   -- }}}
 
   -- {{{ Beautify Vim.
   { 'nvim-lualine/lualine.nvim',
+    lazy = true,
+    event = "VeryLazy",
     config = function() require('rc.lualine') end,
     dependencies = {
       'kyazdani42/nvim-web-devicons',
     },
   },
   { 'akinsho/bufferline.nvim',
+    lazy = true,
+    event = "VeryLazy",
     config = function() require('rc.bufferline') end,
     dependencies = { 'kyazdani42/nvim-web-devicons' },
   },
-  { 'tjdevries/colorbuddy.vim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  { 'chriskempson/base16-vim',
+    lazy = true,
+    priority = 1000,
   },
-  { 'chriskempson/base16-vim' },
   { 'EdenEast/nightfox.nvim',
+    lazy = false,
+    priority = 1000,
     init = function() require('rc.nightfox').setup() end,
     config = function() require('rc.nightfox').config() end,
   },
-  { 'vim-scripts/AfterColors.vim' },
-  { 'fedorenchik/AnsiEsc' },
+  { 'vim-scripts/AfterColors.vim',
+    event = 'ColorScheme',
+    lazy = true,
+  },
+  { 'fedorenchik/AnsiEsc',
+    cmd = 'AnsiEsc',
+    lazy = true,
+  },
   { 'arakashic/chromatica.nvim', ft = ft['cx'] },
-  { 'markonm/traces.vim' },
+  { 'markonm/traces.vim',
+    event = 'CmdlineEnter',
+    lazy = true,
+  },
   { 'haya14busa/incsearch.vim',
+    lazy = true,
+    keys = { "/", "?", "n", "N" },
     dependencies = {
       'haya14busa/incsearch-easymotion.vim',
       'haya14busa/incsearch-fuzzy.vim',
     },
   },
 
-  { 'haya14busa/vim-keeppad' },
+  { 'haya14busa/vim-keeppad',
+    event = 'VeryLazy',
+    lazy = true,
+  },
   -- }}}
 
   -- {{{ Direct text manipulation.
-  { 'b4winckler/vim-angry' },
-  { 'tommcdo/vim-exchange' },
+  { 'b4winckler/vim-angry',
+    keys = { { 'gx', mode = { 'n', 'v' } } },
+    lazy = true,
+  },
+  { 'tommcdo/vim-exchange',
+    keys = { 'cx', 'cxx', 'X', 'cxc' },
+    lazy = true,
+  },
   { 'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    lazy = true,
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
       'ms-jpq/coq_nvim',
@@ -395,10 +596,15 @@ require("lazy").setup({
     init = function() require('rc.autopairs').setup() end,
     config = function() require('rc.autopairs').config() end,
   },
-  { 'tpope/vim-surround' },
+  { 'tpope/vim-surround',
+    keys = { 'cs', 'ds', 'ys', { 'S', mode = 'v' } },
+    lazy = true,
+  },
 
   -- textobj
   { 'kana/vim-textobj-user',
+    lazy = true,
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       'kana/vim-textobj-indent',
       'kana/vim-textobj-line',
@@ -419,32 +625,94 @@ require("lazy").setup({
     },
   },
 
-  { 'bruno-/vim-space' },
-  { 'Konfekt/FastFold' },
-  { 'Konfekt/FoldText' },
+  { 'bruno-/vim-space',
+    keys = { '<Space>', { '<Space>', mode = 'v' } },
+    lazy = true,
+  },
+  { 'Konfekt/FastFold',
+    event = { 'BufReadPost', 'BufNewFile' },
+    lazy = true,
+  },
+  { 'Konfekt/FoldText',
+    event = { 'BufReadPost', 'BufNewFile' },
+    lazy = true,
+  },
   -- }}}
 
   -- {{{ Silent enhancements.
-  { 'editorconfig/editorconfig-vim' },
-  { 'kana/vim-niceblock' },
-  { 'tpope/vim-repeat' },
-  { 'vim-scripts/visualrepeat' },
-  { 'junegunn/vim-easy-align' },
+  { 'editorconfig/editorconfig-vim',
+    event = 'BufReadPre',
+    lazy = true,
+  },
+  { 'kana/vim-niceblock',
+    keys = { { 'I', mode = 'v' }, { 'A', mode = 'v' } },
+    lazy = true,
+  },
+  { 'tpope/vim-repeat',
+    event = 'VeryLazy',
+    lazy = true,
+  },
+  { 'vim-scripts/visualrepeat',
+    keys = { { '.', mode = 'v' } },
+    lazy = true,
+  },
+  { 'junegunn/vim-easy-align',
+    cmd = 'EasyAlign',
+    keys = { { 'ga', mode = { 'n', 'v' } } },
+    lazy = true,
+  },
   -- { 'tpope/vim-sleuth' }, -- Removed: conflicts with vim-polyglot's built-in sleuth
-  { 'kana/vim-operator-user' },
+  { 'kana/vim-operator-user',
+    lazy = true,
+  },
   { 'haya14busa/vim-operator-flashy',
+    keys = { 'y', 'd', 'c' },
+    lazy = true,
     dependencies = { 'kana/vim-operator-user' },
   },
-  { 'kopischke/vim-fetch' },
-  { 'pbrisbin/vim-mkdir' },
-  { 'vim-utils/vim-vertical-move' },
+  { 'kopischke/vim-fetch',
+    event = 'BufReadCmd',
+    lazy = true,
+  },
+  { 'pbrisbin/vim-mkdir',
+    event = 'BufWritePre',
+    lazy = true,
+  },
+  { 'vim-utils/vim-vertical-move',
+    keys = { '[v', ']v' },
+    lazy = true,
+  },
 
   { "monkoose/neocodeium",
-    event = "VimEnter",
+    lazy = true,
+    event = "InsertEnter",
     config = function()
       local neocodeium = require("neocodeium")
-      neocodeium.setup()
-      vim.keymap.set("i", "<Tab>", neocodeium.accept)
+      neocodeium.setup({
+        enabled = true,
+        show_label = true,
+        debounce = true,
+        silent = true,
+        filetypes = {
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          ["."] = false,
+        },
+      })
+      vim.keymap.set("i", "<Tab>", function()
+        if neocodeium.visible() then
+          return neocodeium.accept()
+        else
+          return "<Tab>"
+        end
+      end, { expr = true, silent = true })
+      vim.keymap.set("i", "<C-S-n>", function()
+        require("neocodeium").cycle_or_complete()
+      end, { silent = true })
+      vim.keymap.set("i", "<C-S-p>", function()
+        require("neocodeium").cycle_or_complete(-1)
+      end, { silent = true })
     end,
   },
 

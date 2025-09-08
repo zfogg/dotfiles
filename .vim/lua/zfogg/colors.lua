@@ -17,4 +17,4 @@ vim.g.base16colorspace = 256
 --vim.g.base16_shell_path = vim.fn.expand('~/.config/base16-shell')..'/scripts'
 
 --vim.cmd('colorscheme base16-default-dark')
---vim.cmd('colorscheme nightfox')
+vim.cmd('colorscheme nightfox')
