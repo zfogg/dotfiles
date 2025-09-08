@@ -339,7 +339,20 @@ fi
 
 
 # Claude Code
-alias claude="$HOME/.local/bin/claude"
+function claude() {
+    local _claude="$HOME/.local/bin/claude"
+
+    if [[ -v RIPGREP_CONFIG_PATH ]]; then
+        local _old_ripgrep_config_path="$RIPGREP_CONFIG_PATH"
+        unset RIPGREP_CONFIG_PATH
+    fi
+
+    $_claude
+
+    if [[ -v _old_ripgrep_config_path ]]; then
+        export RIPGREP_CONFIG_PATH="$_old_ripgrep_config_path"
+    fi
+}
 
 
 #set +x INFO: DEBUG

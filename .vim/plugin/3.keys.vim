@@ -193,8 +193,8 @@ endif
     else
         nnoremap <Leader><C-t> :tabnew<CR>
         nnoremap <Leader>x     :tabclose<CR>
-        nnoremap <Leader>J     :tabprevious<CR>
-        nnoremap <Leader>K     :tabnext<CR>
+        nnoremap <Leader>j     :tabprevious<CR>
+        nnoremap <Leader>k     :tabnext<CR>
         " Resize splits.
         nnoremap <S-Up>    5<C-W>+
         nnoremap <S-Down>  5<C-W>-

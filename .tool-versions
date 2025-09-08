@@ -4,7 +4,7 @@
 direnv 2.32.3
 #java   latest
 #nodejs latest 21.1.0 19.9.0 19.4.0 18.18.2
-nodejs 24.3.0 21.1.0 19.9.0 19.4.0 18.18.2
+nodejs 24.7.0 21.1.0 19.9.0 19.4.0 18.18.2
 
 #python latest 3.12.0 system
 python 3.12.0 system
@@ -13,13 +13,13 @@ python 3.12.0 system
 ruby   3.2.2
 
 #rust   latest stable latest:1.56 beta nightly
-rust   1.73.0
+rust latest stable 1.89.0 1.73.0
 
 golang latest 1.17.3
 
 #deno   latest 1.16.3
 
 #lua    latest 5.4.6 system
-lua    5.4.6 system
+lua    5.4.6 5.1.5 system
 
 #pnpm   latest 6.31.0

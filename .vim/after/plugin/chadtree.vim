@@ -6,4 +6,5 @@ if !has('nvim') || !PHas('chadtree') | finish | endif
 if exists('g:vimpager') | finish | endif
 
 
-nnoremap <Leader>n<Space> <CMD>CHADopen<CR>
+" Commented out - using Fern instead
+" nnoremap <Leader>n<Space> <CMD>CHADopen<CR>

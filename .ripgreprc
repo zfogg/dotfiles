@@ -1,5 +1,5 @@
 # Don't let ripgrep vomit really long lines to my terminal, and show a preview.
---max-columns=150
+--max-columns=180
 --max-columns-preview
 
 --line-number
@@ -20,7 +20,7 @@
 
 --ignore
 #--ignore-dot
---ignore-file=/Users/zfogg/.config/rg/rgignore
+--ignore-file=/Users/loomen/.config/rg/rgignore
 --ignore-parent
 --ignore-global
 --ignore-vcs

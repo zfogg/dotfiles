@@ -69,10 +69,6 @@ require("lazy").setup({
     config = function() require('rc.ale').config() end,
   },
 
-  { 'simrat39/symbols-outline.nvim',
-    init = function() require('rc.symbols-outline').setup() end,
-    config = function() require('rc.symbols-outline').config() end,
-  },
 
   { 'lewis6991/gitsigns.nvim',
     init = function()
@@ -157,6 +153,8 @@ require("lazy").setup({
 
   -- fern
   { 'lambdalisue/fern.vim',
+    lazy = true,
+    cmd = 'Fern',
     init = function() require("rc.fern").setup() end,
     config = function() require("rc.fern").config() end,
     dependencies = {

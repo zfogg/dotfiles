@@ -97,5 +97,6 @@ require('bufferline').setup {
 
 -- Set up keymaps directly to avoid circular dependency
 vim.keymap.set('n', '<C-b>',     ':BufferLinePick<CR>',      { silent = true })
-vim.keymap.set('n', '<Leader>j', ':BufferLineCyclePrev<CR>', { silent = true })
-vim.keymap.set('n', '<Leader>k', ':BufferLineCycleNext<CR>', { silent = true })
+-- Commented out to allow tab navigation with <Leader>j and <Leader>k
+-- vim.keymap.set('n', '<Leader>j', ':BufferLineCyclePrev<CR>', { silent = true })
+-- vim.keymap.set('n', '<Leader>k', ':BufferLineCycleNext<CR>', { silent = true })

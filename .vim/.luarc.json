@@ -29,7 +29,6 @@
         "/Users/loomen/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/opt/nvim-code-action-menu/lua",
         "/Users/loomen/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-endwise/lua",
         "/Users/loomen/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/opt/nvim-ts-autotag/lua",
-        "/Users/loomen/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/opt/symbols-outline.nvim/lua",
         "/Users/loomen/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/opt/telescope-emoji.nvim/lua",
         "/Users/loomen/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/opt/telescope-frecency.nvim/lua",
         "/Users/loomen/src/github.com/zfogg/dotfiles/.local/share/nvim/site/pack/packer/opt/telescope-fzf-native.nvim/lua",

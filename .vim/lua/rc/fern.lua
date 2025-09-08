@@ -2,12 +2,6 @@
 
 local M = {}
 
-local function keymaps()
-  -- Use vim.keymap.set directly to avoid circular dependency
-  vim.keymap.set('n', '<Leader>n<Space>', ':Fern . -drawer       -reveal=% -toggle<CR>', { silent = true })
-  vim.keymap.set('n', '<Leader>nn',       ':Fern . -drawer -wait -reveal=%<BAR>wincmd p<CR>', { silent = true })
-end
-
 function M.setup()
   -- Use PHas function from plugin/0.util.vim
   if PHas('fern-renderer-nerdfont.vim') == 1 then
@@ -23,6 +17,8 @@ function M.setup()
   let g:fern#disable_drawer_tabpage_isolation=200 " default=0
 
   let g:fern#drawer_width=24 " default=30
+
+  let g:fern#default_hidden=1 " default=0
 
   " INFO: https://github.com/lambdalisue/fern.vim
 
@@ -193,7 +189,6 @@ function M.setup()
   let g:Fern_mapping_fzf_file_sink = function('s:Fern_FZF_reveal')
   let g:Fern_mapping_fzf_dir_sink  = function('s:Fern_FZF_reveal')
   ]]
-  keymaps()
 end
 
 
