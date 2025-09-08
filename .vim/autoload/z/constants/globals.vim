@@ -70,7 +70,7 @@ func! z#constants#globals#ConfigPaths()
     " dir/ ~/.vim/ 'g:dotvim'
     "let g:dotvim_l   = '.vim'
     "let g:dotvim     = exists($DOTVIM)               ? $DOTVIM   : g:dotfiles.'/'.g:dotvim_l
-    let g:dotvim     = stdpath("config")
+    let g:dotvim     = stdpath('config')
     let g:dotvim_f   = expand(g:dotvim)
     let g:dotvim_r   = fnamemodify(g:dotvim,   ':~')
 
