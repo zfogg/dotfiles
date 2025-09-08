@@ -5,13 +5,6 @@ require 'zfogg.util'
 local fn = vim.fn
 local ft = fn['z#constants#globals#Ft']()
 
--- Proper LazyFile event implementation (from LazyVim)
--- This makes startup for `nvim file.txt` as fast as just `nvim`
-local Event = require("lazy.core.handler.event")
-
--- Add support for the LazyFile event
-Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
-Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 
 -- Comprehensive file types for lazy loading LSP/treesitter
 local code_filetypes = vim.tbl_flatten({
@@ -100,10 +93,12 @@ require("lazy").setup({
 
   { 'tmux-plugins/vim-tmux', ft = { 'tmux' } },
   { 'tmux-plugins/vim-tmux-focus-events',
+    lazy = false,  -- Load immediately for tmux focus events
     enabled = not (vim.g.vscode and not vim.fn.has('nvim')),
   },
 
   { 'christoomey/vim-tmux-navigator',
+    lazy = false,  -- Load immediately for navigation
     init = function()
       if inVscode or inKitty or (not inTmux) then
         vim.g.tmux_navigator_no_mappings = 1
@@ -112,6 +107,7 @@ require("lazy").setup({
   },
 
   { 'knubie/vim-kitty-navigator',
+    lazy = false,  -- Load immediately for kitty navigation
     enabled = not ((not inKitty) or inTmux),
   },
 
@@ -127,15 +123,17 @@ require("lazy").setup({
   -- {{{ Add features and functionality.
   { 'dense-analysis/ale',
     lazy = true,
-    event = "LazyFile",
-    init = function() require('rc.ale').setup() end,
-    config = function() require('rc.ale').config() end,
+    event = { "BufReadPost", "BufNewFile" },  -- Load when opening files for linting
+    config = function() 
+      require('rc.ale').setup()
+      require('rc.ale').config()
+    end,
   },
 
 
   { 'lewis6991/gitsigns.nvim',
     lazy = true,
-    event = "LazyFile",
+    event = { "BufReadPost", "BufNewFile" },  -- Load when opening files to show git signs
     init = function()
       vim.cmd('let b:rcplugin_gitsigns = 1')
     end,
@@ -193,6 +191,8 @@ require("lazy").setup({
     cmd = 'Prosession',
   },
   { 'dhruvasagar/vim-prosession',
+    lazy = true,
+    cmd = { 'Prosession', 'ProsessionDelete' },
     dependencies = { 'tpope/vim-obsession' },
     init = function()
       vim.g.prosession_on_startup = 0
@@ -283,7 +283,7 @@ require("lazy").setup({
   -- sessions
   { 'xolox/vim-misc',
     lazy = true,
-    event = 'VeryLazy',
+    event = 'VeryLazy',  -- Library functions, OK to load later
   },
 
   { 'lukas-reineke/lsp-format.nvim',
@@ -325,7 +325,7 @@ require("lazy").setup({
   { 'williamboman/mason.nvim',
     lazy = true,
     cmd = { 'Mason', 'MasonInstall', 'MasonUninstall', 'MasonUninstallAll', 'MasonLog' },
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },  -- Load Mason when opening files for LSP
     config = function()
       require('rc.mason').setup()
       require('rc.mason').config()
@@ -347,7 +347,7 @@ require("lazy").setup({
   -- LSP - language server protocol
   { 'neovim/nvim-lspconfig',
     lazy = true,
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },  -- Load LSP when opening files
     config = function() require('rc.lspconfig') end,
     dependencies = {
       'onsails/lspkind-nvim',
@@ -370,8 +370,8 @@ require("lazy").setup({
   },
 
   { 'nvim-treesitter/nvim-treesitter',
-    lazy = false,
-    priority = 100,
+    lazy = true,
+    event = { "BufReadPost", "BufNewFile" },
     build = ':TSUpdate',
     config = function() require('rc.treesitter') end,
     dependencies = {
@@ -382,11 +382,11 @@ require("lazy").setup({
   },
 
   { 'Shougo/context_filetype.vim',
-    event = 'BufReadPost',
+    event = { "BufReadPost", "BufNewFile" },  -- Detect context filetype when opening files
     lazy = true,
   },
   { 'embear/vim-localvimrc',
-    event = 'VeryLazy',
+    event = { "BufReadPost", "BufNewFile" },  -- Load local vimrc when opening files
     lazy = true,
   },
 
@@ -397,7 +397,7 @@ require("lazy").setup({
   },
   { 'lukas-reineke/indent-blankline.nvim',
     lazy = true,
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },  -- Show indent guides when opening files
     init = function() require('rc.indent-blankline').setup() end,
     config = function() require('rc.indent-blankline').config() end,
   },
@@ -420,8 +420,9 @@ require("lazy").setup({
   },
   { 'lifepillar/pgsql.vim', ft = ft['sql'] },
   { 'sheerun/vim-polyglot',
+    -- Load immediately for syntax highlighting on startup
     lazy = false,
-    priority = 90,
+    priority = 100,  -- Load early but after colorscheme
   },
   { 'python-mode/python-mode', ft = ft['py'] },
   { 'gisphm/vim-gitignore',
@@ -527,7 +528,7 @@ require("lazy").setup({
   -- {{{ Beautify Vim.
   { 'nvim-lualine/lualine.nvim',
     lazy = true,
-    event = "VeryLazy",
+    event = "VeryLazy",  -- Status line can load after initial display
     config = function() require('rc.lualine') end,
     dependencies = {
       'kyazdani42/nvim-web-devicons',
@@ -535,7 +536,7 @@ require("lazy").setup({
   },
   { 'akinsho/bufferline.nvim',
     lazy = true,
-    event = "VeryLazy",
+    event = "VeryLazy",  -- Tab line can load after initial display
     config = function() require('rc.bufferline') end,
     dependencies = { 'kyazdani42/nvim-web-devicons' },
   },
@@ -572,7 +573,7 @@ require("lazy").setup({
   },
 
   { 'haya14busa/vim-keeppad',
-    event = 'VeryLazy',
+    event = 'VeryLazy',  -- Utility for keeping cursor position, OK to load later
     lazy = true,
   },
   -- }}}
@@ -604,7 +605,7 @@ require("lazy").setup({
   -- textobj
   { 'kana/vim-textobj-user',
     lazy = true,
-    event = { "BufReadPost", "BufNewFile" },
+    event = "VeryLazy",  -- Text object library, OK to load later
     dependencies = {
       'kana/vim-textobj-indent',
       'kana/vim-textobj-line',
@@ -630,11 +631,11 @@ require("lazy").setup({
     lazy = true,
   },
   { 'Konfekt/FastFold',
-    event = { 'BufReadPost', 'BufNewFile' },
+    event = { "BufReadPost", "BufNewFile" },  -- Setup folding when opening files
     lazy = true,
   },
   { 'Konfekt/FoldText',
-    event = { 'BufReadPost', 'BufNewFile' },
+    event = { "BufReadPost", "BufNewFile" },  -- Custom fold text when opening files
     lazy = true,
   },
   -- }}}
@@ -649,7 +650,7 @@ require("lazy").setup({
     lazy = true,
   },
   { 'tpope/vim-repeat',
-    event = 'VeryLazy',
+    event = 'VeryLazy',  -- Repeat support, OK to load later
     lazy = true,
   },
   { 'vim-scripts/visualrepeat',
@@ -670,10 +671,11 @@ require("lazy").setup({
     lazy = true,
     dependencies = { 'kana/vim-operator-user' },
   },
-  { 'kopischke/vim-fetch',
-    event = 'BufReadCmd',
-    lazy = true,
-  },
+  -- vim-fetch causes issues with file loading and syntax highlighting in lazy.nvim
+  -- TODO: Find a better solution for file:line:column support
+  -- { 'kopischke/vim-fetch',
+  --   lazy = false,
+  -- },
   { 'pbrisbin/vim-mkdir',
     event = 'BufWritePre',
     lazy = true,
