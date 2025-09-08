@@ -149,8 +149,8 @@ function M.setup()
     "nmap <silent> <buffer> p     :call Fern_ToggleFloatingPreview()<CR>
     nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
     "nmap <silent> <buffer> <C-p> :call Fern_AutoToggleFloatingPreview()<CR>
-    nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
-    nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
+    "nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
+    "nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
 
     nmap <silent> <buffer> <expr> <Plug>(fern-quit-or-close-preview) fern_preview#smart_preview("\<Plug>(fern-action-preview:close)", ":q\<CR>")
     nmap <silent> <buffer> q <Plug>(fern-quit-or-close-preview)

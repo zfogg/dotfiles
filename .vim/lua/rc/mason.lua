@@ -26,6 +26,7 @@ local servers = {
         enable = true,
         globals = {
           'vim',
+          'PHas',
         },
       },
     },
@@ -85,7 +86,11 @@ function M.setup()
       scope = "cursor",
     },
     underline = true,
-    virtual_text = false,
+    virtual_text = {
+      spacing = 4,
+      source = "if_many",
+      prefix = "■ ",
+    },
     signs = true,
     update_in_insert = false,
     severity_sort = true,
