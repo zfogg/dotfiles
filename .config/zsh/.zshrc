@@ -326,6 +326,8 @@ source "$HOME/.aliases"
 
 # make {{{
 if [[ $OSX == $TRUE ]]; then
+  export MAKEFLAGS="-j `sysctl -n hw.logicalcpu`"
+else
   export MAKEFLAGS="-j `nproc`"
 fi
 # make }}}
