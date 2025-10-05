@@ -62,11 +62,13 @@ fi
 
 
 # base16-shell {{{
+# Base16 Shell
 export BASE16_SHELL=$HOME/.config/base16-shell
 if [[ ! $TERM =~ kitty ]]; then
-  [ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-      eval "$($BASE16_SHELL/profile_helper.sh)"
+  if [ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ]; then
+    source "$BASE16_SHELL/profile_helper.sh"
+    base16_default-dark 2>/dev/null || true
+  fi
 fi
 # }}}
 
