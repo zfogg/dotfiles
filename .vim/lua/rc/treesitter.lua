@@ -2,7 +2,8 @@
 
 
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all", -- one of "all" or parsers with maintainers), or a list of languages
+  ensure_installed = {}, -- Don't auto-install, manage manually with :TSInstall
+  auto_install = false,  -- Don't auto-install parsers
   ignore_install = {
     "ipkg",
   }, -- List of parsers to ignore installing

@@ -72,22 +72,17 @@ function () { # {{{ platform-specifics
 
   elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
 
-    if command -v colorgcc ccache 2> /dev/null >&2; then
+    if command -v ccache 2> /dev/null >&2 && [[ -f $BREW/bin/ccache ]]; then
       export CCACHE_PATH=$BREW/bin
-      path=(
-        $BREW/lib/colorgcc/bin
-        $BREW/lib/ccache/bin
-        "$path[@]"
-      )
     fi
 
     path=(
+      $HOME/.local/share/gem/ruby/*.*.*/bin(nF/[-1])
       #$HOME/.ghcup/bin
       $BREW/lib/colorgcc/bin
       $BREW/lib/ccache/bin
       $BREW/local/{bin,sbin}
       $BREW/{bin,sbin}
-      #/usr/share/aws-cli/v2/2.0.14/bin
       "$path[@]"
       /bin
       /sbin
@@ -124,8 +119,6 @@ function() { # {{{ AFTER platform-specifics
     $HOME/bin
     $HOME/.local/bin
     $HOME/.{cabal,cargo}/bin
-    $HOME/.minikube/bin
-    $HOME/.krew/bin
     $HOME/.local/share/asdf/shims
     #/nix/var/nix/profiles/default/bin
     #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
