@@ -61,13 +61,18 @@ fi
 # }}}
 
 
-# base16-shell {{{
-# Base16 Shell
+# base16-shell / Base16 Shell {{{
 export BASE16_SHELL=$HOME/.config/base16-shell
 if [[ ! $TERM =~ kitty ]]; then
   if [ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ]; then
     source "$BASE16_SHELL/profile_helper.sh"
-    base16_default-dark 2>/dev/null || true
+    #command_exists base16_default-dark && base16_default-dark
+    #_base16 "$HOME/.config/base16-shell/scripts/base16-default-dark.sh" default-dark
+    #_base16 "$HOME/.config/base16-shell/scripts/base16-bright.sh" bright
+    #function exit() {
+    #    [ -f ~/.base16_theme ] && source ~/.base16_theme
+    #    builtin exit
+    #}
   fi
 fi
 # }}}
