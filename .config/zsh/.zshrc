@@ -454,3 +454,4 @@ export HOMEBREW_NO_ENV_HINTS=1
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export AWS_PROFILE=softmax
+
