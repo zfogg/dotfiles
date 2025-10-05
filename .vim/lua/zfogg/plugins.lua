@@ -7,7 +7,7 @@ local ft = fn['z#constants#globals#Ft']()
 
 
 -- Comprehensive file types for lazy loading LSP/treesitter
-local code_filetypes = vim.tbl_flatten({
+local code_filetypes = vim.iter({
   ft['py'],        -- python, python3
   ft['js'],        -- javascript  
   ft['jsx'],       -- javascript.jsx, javascriptreact
@@ -54,7 +54,7 @@ local code_filetypes = vim.tbl_flatten({
   ft['proto'],     -- proto, protobuf
   ft['solidity'],  -- solidity, sol
   ft['vyper'],     -- vyper, vy
-})
+}):flatten():totable()
 
 -- Install lazy.nvim if not present
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -424,6 +424,7 @@ require("lazy").setup({
     lazy = false,
     priority = 100,  -- Load early but after colorscheme
   },
+
   { 'python-mode/python-mode', ft = ft['py'] },
   { 'gisphm/vim-gitignore',
     ft = 'gitignore',
@@ -562,6 +563,7 @@ require("lazy").setup({
   { 'markonm/traces.vim',
     event = 'CmdlineEnter',
     lazy = true,
+    enabled = vim.fn.has('wsl') == 0,  -- Disabled on WSL: E716 dictionary error with nvim 0.12
   },
   { 'haya14busa/incsearch.vim',
     lazy = true,
@@ -605,7 +607,7 @@ require("lazy").setup({
   -- textobj
   { 'kana/vim-textobj-user',
     lazy = true,
-    event = "VeryLazy",  -- Text object library, OK to load later
+    event = { "VeryLazy", "BufReadPost", "BufNewFile" },  -- Load early so textobj plugins can use it
     dependencies = {
       'kana/vim-textobj-indent',
       'kana/vim-textobj-line',

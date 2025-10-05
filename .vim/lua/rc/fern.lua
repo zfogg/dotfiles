@@ -161,7 +161,7 @@ function M.setup()
   aug fern-rc-custom
     au! *
     au FileType fern call s:init_fern()
-    au FileType fern call fzf#vim#with_preview()
+    au FileType fern if exists('*fzf#vim#with_preview') | call fzf#vim#with_preview() | endif
   aug END
 
   function! Fern_mapping_fzf_customize_option(spec)

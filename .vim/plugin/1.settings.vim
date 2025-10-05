@@ -2,6 +2,8 @@
 "  vim: foldmethod=marker:
 scriptencoding utf-8
 
+" Suppress prompts that can hang without TTY
+set shortmess+=I
 
 "set nonumber numberwidth=2  " hybrid line numbers - relative & static
 set number numberwidth=2     " hybrid line numbers - relative & static

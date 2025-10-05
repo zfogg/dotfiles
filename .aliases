@@ -188,7 +188,11 @@ function() {
 
 # pip2 install pygments
 #alias pcat='pygmentize -O style=monokai -f 256 -g'
-alias pcat='pygmentize -O style=base16-default-dark -f 256 -g'
+if [ -f $HOME/.local/share/pipx/venvs/pygments-base16/bin/pygmentize ]; then
+  alias pcat='$HOME/.local/share/pipx/venvs/pygments-base16/bin/pygmentize -O style=base16-default-dark -f 256 -g'
+else
+  alias pcat='pygmentize -O style=base16-default-dark -f 256 -g'
+fi
 alias c='pcat'
 compdefas pygmentize pcat c
 
@@ -340,7 +344,24 @@ fi
 
 # Claude Code
 function claude() {
-    local _claude="$HOME/.local/bin/claude"
+    if [ -f $HOME/.claude/local/claude ]; then
+        local _claude="$HOME/.claude/local/claude"
+    elif [ -f "$HOME/.local/bin/claude" ]; then
+        local _claude="$HOME/.local/bin/claude"
+    else
+        local _claude=$(
+            for dir in `echo $PATH | tr ':' '\n'`; do
+                if [ -x "$dir/claude" ]; then
+                    echo "$dir/claude"
+                    break
+                fi
+            done
+        )
+    fi
+    if [[ ! -v _claude ]] || [[ -z "$_claude" ]]; then
+        >&2 echo "‼️ Couldn't find a local claude"
+        exit 252833 # "claude" on a phone dial pad
+    fi
 
     if [[ -v RIPGREP_CONFIG_PATH ]]; then
         local _old_ripgrep_config_path="$RIPGREP_CONFIG_PATH"
