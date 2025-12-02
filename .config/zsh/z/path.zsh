@@ -76,8 +76,11 @@ function () { # {{{ platform-specifics
       export CCACHE_PATH=$BREW/bin
     fi
 
+    local latest_ruby=""
+    local ruby_dirs=($HOME/.local/share/gem/ruby/*/bin(NnF/[-1]))
+    (( ${#ruby_dirs} )) && latest_ruby=$ruby_dirs[1]
     path=(
-      $HOME/.local/share/gem/ruby/*.*.*/bin(nF/[-1])
+      $latest_ruby
       #$HOME/.ghcup/bin
       $BREW/lib/colorgcc/bin
       $BREW/lib/ccache/bin
