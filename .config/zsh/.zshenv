@@ -447,6 +447,13 @@ function() {
 # gpg }}}
 
 
+# ssh-agent (systemd) {{{
+if [[ $LINUX == $TRUE ]] && command -v systemctl &>/dev/null; then
+  export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+fi
+# ssh-agent (systemd) }}}
+
+
 # curl {{{
 export CURL_HOME="$XDG_CONFIG_HOME/curl"
 # curl }}}
