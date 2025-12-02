@@ -668,11 +668,11 @@ require("lazy").setup({
   { 'kana/vim-operator-user',
     lazy = true,
   },
-  { 'haya14busa/vim-operator-flashy',
-    keys = { 'y', 'd', 'c' },
-    lazy = true,
-    dependencies = { 'kana/vim-operator-user' },
-  },
+  --{ 'haya14busa/vim-operator-flashy',
+  --  keys = { 'y', 'd', 'c' },
+  --  lazy = true,
+  --  dependencies = { 'kana/vim-operator-user' },
+  --},
   -- vim-fetch causes issues with file loading and syntax highlighting in lazy.nvim
   -- TODO: Find a better solution for file:line:column support
   -- { 'kopischke/vim-fetch',
