@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Xmodmap
+Comment=Load custom keyboard mappings
+Exec=/usr/bin/xmodmap /home/zfogg/.Xmodmap
+X-KDE-autostart-phase=1
+X-KDE-autostart-after=panel
