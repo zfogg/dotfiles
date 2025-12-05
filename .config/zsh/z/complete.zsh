@@ -128,23 +128,19 @@ zstyle ':completion:*:default'      select-prompt    '%p%s'
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
 zstyle ':completion:*:*:-command-:*:*' file-patterns \
-  '*(#q-*):executables:Executables' \
-  '*(-/):directories:Directories' \
+  '*(#q-*):executables *(-/):directories' \
   '*:all-files'
 
-zstyle -e ':completion:*:*:-command-:*:*' tag-order '
-  reply=(
-          "executables:Executables:Executables
-          builtins:Builtins:Builtins
-          commands:Commands:Commands
-          aliases:Aliases:Aliases
-          functions:Functions:Functions
-          parameters:Variables:Variables
-          reserved-words:Keywords:Keywords
-          Directories:directories"
-          "-"
-        )
-'
+zstyle ':completion:*:*:-command-:*:*' tag-order \
+  'executables:Executables' \
+  'directories:Directories' \
+  'builtins:Builtins' \
+  'commands:Commands' \
+  'aliases:Aliases' \
+  'functions:Functions' \
+  'parameters:Variables' \
+  'reserved-words:Keywords' \
+  '-'
 
 zstyle ':completion:*:history-words' stop yes
 zstyle ':completion:*:history-words' remove-all-dups yes

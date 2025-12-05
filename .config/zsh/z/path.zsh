@@ -80,6 +80,7 @@ function () { # {{{ platform-specifics
     local ruby_dirs=($HOME/.local/share/gem/ruby/*/bin(NnF/[-1]))
     (( ${#ruby_dirs} )) && latest_ruby=$ruby_dirs[1]
     path=(
+      $HOME/.local/share/../bin # uv, uvx
       $latest_ruby
       #$HOME/.ghcup/bin
       $BREW/lib/colorgcc/bin

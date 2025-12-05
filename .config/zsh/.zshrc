@@ -52,25 +52,25 @@ source "$ZDOTDIR/z/complete.zsh"
 
 
 # plugins {{{
-#if command_exists direnv; then
+if command_exists direnv; then
   export AUTOENV_DISABLED=0
   export AUTOENV_FILE_ENTER=.env
   export AUTOENV_HANDLE_LEAVE=0
   export AUTOENV_LOOK_UPWARDS=0
-  #emulate zsh -c "$(direnv hook zsh)"
-#fi
+  source <(direnv hook zsh)
+fi
 
-function() {
-  local asdf_dir=${ASDF_DIR:-/dev/null}
-  local asdf_sh=${asdf_dir}/asdf.sh
-  if [[ -d $asdf_dir && -f $asdf_sh ]]; then
-    source $asdf_sh;
-    eval "$(asdf exec direnv hook zsh)"
-  fi
-  if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc ]]; then
-    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
-  fi
-}
+#function() {
+#  local asdf_dir=${ASDF_DIR:-/dev/null}
+#  local asdf_sh=${asdf_dir}/asdf.sh
+#  if [[ -d $asdf_dir && -f $asdf_sh ]]; then
+#    source $asdf_sh;
+#    eval "$(asdf exec direnv hook zsh)"
+#  fi
+#  if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc ]]; then
+#    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+#  fi
+#}
 
 #if command_exists jenv; then
 #  #eval "$(jenv init -)"
@@ -455,3 +455,5 @@ export HOMEBREW_NO_ENV_HINTS=1
 
 export AWS_PROFILE=softmax
 
+
+. "$HOME/.local/share/../bin/env"
