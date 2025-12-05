@@ -187,12 +187,22 @@ function() {
 }
 
 # pip2 install pygments
-#alias pcat='pygmentize -O style=monokai -f 256 -g'
-if [ -f $HOME/.local/share/pipx/venvs/pygments-base16/bin/pygmentize ]; then
-  alias pcat='$HOME/.local/share/pipx/venvs/pygments-base16/bin/pygmentize -O style=base16-default-dark -f 256 -g'
-else
-  alias pcat='pygmentize -O style=base16-default-dark -f 256 -g'
-fi
+function pcat() {
+  # If you pass -l $lexer to this function, it will use the lexer. Otherwise it will guess with -g.
+  if [ -f $HOME/.local/share/pipx/venvs/pygments-base16/bin/pygmentize ]; then
+    loca _pcat='$HOME/.local/share/pipx/venvs/pygments-base16/bin/pygmentize -O style=base16-default-dark -f 256'
+  else
+    local _pcat='pygmentize -O style=base16-default-dark -f 256'
+  fi
+  if [ "$1" = "-l" ]; then
+    local lexer="$2"
+    shift
+    shift
+    eval $_pcat -l "$lexer" "$@"
+  else
+    eval $_pcat -g "$@"
+  fi
+}
 alias c='pcat'
 compdefas pygmentize pcat c
 
