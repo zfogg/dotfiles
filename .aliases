@@ -286,7 +286,10 @@ function _tree() {
     "$@"
 }
 
-alias tree='_tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git|env|__pycache__" -L 5'
+function alias_tree() {
+    alias tree='_tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git|env|__pycache__" -L 5'
+}
+alias_tree
 
 #alias phpcs='phpcs --standard=ruleset.xml --extensions=php --ignore=node_modules,bower_components,vendor -n -s'
 
@@ -381,15 +384,17 @@ function claude() {
         unset RIPGREP_CONFIG_PATH
     fi
 
-    unalias cp
-    unalias rm
-    unalias mv
+    unalias cp 2>/dev/null || true
+    unalias rm 2>/dev/null || true
+    unalias mv 2>/dev/null || true
+    unalias tree 2>/dev/null || true
 
     export CLAUDECODE=1
     $_claude
     unset CLAUDECODE
 
     alias_file_handling
+    alias_tree
 
     if [[ -v _old_ripgrep_config_path ]]; then
         export RIPGREP_CONFIG_PATH="$_old_ripgrep_config_path"
