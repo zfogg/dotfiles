@@ -25,9 +25,12 @@ function compdefas() {
 }
 
 #alias -g rm='trash'
-alias cp="cp -iv"
-alias mv="mv -iv"
-alias rm="rm -iv"
+function alias_file_handling() {
+    alias cp="cp -iv"
+    alias rm="rm -iv"
+    alias mv="mv -iv"
+}
+alias_file_handling
 
 #if [[ $OSX == $TRUE ]]; then
 #  export VIMRUNTIME="${BREW}/share/nvim/runtime"
@@ -378,7 +381,15 @@ function claude() {
         unset RIPGREP_CONFIG_PATH
     fi
 
+    unalias cp
+    unalias rm
+    unalias mv
+
+    export CLAUDECODE=1
     $_claude
+    unset CLAUDECODE
+
+    alias_file_handling
 
     if [[ -v _old_ripgrep_config_path ]]; then
         export RIPGREP_CONFIG_PATH="$_old_ripgrep_config_path"
