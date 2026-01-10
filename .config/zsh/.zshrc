@@ -37,6 +37,9 @@ source "$HOME/.zsh/antigen-hs/init.zsh"
 # path, manpath, fpath, infopath
 source "$ZDOTDIR/z/path.zsh"
 
+# terminal size detection
+source "$ZDOTDIR/z/winsize.zsh"
+
 # bindkey, zle
 source "$ZDOTDIR/z/keys.zsh"
 
@@ -455,5 +458,3 @@ export HOMEBREW_NO_ENV_HINTS=1
 
 export AWS_PROFILE=softmax
 
-
-. "$HOME/.local/share/../bin/env"
