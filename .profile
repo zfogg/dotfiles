@@ -54,5 +54,3 @@ fi
 
 export SHELL_NAME=`current_shell`
 if [ -e /Users/zfogg/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/zfogg/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-
-. "$HOME/.local/share/../bin/env"

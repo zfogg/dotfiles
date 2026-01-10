@@ -449,7 +449,17 @@ function() {
 
 # ssh-agent (systemd) {{{
 if [[ $LINUX == $TRUE ]] && command -v systemctl &>/dev/null; then
-  export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+  # Only set SSH_AUTH_SOCK if not already set by SSH agent forwarding
+  # Forwarded sockets are in /tmp/ssh-* or /tmp/auth-agent*
+  case "$SSH_AUTH_SOCK" in
+    /tmp/ssh-*|/tmp/auth-agent*)
+      # SSH agent forwarding is active, keep it
+      ;;
+    *)
+      # No forwarded agent, use systemd socket
+      export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+      ;;
+  esac
 fi
 # ssh-agent (systemd) }}}
 
