@@ -6,10 +6,9 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-# DISABLED: Causes double prompt and completion display issues over SSH
-#if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-#fi
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 
 # init: zsh modules {{{
@@ -37,9 +36,6 @@ source "$HOME/.zsh/antigen-hs/init.zsh"
 # $ZDOTDIR/z/ {{{
 # path, manpath, fpath, infopath
 source "$ZDOTDIR/z/path.zsh"
-
-# terminal window resize handler
-source "$ZDOTDIR/z/winsize.zsh"
 
 # bindkey, zle
 source "$ZDOTDIR/z/keys.zsh"

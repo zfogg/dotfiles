@@ -159,13 +159,50 @@ fi
 # terminal size {{{
 # Ensure COLUMNS and LINES are set for proper completion display
 # Must happen in .zshenv before instant prompt in .zshrc
-if [[ -t 0 ]]; then
+# Check if any file descriptor is a TTY (stdin, stdout, or stderr)
+if [[ -t 0 ]] || [[ -t 1 ]] || [[ -t 2 ]]; then
+  # Try multiple methods to get terminal size
+  local got_size=0
+
+  # Method 1: stty size (most reliable when it works)
   local size=($(stty size 2>/dev/null))
-  if [[ ${#size} -eq 2 ]]; then
+  if [[ ${#size} -eq 2 && ${size[1]} -gt 0 && ${size[2]} -gt 0 ]]; then
     export LINES=${size[1]}
     export COLUMNS=${size[2]}
+    got_size=1
+  fi
+
+  # Method 2: tput (fallback)
+  if [[ $got_size -eq 0 ]]; then
+    local tput_lines=$(tput lines 2>/dev/null)
+    local tput_cols=$(tput cols 2>/dev/null)
+    if [[ -n $tput_lines && $tput_lines -gt 0 && -n $tput_cols && $tput_cols -gt 0 ]]; then
+      export LINES=$tput_lines
+      export COLUMNS=$tput_cols
+      got_size=1
+    fi
+  fi
+
+  # Method 3: Fallback to reasonable defaults if nothing worked
+  if [[ $got_size -eq 0 ]]; then
+    export LINES=24
+    export COLUMNS=80
   fi
 fi
+
+# Handle window resize signals
+TRAPWINCH() {
+  # Update terminal size from stty
+  if [[ -t 1 ]] || [[ -t 2 ]]; then
+    local size=($(stty size 2>/dev/null))
+    if [[ ${#size} -eq 2 && ${size[1]} -gt 0 && ${size[2]} -gt 0 ]]; then
+      export LINES=${size[1]}
+      export COLUMNS=${size[2]}
+    fi
+  fi
+  # Refresh ZLE prompt if in line editor (suppress errors if not in ZLE)
+  zle reset-prompt 2>/dev/null || true
+}
 # terminal size }}}
 
 
