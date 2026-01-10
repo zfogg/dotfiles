@@ -132,6 +132,9 @@ export SHELL_NAME=`current_shell`
 # terminal {{{
 if [[ -v TMUX ]]; then
   export TERM="screen-256color"
+elif [[ ! -v TERM || -z "$TERM" || "$TERM" == "dumb" ]]; then
+  # Fallback for SSH sessions where TERM isn't set properly
+  export TERM="xterm-256color"
 fi
 if [[ -v TERM ]]; then
   export COLORTERM="truecolor"
