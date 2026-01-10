@@ -156,6 +156,19 @@ fi
 # terminal }}}
 
 
+# terminal size {{{
+# Ensure COLUMNS and LINES are set for proper completion display
+# Must happen in .zshenv before instant prompt in .zshrc
+if [[ -t 0 ]]; then
+  local size=($(stty size 2>/dev/null))
+  if [[ ${#size} -eq 2 ]]; then
+    export LINES=${size[1]}
+    export COLUMNS=${size[2]}
+  fi
+fi
+# terminal size }}}
+
+
 # git {{{
 # FIXME: encrypt this
 #export HOMEBREW_GITHUB_API_TOKEN='secret! 🕵'
