@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+# vim: ft=zsh:
+
+local p=(
+ ~/.local/share/nvim/site/pack/packer/start/fzf/bin
+ ~/.local/share/asdf/shims
+ /usr/local/opt/asdf/libexec/bin
+ ~/bin
+ ~/.local/bin
+ ~/.cabal/bin
+ ~/.cargo/bin
+ ~/.minikube/bin
+ ~/.krew/bin
+ ~/src/go/bin
+ /usr/local/opt/ccache/libexec
+ /usr/local/bin
+ /usr/local/sbin
+ /Library/Developer/CommandLineTools/usr/bin
+ /Applications/kitty.app/Contents/MacOS
+ /usr/bin
+ /bin
+ /usr/sbin
+ /sbin
+)
+
+launchctl setenv PATH $(print -R ${(j|:|)p})
+
+unset p

@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+
+source ~/.zsh/functions/bin-abort
+trap 'bin-abort' ERR
+
+
+cd "$ANTIGEN_HS_HOME"
+cabal sandbox delete && cabal sandbox init
+cabal configure      && cabal install --dependencies-only
+
+cd "$ANTIGEN_HS_HOME"/..
+cabal sandbox delete && cabal sandbox init
+cabal sandbox add-source "$PWD"/antigen-hs
+cabal configure      && cabal install --dependencies-only

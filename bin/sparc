@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+# First install these:
+#   1: http://httpie.org
+#   2: https://github.com/ddopson/underscore-cli
+
+
+max="$1"
+http --json --body 'https://www.kimonolabs.com/api/9xmzzlc8?apikey=IYaNFH3sgdLjcYTRch5gAV8W9nr4kFOG' | \
+    underscore --coffee process 'data.results.flowers' | \
+    underscore --coffee process '_.filter data, (x) -> x.THC isnt "Pending" or ""' | \
+    underscore --coffee process '_.sortBy data, (x) -> parseInt(x.THC, 10)' | \
+    underscore --coffee process '_.filter data, (x) -> x.grow_location is "Indoor"' | \
+    underscore --coffee process "_.last  data, ${max:=5}"

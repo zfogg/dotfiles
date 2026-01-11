@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+source "${1:-$HOME/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-RobSis-SLASH-zsh-completion-generator}/zsh-completion-generator.plugin.zsh"
+
+for p in $path; do command -p ls $p; done |\
+  uniq |\
+  { while read c; do gencomp $c; done }

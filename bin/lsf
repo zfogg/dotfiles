@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+
+. ~/.aliases
+
+# List all files in a directory.
+find ${1:=.} -maxdepth 1 -type f |
+# For each line, drop two chars and quote.
+sed -re 's/^..(.*)/\"\1\"/' |
+# Replace newlines with spaces
+awk 1 ORS=' ' |
+# Pipe to my ls alias to use my settings.
+xargs $(aliasof ls)

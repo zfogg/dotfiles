@@ -1,0 +1,142 @@
+#!/usr/bin/env zsh
+
+
+function get_ffmpeg_options() {
+    local ffmpeg_opts=(
+        --with-chromaprint
+            #Enable the Chromaprint audio fingerprinting library
+
+        #--with-decklink
+            #Enable DeckLink support
+
+        --with-fdk-aac
+            #Enable the Fraunhofer FDK AAC library
+
+        #--with-game-music-emu
+            #Build with game-music-emu support
+
+        --with-libbluray
+            #Build with libbluray support
+
+        --with-libbs2b
+            #Build with libbs2b support
+
+        --with-libcaca
+            #Build with libcaca support
+
+        --with-libgsm
+            #Build with libgsm support
+
+        --with-libmodplug
+            #Build with libmodplug support
+
+        --with-librsvg
+            #Enable SVG files as inputs via librsvg
+
+        --with-libsoxr
+            #Enable the soxr resample library
+
+        --with-libssh
+            #Enable SFTP protocol via libssh
+
+        --with-libvidstab
+            #Enable vid.stab support for video stabilization
+
+        --with-libvmaf
+            #Enable libvmaf scoring library
+
+        --with-libxml2
+            #Enable libxml2 library
+
+        --with-opencore-amr
+            #Enable Opencore AMR NR/WB audio format
+
+        --with-openh264
+            #Enable OpenH264 library
+
+        --with-openjpeg
+            #Enable JPEG 2000 image format
+
+        --with-openssl
+            #Enable SSL support
+
+        --with-openssl@1.1
+            #Build with openssl@1.1 support
+
+        --with-rav1e
+            #Enable AV1 encoding via librav1e
+
+        --with-rtmpdump
+            #Build with rtmpdump support
+
+        --with-rubberband
+            #Enable rubberband library
+
+        #--with-speex
+            #Build with speex support
+
+        --with-srt
+            #Enable SRT library
+
+        #--with-tesseract
+            #Enable the tesseract OCR engine
+
+        --with-two-lame
+            #Build with two-lame support
+
+        --with-wavpack
+            #Build with wavpack support
+
+        --with-webp
+            #Enable using libwebp to encode WEBP images
+
+        --with-xvid
+            #Build with xvid support
+
+        --with-zeromq
+            #Enable using libzeromq to receive cmds sent through a libzeromq client
+
+        --with-zimg
+            #Enable z.lib zimg library
+
+        #--HEAD
+            #Install HEAD version
+    )
+
+    >&2 echo "running 'brew install homebrew-ffmpeg/ffmpeg/ffmpeg' with the following options:"
+    for f in {1..15}; do
+        >&2 echo '.\c'
+        sleep 0.05
+    done
+
+    >&2 echo
+    echo "${ffmpeg_opts[@]}" | tr ' ' '\n' >&2
+    >&2 echo
+
+    echo "${ffmpeg_opts[@]}"
+}
+
+
+function install_ffmpeg() {
+    if echo "$@" | grep -q '\--with-chromaprint'; then
+        brew install chromaprint
+    fi
+    brew install homebrew-ffmpeg/ffmpeg/ffmpeg "$@"
+}
+
+
+function cancel_install() {
+    echo "Cancelling install"
+    return "$1"
+}
+
+
+ffmpeg_options=$(get_ffmpeg_options)
+
+read -p "Continue (y/N)?" choice
+case "$choice" in
+  y|Y ) >&1 install_ffmpeg $ffmpeg_options;;
+  n|N ) >&2 cancel_install 1;;
+  * )   >&2 cancel_install 2;;
+esac
+

@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+local n="${1:-/dev/null/invalid}"
+if [[ ! -e $n ]]; then
+    >&2 echo '🔴  no file '"'$n'"' 😩' && exit 1
+fi
+
+if [[ $OSX == $TRUE ]]; then
+    alias date=gdate
+    alias basename=gbasename
+    alias readlink=greadlink
+    alias du=gdu
+    alias tar=gtar
+fi
+
+local d=$(date +'%Y%m%d-%H%M%S')
+local f=$(basename $(readlink -f "$n"))."$d".tar.gz
+
+echo 'tar . . .'
+tar czfv "$f" "$n"
+echo '. . . tar'; echo
+
+echo 'gpg . . .'
+gpg --sign --symmetric \
+    --output "$f".gpg "$f"
+echo '. . . gpg'; echo
+
+echo 'du . . .'
+du -s --si "$n" "$f"*
+echo '. . . du'; echo
+
+echo 'rm '"$f"
+rm "$f"
+echo
+
+if [[ $OSX == $TRUE ]]; then
+    unalias date
+    unalias basename
+    unalias readlink
+    unalias du
+    unalias tar
+fi

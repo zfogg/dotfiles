@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+
+sudo pfctl -F all -f /etc/pf.conf

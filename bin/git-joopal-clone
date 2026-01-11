@@ -1,0 +1,69 @@
+#!/usr/bin/env zsh
+#
+# git joopal-clone - better repo cloning
+#   @zfogg <me@zfo.gg>
+# dependencies
+#   git >= 2.9.2
+#   zsh >= 5.2
+#
+# installation
+#   1) set my executable bit and put me in your $PATH
+#
+# arguments
+#   $1 = user               defaultVal = 'git'  # server login username
+#   $2 = host    required                       # server hostname
+#   $3 = subdir             defaultVal = ''     # $repo's parent's path (relative to $user's $HOME)
+#   $4 = repo    required                       # dirname of repo
+#
+# usage
+#   *) basic cloning
+#       $ git joopal-clone me zfo.gg repos dotfiles.zsh
+#   *) custom "clone from github" git alias
+#       $ git config --global alias.gh-clone 'joopal-clone git github.com'
+#       $ git gh-clone zfogg dotfiles
+#   *) clone (if necessary) and cd (always) to a repo
+#       $ cd "`git joopal-clone me zfo.gg joopal clone`"
+#       $ pwd
+#       $HOME/src/zfo.gg/joopal/clone
+
+
+# sanity - `cd` to my parent dir
+cd "`dirname "$0"`"
+
+
+# assert - has arg:user
+guser="${1:-git}"
+[ -z "$guser" ] &&
+    >&2 echo 'invalid arg: user' && exit 1
+
+# assert - has arg:host
+ghost="$2"
+[ -z "$ghost" ] &&
+    >&2 echo 'invalid arg: host' && exit 1
+
+# assert - has arg:repo
+grepo="$4"
+[ -z "$grepo" ] &&
+    >&2 echo 'invalid arg: repo' && exit 1
+
+# assert - reachable hostname
+ping -c 10 -i 0.1 -W 5000 -t 6 -oq "$ghost" 1>/dev/null
+[[ ! "$?" = '0' && ! "$?" = '2' ]] &&
+    >&2 echo 'unreachable host '"$ghost" && exit 2
+
+# assert - accessible remote
+gsubd="$3"
+gdelim="$([ -z "$3" ] || echo '/')"
+gremote="$guser"'@'"$ghost"':'"$gsubd""$gdelim""$grepo"
+git ls-remote -h -q --exit-code "$gremote" master 1>/dev/null ||
+    exit 3
+
+
+# clone to a standard path format
+gdir="$HOME"'/src/'"$ghost""$gdelim""$gsubd"
+mkdir -p "$gdir"
+cd       "$gdir"
+git clone --depth 1 --shallow-submodules "$gremote"
+
+# >&1 local repo path for `cd`
+echo "$gdir"'/'"$grepo"

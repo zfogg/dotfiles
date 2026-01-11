@@ -1,0 +1,311 @@
+#!/bin/bash
+#
+# git-recover: recover deleted files in your repo
+# Copyright (c) Edward Thomson.  All rights reserved.
+# Available under the MIT license; see the included LICENSE file.
+#
+# vim: set expandtab:ts=4:sw=4:number
+
+set -e
+
+IFS=$'\n'
+
+PROGNAME=$(echo "$0" | sed -e 's/.*\///')
+GIT_DIR=$(git rev-parse --git-dir)
+
+DO_RECOVER=0
+DO_FULL=0
+DO_INTERACTIVE=0
+BLOBS=()
+FILENAMES=()
+
+function die_usage {
+    echo "usage: $PROGNAME [-a] [-i] [--full] [<id> [-f <filename>] ...]" >&2
+    exit 1
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+    -a|--all)
+        DO_RECOVER=1
+        ;;
+    -i|--interactive)
+        DO_INTERACTIVE=1
+        ;;
+    --full)
+        DO_FULL=1
+        ;;
+    *)
+        if [ "${1:0:1}" == "-" ]; then
+            echo "$PROGNAME: unknown argument: $1" >&2
+            die_usage
+        fi
+        BLOBS+=("$1")
+
+        shift
+        if [ "$1" == "-f" ] || [ "$1" == "--filename" ]; then
+            shift
+            if [ $# == 0 ]; then
+                die_usage
+            fi
+            FILENAMES+=("$1")
+            shift
+        else
+            FILENAMES+=("")
+        fi
+        continue
+    ;;
+    esac
+    shift
+done
+
+if [ ${#BLOBS[@]} != 0 ] && [ $DO_RECOVER == 1 ]; then
+    die_usage
+elif [ ${#BLOBS[@]} != 0 ]; then
+    DO_RECOVER=1
+fi
+
+case "$OSTYPE" in
+    darwin*|freebsd*) IS_BSD=1 ;;
+    *) IS_BSD=0 ;;
+esac
+
+function expand_given_blobs() {
+    for i in "${!BLOBS[@]}"; do
+        ID=$(git rev-parse --verify "${BLOBS[$i]}" 2>/dev/null || true)
+
+        if [ -z "$ID" ]; then
+            echo "$PROGNAME: ${BLOBS[$i]} is not a valid object." 1>&2
+            exit 1
+        fi
+
+        TYPE=$(git cat-file -t "${ID}" 2>/dev/null || true)
+
+        if [ "$TYPE" != "blob" ]; then
+            echo "$PROGNAME: ${BLOBS[$i]} is not a blob." 1>&2
+            exit
+        fi
+
+        BLOBS[$i]=$ID
+    done
+}
+
+# find all the unreachable blobs
+function find_unreachable() {
+    FULLNESS="--no-full"
+
+    if [ $DO_FULL == 1 ]; then FULLNESS="--full"; fi
+
+    BLOBS=($(git fsck --unreachable --no-reflogs \
+        "${FULLNESS}" --no-progress | sed -ne 's/^unreachable blob //p'))
+}
+
+function read_one_file {
+    BLOB=$1
+    FILTER_NAME=$2
+    ARGS=()
+
+    if [ -z "$FILTER_NAME" ]; then
+        ARGS+=("blob")
+    else
+        ARGS+=("--filters" "--path=$FILTER_NAME")
+    fi
+
+    git cat-file "${ARGS[@]}" "$BLOB"
+}
+
+function write_one_file {
+    BLOB=$1
+    FILTER_NAME=$2
+    OUTPUT_NAME=$3
+
+    ABBREV=$(git rev-parse --short "${BLOB}")
+
+    echo -n "Writing $ABBREV: "
+    read_one_file "$BLOB" "$FILTER_NAME" > "$OUTPUT_NAME"
+    echo "$OUTPUT_NAME."
+}
+
+function unique_filename {
+    if [ ! -f "${BLOB}" ]; then
+        echo "$BLOB"
+    else
+        cnt=1
+        while true
+        do
+            fn="${BLOB}~${cnt}"
+            if [ ! -f "${fn}" ]; then
+                echo "${fn}"
+                break
+            fi
+            cnt=$((cnt+1))
+        done
+    fi
+}
+
+function write_recoverable {
+    for i in "${!BLOBS[@]}"; do
+        BLOB=${BLOBS[$i]}
+        FILTER_NAME=${FILENAMES[$i]}
+        OUTPUT_NAME=${FILENAMES[$i]:-$(unique_filename)}
+
+        write_one_file "$BLOB" "$FILTER_NAME" "$OUTPUT_NAME"
+    done
+}
+
+function file_time {
+    if [ $IS_BSD == 1 ]; then
+        stat -f %c "$1"
+    else
+        stat -c %Y "$1"
+    fi
+}
+
+function timestamp_to_s {
+    if [ $IS_BSD == 1 ]; then
+        date -r "$1"
+    else
+        date -d @"$1"
+    fi
+}
+
+function sort_by_timestamp {
+    # sort blobs in loose objects by their timestamp (packed blobs last)
+    BLOB_AND_TIMESTAMPS=($(for BLOB in "${BLOBS[@]}"; do
+        LOOSE="${BLOB::2}/${BLOB:2}"
+        TIME=$(file_time "$GIT_DIR/objects/$LOOSE" 2>/dev/null || true)
+        echo "$BLOB $TIME"
+    done | sort -k2 -r))
+}
+
+function print_recoverable {
+    echo "Recoverable orphaned git blobs:"
+    echo ""
+
+    sort_by_timestamp
+    for BLOB_AND_TIMESTAMP in "${BLOB_AND_TIMESTAMPS[@]}"; do
+        BLOB=${BLOB_AND_TIMESTAMP::40}
+        TIME=${BLOB_AND_TIMESTAMP:41}
+        DATE=$([ ! -z "$TIME" ] && timestamp_to_s "$TIME" || echo "(Unknown)") 
+
+        echo "$BLOB  $DATE"
+    done
+}
+
+function prompt_for_filename {
+    while true
+    do
+        echo -n "Filename (return to skip): "
+        read -r FILENAME
+
+        if [ -f "$FILENAME" ]; then
+            echo -n "File exists, overwrite? [y,N]: "
+            read -r overwrite
+
+            case "$overwrite" in
+            [yY]*)
+                return 0
+                ;;
+            esac
+
+            echo
+        else
+            return 0
+        fi
+    done
+}
+
+function view_file {
+    read_one_file "${BLOB}" | ${PAGER:-less}
+}
+
+function show_summary {
+    FILETYPE=$(read_one_file "${BLOB}" | file -b -)
+    IS_TEXT=$(echo "${FILETYPE}" | grep -c ' text$' 2>/dev/null || true)
+
+    if [ "$IS_TEXT" == "1" ]; then
+        read_one_file "${BLOB}"
+    else
+        read_one_file "${BLOB}" | hexdump -C
+    fi
+}
+
+function interactive {
+    echo "Recoverable orphaned git blobs:"
+
+    sort_by_timestamp
+    for BLOB_AND_TIMESTAMP in "${BLOB_AND_TIMESTAMPS[@]}"; do
+        echo
+
+        BLOB=${BLOB_AND_TIMESTAMP::40}
+        TIME=${BLOB_AND_TIMESTAMP:41}
+        DATE=$([ ! -z "$TIME" ] && timestamp_to_s "$TIME" || echo "(Unknown)") 
+
+        echo "$BLOB  ($DATE)"
+        show_summary "${BLOB}" | head -4 | sed -e 's/^/> /'
+        echo
+
+        while true
+        do
+            echo -n "Recover this file? [y,n,v,f,q,?]: "
+            read -r ans || return 1
+
+            case "$ans" in
+            [yY]*)
+                write_one_file "${BLOB}" "" "$(unique_filename)"
+                break
+                ;;
+            [nN]*)
+                break
+                ;;
+            [vV]*)
+                view_file "${BLOB}"
+                echo
+                ;;
+            [fF]*)
+                prompt_for_filename
+
+                if [ "$FILENAME" == "" ]; then
+                    break
+                fi
+
+                write_one_file "${BLOB}" "${FILENAME}" "${FILENAME}"
+                break
+                ;;
+            \?*)
+                echo
+                echo "Do you want to recover this file?"
+                echo " y: yes, write the file to ${BLOB}"
+                echo " n: no, skip this file and see the next orphaned file"
+                echo " v: view the file"
+                echo " f: prompt for a filename to use for recovery"
+                echo " q: quit"
+                echo
+                ;;
+            [qQ]*)
+                return 0
+                ;;
+            esac
+        done
+    done
+}
+
+
+if [ ${#BLOBS[@]} != 0 ]; then
+    expand_given_blobs
+else
+    find_unreachable
+fi
+
+if [ ${#BLOBS[@]} == 0 ]; then
+    echo "$PROGNAME: no recoverable orphaned blobs."
+    exit
+fi
+
+if [ $DO_INTERACTIVE == 1 ]; then
+    interactive
+elif [ $DO_RECOVER == 1 ]; then
+    write_recoverable
+else
+    print_recoverable
+fi

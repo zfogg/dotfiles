@@ -1,0 +1,53 @@
+#!/usr/bin/env zsh
+# joopal-bin-abort-err (ba-err)
+#   prints formatted errors
+#
+#   NOTE: $0 = ~/.zsh/site-functions/ba-err
+#
+#   INFO: 
+#       autoload -Uz bin-abort ba-err echoer
+#       trap 'bin-abort' ERR
+
+
+ba_err_code= # {{{
+
+local ba_err_code_default='1'
+
+ba-err-code() {
+    local code="${1:-$ba_err_code_default}"
+    ba_err_code="${code}"
+}
+# }}} error code setter
+
+
+ba_err_emsg= # {{{
+
+local tmpl_default=$(cat <<-'EOF'
+	ERROR - %s
+	    %s - '%s'
+EOF
+)
+
+local cont_default=(
+    "${0:t}"
+    'UNKNOWN'
+)
+
+ba-err-emsg() {
+    local tmpl="${1:-$tmpl_default}"
+    local cont=("${${@:2}[@]:-$cont_default[@]}")
+    ba_err_emsg=$(printf "${tmpl}" "${cont[@]}")
+}
+# }}} error message setter
+
+
+ba-err() { # {{{
+    ba-err-code "${1}"
+    ba-err-emsg "${${@:2}[@]}"
+    return "${ba_err_code}"
+}
+# }}} main function
+
+
+ba-err "$@"
+

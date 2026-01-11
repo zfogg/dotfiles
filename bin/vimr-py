@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+
+vimr --nvim -c 'set ft=python' "$@"

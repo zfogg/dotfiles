@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+
+function joopal_df.mini() {
+    sudo grc --colour=auto df \
+        --human-readable \
+        --local \
+        --output=target,itotal,iused,iavail,pcent,size \
+        --exclude-type=overlay \
+        --exclude-type=squashfs \
+        --exclude-type=tmpfs \
+        --exclude-type=swap \
+        --exclude-type=vfat \
+        --exclude-type=devtmpfs
+}
+
+joopal_df.mini

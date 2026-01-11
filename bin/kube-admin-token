@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+local kube_admin_user=$(
+    kubectl -n kube-system get secret \
+        | grep admin-user \
+        | awk '{print $1}')
+
+
+kubectl -n kube-system describe secret "$kube_admin_user" \
+    | tail -n1 \
+    | sed 's!\(token\:\ *\)!!'

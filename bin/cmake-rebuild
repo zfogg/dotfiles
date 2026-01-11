@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+
+
+scriptName="${0##*/}"
+>&2 echo "${scriptName}"
+
+buildDir="${1:-build}"
+if [[ $buildDir && ${PWD##*/} == "${buildDir}" ]]; then
+    cd ..
+fi
+
+rootName="${PWD##*/}"
+buildPath="${PWD}/${buildDir}"
+
+libName=${2:-$rootName}
+installPrefix="${BREW:-/usr/local}/opt/${libName}"
+
+if [[ ! -d "${buildPath}" ]]; then
+    mkdir -p "${buildPath}"
+else
+    ilogName='install_manifest.txt'
+    ilogPath="${buildPath}/${ilogName}"
+    [ -f "${ilogPath}" ] && xargs rm -rf < "${ilogPath}"
+    find "${buildPath}" -mindepth 1 -name 'CMakeCache.txt' -delete
+fi
+cd "${buildPath}"
+
+
+set -e
+TMPDIR=`mktemp -d -t "${scriptName}"`'/'
+tmpOut=`mktemp "${TMPDIR}${libName}.$$.out.log"`
+tmpErr=`mktemp "${TMPDIR}${libName}.$$.err.log"`
+set +e
+
+exec 3>&1 1>"${tmpOut}"
+exec 4>&2 2>"${tmpErr}"
+
+<&3 echo "${TMPDIR}"        | >&3 xargs printf   '\t%b\n'
+<&3 echo "$$".{out,err}.log | >&3 xargs printf '\t\t%b\n'
+
+>&4 echo "${scriptName}: building..."
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=${installPrefix}
+>&4 echo "${scriptName}: installing..."
+cmake --build . --target install
+>&4 echo "${scriptName}: done!"
+
+exec \
+    1>&3 3>&- \
+    2>&4 4>&-

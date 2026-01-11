@@ -1,0 +1,75 @@
+#!/usr/bin/env zsh
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+local n="${1:-/dev/null/invalid}"
+if [[ ! -e $n ]]; then
+    >&2 echo '🔴  no file '"'$n'"' 😩' && exit 1
+fi
+
+
+# {{{ FIXME: 1st version "it works lol 😕"
+function run_joopal-gif1() {
+    #local palette="${TEMPDIR}palette.png"
+    local palette="${1:r}".palette.png
+
+    local filters="fps=20,scale=800:-1:flags=lanczos+full_chroma_inp"
+    #local filters="fps=15,scale=640:-1:flags=lanczos+full_chroma_inp"
+    #local filters="fps=15,scale=400:-1:flags=lanczos+full_chroma_inp"
+    #local filters="fps=30,scale=320:-1:flags=lanczos+full_chroma_inp"
+
+    ffmpeg -i "$1" \
+        -vf "$filters,palettegen" \
+        -y "$palette"
+
+    ffmpeg -i "$1" \
+        -i "$palette" \
+        -lavfi "$filters [x]; [x][1:v] paletteuse" \
+        -y "${1:r}".gif
+
+    rm "$palette"
+}
+# }}}
+
+
+# {{{ FIXME: 2nd version (WIP)
+# INFO: https://superuser.com/questions/1049606/reduce-generated-gif-size-using-ffmpeg
+function run_joopal-gif2() {
+    #start_time=00:00:01
+    #duration=5
+    #local height='ih/2'      # input height halved, can replace with pixels.
+    #local width='-2'         # keeps aspect ratio. can replace with pixels.
+    local height='320'       # input height halved, can replace with pixels.
+    local width='-1'         # keeps aspect ratio. can replace with pixels.
+    local fps='25'           # frames per a second.
+
+    local filters="fps=$fps,scale=${width}:${height}:flags=lanczos"
+
+    local palette_file="${1:r}".palette.png
+
+           #-ss $start_time                             \
+           #-t  $duration                               \
+
+    ffmpeg -i  "$1"                                    \
+           -v  warning                                 \
+           -vf "$filters,palettegen"                   \
+           -y  "$palette_file"
+
+           #-ss $start_time                             \
+           #-t  $duration                               \
+
+    ffmpeg -i  "$1"                                    \
+           -i  "$palette_file"                         \
+           -lavfi "$filters [x]; [x][1:v] paletteuse"  \
+           -y  "${1:r}".gif
+
+    rm "$palette_file"
+}
+# }}}
+
+
+run_joopal-gif1 "$@"
+#run_joopal-gif2 "$@"
