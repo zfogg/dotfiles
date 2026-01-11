@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+# Easily use environment variables from Heroku on your local machine.
+
+heroku config | tail -n+2 | sed -e "s/: */=\"/" | sed -e "s/^/export /g" | sed -e "s/$/\"/g"

@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+
+
+function _main() {
+  local hosted_zones=$(aws --output json route53 list-hosted-zones)
+  #local names=$(      echo "$hosted_zones" | jq -r '.HostedZones | .[] | .Name')
+  #local ids=$(        echo "$hosted_zones" | jq -r '.HostedZones | .[] | .Id')
+  local names_ids=$(  echo "$hosted_zones" | jq -r '.HostedZones | .[] | [.Name, .Id] | @tsv')
+
+  for name zone in `echo "$names_ids"`; do
+    echo "$name $zone" >&2
+    local records=$(aws route53 list-resource-record-sets \
+      --output json \
+      --hosted-zone-id "$zone" \
+      --query "ResourceRecordSets[?Type == 'NS']"
+    )
+    echo "$records" | jq -r '.[0].ResourceRecords[].Value' | xargs
+  done
+}
+
+_main "$@"

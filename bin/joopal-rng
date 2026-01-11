@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+local n="${1:-16}"
+
+function _joopal-rng() {
+  local LC_CTYPE='C'
+  < /dev/urandom tr -cd '[:graph:]' | head -c "${n}"
+}
+
+
+_joopal-rng "$@"

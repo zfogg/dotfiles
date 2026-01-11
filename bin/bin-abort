@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# joopal-bin-abort (bin-abort)
+#   sane, default, & accessible error handling,
+#   all up in my ~/bin/*.zsh scripts
+#
+#   NOTE: $0 = ~/.zsh/site-functions/bin-abort
+
+
+bin-abort() {
+    local code="${1:-${ba_err_code}}"
+    local emsg="${2:-${ba_err_emsg}}"
+
+    echo "\n${0} (${code})\n${emsg}\n" \
+        >&2
+
+    exit "${code}"
+}
+
+bin-abort "$@"
+

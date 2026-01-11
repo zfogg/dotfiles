@@ -1,0 +1,1 @@
+/Users/zfogg/src/magic/bash-zsh-support/magic.sh

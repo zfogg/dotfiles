@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+
+
+insecure_certs_dir="${PWD}/InsecureCerts"
+mkdir -p "$insecure_certs_dir"
+cd "$insecure_certs_dir"
+
+function() {
+  openssl req \
+    -x509 \
+    -nodes \
+    -new \
+    -sha256 \
+    -days 1024 \
+    -newkey rsa:2048 \
+    -keyout InsecureRootCA.key \
+    -out InsecureRootCA.pem \
+    -subj "/C=US/CN=Insecure-Root-CA"
+
+  openssl x509 \
+    -outform pem \
+    -in InsecureRootCA.pem \
+    -out InsecureRootCA.crt
+
+  openssl req \
+    -new \
+    -nodes \
+    -newkey rsa:2048 \
+    -keyout InsecureCert.key \
+    -out InsecureCert.csr \
+    -subj "/C=US/ST=California/L=San Francisco/O=Insecure Certificate/OU=Org/CN=localhost"
+
+  openssl x509 \
+    -req \
+    -sha256 \
+    -days 1024 \
+    -in InsecureCert.csr \
+    -CA InsecureRootCA.pem \
+    -CAkey InsecureRootCA.key \
+    -CAcreateserial \
+    -extfile ~/.config/openssl/https-insecure-domains.ext \
+    -out InsecureCert.crt
+}
+
+
+cd ..

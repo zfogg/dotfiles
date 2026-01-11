@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# OS X
+# print my MAC address
+
+
+interface="${1:-en0}"
+address_family="${2:-ether}"
+
+iface_info=`ifconfig "$interface" "$address_family"`
+[ $? -eq 0 ] &&\
+    grep "$address_family" <<< "$iface_info" |\
+    cut -d' ' -f2-

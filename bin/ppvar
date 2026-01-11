@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+# joopal-ppvar (ppvar)
+#   pretty prints environment variables
+
+function ppvar_main() {
+  autoload -Uz echoer
+  local var_name="${1:-PATH}"
+  if [[ ! -v $var_name ]]; then
+    echoer "🚫 variable '${var_name}' is not set 🚫"
+    return 12
+  fi
+
+  local plines=$(trnl <<< "${(P)var_name}")
+  local var_len=$(wc -l <<< ${plines[@]})
+
+  local tempf=$(mktempf "ppvar-${var_name}")
+  exec 3>&2 2>"$tempf"
+
+  autoload -Uz trim-whitespace
+
+  echoer                                                        #'\n'
+  echoer "ppvar - pretty print shell env vars"                  #'\n'
+  echoer $'\tvar name'   $'\t->' "${var_name}"                  #'\n'
+  echoer $'\titem count' $'\t->' "$(trim-whitespace $var_len)"  #'\n'
+
+  printf "%s\n" "${plines[@]}"
+
+  exec 2>&3 3>&-
+  xargs -0 printf '\n%s\n' >&2 < $tempf
+  return 0
+}
+
+ppvar_main "$@"

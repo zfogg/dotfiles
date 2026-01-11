@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+
+SELFIE=~/Pictures/selfie.jpg
+
+imagesnap -w 3 "$SELFIE"
+open "$SELFIE"

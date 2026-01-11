@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+local place_kitten='https://placekitten.com/64/64'
+function _k_icat() {
+    kitty +kitten icat ${1:-$place_kitten}
+}
+
+_k_icat "$@"

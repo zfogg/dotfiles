@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+local mt="${1:-/dev/null}"
+local ff="${2:-/dev/null}"
+if [[ "$mt" == "/dev/null" ]] \
+|| [[ "$ff" == "/dev/null" ]]; then
+    local errmsg=$(cat <<-'EOF'
+		ERROR - %s
+		    0:regex "mime" = '%s'
+		    1:path  "file" = '%s'
+		
+	EOF
+    )
+    ba-err '12' "$errmsg" "${0:t}" "$ff" "$mt"
+fi
+
+
+local ffmt="$(command -p \
+    file --brief --mime-type ${ff})"
+
+
+[[ "$ffmt" =~ "$mt" ]] \
+    && true
+

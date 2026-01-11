@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+#    ~/.dotfiles/bin/trnl
+
+
+tr "${1:-':'}" '\n'

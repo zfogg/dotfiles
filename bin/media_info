@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+
+inputFile=${1:-NOTHING}
+
+([ "$inputFile" = "NOTHING" ] || [ ! -f "$inputFile" ]) \
+    && echo \
+        "`basename "$0"`"\
+        '\n\t' \
+        'ERROR:' \
+            'arg0 must be a valid filepath' \
+    && exit 1
+
+ffprobe "$inputFile" 2>&1 | sed -n '/Input\s#\w\+/,$p'

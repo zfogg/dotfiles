@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+
+
+autoload -Uz bin-abort ba-err echoer
+trap 'bin-abort' ERR
+
+
+local out_dir="/dev/null"
+if [[ -d $1 ]]; then
+    out_dir="$1"
+    shift
+else
+    out_dir="$PWD"
+fi
+
+if [[ ! -d $out_dir ]]; then
+    echo "ERROR: bad output dir: '${out_dir}'" \
+        && exit -637
+fi
+
+
+local to_convert="${1:-/dev/null}"
+if [[ ! -f $to_convert ]]; then
+    echo "$to_convert"
+    echo "ERROR: no input files lol" \
+        && exit -420
+fi
+
+
+while [ $# -gt 0 ]; do
+    if [[ -e $1 ]]; then
+        local filetype="${1:e}"
+        #-c:a copy \
+        ffmpeg -i "$1" \
+            -hide_banner \
+            -loglevel info \
+            -c:v libx265 \
+            -crf 28 \
+            -preset medium \
+            "${out_dir}/${1%."$filetype"}.h265.mp4"
+    else
+        echo "ERROR: bad input file: '$1'" \
+            && exit -520
+    fi
+    shift
+done
+

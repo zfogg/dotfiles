@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+#    ~/.dotfiles/bin/local.launchd
+# vim: filetype=zsh:
+
+
+autoload -Uz bin-abort ba-err echoer echoeval
+trap 'bin-abort' ERR
+
+
+grep '^export' ~/.launchd.conf \
+  | while IFS=' "=' read envexp envkey envval;
+do
+  echoeval launchctl setenv "${envkey}" "${envval}" || (
+    read -rd':' errmsg <<-'EOF'
+			ERROR - %s
+			  $envkey = '%s'
+			  $envval = '%s'
+EOF
+    ba-err "$errmsg" "$envkey" "$envval"
+  )
+done

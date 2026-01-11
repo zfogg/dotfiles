@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+if [[ "${LINUX:-0}" == "${TRUE:-1}" ]]; then
+  command -p stat -c '%A %a %n' "$@"
+elif [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
+  command -p stat -f '%Sp %OLp %N' "$@"
+else
+  exit 420
+fi

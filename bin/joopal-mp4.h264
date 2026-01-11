@@ -1,0 +1,55 @@
+# vim: set ft=zsh
+#!/bin/zsh
+
+# Force zsh if not already running under it
+if [ -z "$ZSH_VERSION" ]; then
+    exec /bin/zsh "$0" "$@"
+fi
+
+#autoload -Uz bin-abort echoer
+trap 'bin-abort' ERR
+
+function joopal_mp4_h264 {
+    local out_dir="/dev/null"
+    if [[ -d $1 ]]; then
+        out_dir="$1"
+        shift
+    else
+        out_dir="$PWD"
+    fi
+
+    if [[ ! -d $out_dir ]]; then
+        echo "ERROR: bad output dir: '${out_dir}'" \
+            && exit -637
+    fi
+
+
+    local to_convert="${1:-/dev/null}"
+    if [[ ! -f $to_convert ]]; then
+        echo "$to_convert"
+        echo "ERROR: no input files lol" \
+            && exit -420
+    fi
+
+
+    while [ $# -gt 0 ]; do
+        if [[ -e $1 ]]; then
+            local filename="${1:t:r}"
+            local filetype="${1:t:e}"
+            #-c:a copy \
+            ffmpeg -i "$1" \
+                -hide_banner \
+                -loglevel info \
+                -c:v libx264 \
+                -crf 26 \
+                -preset slow \
+                "${out_dir}/${filename}.${filetype}.h264.mp4"
+        else
+            echo "ERROR: bad input file: '$1'" \
+                && exit -520
+        fi
+        shift
+    done
+}
+
+joopal_mp4_h264 "$@"

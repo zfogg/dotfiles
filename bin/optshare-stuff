@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+
+local usr_local=`brew --prefix || echo /usr/local`
+local local_opt=$usr_local/opt
+
+find -L $local_opt/*/share -maxdepth 6 -ipath '*share/man'
