@@ -20,9 +20,6 @@
 [submodule "Library/Developer/Xcode/UserData/FontAndColorThemes/base16-xcode"]
 	path = Library/Developer/Xcode/UserData/FontAndColorThemes/base16-xcode
 	url = git@github.com:kreeger/base16-xcode.git
-[submodule ".emacs.d"]
-	path = .emacs.d
-	url = https://github.com/syl20bnr/spacemacs
 [submodule ".config/kitty/deps/vim-kitty-navigator"]
 	path = .config/kitty/deps/vim-kitty-navigator
 	url = git@github.com:knubie/vim-kitty-navigator.git
