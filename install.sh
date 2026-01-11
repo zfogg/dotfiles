@@ -36,6 +36,7 @@ SKIP_FILES=(
     ".atom"
     "asdf"
     ".config"
+    ".local"
     "bin"
 )
 
