@@ -1,7 +1,7 @@
 -- lua/rc/treesitter.lua
 
 
-require'nvim-treesitter.configs'.setup {
+require'nvim-treesitter'.setup {
   ensure_installed = {}, -- Don't auto-install, manage manually with :TSInstall
   auto_install = false,  -- Don't auto-install parsers
   ignore_install = {

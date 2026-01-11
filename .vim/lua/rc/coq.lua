@@ -6,6 +6,11 @@ local function keymaps()
 end
 
 function M.setup()
+  -- Don't start COQ in headless mode
+  if vim.fn.has('nvim') == 0 or vim.env.NVIM_HEADLESS or #vim.api.nvim_list_uis() == 0 then
+    return
+  end
+  
   vim.g.coq_settings = vim.g.coq_settings or {}
   vim.g.coq_settings = vim.tbl_deep_extend('force', vim.g.coq_settings, {
     auto_start = 'shut-up',
@@ -33,6 +38,11 @@ function M.setup()
 end
 
 function M.config()
+  -- Don't start COQ in headless mode
+  if vim.fn.has('nvim') == 0 or vim.env.NVIM_HEADLESS or #vim.api.nvim_list_uis() == 0 then
+    return
+  end
+  
   local coq = require "coq"
   --coq.Now() -- Start coq
 
