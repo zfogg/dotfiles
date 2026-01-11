@@ -2,7 +2,7 @@
     	email      = me@zfo.gg
     	name       = Zachary Fogg
     	;signingkey = 85795255CAC2EEF8F5CE3446F4967DF3989C8111
-    	signingkey = 24BD65F25E5D7311F5FFB2D3EDDAE1DA7360D7F4
+	signingkey = 7FE90A79F2E80ED3
 
 [core]
     	editor       = $EDITOR
@@ -23,7 +23,7 @@
     	pruneTags = true
     	output    = compact
 [commit]
-    	gpgsign = true
+	gpgsign = true
     	;gpgsign = false
 [push]
     	default = simple
