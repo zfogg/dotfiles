@@ -24,12 +24,12 @@ autoload -Uz          \
 select-word-style normal
 zsh-mime-setup
 
-export ANTIGEN_HS_HOME="$HOME/.zsh/antigen-hs"
-export ANTIGEN_HS_MY="$ANTIGEN_HS_HOME/../MyAntigen.hs"
-export ANTIGEN_HS_OUT="$HOME/.antigen-hs"
-export ANTIGEN_HS_SANDBOX='stack'
-#export ANTIGEN_HS_SANDBOX='cabal'
-source "$HOME/.zsh/antigen-hs/init.zsh"
+# antidote plugin manager
+# https://antidote.sh/
+export ANTIDOTE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/antidote"
+[[ -d $ANTIDOTE_HOME ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git $ANTIDOTE_HOME
+source $ANTIDOTE_HOME/antidote.zsh
+antidote load ${ZDOTDIR:-$HOME/.config/zsh}/.zsh_plugins.txt
 # }}}
 
 
@@ -320,7 +320,9 @@ fi
 
 
 # aliases, functions {{{
-source "$HOME/.aliases"
+if [[ ! -v CLAUDECODE ]]; then
+    source "$HOME/.aliases"
+fi
 # }}}
 
 
@@ -347,18 +349,9 @@ fi
 
 
 # powerlevel10k {{{
-function() {
-  local pl10k_file=powerlevel10k.zsh-theme
-  local pl10k_root=
-  if [[ $OSX == $TRUE ]]; then
-    pl10k_root=$BREW/opt/powerlevel10k
-  elif [[ $LINUX == $TRUE ]]; then
-    pl10k_root=/usr/share/zsh-theme-powerlevel10k
-  fi
-  local pl10k_path=$pl10k_root/$pl10k_file
-  [[ -d $pl10k_root && -f $pl10k_path ]] && source "$pl10k_path"
-  [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
-}
+# INFO: now loaded via antidote from .zsh_plugins.txt
+# Load p10k config
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 # }}}
 
 
@@ -455,3 +448,6 @@ export HOMEBREW_NO_ENV_HINTS=1
 
 export AWS_PROFILE=softmax
 
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export VCPKG_ROOT=$HOME/.local/share/vcpkg
