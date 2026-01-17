@@ -402,4 +402,8 @@ function claude() {
 }
 
 
+if [[ $OSX == $TRUE ]]; then
+    alias tailscale='/usr/local/bin/tailscale --socket=/var/run/tailscaled.socket'
+fi
+
 #set +x INFO: DEBUG
