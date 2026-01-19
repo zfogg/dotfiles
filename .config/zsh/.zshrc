@@ -84,7 +84,7 @@ local RG_PRG='rg '
 local RG_ARGS="--column --line-number --no-heading --sortr=modified --ignore --hidden --color=always --smart-case -g'!.git'"
 function() { # grep, rg
   if command_exists rg; then
-    export RIPGREP_CONFIG_PATH="$HOME/.dotfiles/.ripgreprc"
+    export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
     local GREPPRG_PRG="$RG_PRG"
     local GREPPRG_ARGS="$RG_ARGS"
     export FZF_DEFAULT_COMMAND="$RG_PRG --files $RG_ARGS 2>/dev/null "

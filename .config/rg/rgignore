@@ -91,7 +91,3 @@ doc/tags
 **/.claude/settings.local.json
 
 **/CLAUDE.local.md
-
-bun.lock
-package-lock.json
-yarn.lock
