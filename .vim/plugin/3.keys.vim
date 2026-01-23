@@ -31,7 +31,6 @@ noremap <C-d> <C-d>zz
 noremap <C-u> <C-u>zz
 noremap { {zz
 noremap } }zz
-noremap gd gdzz
 
 " write
 " NOTE check your kitty.conf for a cmd+s mapping.

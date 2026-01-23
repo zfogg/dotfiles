@@ -15,7 +15,7 @@ function M.setup()
   vim.g.coq_settings = vim.tbl_deep_extend('force', vim.g.coq_settings, {
     auto_start = 'shut-up',
     keymap = {
-      recommended     = true,
+      recommended     = false,
       manual_complete = '<C-Space>',
       bigger_preview  = '<C-S-i>',
       jump_to_mark    = '<C-S-y>',

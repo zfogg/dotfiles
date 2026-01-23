@@ -1,4 +1,2 @@
--- lua/lspconfig.lua
---local lsp           = require'lspconfig'
---local configs       = require'lspconfig/configs'
---local util          = require'lspconfig/util'
+-- lua/rc/lspconfig.lua
+require('rc.lsputils')
