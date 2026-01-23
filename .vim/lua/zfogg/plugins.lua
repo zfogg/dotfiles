@@ -124,7 +124,7 @@ require("lazy").setup({
   { 'dense-analysis/ale',
     lazy = true,
     event = { "BufReadPost", "BufNewFile" },  -- Load when opening files for linting
-    config = function() 
+    config = function()
       require('rc.ale').setup()
       require('rc.ale').config()
     end,
@@ -297,15 +297,14 @@ require("lazy").setup({
     config = function() require("rc.copilot").config() end,
   },
 
-  { 'ms-jpq/coq_nvim',
-    build = ':COQdeps',
+  { 'saghen/blink.cmp',
+    dependencies = { 'rafamadriz/friendly-snippets' },
+    version = '1.*',
     event = 'InsertEnter',
     lazy = true,
-    init = function() require("rc.coq").setup() end,
-    config = function() require("rc.coq").config() end,
-    dependencies = {
-      { 'ms-jpq/coq.artifacts', branch = 'artifacts' },
-    },
+    config = function()
+      require('rc.blink').setup()
+    end,
   },
 
   { 'jubnzv/virtual-types.nvim',
@@ -334,7 +333,7 @@ require("lazy").setup({
       'williamboman/mason-lspconfig.nvim',
       'neovim/nvim-lspconfig',
       'ray-x/lsp_signature.nvim',
-      'ms-jpq/coq_nvim',
+      'saghen/blink.cmp',
       'folke/neodev.nvim',
       'lukas-reineke/lsp-format.nvim',
     },
@@ -468,7 +467,7 @@ require("lazy").setup({
   },
 
   -- clang
-  { 'libclang-vim/libclang-vim', ft = ft['cx'] },
+  { 'libclang-vim/libclang-vim', ft = ft['cx'], enabled = false },
 
   { 'kchmck/vim-coffee-script', ft = { 'coffee' } },
   { 'tweekmonster/braceless.vim',
@@ -594,7 +593,7 @@ require("lazy").setup({
     lazy = true,
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
-      'ms-jpq/coq_nvim',
+      'saghen/blink.cmp',
     },
     init = function() require('rc.autopairs').setup() end,
     config = function() require('rc.autopairs').config() end,
@@ -623,8 +622,8 @@ require("lazy").setup({
       'saihoooooooo/vim-textobj-space',
       'jceb/vim-textobj-uri',
       'Julian/vim-textobj-variable-segment',
-      { 'libclang-vim/vim-textobj-clang', ft = ft['cx'] },
-      { 'libclang-vim/vim-textobj-function-clang', ft = ft['cx'] },
+      { 'libclang-vim/vim-textobj-clang', ft = ft['cx'], enabled = false },
+      { 'libclang-vim/vim-textobj-function-clang', ft = ft['cx'], enabled = false },
     },
   },
 

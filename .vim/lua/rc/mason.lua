@@ -44,7 +44,6 @@ local servers = {
   rust_analyzer = {},
   arduino_language_server = {},
   bashls = {},
-  clangd = {},
   cmake = {},
   --neocmake = {},
   cssls = {},
@@ -99,10 +98,11 @@ end
 function M.config()
   require("mason").setup()
 
-  -- Ensure the servers above are installed
-  local capabilities                                                          = vim.lsp.protocol
-      .make_client_capabilities()
-  capabilities.textDocument.codeAction                                        = {
+  -- Get capabilities from blink.cmp
+  local capabilities = require('blink.cmp').get_lsp_capabilities()
+
+  -- Add additional codeAction capabilities
+  capabilities.textDocument.codeAction = {
     dynamicRegistration = true,
     codeActionLiteralSupport = {
       codeActionKind = {
@@ -113,22 +113,6 @@ function M.config()
         end)()
       }
     }
-  }
-
-  capabilities.textDocument.completion.completionItem.documentationFormat     = { 'markdown', 'plaintext' }
-  capabilities.textDocument.completion.completionItem.snippetSupport          = true
-  capabilities.textDocument.completion.completionItem.preselectSupport        = true
-  capabilities.textDocument.completion.completionItem.insertReplaceSupport    = true
-  capabilities.textDocument.completion.completionItem.labelDetailsSupport     = true
-  capabilities.textDocument.completion.completionItem.deprecatedSupport       = true
-  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-  capabilities.textDocument.completion.completionItem.tagSupport              = { valueSet = { 1 } }
-  capabilities.textDocument.completion.completionItem.resolveSupport          = {
-    properties = {
-      'documentation',
-      'detail',
-      'additionalTextEdits',
-    },
   }
 
   require("lsp-format").setup({})
@@ -218,32 +202,49 @@ function M.config()
     vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
   end
 
-  local mason_lspconfig = require('mason-lspconfig')
-  local coq = require('coq')
-  local lspconfig = require('lspconfig')
-  mason_lspconfig.setup({
-    --ensure_installed = vim.tbl_keys(servers),
-    handlers = {
-      function(server_name)
-        local opts = {
-          capabilities = capabilities,
-          on_attach = on_attach,
-          settings = servers[server_name],
-          filetypes = (servers[server_name] or {}).filetypes,
-        }
-        --if servers[server_name].root_dir then
-        --  opts.root_dir = function(fname, _)
-        --    --_G.pp(opts.root_dir(fname))
-        --    --_G.pp('filename')
-        --    _G.pp(util.find_git_ancestor(fname))
-        --    return util.find_git_ancestor(fname)
-        --    --return servers[server_name].root_dir(filename)
-        --  end
-        --end
-        lspconfig[server_name].setup(coq.lsp_ensure_capabilities(opts))
-      end,
-    },
+  -- Use only the new vim.lsp.config API - no require('lspconfig') to avoid deprecation warning
+
+  -- Configure clangd with custom capabilities
+  vim.lsp.config('clangd', {
+    capabilities = capabilities,
   })
+  vim.lsp.enable('clangd')
+
+  -- Configure other servers
+  for server_name, server_config in pairs(servers) do
+    local opts = {
+      capabilities = capabilities,
+      settings = server_config,
+    }
+    if server_config and server_config.filetypes then
+      opts.filetypes = server_config.filetypes
+    end
+    if server_config and server_config.cmd then
+      opts.cmd = server_config.cmd
+    end
+    vim.lsp.config(server_name, opts)
+    vim.lsp.enable(server_name)
+  end
+
+  -- Setup an LspAttach autocommand to call our on_attach for all servers
+  vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+      local client_id = args.data.client_id
+      local bufnr = args.buf
+      on_attach(vim.lsp.get_client_by_id(client_id), bufnr)
+    end,
+  })
+
+  -- Install servers via mason-lspconfig with automatic_enable disabled (we enable servers manually above)
+  require('mason-lspconfig').setup({
+    automatic_enable = false,
+    ensure_installed = (function()
+      local list = vim.tbl_keys(servers)
+      table.insert(list, 'clangd')
+      return list
+    end)(),
+  })
+
 end
 
 return M

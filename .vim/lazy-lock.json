@@ -15,7 +15,6 @@
   "bufferline.nvim": { "branch": "main", "commit": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3" },
   "chromatica.nvim": { "branch": "master", "commit": "962f2a18b4d67dd4cd00c67db96bb46f2f5ca5c1" },
   "context_filetype.vim": { "branch": "master", "commit": "ffb1ec4b2b3b34d77dd1a1b3610f2533eb69506c" },
-  "coq_nvim": { "branch": "coq", "commit": "d939a34ceb2b57d2937890337a4aa75eb55e18a8" },
   "csv.vim": { "branch": "master", "commit": "ab776a6266593e9e0d8643cdb7e577f81c0eab7d" },
   "diffconflicts": { "branch": "master", "commit": "4972d1401e008c5e9afeb703eddd1b2c2a1d1199" },
   "editorconfig-vim": { "branch": "master", "commit": "13b86c5c691785ffbf2d6508c621dabb08e93df0" },
