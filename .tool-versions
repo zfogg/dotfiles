@@ -1,26 +1,18 @@
 # vim: filetype=config:
-
 #direnv latest 2.32.3
 direnv 2.32.3
 #java   latest
 #nodejs latest 21.1.0 19.9.0 19.4.0 18.18.2
-nodejs 24.7.0 21.1.0 19.9.0 19.4.0 18.18.2
-
+nodejs 25.4.0
 #python latest 3.12.0 system
 python 3.12.0
-
 #ruby   latest 3.2.2
 ruby   3.2.2
-
 #rust   latest stable latest:1.56 beta nightly
 rust   stable 1.89.0 1.73.0
-
 golang 1.17.3
-
 #deno   latest 1.16.3
-
 #lua    latest 5.4.6 system
 #lua    5.4.6 5.1.5
 lua    5.1.5
-
 #pnpm   latest 6.31.0
