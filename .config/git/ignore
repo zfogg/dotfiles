@@ -26,7 +26,6 @@ plugins/
 
 *.log
 *.log.*
-log/
 logs/
 .nvimlog
 

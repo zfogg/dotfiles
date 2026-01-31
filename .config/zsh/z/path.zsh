@@ -11,7 +11,7 @@
   typeset -xUT INFOPATH infopath
 
   # INFO: https://www.reddit.com/r/neovim/comments/ga0s7w/comment/foxs2m8/
-  [[ "$SHLVL" > 1 ]] && return fi
+  [[ "$SHLVL" > 1 ]] && return
 # }}}
 
 #print -rl -- "${fpath[@]#/usr/local/share/zsh/site-functions}"
@@ -27,10 +27,7 @@ function() { # {{{ BEFORE platform-specifics
     "$fpath[@]"
   )
 
-  manpath=(
-    /usr/share/man
-    "$manpath[@]"
-  )
+  # MANPATH initialized in platform-specifics sections below
 
   infopath=(
     "$infopath[@]"
@@ -57,12 +54,14 @@ function () { # {{{ platform-specifics
       "$fpath[@]")
 
     manpath=(
-      #$BREW/opt/{findutils,coreutils,libtool}/libexec/gnuman
-      #$BREW/opt/{make,grep,ed,gawk}/libexec/gnuman
-      #$BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnuman
-      #$BREW/opt/{curl,gnu-getopt,file-formula,unzip}/share/man
+      $BREW/opt/{findutils,coreutils,libtool}/libexec/gnuman
+      $BREW/opt/{make,grep,ed,gawk}/libexec/gnuman
+      $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnuman
+      $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/share/man
       $BREW/share/man
-      "$manpath[@]")
+      /usr/local/share/man
+      /usr/share/man
+      /opt/local/share/man)
 
     infopath=(
       $BREW/share/info
@@ -104,6 +103,8 @@ function () { # {{{ platform-specifics
 
     manpath=(
       $BREW/share/man
+      /usr/share/man
+      /usr/local/share/man
       "$manpath[@]"
     )
 
@@ -168,8 +169,8 @@ function() { # {{{ AFTER platform-specifics
   )
 
   manpath=(
-    #$HOME/.nvm/versions/node/v*.*.*/share/man(nF/[-1])
     $XDG_DATA_HOME/man
+    #$HOME/.nvm/versions/node/v*.*.*/share/man(nF/[-1])
     "$manpath[@]"
   )
 
