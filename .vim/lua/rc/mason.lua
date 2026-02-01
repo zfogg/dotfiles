@@ -41,6 +41,7 @@ local servers = {
     --  '.git'
     --)
   },
+  clangd = {},
   rust_analyzer = {},
   arduino_language_server = {},
   bashls = {},
@@ -154,7 +155,8 @@ function M.config()
     nmap('gI', function() require('telescope.builtin').lsp_implementations() end, '[G]oto [I]mplementation')
     nmap('<leader>D', function() require('telescope.builtin').lsp_type_definitions() end, 'Type [D]efinition')
     nmap('<leader>ds', function() require('telescope.builtin').lsp_document_symbols() end, '[D]ocument [S]ymbols')
-    nmap('<leader>ws', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, '[W]orkspace [S]ymbols')
+    nmap('<leader>ws', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end,
+      '[W]orkspace [S]ymbols')
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -236,15 +238,16 @@ function M.config()
   })
 
   -- Install servers via mason-lspconfig with automatic_enable disabled (we enable servers manually above)
+  local ensure_installed = vim.tbl_keys(servers)
+  -- Mason doesn't have clangd or cmake binaries for arm64
+  if vim.loop.os_uname().machine == 'aarch64' then
+    ensure_installed = vim.tbl_filter(function(s) return s ~= 'cmake' end, ensure_installed)
+    ensure_installed = vim.tbl_filter(function(s) return s ~= 'clangd' end, ensure_installed)
+  end
   require('mason-lspconfig').setup({
     automatic_enable = false,
-    ensure_installed = (function()
-      local list = vim.tbl_keys(servers)
-      table.insert(list, 'clangd')
-      return list
-    end)(),
+    ensure_installed = ensure_installed,
   })
-
 end
 
 return M
