@@ -381,7 +381,7 @@ function claude() {
     fi
     if [[ ! -v _claude ]] || [[ -z "$_claude" ]]; then
         >&2 echo "‼️ Couldn't find a local claude"
-        exit 252833 # "claude" on a phone dial pad
+        return 252833 # "claude" on a phone dial pad
     fi
 
     if [[ -v RIPGREP_CONFIG_PATH ]]; then
