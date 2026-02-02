@@ -43,7 +43,7 @@ alias  vi="$EDITOR"
 alias   v="$EDITOR"
 alias  vv="/usr/bin/env command -p vim"
 #alias  vv="/usr/bin/env VIMRUNTIME=${BREW}/share/vim/vim82 command -p vim"
-compdefas vim vim vi v vv
+compdefas vim vi v vv
 
 alias -g NULL='>/dev/null'
 alias -g NULL1='1>/dev/null'
@@ -99,57 +99,13 @@ if command -v grc >/dev/null 2>&1; then
 fi
 
 function() { # ls
-  local  LSPRG_PRG='ls'
-  local LSPRG_ARGS='-LhHGtc'
-
-  if command_exists lsd; then
-    export LSDPRG_PRG="command `command which lsd`"
-    export LSDPRG_ARGS="`
-    printf '--blocks=user,group,size,date,name'
-    printf ' --human-readable --size=short'
-    printf ' --sort=time --date=relative --reverse'
-    printf ' --group-dirs=none --classify'`"
-    LSPRG_PRG="$LSDPRG_PRG"
-    LSPRG_ARGS="$LSDPRG_ARGS"
-    #printf ' --directory-only --total-size' `"
-    compdefas ls lsd
-
-    functions -UzWT lsd
-    function lsd() {
-      readonly func_args="${${@:1}:-.}"
-      typeset cmd="${LSDPRG_PRG}" args="${LSDPRG_ARGS}"
-      typeset -aU paths=($(trim-whitespace "${func_args[@]}" | xargs printf "%s\n"))
-      if [[ ${#paths[@]} -le 0 ]] { paths="${PWD:-/dev/null}" }
-      eval "${(Q)cmd} ${(Q)args[@]} ${(qqqq)paths[@]}"; #set +x;
-    }
-
-  elif command_exists gls && [[ $OSX == 1 ]] ; then
-    #printf ' -ALhHgGtc'
-    local GLSPRG_PRG=`command which gls`
-    local GLSPRG_ARGS="`
-      printf ' -LhHGtc'
-      printf ' --color=auto'
-      printf ' --group-directories-first'
-      printf ' --quoting-style=shell-always' `"
-      LSPRG_PRG="$LSDPRG_PRG"
-      LSPRG_ARGS="$LSDPRG_ARGS"
-    alias gls="${GLSPRG_PRG} ${GLSPRG_ARGS}"
-
-  else
-    LSPRG_PRG=`command -pv ls`
-    LSPRG_ARGS='-LhHGtc'
-    alias gls="${LSPRG_PRG} ${LSPRG_ARGS}"
-  fi
-
-  export LSPRG_PRG LSPRG_ARGS
-
   alias ls >/dev/null && unalias ls
-  alias ls="${LSPRG_PRG} ${LSPRG_ARGS}"
-  alias  l='ls -1'
-  alias ll='ls -1l'
-  alias la='nowrap ls -1lA'
-  alias lt='ls -1Al --tree --depth=2 --total-size'
-  compdefas ls ls l ll la lt
+  alias ls="eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --group --total-size"
+  alias  l='ls --oneline'
+  alias ll='ls --oneline --long'
+  alias la='nowrap ls --oneline --long -A'
+  alias lt='ls --oneline -A --long --tree --depth=6'
+  compdefas exa l ll la lt
 }
 
 alias sudo='nocorrect sudo -E '
@@ -275,7 +231,7 @@ alias ghclone='cd "$(git gh `pbpaste | tr "'"/"'" "'"  "'"`)" && :'
 alias get='cd "$(ghq-get)"'
 
 
-function _tree() {
+function _alias_tree() {
   #-D -c \
   local gitignore="$HOME/.config/git/ignore"
   if [[ -f $gitignore ]];
@@ -292,7 +248,7 @@ function _tree() {
 }
 
 function alias_tree() {
-    alias tree='_tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git|env|__pycache__" -L 5'
+    alias tree='_alias_tree --du --si --filelimit 512 -I "node_modules|bower_components|vendor|bundle|target|build|public|.git|env|__pycache__" -L 5'
 }
 alias_tree
 
