@@ -103,7 +103,7 @@ function() { # ls
   alias ls="eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --group --total-size"
   alias  l='ls --oneline'
   alias ll='ls --oneline --long'
-  alias la='nowrap ls --oneline --long -A'
+  alias la='ls --oneline --long -A'
   alias lt='ls --oneline -A --long --tree --depth=6'
   compdefas exa l ll la lt
 }
