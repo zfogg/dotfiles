@@ -100,10 +100,10 @@ fi
 
 function() { # ls
   alias ls >/dev/null && unalias ls
-  alias ls="eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --total-size"
+  alias ls='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header'
   alias  l='ls --oneline'
   alias ll='ls --oneline --long'
-  alias la='ls --oneline --long -A --no-user --no-permissions'
+  alias la='ls --oneline --long -A --no-user --no-permissions --total-size'
   alias lt='la --tree --level=6'
   compdefas exa l ll la lt
 }
