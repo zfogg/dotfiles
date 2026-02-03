@@ -1,5 +1,7 @@
 -- lua/zfogg/colors.lua
-
+--
+-- Terminal and display settings only.
+-- Colorscheme is set by rc/nightfox.lua via lazy.nvim config.
 
 vim.g.vimsyn_embed   = '1Pr'
 vim.g.vimsyn_folding = 'aflPr'
@@ -13,11 +15,3 @@ vim.o.guicursor     = ''..
   ',sm:block-blinkwait175-blinkoff150-blinkon175'
 
 vim.g.base16colorspace = 256
-
---vim.g.base16_shell_path = vim.fn.expand('~/.config/base16-shell')..'/scripts'
-
---vim.cmd('colorscheme base16-default-dark')
-local ok, _ = pcall(vim.cmd, 'colorscheme nightfox')
-if not ok then
-  vim.cmd('colorscheme default')
-end
