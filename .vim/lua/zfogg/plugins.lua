@@ -70,9 +70,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local inTmux              = string.len(vim.env.TMUX or '') > 0
-local inKitty             = vim.env.KITTY_WINDOW_ID ~= nil
-local inVscode            = not (vim.g.vscode == nil)
+local util = require 'zfogg.util'
 
 -- {{{ plugin list
 require("lazy").setup({
@@ -100,7 +98,7 @@ require("lazy").setup({
   { 'christoomey/vim-tmux-navigator',
     lazy = false,  -- Load immediately for navigation
     init = function()
-      if inVscode or inKitty or (not inTmux) then
+      if util.inVscode or util.inKitty or (not util.inTmux) then
         vim.g.tmux_navigator_no_mappings = 1
       end
     end,
@@ -108,7 +106,7 @@ require("lazy").setup({
 
   { 'knubie/vim-kitty-navigator',
     lazy = false,  -- Load immediately for kitty navigation
-    enabled = not ((not inKitty) or inTmux),
+    enabled = not ((not util.inKitty) or util.inTmux),
   },
 
   { 'Olical/vim-enmasse',

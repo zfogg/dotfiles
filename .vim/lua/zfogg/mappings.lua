@@ -201,9 +201,8 @@ map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
 
 -- Window navigation with Ctrl-hjkl (fallback when tmux/kitty navigator disabled)
 -- Only set these if vim-kitty-navigator and vim-tmux-navigator are not handling them
-local inTmux = string.len(vim.env.TMUX or '') > 0
-local inKitty = vim.env.KITTY_WINDOW_ID ~= nil
-if not (inKitty or inTmux) then
+local util = require 'zfogg.util'
+if not (util.inKitty or util.inTmux) then
   vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move to left window', silent = true })
   vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Move to window below', silent = true })
   vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Move to window above', silent = true })
