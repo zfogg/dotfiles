@@ -361,6 +361,7 @@ function claude() {
         export RIPGREP_CONFIG_PATH="$_old_ripgrep_config_path"
     fi
 }
+alias clauded="claude --dangerously-skip-permissions"
 
 
 if [[ $OSX == $TRUE ]]; then
