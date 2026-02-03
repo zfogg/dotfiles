@@ -3,6 +3,11 @@ local cmd = vim.cmd
 local o_s = vim.o
 local map_key = vim.api.nvim_set_keymap
 
+-- Environment detection (defined once, used everywhere)
+local inTmux  = vim.env.TMUX ~= nil
+local inKitty = vim.env.KITTY_WINDOW_ID ~= nil or vim.env.KITTY_LISTEN_ON ~= nil
+local inVscode = vim.g.vscode ~= nil
+
 -- INFO: https://github.com/nanotee/nvim-lua-guide#tips-3
 function _G.put(...)
   local objects = {}
@@ -116,4 +121,7 @@ return {
   map = map,
   tmerge = tmerge,
   extend = extend,
+  inTmux = inTmux,
+  inKitty = inKitty,
+  inVscode = inVscode,
 }
