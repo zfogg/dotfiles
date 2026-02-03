@@ -71,7 +71,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local inTmux              = string.len(vim.env.TMUX or '') > 0
-local inKitty             = string.len(vim.env.TERM or '') > 0 and (vim.env.TERM:match("-kitty$") == "-kitty")
+local inKitty             = vim.env.KITTY_WINDOW_ID ~= nil
 local inVscode            = not (vim.g.vscode == nil)
 
 -- {{{ plugin list
@@ -248,7 +248,7 @@ require("lazy").setup({
 
   -- fern
   { 'lambdalisue/fern.vim',
-    lazy = true,
+    lazy = false,
     cmd = 'Fern',
     init = function() require("rc.fern").setup() end,
     config = function() require("rc.fern").config() end,
@@ -267,7 +267,7 @@ require("lazy").setup({
       'lambdalisue/fern-mapping-project-top.vim',
       'hrsh7th/fern-mapping-collapse-or-leave.vim',
       { 'LumaKernel/fern-mapping-fzf.vim',
-        enabled = false,
+        enabled = true,
         dependencies = { 'junegunn/fzf' },
       },
     },
@@ -467,7 +467,7 @@ require("lazy").setup({
   },
 
   -- clang
-  { 'libclang-vim/libclang-vim', ft = ft['cx'], enabled = false },
+  { 'libclang-vim/libclang-vim', ft = ft['cx'], lazy = true },
 
   { 'kchmck/vim-coffee-script', ft = { 'coffee' } },
   { 'tweekmonster/braceless.vim',
@@ -622,8 +622,8 @@ require("lazy").setup({
       'saihoooooooo/vim-textobj-space',
       'jceb/vim-textobj-uri',
       'Julian/vim-textobj-variable-segment',
-      { 'libclang-vim/vim-textobj-clang', ft = ft['cx'], enabled = false },
-      { 'libclang-vim/vim-textobj-function-clang', ft = ft['cx'], enabled = false },
+      { 'libclang-vim/vim-textobj-clang', ft = ft['cx'], enabled = true },
+      { 'libclang-vim/vim-textobj-function-clang', ft = ft['cx'], enabled = true },
     },
   },
 
