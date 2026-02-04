@@ -1,55 +1,27 @@
 #!/usr/bin/env zsh
 # joopal-trim-whitespace (trim-whitespace)
-#   trims leading and trailing whitespace from arguments
-#   INFO: https://stackoverflow.com/a/3352015/672346
+#   trims leading and trailing whitespace from each line
+#   works with stdin (pipes/redirects) and arguments
 
-
-autoload -Uz echoer # custom error handler of mine
+autoload -Uz echoer
 
 function _trim-whitespace() {
-    local v=$*
-    v=$(echo "$v" | tr -s ' ' | tr -d $'\n'); v=${v%% } ; v=${v## };
-    printf '%s\n' "${(p)v}"
+    local v="$*"
+    v="${v#"${v%%[![:space:]]*}"}"   # trim leading
+    v="${v%"${v##*[![:space:]]}"}"   # trim trailing
+    [[ -n "$v" ]] && printf '%s\n' "$v"
 }
 
-
-function _trim-whitespace-args() {
-    if [[ $# == 0 ]] { echoer "🚫 ERROR: no args, no stdin 🚫"; return 12; }
-    local lines=$(echo "$*" | awk NF)
-    for line (${(f)lines}) {
-        _trim-whitespace "${line}"
-    }
-}
-
-function _trim-whitespace-stdin() {
-    local stdin=`echo "$(</dev/stdin)"`
-    local lines=$(echo "$stdin" | awk NF)
-    for line (${(f)lines}) {
-        _trim-whitespace "${line}";
-    }
-}
-
-(if [[ ! -t 0 ]] && [[ ! -p /dev/stdout || -p /dev/stdout ]]; then
-    _trim-whitespace-stdin < /dev/stdin
-elif [[ ${#*} -ge 0 ]]; then
-    _trim-whitespace-args $*
+if [[ ! -t 0 ]]; then
+    while IFS= read -r line; do
+        _trim-whitespace "$line"
+    done
+elif [[ $# -gt 0 ]]; then
+    local lines="$@"
+    for line in "${(f)lines}"; do
+        _trim-whitespace "$line"
+    done
 else
-    echoer "🚫 ERROR: no args, no stdin 🚫"; return 14;
+    echoer "🚫 ERROR: no args, no stdin 🚫"
+    return 14
 fi
-) | sed '$ { /^$/ d; }' # remove trailing empty lines
-
-
-
-# {{{ INFO: test with this!
-return 0 # comment to test!
-function _trim-whitespace-test() {
-    # unfunction trim-whitespace && autoload -Uz trim-whitespace; autoload -Uz trim-whitespace;
-    local test_text=' asdasdfas \n asda \n \n asdad a\n yoasa  ' 
-    # it works when sending text to it via stdin and a unix pipe
-    (echo; echo;); echo "$test_text"| trim-whitespace
-    # it works when sending text to it via stdin and a unix redirect
-    (echo; echo;); trim-whitespace < <(echo "$test_text")
-    # it works when sending text to it via command/function arguments
-    (echo; echo;); trim-whitespace "$test_text"
-}
-# }}}
