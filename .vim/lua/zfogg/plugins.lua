@@ -708,7 +708,7 @@ require("lazy").setup({
         if neocodeium.visible() then
           return neocodeium.accept()
         else
-          return "<Tab>"
+          return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
         end
       end, { expr = true, silent = true })
       vim.keymap.set("i", "<C-S-n>", function()
