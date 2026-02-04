@@ -38,10 +38,10 @@ function () { # {{{ platform-specifics
   if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
     path=(
       $BREW/opt/ccache/libexec
-      #$BREW/opt/{findutils,coreutils,libtool}/libexec/gnubin
-      #$BREW/opt/{make,grep,ed,gawk}/libexec/gnubin
-      #$BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
-      #$BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
+      $BREW/opt/{findutils,coreutils,libtool}/libexec/gnubin
+      $BREW/opt/{make,grep,ed,gawk}/libexec/gnubin
+      $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
+      $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
       $BREW/{bin,sbin}
       /usr/local/bin
       /Library/Developer/CommandLineTools/usr/bin
