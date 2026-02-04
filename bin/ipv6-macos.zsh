@@ -2,4 +2,4 @@
 
 set -e
 
-ifconfig en0 | grep inet6 | awk '{$1=$1};1'
+ifconfig en0 | grep inet6 | trim-whitespace
