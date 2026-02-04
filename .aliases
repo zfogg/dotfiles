@@ -364,8 +364,9 @@ function claude() {
 alias clauded="claude --dangerously-skip-permissions"
 
 
+# Tailscale. I think this uses non-homebrew tailscale (workbook-pro-gui etc).
 if [[ $OSX == $TRUE ]]; then
-    alias tailscale='/usr/local/bin/tailscale --socket=/var/run/tailscaled.socket'
+    alias tailscale="$BREW/bin/tailscale --socket=/var/run/tailscaled.socket"
 fi
 
 #set +x INFO: DEBUG
