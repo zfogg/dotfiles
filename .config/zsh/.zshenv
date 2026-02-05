@@ -385,6 +385,9 @@ function() {
 
 
 # path, manpath, fpath {{{
+# Initialize Linuxbrew before path.zsh so it can reorder paths
+[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+
 source "$ZDOTDIR/z/path.zsh"
   # note: meta helpers {{{
   #command_exists() { command -v "$1" 2>/dev/null 1>&2 }

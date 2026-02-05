@@ -99,8 +99,8 @@ function () { # {{{ platform-specifics
 
     manpath=(
       $BREW/share/man
-      /usr/share/man
       /usr/local/share/man
+      /usr/share/man
       "$manpath[@]"
     )
 
@@ -166,7 +166,6 @@ function() { # {{{ AFTER platform-specifics
 
   manpath=(
     $XDG_DATA_HOME/man
-    #$HOME/.nvm/versions/node/v*.*.*/share/man(nF/[-1])
     "$manpath[@]"
   )
 
@@ -185,4 +184,17 @@ function() { # {{{ AFTER platform-specifics
     export MANPATH
     export CLASSPATH
     export INFOPATH
+# }}}
+
+
+# {{{ reorder MANPATH - antidote first, then system paths
+export MANPATH="$(
+  {
+    [[ -d $HOME/.local/share/antidote/man ]] && echo "$HOME/.local/share/antidote/man"
+    [[ -d $XDG_DATA_HOME/man ]] && echo "$XDG_DATA_HOME/man"
+    [[ -d $BREW/share/man ]] && echo "$BREW/share/man"
+    echo "/usr/local/share/man"
+    echo "/usr/share/man"
+  } | paste -sd: -
+)"
 # }}}
