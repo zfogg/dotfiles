@@ -14,19 +14,15 @@ function ppvar_main() {
   local var_len=$(wc -l <<< ${plines[@]})
 
   local tempf=$(mktempf "ppvar-${var_name}")
-  exec 3>&2 2>"$tempf"
 
-  autoload -Uz trim-whitespace
+  echoer $'Var name'   $'  ->' "${var_name}"                  #'\n'
+  echoer $'Item count'   $'->' "$(trim-whitespace $var_len)"  #'\n'
 
-  echoer                                                        #'\n'
-  echoer "ppvar - pretty print shell env vars"                  #'\n'
-  echoer $'\tvar name'   $'\t->' "${var_name}"                  #'\n'
-  echoer $'\titem count' $'\t->' "$(trim-whitespace $var_len)"  #'\n'
+  xargs -0 printf '%s' >&2 < $tempf
+  rm "$tempf"
 
-  printf "%s\n" "${plines[@]}"
+  printf "%s\n" "${plines[@]}" | trim-whitespace
 
-  exec 2>&3 3>&-
-  xargs -0 printf '\n%s\n' >&2 < $tempf
   return 0
 }
 
