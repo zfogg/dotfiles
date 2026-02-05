@@ -23,6 +23,7 @@ depends=(
     'bind'
     'binutils'
     'bison'
+    'btop'
     'ccache'
     'cmake'
     'clang'
