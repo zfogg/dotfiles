@@ -7,7 +7,7 @@
 # custom functions from $FPATH (prolly ~/.zsh/site-functions)
 
 if [[ -v CLAUDECODE ]]; then
-    exit 0
+    return 0
 fi
 
 function aliasof() {
