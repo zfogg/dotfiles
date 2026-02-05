@@ -97,10 +97,6 @@ function () { # {{{ platform-specifics
       #"$fpath[@]"
     )
 
-    #echo "LINUX=$LINUX"; echo "$FPATH" | tr ':' '\n'; echo 'BREAK' echo; echo;
-
-    #echo "LINUX=$LINUX"; echo "$fpath" | tr ' ' '\n'; echo 'BREAK'; echo; echo
-
     manpath=(
       $BREW/share/man
       /usr/share/man
