@@ -422,9 +422,9 @@ export VISUAL="$EDITOR"
 
 # INFO: https://www.topbug.net/blog/2016/09/27/make-gnu-less-more-powerful/
 # set options for less
-export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --chop-long-lines --HILITE-UNREAD --tabs=4 --no-init --window=-4'
+export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --chop-long-lines --HILITE-UNREAD --tabs=4 --no-init'
 # or the short version
-# export LESS='-F -i -J -M -R -W -x4 -X -z-4'
+# export LESS='-F -i -J -M -R -W -x4 -X'
 
 #if command_exists nvimpager; then
  #export PAGER='nvimpager'

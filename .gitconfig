@@ -131,15 +131,25 @@
 [interactive]
     diffFilter = delta --color-only --features=interactive
 
+[delta]
+    ;features = decorations
+    features = unobtrusive-line-numbers decorations
+    side-by-side = true
+    line-numbers = true
+    whitespace-error-style = 22 reverse
+    syntax-theme = Monokai Extended
+    navigate = true
+    dark = true      # or light = true, or omit for auto-detection
+
 [delta "interactive"]
     keep-plus-minus-markers = false
 
 [delta "decorations"]
-    ;commit-decoration-style = blue ol
+    commit-decoration-style = blue ol
     commit-decoration-style = bold yellow box ul
     commit-style = raw
     file-style = omit
-    ;file-style = bold yellow ul
+    file-style = bold yellow ul
     file-decoration-style = none
     hunk-header-decoration-style = yellow box
     hunk-header-file-style = red
@@ -148,6 +158,7 @@
 
 [delta "unobtrusive-line-numbers"]
     line-numbers              = true
+    line-numbers-left-format  = "{nm:>4}│"
     line-numbers-right-format = "{np:>4}│"
     line-numbers-zero-style   = "#444444"
     line-numbers-minus-style  = "#444444"
