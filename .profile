@@ -41,7 +41,11 @@ if [[ $OSX == "$TRUE" ]]; then
   fi
   export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
 elif [ "$LINUX" = "$TRUE" ]; then
-  export BREW='/usr'
+  if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    export BREW="$(/home/linuxbrew/.linuxbrew/bin/brew --prefix)"
+  else
+    export BREW='/usr/local'
+  fi
 else
   export BREW='/usr/local'
 fi

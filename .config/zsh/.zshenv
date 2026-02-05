@@ -71,18 +71,6 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh"
 export   ZSHRC="$ZDOTDIR/.zshrc"
 unsetopt GLOBAL_RCS
 
-if [[ $OSX == $TRUE ]]; then
-  if [[ `hostname -s` == "WorkBook-Pro" ]]; then
-    export BREW='/opt/homebrew'
-  else
-    export BREW='/usr/local'
-  fi
-  export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
-elif [[ $LINUX == $TRUE ]]; then
-  export BREW='/usr'
-else
-  export BREW='/usr/local'
-fi
 
 export  LDFLAGS=''
 export CPPFLAGS=''
