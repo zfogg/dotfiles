@@ -1,124 +1,124 @@
 [user]
-    	email      = me@zfo.gg
-    	name       = Zachary Fogg
-    	;signingkey = 85795255CAC2EEF8F5CE3446F4967DF3989C8111
-	signingkey = 7FE90A79F2E80ED3
+    email      = me@zfo.gg
+    name       = Zachary Fogg
+    ;signingkey = 85795255CAC2EEF8F5CE3446F4967DF3989C8111
+    signingkey = 7FE90A79F2E80ED3
 
 [core]
-    	editor       = $EDITOR
-    	;pager        = $PAGER
-    	#pager        = $PAGER 2>/dev/null
-    	;pager        = diff-so-fancy | less --tabs=4 -RFX
-    	;pager        = delta
-    	eol          = lf
-    	autocrlf     = input
-    	excludesFile = ~/.config/git/ignore
-    	safecrlf     = false
+    editor       = $EDITOR
+    ;pager        = $PAGER
+    #pager        = $PAGER 2>/dev/null
+    ;pager        = diff-so-fancy | less --tabs=4 -RFX
+    ;pager        = delta
+    eol          = lf
+    autocrlf     = input
+    excludesFile = ~/.config/git/ignore
+    safecrlf     = false
 
 [log]
-    	decorate     = true
-    	abbrevCommit = true
+    decorate     = true
+    abbrevCommit = true
 [fetch]
-    	prune     = true
-    	pruneTags = true
-    	output    = compact
+    prune     = true
+    pruneTags = true
+    output    = compact
 [commit]
-	gpgsign = true
-    	;gpgsign = false
+    gpgsign = true
+    ;gpgsign = false
 [push]
-    	default = simple
-	autoSetupRemote = true
+    default = simple
+    autoSetupRemote = true
 [pull]
-    	ff = only
-	rebase = true
-    	;rebase = true
+    ff = only
+    rebase = true
+    ;rebase = true
 [diff]
-    	tool = vimdiff3
-    	wordRegex = [[:alnum:]_]+|[^[:alnum:]_[:space:]]+
+    tool = vimdiff3
+    wordRegex = [[:alnum:]_]+|[^[:alnum:]_[:space:]]+
 [merge]
-    	tool = vimdiff3
+    tool = vimdiff3
 [grep]
-    	lineNumber = true
+    lineNumber = true
 [gpg]
-    	program = gpg
+    program = gpg
 
 [color]
-    	diff        = auto
-    	status      = auto
-    	branch      = auto
-    	interactive = auto
-    	ui          = auto
-    	pager       = true
+    diff        = auto
+    status      = auto
+    branch      = auto
+    interactive = auto
+    ui          = auto
+    pager       = true
 
 [mergetool "nvim"]
-    	;cmd           = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-    	;cmd           = nvim -f -c \"Gdiff\" \"$MERGED\"
-    	cmd           = $EDITOR -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
-    	;cmd           = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
-    	;cmd           = vim -f -c \"Gdiffsplit!\" \"$MERGED\"
-    	trustExitCode = true
+    ;cmd           = $EDITOR -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+    ;cmd           = nvim -f -c \"Gdiff\" \"$MERGED\"
+    cmd           = $EDITOR -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+    ;cmd           = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+    ;cmd           = vim -f -c \"Gdiffsplit!\" \"$MERGED\"
+    trustExitCode = true
 [mergetool]
-    	prompt        = true
-    	keepBackup    = true
+    prompt        = true
+    keepBackup    = true
 
 [difftool "nvim"]
-    	cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
-    	;cmd = vim -d \"$LOCAL\" \"$REMOTE\"
-    	trustExitCode = true
+    cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
+    ;cmd = vim -d \"$LOCAL\" \"$REMOTE\"
+    trustExitCode = true
 [difftool "vimdiff3"]
-    	path = nvim
+    path = nvim
 [mergetool "vimdiff3"]
-    	path = nvim
+    path = nvim
 
 [alias]
-    	submsync = submodule foreach \"git checkout master && git pull origin master\"
-    	mybranch = rev-parse --abbrev-ref HEAD
-    	up       = pull --ff-only --all -p
-    	gh       = joopal-clone git github.com
+    submsync = submodule foreach \"git checkout master && git pull origin master\"
+    mybranch = rev-parse --abbrev-ref HEAD
+    up       = pull --ff-only --all -p
+    gh       = joopal-clone git github.com
 
-    	l        = log -18 --all --topo-order
-    	ll       = log     --all --topo-order
-    	gl       = log -12 --all --graph --topo-order
-    	gll      = log     --all --graph --topo-order
+    l        = log -18 --all --topo-order
+    ll       = log     --all --topo-order
+    gl       = log -12 --all --graph --topo-order
+    gll      = log     --all --graph --topo-order
 
-    	unshallow = "!:; \
-    	git fetch --unshallow 2>/dev/null; \
-    	git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'; \
-    	git fetch -v origin; "
+    unshallow = "!:; \
+    git fetch --unshallow 2>/dev/null; \
+    git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'; \
+    git fetch -v origin; "
 
-    	pruner = "!:; \
-    	git prune --expire=now; \
-    	git reflog expire --expire-unreachable=now --rewrite --all; "
+    pruner = "!:; \
+    git prune --expire=now; \
+    git reflog expire --expire-unreachable=now --rewrite --all; "
 
-    	fetch-branch = "!:; \
-    	git remote set-branches --add origin $1; \
-    	git fetch -v origin $1:$1; "
+    fetch-branch = "!:; \
+    git remote set-branches --add origin $1; \
+    git fetch -v origin $1:$1; "
 
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
 [filter "media"]
-    	clean  = git-media-clean %f
-    	smudge = git-media-smudge %f
+    clean  = git-media-clean %f
+    smudge = git-media-smudge %f
 
 [init]
-	defaultBranch = master
+    defaultBranch = master
 
 [url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+    insteadOf = https://github.com/
 
 [credential "https://github.com"]
-	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
+    helper = 
+    helper = !/usr/local/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
-	helper = !/usr/local/bin/gh auth git-credential
+    helper = 
+    helper = !/usr/local/bin/gh auth git-credential
 
 
 [ghq "https://bitbucket.org/"]
-    	vcs = git
+    vcs = git
 
 
 ; INFO: https://github.com/dandavison/delta {{{
@@ -130,15 +130,6 @@
 
 [interactive]
     diffFilter = delta --color-only --features=interactive
-
-[delta]
-    ;features = decorations
-    features = unobtrusive-line-numbers decorations
-    side-by-side = true
-    line-numbers = true
-    whitespace-error-style = 22 reverse
-    syntax-theme = Monokai Extended
-    navigate = true
 
 [delta "interactive"]
     keep-plus-minus-markers = false
@@ -157,7 +148,6 @@
 
 [delta "unobtrusive-line-numbers"]
     line-numbers              = true
-    line-numbers-left-format  = "{nm:>4}┊"
     line-numbers-right-format = "{np:>4}│"
     line-numbers-zero-style   = "#444444"
     line-numbers-minus-style  = "#444444"
