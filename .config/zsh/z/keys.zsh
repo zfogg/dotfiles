@@ -93,6 +93,7 @@ zle -N last-cmd-and-vi-cmd-mode _last-cmd-and-vi-cmd-mode
 
 bindkey -M viins '^ '   autosuggest-accept
 bindkey -M vicmd '^ '   autosuggest-accept
+bindkey -M viins 'l;'   autosuggest-accept
 bindkey -M viins '^[[c' autosuggest-execute
 
 # edit-command-line
