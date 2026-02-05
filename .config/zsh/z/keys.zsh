@@ -110,3 +110,43 @@ zle -N       edit-command-line
 bindkey '^[[v' edit-command-line
 bindkey '^[[v' autosuggest-accept-and-edit-command-line
 # zsh-users/zsh-autosuggestions }}}
+
+# Ctrl+1 (via Alt+1) -> insert entire previous command
+function _insert-prev-command {
+  LBUFFER+='!!'
+  zle expand-or-complete
+}
+zle -N _insert-prev-command
+bindkey '^[1' _insert-prev-command
+
+# Ctrl+2 (via Alt+2) -> insert first argument of previous command (position 2)
+function _insert-first-arg {
+  LBUFFER+='!!:1'
+  zle expand-or-complete
+}
+zle -N _insert-first-arg
+bindkey '^[2' _insert-first-arg
+
+# Ctrl+3 (via Alt+3) -> insert second argument of previous command (position 3)
+function _insert-second-arg {
+  LBUFFER+='!!:2'
+  zle expand-or-complete
+}
+zle -N _insert-second-arg
+bindkey '^[3' _insert-second-arg
+
+# Ctrl+4 (via Alt+4) -> insert last argument of previous command
+function _insert-last-arg {
+  LBUFFER+='!!$'
+  zle expand-or-complete
+}
+zle -N _insert-last-arg
+bindkey '^[4' _insert-last-arg
+
+# Ctrl+8 (via Alt+8) -> insert all arguments except command (since * is on 8)
+function _insert-all-args {
+  LBUFFER+='!!*'
+  zle expand-or-complete
+}
+zle -N _insert-all-args
+bindkey '^[8' _insert-all-args
