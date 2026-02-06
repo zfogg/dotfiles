@@ -690,6 +690,7 @@ require("lazy").setup({
   { "monkoose/neocodeium",
     lazy = true,
     event = "InsertEnter",
+    priority = 1000,  -- Load before other InsertEnter plugins
     config = function()
       local neocodeium = require("neocodeium")
       neocodeium.setup({
@@ -704,6 +705,11 @@ require("lazy").setup({
           ["."] = false,
         },
       })
+
+      -- Disable Neovim's default snippet Tab mappings
+      pcall(vim.keymap.del, 'i', '<Tab>')
+      pcall(vim.keymap.del, 'i', '<S-Tab>')
+
       vim.keymap.set("i", "<Tab>", function()
         if neocodeium.visible() then
           return neocodeium.accept()

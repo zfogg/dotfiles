@@ -46,7 +46,7 @@ end
 -- Wild menu and completion
 vim.opt.wildmenu = true
 vim.opt.wildignorecase = true
-vim.opt.wildchar = vim.fn.char2nr('<Tab>')
+vim.opt.wildchar = vim.fn.char2nr("\t")  -- Tab character
 vim.opt.wildmode = { 'longest:full', 'full' }
 vim.opt.wildignore:append({
   '*.o', '*.obj', '*.so', '*.exe', '*.dll', '*.manifest', '*.dmg',
