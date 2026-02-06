@@ -5,7 +5,11 @@ local function keymaps()
   -- these mappings are coq recommended mappings unrelated to nvim-autopairs
   vim.keymap.set('i', '<Esc>',   [[pumvisible() ? "<C-e><Esc>" : "<Esc>"]], { expr = true })
   vim.keymap.set('i', '<C-c>',   [[pumvisible() ? "<C-e><C-c>" : "<C-c>"]], { expr = true })
-  vim.keymap.set('i', '<Tab>',   [[pumvisible() ? "<C-n>"      : "<Tab>"]], { expr = true })
+  -- Don't override Tab if neocodeium is loaded - it handles Tab itself
+  -- Only set Tab mapping if neocodeium is not available
+  if not pcall(require, 'neocodeium') then
+    vim.keymap.set('i', '<Tab>',   [[pumvisible() ? "<C-n>"      : "<Tab>"]], { expr = true })
+  end
   vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "<C-p>"      : "<BS>"]],  { expr = true })
 end
 
