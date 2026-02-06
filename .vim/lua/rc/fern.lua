@@ -10,6 +10,8 @@ function M.setup()
 
   vim.cmd [[
 
+  let g:fern#disable_default_mappings=1 " Disable all default mappings
+
   let g:fern#disable_viewer_auto_duplication=1 " default=0
 
   let g:fern#disable_drawer_tabpage_isolation=1 " default=0
@@ -77,6 +79,7 @@ function M.setup()
     " Let you move to a right split lol
     silent! unmap <buffer> <C-l>
     silent! unmap <buffer> <C-h>
+    silent! unmap <buffer> <C-j>
 
     nmap <buffer><expr>
     \ <Plug>(fern-my-expand-or-collapse)
