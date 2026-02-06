@@ -192,6 +192,7 @@ vim.opt.showbreak = '↪\\'
 -- Folding
 vim.opt.foldenable = true
 vim.opt.foldmethod = 'syntax'
+vim.opt.foldlevelstart = 99  -- Start with all folds open
 vim.opt.foldopen:append({ 'percent', 'quickfix', 'tag', 'undo' })
 vim.opt.foldnestmax = 3
 vim.opt.foldminlines = 3
