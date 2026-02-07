@@ -30,7 +30,9 @@ function M.setup()
   let g:ale_set_signs=s:show
   let g:ale_echo_cursor=s:show
   let g:ale_hover_cursor=0
-  let g:ale_virtualtext_cursor=s:show
+  " NOTE: Disabled to prevent duplicate virtual text with LSP diagnostics (clangd, etc.)
+  " LSP handles virtual text via vim.diagnostic.config() in mason.lua
+  let g:ale_virtualtext_cursor=0
   let g:ale_cursor_detail=0
   let g:ale_set_balloons=0
 
