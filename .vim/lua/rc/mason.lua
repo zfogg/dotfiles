@@ -16,8 +16,7 @@ local servers = {
         checkThirdParty = true,
         library = {
           vim.env.VIMRUNTIME,
-          -- "${3rd}/luv/library",
-          -- "${3rd}/busted/library",
+          "${3rd}/luv/library",
         },
         -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
         -- library = vim.api.nvim_get_runtime_file("", true)
@@ -45,7 +44,7 @@ local servers = {
   rust_analyzer = {},
   arduino_language_server = {},
   bashls = {},
-  cmake = {},
+  --cmake = {},
   --neocmake = {},
   cssls = {},
   --gopls = {},
@@ -67,19 +66,6 @@ local servers = {
 
 
 function M.setup()
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      underline        = false,
-      signs            = true,
-      update_in_insert = false,
-      severity_sort    = true,
-      virtual_text     = false,
-      --virtual_text = {
-      --prefix  = "",
-      --spacing = 2,
-      --},
-    })
-
   vim.diagnostic.config({
     float = {
       scope = "cursor",
