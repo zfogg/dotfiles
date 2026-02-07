@@ -1,6 +1,8 @@
 {
     "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
-    "runtime.version": "LuaJIT",
+    "runtime": {
+        "version": "LuaJIT"
+    },
     "diagnostics": {
         "enable": true,
         "globals": [
@@ -8,55 +10,10 @@
             "PHas"
         ]
     },
-    "workspace.checkThirdParty": "Disable",
-    "workspace.library": [
-        "/Users/loomen/.local/share/nvim/lazy/neodev.nvim/types/stable",
-        "/usr/local/Cellar/neovim/0.11.4/share/nvim/runtime/lua",
-        "/Users/loomen/.local/share/nvim/lazy/ale/lua",
-        "/Users/loomen/.local/share/nvim/lazy/colorbuddy.vim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/coq_nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/gitsigns.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/indent-blankline.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/lsp_signature.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/mason-null-ls.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/mason.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/neodev.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nightfox.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-autopairs/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-code-action-menu/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-treesitter-endwise/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-ts-autotag/lua",
-        "/Users/loomen/.local/share/nvim/lazy/telescope-emoji.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/telescope-frecency.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/telescope-fzf-native.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/telescope.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/vim-prosession/lua",
-        "/Users/loomen/.local/share/nvim/lazy/vim-startuptime/lua",
-        "/Users/loomen/.local/share/nvim/lazy/bufferline.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/coq.thirdparty/lua",
-        "/Users/loomen/.local/share/nvim/lazy/fidget.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/fzf-preview.vim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/impatient.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/lspkind-nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/lualine.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/mapx.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/mason-lspconfig.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/null-ls.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-bqf/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-lightbulb/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-lspconfig/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-lsputils/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-treesitter/lua",
-        "/Users/loomen/.local/share/nvim/lazy/nvim-web-devicons/lua",
-        "/Users/loomen/.local/share/nvim/lazy/packer.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/plenary.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/popfix/lua",
-        "/Users/loomen/.local/share/nvim/lazy/popup.nvim/lua",
-        "/Users/loomen/.local/share/nvim/lazy/sqlite.lua/lua",
-        "/Users/loomen/.local/share/nvim/lazy/vim-clap/lua",
-        "/Users/loomen/.local/share/nvim/lazy/virtual-types.nvim/lua",
-        "/usr/local/Cellar/neovim/0.11.4/share/nvim/runtime",
-        "/Users/loomen/.vim/lua",
-        "${3rd}/luv/library"
-    ]
+    "workspace": {
+        "checkThirdParty": true,
+        "library": [
+            "${3rd}/luv/library"
+        ]
+    }
 }

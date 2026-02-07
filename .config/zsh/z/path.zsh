@@ -86,6 +86,7 @@ function () { # {{{ platform-specifics
       $BREW/lib/ccache/bin
       $BREW/local/{bin,sbin}
       $BREW/{bin,sbin}
+      /usr/lib/emscripten
       "$path[@]"
       /bin
       /sbin
