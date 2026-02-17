@@ -42,6 +42,7 @@ function () { # {{{ platform-specifics
       $BREW/opt/{make,grep,ed,gawk}/libexec/gnubin
       $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
       $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
+      $BREW/opt/llvm/bin
       $BREW/{bin,sbin}
       /usr/local/bin
       /Library/Developer/CommandLineTools/usr/bin

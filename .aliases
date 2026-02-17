@@ -6,7 +6,7 @@
 
 # custom functions from $FPATH (prolly ~/.zsh/site-functions)
 
-if [[ -v CLAUDECODE ]]; then
+if [[ -v _CLAUDECODE ]]; then
     return 0
 fi
 
@@ -101,9 +101,9 @@ fi
 function() { # ls
   alias ls >/dev/null && unalias ls
   alias ls='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header'
-  alias  l='ls --oneline'
   alias ll='ls --oneline --long'
-  alias la='ls --oneline --long -A --no-user --no-permissions --total-size'
+  alias la='ll -A --no-user --no-permissions --total-size'
+  alias  l='la'
   alias lt='la --tree --level=6'
   compdefas exa l ll la lt
 }
@@ -350,9 +350,9 @@ function claude() {
     unalias mv 2>/dev/null || true
     unalias tree 2>/dev/null || true
 
-    export CLAUDECODE=1
+    export _CLAUDECODE=1
     $_claude
-    unset CLAUDECODE
+    unset _CLAUDECODE
 
     alias_file_handling
     alias_tree
