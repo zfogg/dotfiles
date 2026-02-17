@@ -4,7 +4,7 @@ if not _G.PHas('nightfox.nvim') then return end
 
 vim.cmd('colorscheme carbonfox')
 
-local bgcolor = "#354535"
+local bgcolor = "#464646"
 
 -- Fix cursor visibility on light backgrounds (e.g., git diff highlights)
 vim.api.nvim_create_autocmd("ColorScheme", {
