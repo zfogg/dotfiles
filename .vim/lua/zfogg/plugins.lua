@@ -504,23 +504,39 @@ require("lazy").setup({
     ft = 'kitty',
     lazy = true,
   },
-  { 'hashivim/vim-terraform',                    ft = { 'terraform', 'json' } },
-  { 'Olical/vim-syntax-expand',                  ft = ft['js'] },
-  { 'itchyny/vim-haskell-indent',                ft = { 'haskell' } },
+  { 'hashivim/vim-terraform',     ft = { 'terraform', 'json' } },
+  { 'Olical/vim-syntax-expand',   ft = ft['js'] },
+  { 'itchyny/vim-haskell-indent', ft = { 'haskell' } },
+
   -- markdown
-  { 'preservim/vim-markdown',                    ft = { 'markdown' } },
-  { 'MeanderingProgrammer/render-markdown.nvim', ft = { 'markdown' } },
   {
-    'dhruvasagar/vim-table-mode',
-    dependencies = {
-      'godlygeek/tabular',
+    "tadmccorkle/markdown.nvim",
+    ft = "markdown", -- or 'event = "VeryLazy"'
+    opts = {
+      -- configuration here or empty for defaults
     },
-    ft = { 'markdown' },
   },
-  { 'nelstrom/vim-markdown-folding', ft = { 'markdown' } },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  },
+
+  --{
+  --  'dhruvasagar/vim-table-mode',
+  --  dependencies = {
+  --    'godlygeek/tabular',
+  --  },
+  --  ft = { 'markdown' },
+  --},
+  --{ 'nelstrom/vim-markdown-folding', ft = { 'markdown' } },
   -- web
-  { 'saltstack/salt-vim',            ft = { 'sls' } },
-  { 'lepture/vim-jinja',             ft = ft['jinja'] },
+  { 'saltstack/salt-vim', ft = { 'sls' } },
+  { 'lepture/vim-jinja',  ft = ft['jinja'] },
   {
     'mattn/emmet-vim',
     lazy = true,

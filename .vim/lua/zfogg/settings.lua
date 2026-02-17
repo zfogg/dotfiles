@@ -256,6 +256,14 @@ vim.opt.iskeyword:append('@,48-57,_,192-255')
 vim.cmd('syntax sync minlines=16 maxlines=512 linebreaks=1')
 vim.opt.synmaxcol = 700
 
+-- Treesitter highlighting (built-in, just needs parsers installed via :TSInstall)
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("TreesitterHighlight", { clear = true }),
+  callback = function(args)
+    pcall(vim.treesitter.start, args.buf)
+  end,
+})
+
 -- Clipboard
 if vim.fn.has('osx') == 1 then
   vim.g.clipboard = {
