@@ -4,6 +4,8 @@ ipv4_only=false
 ipv6_only=false
 no_docker=false
 only_docker=false
+no_tailscale=false
+only_tailscale=false
 no_services=false
 default_route=false
 
@@ -20,6 +22,8 @@ Options:
   --6              IPv6 only
   --docker         Only docker interfaces
   --no-docker      Exclude docker interfaces
+  --tailscale      Only tailscale interfaces
+  --no-tailscale   Exclude tailscale interfaces
   --no-services    Exclude docker and tailscale
   --default-route  Only interface(s) with system default route
   -h, --help       Show this help
@@ -30,6 +34,8 @@ EOF
         --6) ipv6_only=true; shift ;;
         --no-docker) no_docker=true; shift ;;
         --docker) only_docker=true; shift ;;
+        --no-tailscale) no_tailscale=true; shift ;;
+        --tailscale) only_tailscale=true; shift ;;
         --no-services) no_services=true; shift ;;
         --default-route) default_route=true; shift ;;
         *) echo "Error: Unknown flag: $1" >&2; exit 1 ;;
@@ -42,8 +48,18 @@ if [[ "$only_docker" == true ]] && [[ "$no_docker" == true ]]; then
     exit 1
 fi
 
+if [[ "$only_tailscale" == true ]] && [[ "$no_tailscale" == true ]]; then
+    echo "Error: --tailscale and --no-tailscale are mutually exclusive" >&2
+    exit 1
+fi
+
 if [[ "$only_docker" == true ]] && [[ "$no_services" == true ]]; then
     echo "Error: --docker and --no-services are mutually exclusive" >&2
+    exit 1
+fi
+
+if [[ "$only_tailscale" == true ]] && [[ "$no_services" == true ]]; then
+    echo "Error: --tailscale and --no-services are mutually exclusive" >&2
     exit 1
 fi
 
@@ -78,15 +94,19 @@ for iface in $(ip link show | grep "^[0-9]" | awk '{print $2}' | sed 's/:$//' | 
     fi
 
     # Apply filtering based on flags
-    if [[ "$only_docker" == true ]]; then
+    if [[ "$only_tailscale" == true ]]; then
+        # Only show tailscale interfaces
+        [[ "$is_tailscale" != true ]] && continue
+    elif [[ "$only_docker" == true ]]; then
         # Only show docker interfaces
         [[ "$is_docker" != true ]] && continue
     elif [[ "$no_services" == true ]]; then
         # Skip both docker and tailscale
         [[ "$is_docker" == true ]] || [[ "$is_tailscale" == true ]] && continue
-    elif [[ "$no_docker" == true ]]; then
-        # Skip only docker
-        [[ "$is_docker" == true ]] && continue
+    else
+        # Apply individual skip flags if no "only" flags are set
+        [[ "$no_docker" == true ]] && [[ "$is_docker" == true ]] && continue
+        [[ "$no_tailscale" == true ]] && [[ "$is_tailscale" == true ]] && continue
     fi
 
     # Get IPv4 addresses
