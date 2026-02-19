@@ -3,22 +3,40 @@
 # get external IP addresses (IPv4 and IPv6)
 # used for outgoing Internet connections
 
-case "$1" in
-	-h|--help)
-		cat << 'EOF'
-Usage: ip-address-internet [METHOD]
+ipv4_only=false
+ipv6_only=false
+method="https"
+
+# Parse arguments
+for arg in "$@"; do
+	case "$arg" in
+		-4) ipv4_only=true ;;
+		-6) ipv6_only=true ;;
+		-h|--help)
+			cat << 'EOF'
+Usage: ip-address-internet [OPTIONS] [METHOD]
 
 Print external IP addresses
+
+Options:
+  -4      IPv4 only
+  -6      IPv6 only
+  -h, --help  Show this help
 
 Methods:
   https   HTTPS queries (default)
   http    HTTP queries
   dns     DNS queries via OpenDNS
-  -h, --help  Show this help
 EOF
-		exit 0
-		;;
-	""|https)
+			exit 0
+			;;
+		https|http|dns) method="$arg" ;;
+		*) echo "Error: Unknown option '$arg'" >&2; exit 1 ;;
+	esac
+done
+
+case "$method" in
+	https)
 		ipv4=$(curl -s https://api.ipify.org 2>/dev/null || curl -s https://checkip.amazonaws.com 2>/dev/null)
 		ipv6=$(curl -s https://api64.ipify.org 2>/dev/null)
 
@@ -27,8 +45,8 @@ EOF
 			exit 1
 		fi
 
-		[ -n "$ipv4" ] && echo "$ipv4"
-		[ -n "$ipv6" ] && echo "$ipv6"
+		[ "$ipv6_only" != true ] && [ -n "$ipv4" ] && echo "$ipv4"
+		[ "$ipv4_only" != true ] && [ -n "$ipv6" ] && echo "$ipv6"
 		exit 0
 		;;
 	http)
@@ -51,14 +69,9 @@ EOF
 			exit 1
 		fi
 
-		[ -n "$ipv4" ] && echo "$ipv4"
-		[ -n "$ipv6" ] && echo "$ipv6"
+		[ "$ipv6_only" != true ] && [ -n "$ipv4" ] && echo "$ipv4"
+		[ "$ipv4_only" != true ] && [ -n "$ipv6" ] && echo "$ipv6"
 		exit 0
-		;;
-	*)
-		echo "Error: Unknown option '$1'" >&2
-		echo "Use -h or --help for usage" >&2
-		exit 1
 		;;
 esac
 
