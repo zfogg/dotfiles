@@ -605,3 +605,6 @@ if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
   export SDKROOT="`xcrun --show-sdk-path`"
 fi
 # }}}
+
+# for llvm-symbolizer
+export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
