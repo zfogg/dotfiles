@@ -18,8 +18,8 @@ Usage: ip-address-local [OPTIONS]
 Print local network interface IP addresses
 
 Options:
-  --4              IPv4 only
-  --6              IPv6 only
+  -4               IPv4 only
+  -6               IPv6 only
   --docker         Only docker interfaces
   --no-docker      Exclude docker interfaces
   --tailscale      Only tailscale interfaces
@@ -30,8 +30,8 @@ Options:
 EOF
             exit 0
             ;;
-        --4) ipv4_only=true; shift ;;
-        --6) ipv6_only=true; shift ;;
+        -4) ipv4_only=true; shift ;;
+        -6) ipv6_only=true; shift ;;
         --no-docker) no_docker=true; shift ;;
         --docker) only_docker=true; shift ;;
         --no-tailscale) no_tailscale=true; shift ;;
