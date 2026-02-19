@@ -1,0 +1,121 @@
+#!/bin/bash
+
+ipv4_only=false
+ipv6_only=false
+no_docker=false
+only_docker=false
+no_services=false
+default_route=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            cat << 'EOF'
+Usage: ip-address-local [OPTIONS]
+
+Print local network interface IP addresses
+
+Options:
+  --4              IPv4 only
+  --6              IPv6 only
+  --docker         Only docker interfaces
+  --no-docker      Exclude docker interfaces
+  --no-services    Exclude docker and tailscale
+  --default-route  Only interface(s) with system default route
+  -h, --help       Show this help
+EOF
+            exit 0
+            ;;
+        --4) ipv4_only=true; shift ;;
+        --6) ipv6_only=true; shift ;;
+        --no-docker) no_docker=true; shift ;;
+        --docker) only_docker=true; shift ;;
+        --no-services) no_services=true; shift ;;
+        --default-route) default_route=true; shift ;;
+        *) echo "Error: Unknown flag: $1" >&2; exit 1 ;;
+    esac
+done
+
+# Validate conflicting flags
+if [[ "$only_docker" == true ]] && [[ "$no_docker" == true ]]; then
+    echo "Error: --docker and --no-docker are mutually exclusive" >&2
+    exit 1
+fi
+
+if [[ "$only_docker" == true ]] && [[ "$no_services" == true ]]; then
+    echo "Error: --docker and --no-services are mutually exclusive" >&2
+    exit 1
+fi
+
+found=false
+results=""
+
+# Get default route interfaces if --default-route is set
+default_route_ipv4=""
+default_route_ipv6=""
+if [[ "$default_route" == true ]]; then
+    default_route_ipv4=$(ip route show | grep "^default" | grep -oP 'dev \K\S+' | head -1)
+    default_route_ipv6=$(ip -6 route show | grep "^default" | grep -oP 'dev \K\S+' | head -1)
+fi
+
+# Get all interfaces
+for iface in $(ip link show | grep "^[0-9]" | awk '{print $2}' | sed 's/:$//' | grep -v "^veth"); do
+    # Skip loopback
+    if [[ "$iface" == "lo" ]]; then
+        continue
+    fi
+
+    # Check if interface is docker-related
+    is_docker=false
+    if [[ "$iface" =~ ^docker ]] || [[ "$iface" =~ ^br- ]]; then
+        is_docker=true
+    fi
+
+    # Check if interface is tailscale-related
+    is_tailscale=false
+    if [[ "$iface" =~ ^tailscale ]]; then
+        is_tailscale=true
+    fi
+
+    # Apply filtering based on flags
+    if [[ "$only_docker" == true ]]; then
+        # Only show docker interfaces
+        [[ "$is_docker" != true ]] && continue
+    elif [[ "$no_services" == true ]]; then
+        # Skip both docker and tailscale
+        [[ "$is_docker" == true ]] || [[ "$is_tailscale" == true ]] && continue
+    elif [[ "$no_docker" == true ]]; then
+        # Skip only docker
+        [[ "$is_docker" == true ]] && continue
+    fi
+
+    # Get IPv4 addresses
+    if [[ "$ipv6_only" != true ]]; then
+        ipv4=$(ip addr show "$iface" 2>/dev/null | grep "inet " | awk '{print $2}' | cut -d'/' -f1 | head -1)
+        if [[ -n "$ipv4" ]]; then
+            if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv4" ]]; then
+                results+="$iface $ipv4"$'\n'
+                found=true
+            fi
+        fi
+    fi
+
+    # Get IPv6 addresses
+    if [[ "$ipv4_only" != true ]]; then
+        ipv6=$(ip addr show "$iface" 2>/dev/null | grep "inet6" | grep -v "fe80:" | awk '{print $2}' | cut -d'/' -f1 | head -1)
+        if [[ -n "$ipv6" ]]; then
+            if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv6" ]]; then
+                results+="$iface $ipv6"$'\n'
+                found=true
+            fi
+        fi
+    fi
+done
+
+if [[ "$found" != true ]]; then
+    echo "Error: No IP addresses found" >&2
+    exit 1
+fi
+
+# Output aligned results
+echo -e "$results" | column -t
