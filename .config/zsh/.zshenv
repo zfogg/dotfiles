@@ -383,38 +383,26 @@ function() {
 }
 # android }}}
 
-# path, manpath, fpath {{{
-source "$ZDOTDIR/z/path.zsh"
-
-# Set up brew variables manually (without using shellenv which prepends to PATH)
+# Set up brew variables (before path.zsh sources, since path.zsh needs $BREW)
 if [[ -d /opt/homebrew/bin ]]; then
   export HOMEBREW_PREFIX="/opt/homebrew"
   export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
   export HOMEBREW_REPOSITORY="/opt/homebrew/Homebrew"
   export BREW=/opt/homebrew
-  path+=($BREW/bin $BREW/sbin)
-  fpath=($BREW/share/zsh/site-functions "${fpath[@]}")
-  manpath+=($BREW/share/man)
-  infopath+=($BREW/share/info)
 elif [[ -f /usr/local/bin/brew ]]; then
   export HOMEBREW_PREFIX="/usr/local"
   export HOMEBREW_CELLAR="/usr/local/Cellar"
   export HOMEBREW_REPOSITORY="/usr/local/Homebrew"
   export BREW=/usr/local
-  path+=($BREW/bin $BREW/sbin)
-  fpath=($BREW/share/zsh/site-functions "${fpath[@]}")
-  manpath+=($BREW/share/man)
-  infopath+=($BREW/share/info)
 elif [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
   export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
   export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar"
   export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew"
   export BREW=/home/linuxbrew/.linuxbrew
-  path+=($BREW/bin $BREW/sbin)
-  fpath=($BREW/share/zsh/site-functions "${fpath[@]}")
-  manpath+=($BREW/share/man)
-  infopath+=($BREW/share/info)
 fi
+
+# path, manpath, fpath {{{
+source "$ZDOTDIR/z/path.zsh"
   # note: meta helpers {{{
   #command_exists() { command -v "$1" 2>/dev/null 1>&2 }
   #alias_exists()   { alias      "$1" 2>/dev/null 1>&2 }

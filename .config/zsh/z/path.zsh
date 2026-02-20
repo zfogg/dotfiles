@@ -11,7 +11,9 @@
   typeset -xUT INFOPATH infopath
 
   # INFO: https://www.reddit.com/r/neovim/comments/ga0s7w/comment/foxs2m8/
-  [[ "$SHLVL" > 1 ]] && return
+  # Allow to run in non-interactive shells (needed for proper PATH ordering)
+  # Only return if deeply nested (SHLVL > 3)
+  [[ "$SHLVL" -gt 3 ]] && return
 # }}}
 
 #print -rl -- "${fpath[@]#/usr/local/share/zsh/site-functions}"
@@ -76,27 +78,24 @@ function () { # {{{ platform-specifics
       export CCACHE_PATH=$BREW/bin
     fi
 
-    local latest_ruby=""
-    local ruby_dirs=($HOME/.local/share/gem/ruby/*/bin(NnF/[-1]))
-    (( ${#ruby_dirs} )) && latest_ruby=$ruby_dirs[1]
     path=(
-      $HOME/.local/share/../bin # uv, uvx
-      $latest_ruby
-      #$HOME/.ghcup/bin
       $BREW/lib/colorgcc/bin
       $BREW/lib/ccache/bin
       $BREW/local/{bin,sbin}
       $BREW/{bin,sbin}
-      /usr/lib/emscripten
-      "$path[@]"
-      /bin
+      /usr/local/sbin
+      /usr/local/bin
+      /usr/sbin
+      /usr/bin
       /sbin
+      /bin
+      /usr/lib/emscripten
     )
 
     fpath=(
-      $BREW/share/zsh/{site-functions,functions}
-      ${(@f)fpath#/usr/local/share/zsh/site-functions}
-      #"$fpath[@]"
+      $BREW/share/zsh/site-functions
+      $HOME/.docker/completions
+      "$fpath[@]"
     )
 
     manpath=(
