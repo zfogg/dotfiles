@@ -190,7 +190,7 @@ function M.config()
     vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
   end
 
-  -- Use only the new vim.lsp.config API - no require('lspconfig') to avoid deprecation warning
+  -- Use only the new vim.lsp.config API
 
   -- Configure clangd with custom capabilities
   vim.lsp.config('clangd', {
@@ -202,14 +202,23 @@ function M.config()
   for server_name, server_config in pairs(servers) do
     local opts = {
       capabilities = capabilities,
-      settings = server_config,
     }
-    if server_config and server_config.filetypes then
-      opts.filetypes = server_config.filetypes
+
+    -- Add settings if provided (only if there's actual content besides cmd)
+    local has_settings = false
+    for k, v in pairs(server_config) do
+      if k ~= 'cmd' then
+        if not opts.settings then opts.settings = {} end
+        opts.settings[k] = v
+        has_settings = true
+      end
     end
-    if server_config and server_config.cmd then
+
+    -- Add cmd if provided
+    if server_config.cmd then
       opts.cmd = server_config.cmd
     end
+
     vim.lsp.config(server_name, opts)
     vim.lsp.enable(server_name)
   end
@@ -223,17 +232,7 @@ function M.config()
     end,
   })
 
-  -- Install servers via mason-lspconfig with automatic_enable disabled (we enable servers manually above)
-  local ensure_installed = vim.tbl_keys(servers)
-  -- Mason doesn't have clangd or cmake binaries for arm64
-  if vim.loop.os_uname().machine == 'aarch64' then
-    ensure_installed = vim.tbl_filter(function(s) return s ~= 'cmake' end, ensure_installed)
-    ensure_installed = vim.tbl_filter(function(s) return s ~= 'clangd' end, ensure_installed)
-  end
-  require('mason-lspconfig').setup({
-    automatic_enable = false,
-    ensure_installed = ensure_installed,
-  })
+  -- Don't use mason-lspconfig integration - we configure servers manually with vim.lsp.config
 end
 
 return M
