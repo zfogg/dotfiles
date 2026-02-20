@@ -452,8 +452,6 @@ export AWS_PROFILE=softmax
 
 export VCPKG_ROOT=$HOME/.local/share/vcpkg
 
-[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
-
 # bun completions
 [ -s "/home/zfogg/.bun/_bun" ] && source "/home/zfogg/.bun/_bun"
 
