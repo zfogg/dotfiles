@@ -34,9 +34,6 @@ antidote load ${ZDOTDIR:-$HOME/.config/zsh}/.zsh_plugins.txt
 
 
 # $ZDOTDIR/z/ {{{
-# path, manpath, fpath, infopath
-source "$ZDOTDIR/z/path.zsh"
-
 # bindkey, zle
 source "$ZDOTDIR/z/keys.zsh"
 
@@ -48,6 +45,9 @@ source "$ZDOTDIR/z/theme.zsh"
 
 # completions, complist, compinit, compdef
 source "$ZDOTDIR/z/complete.zsh"
+
+# path, manpath, fpath, infopath (last so it can override plugin PATH changes)
+source "$ZDOTDIR/z/path.zsh"
 # $ZDOTDIR/z/ }}}
 
 
@@ -462,3 +462,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # --- Gas Town Integration (managed by gt) ---
 [[ -f "$HOME/.config/gastown/shell-hook.sh" ]] && source "$HOME/.config/gastown/shell-hook.sh"
 # --- End Gas Town ---
+
+# Re-source path.zsh LAST to fix PATH order after all plugins and PATH manipulations above
+source "$ZDOTDIR/z/path.zsh"
