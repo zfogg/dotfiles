@@ -1,7 +1,7 @@
 -- rc/vim_defaults
 
 -- Disable provider support
-vim.g.loaded_perl_provider = 1
+vim.g.loaded_perl_provider = 0
 
 -- Disable standard plugins
 vim.g.loaded_getscriptPlugin = true
