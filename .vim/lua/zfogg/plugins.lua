@@ -471,7 +471,7 @@ require("lazy").setup({
     ft = { 'html', 'xhtml' },
     lazy = true,
   },
-  { 'lifepillar/pgsql.vim',    ft = ft['sql'] },
+  { 'lifepillar/pgsql.vim',        ft = ft['sql'] },
   {
     'sheerun/vim-polyglot',
     -- Load immediately for syntax highlighting on startup
