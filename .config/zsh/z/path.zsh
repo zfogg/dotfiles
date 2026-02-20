@@ -121,6 +121,7 @@ function() { # {{{ AFTER platform-specifics
   path=(
     $HOME/bin
     $HOME/.local/bin
+    $HOME/gt/mayor/gastown
     $HOME/.{cabal,cargo}/bin
     $HOME/.local/share/asdf/shims
     #/nix/var/nix/profiles/default/bin

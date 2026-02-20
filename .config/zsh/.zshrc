@@ -458,3 +458,7 @@ export VCPKG_ROOT=$HOME/.local/share/vcpkg
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# --- Gas Town Integration (managed by gt) ---
+[[ -f "$HOME/.config/gastown/shell-hook.sh" ]] && source "$HOME/.config/gastown/shell-hook.sh"
+# --- End Gas Town ---

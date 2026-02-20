@@ -28,11 +28,3 @@ if [[ ! -v INSIDE_GENIE && -x /usr/bin/genie ]]; then
     echo
   fi
 fi
-
-if [[ -d /opt/homebrew/bin ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -f /usr/local/bin/brew ]]; then # MacOS X Homebrew install location (not sure if this is the best way to do this) 
-  eval "$(/usr/local/bin/brew shellenv)"
-elif [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then # MacOS X Homebrew install location (not sure if this is the best way to do this) 
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
