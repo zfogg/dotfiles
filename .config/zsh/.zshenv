@@ -608,3 +608,8 @@ fi
 
 # for llvm-symbolizer
 export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
+
+
+# Criterion
+export CRITERION_JOBS="$CORES"
+export CRITERION_SHORT_FILENAME=1
