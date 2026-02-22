@@ -77,7 +77,13 @@ alias ql='quick-look'
 # grc
 if command -v grc >/dev/null 2>&1; then
   # Get list of commands from grc config files
-  local grc_dir="${BREW}/share/grc"
+  if [ -d '/usr/share/grc' ]; then
+    local grc_dir="/usr/share/grc"
+  elif [ -d '/usr/local/share/grc' ]; then
+    local grc_dir="/usr/share/grc"
+  else
+    local grc_dir="${BREW}/share/grc"
+  fi
   if [[ -d "$grc_dir" ]]; then
     # Extract command names from conf.* files
     for conf_file in "$grc_dir"/conf.*; do
@@ -100,11 +106,11 @@ fi
 
 function() { # ls
   alias ls >/dev/null && unalias ls
-  alias ls='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header'
-  alias ll='ls --oneline --long'
-  alias la='ll -A --no-user --no-permissions --total-size'
-  alias  l='la'
-  alias lt='la --tree --level=6'
+  alias ls='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --long'
+  alias ll='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --oneline --long'
+  alias la='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --long'
+  alias  l='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header'
+  alias lt='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --oneline --long --tree --level=6'
   compdefas exa l ll la lt
 }
 
@@ -218,6 +224,7 @@ alias  gl='git log --stat'
 alias  gp='git push'
 alias  gpu='git pull --rebase'
 alias gpul='(git diff-index --quiet HEAD -- && git pull --rebase || (git stash && git pull --rebase && git stash pop)) && git push origin "`git mybranch`"'
+alias gpull='(git diff-index --quiet HEAD -- && git pull --rebase || (git stash && git pull --rebase && git stash pop)) && git push origin "`git mybranch`"'
 alias grv='git remote -v'
 alias gst='git status'
 alias  ga='git add'
