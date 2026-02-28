@@ -465,3 +465,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Re-source path.zsh LAST to fix PATH order after all plugins and PATH manipulations above
 source "$ZDOTDIR/z/path.zsh"
+export PATH="$HOME/.local/bin:$PATH"
