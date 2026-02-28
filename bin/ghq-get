@@ -5,19 +5,23 @@ autoload -Uz bin-abort ba-err echoer
 trap 'bin-abort' ERR
 
 local x=$(
-if [[ ${OSX:-0} == ${TRUE:-1} ]]; then
-    command_exists pbpaste \
-        && pbpaste \
+if [[ ${OSX:-0} == ${TRUE:-1} ]] && command_exists pbpaste; then
+    pbpaste \
         || ba-err 10 '' "${0:t}" "pbpaste" 'unavailable'
 elif [[ ${LINUX:-0} == ${TRUE:-1} ]]; then
-    command_exists xclip \
-        && DISPLAY="${DISPLAY:-:0}" xclip -out \
-        || ba-err 10 '' "${0:t}" "xclip" 'unavailable'
+    if [ -v WAYLAND_DISPLAY ] && command_exists wl-paste; then
+        DISPLAY="${DISPLAY:-:0}" wl-paste \
+            || ba-err 10 '' "${0:t}" "wl-paste" 'unavailable'
+    elif command_exists xclip; then
+        DISPLAY="${DISPLAY:-:0}" xclip -out \
+            || ba-err 10 '' "${0:t}" "xclip" 'unavailable'
+    fi
 else
     ba-err 11 '' "${0:t}" "\$$OSX \$$LINUX" 'wrong os'
 fi)
 
+set -x
 ghq get -u -p "$x" 1>&2 \
     || ba-err 12 '' "${0:t}" "\$$x" 'bad repo'
 
-echo "$(ghq root)/$(ghq list "$x")"
+echo "$(ghq root)/$(ghq list "$x" | rg --no-config --no-heading --no-line-number --color=auto "/${x}$" | head -1)"
