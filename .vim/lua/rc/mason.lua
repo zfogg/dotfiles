@@ -51,9 +51,7 @@ local servers = {
   graphql = {},
   html = {},
   --hls = {},
-  jsonls = {
-    cmd = { os.getenv("HOME") .. "/.local/share/nvim/mason/bin/vscode-json-language-server", "--stdio" },
-  },
+  jsonls = {},
   --tsserver = {},
   quick_lint_js = {},
   marksman = {},
@@ -206,17 +204,20 @@ function M.config()
 
   -- Configure other servers
   for server_name, server_config in pairs(servers) do
+    -- Get the default config from lspconfig if available
+    local ok, lspconfig_spec = pcall(function()
+      return require('lspconfig.util').available_servers()[server_name]
+    end)
+
     local opts = {
       capabilities = capabilities,
     }
 
     -- Add settings if provided (only if there's actual content besides cmd)
-    local has_settings = false
     for k, v in pairs(server_config) do
       if k ~= 'cmd' then
         if not opts.settings then opts.settings = {} end
         opts.settings[k] = v
-        has_settings = true
       end
     end
 
