@@ -51,7 +51,9 @@ local servers = {
   graphql = {},
   html = {},
   --hls = {},
-  jsonls = {},
+  jsonls = {
+    cmd = { os.getenv("HOME") .. "/.local/share/nvim/mason/bin/vscode-json-language-server", "--stdio" },
+  },
   --tsserver = {},
   quick_lint_js = {},
   marksman = {},
@@ -84,6 +86,10 @@ end
 
 function M.config()
   require("mason").setup()
+
+  -- Add Mason bin directory to PATH so LSP servers can be found
+  local mason_bin = os.getenv("HOME") .. "/.local/share/nvim/mason/bin"
+  vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 
   -- Get capabilities from blink.cmp
   local capabilities = require('blink.cmp').get_lsp_capabilities()
