@@ -172,3 +172,5 @@
     line-numbers-left-style   = cyan
     line-numbers-right-style  = cyan
 ; }}} delta
+[beads]
+	role = maintainer
