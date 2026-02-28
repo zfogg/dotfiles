@@ -51,7 +51,9 @@ local servers = {
   graphql = {},
   html = {},
   --hls = {},
-  jsonls = {},
+  --jsonls = {
+  --  cmd = { os.getenv("HOME") .. "/.local/share/nvim/mason/bin/vscode-json-language-server", "--stdio" },
+  --},
   --tsserver = {},
   quick_lint_js = {},
   marksman = {},
