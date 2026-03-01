@@ -9,6 +9,9 @@ only_tailscale=false
 no_services=false
 default_route=false
 
+# Detect OS
+OS=$(uname -s)
+
 while [[ $# -gt 0 ]]; do
     case $1 in
         -h|--help)
@@ -66,71 +69,147 @@ fi
 found=false
 results=""
 
-# Get default route interfaces if --default-route is set
-default_route_ipv4=""
-default_route_ipv6=""
-if [[ "$default_route" == true ]]; then
-    default_route_ipv4=$(ip route show | grep "^default" | grep -oP 'dev \K\S+' | head -1)
-    default_route_ipv6=$(ip -6 route show | grep "^default" | grep -oP 'dev \K\S+' | head -1)
+if [[ "$OS" == "Darwin" ]]; then
+    # macOS implementation using ifconfig
+
+    # Get default route interface if --default-route is set
+    default_route_iface=""
+    if [[ "$default_route" == true ]]; then
+        default_route_iface=$(route -n get default 2>/dev/null | grep "interface" | awk '{print $2}')
+    fi
+
+    # Parse ifconfig output to get interfaces and IPs
+    current_iface=""
+    while IFS= read -r line; do
+        # Check if this is a new interface line (starts with alphanumeric)
+        if [[ "$line" =~ ^[a-zA-Z0-9]+ ]] && [[ "$line" =~ : ]]; then
+            current_iface=$(echo "$line" | awk -F: '{print $1}')
+            continue
+        fi
+
+        [[ -z "$current_iface" ]] && continue
+
+        # Skip loopback
+        if [[ "$current_iface" == "lo0" ]]; then
+            continue
+        fi
+
+        # Check if interface is docker-related (less common on macOS)
+        is_docker=false
+        if [[ "$current_iface" =~ ^docker ]] || [[ "$current_iface" =~ ^br- ]]; then
+            is_docker=true
+        fi
+
+        # Check if interface is tailscale-related
+        is_tailscale=false
+        if [[ "$current_iface" =~ ^utun ]]; then
+            is_tailscale=true
+        fi
+
+        # Apply filtering based on flags
+        if [[ "$only_tailscale" == true ]]; then
+            [[ "$is_tailscale" != true ]] && continue
+        elif [[ "$only_docker" == true ]]; then
+            [[ "$is_docker" != true ]] && continue
+        elif [[ "$no_services" == true ]]; then
+            [[ "$is_docker" == true ]] || [[ "$is_tailscale" == true ]] && continue
+        else
+            [[ "$no_docker" == true ]] && [[ "$is_docker" == true ]] && continue
+            [[ "$no_tailscale" == true ]] && [[ "$is_tailscale" == true ]] && continue
+        fi
+
+        # Check default route if flag is set
+        if [[ "$default_route" == true ]] && [[ "$current_iface" != "$default_route_iface" ]]; then
+            continue
+        fi
+
+        # Get IPv4 address
+        if [[ "$ipv6_only" != true ]] && [[ "$line" =~ "inet " ]]; then
+            ipv4=$(echo "$line" | grep "inet " | grep -v "inet6" | awk '{print $2}')
+            if [[ -n "$ipv4" ]]; then
+                results+="$current_iface $ipv4"$'\n'
+                found=true
+            fi
+        fi
+
+        # Get IPv6 address (link-local excluded)
+        if [[ "$ipv4_only" != true ]] && [[ "$line" =~ "inet6" ]] && [[ ! "$line" =~ "fe80:" ]]; then
+            ipv6=$(echo "$line" | grep "inet6" | awk '{print $2}' | cut -d'%' -f1)
+            if [[ -n "$ipv6" ]]; then
+                results+="$current_iface $ipv6"$'\n'
+                found=true
+            fi
+        fi
+    done < <(ifconfig -a)
+else
+    # Linux implementation using ip command
+
+    # Get default route interfaces if --default-route is set
+    default_route_ipv4=""
+    default_route_ipv6=""
+    if [[ "$default_route" == true ]]; then
+        default_route_ipv4=$(ip route show | grep "^default" | grep -oP 'dev \K\S+' | head -1)
+        default_route_ipv6=$(ip -6 route show | grep "^default" | grep -oP 'dev \K\S+' | head -1)
+    fi
+
+    # Get all interfaces
+    for iface in $(ip link show | grep "^[0-9]" | awk '{print $2}' | sed 's/:$//' | grep -v "^veth"); do
+        # Skip loopback
+        if [[ "$iface" == "lo" ]]; then
+            continue
+        fi
+
+        # Check if interface is docker-related
+        is_docker=false
+        if [[ "$iface" =~ ^docker ]] || [[ "$iface" =~ ^br- ]]; then
+            is_docker=true
+        fi
+
+        # Check if interface is tailscale-related
+        is_tailscale=false
+        if [[ "$iface" =~ ^tailscale ]]; then
+            is_tailscale=true
+        fi
+
+        # Apply filtering based on flags
+        if [[ "$only_tailscale" == true ]]; then
+            # Only show tailscale interfaces
+            [[ "$is_tailscale" != true ]] && continue
+        elif [[ "$only_docker" == true ]]; then
+            # Only show docker interfaces
+            [[ "$is_docker" != true ]] && continue
+        elif [[ "$no_services" == true ]]; then
+            # Skip both docker and tailscale
+            [[ "$is_docker" == true ]] || [[ "$is_tailscale" == true ]] && continue
+        else
+            # Apply individual skip flags if no "only" flags are set
+            [[ "$no_docker" == true ]] && [[ "$is_docker" == true ]] && continue
+            [[ "$no_tailscale" == true ]] && [[ "$is_tailscale" == true ]] && continue
+        fi
+
+        # Get IPv4 addresses
+        if [[ "$ipv6_only" != true ]]; then
+            ipv4=$(ip addr show "$iface" 2>/dev/null | grep "inet " | awk '{print $2}' | cut -d'/' -f1 | head -1)
+            if [[ -n "$ipv4" ]]; then
+                if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv4" ]]; then
+                    results+="$iface $ipv4"$'\n'
+                    found=true
+                fi
+            fi
+        fi
+
+        # Get IPv6 addresses
+        if [[ "$ipv4_only" != true ]]; then
+            ipv6=$(ip addr show "$iface" 2>/dev/null | grep "inet6" | grep -v "fe80:" | awk '{print $2}' | cut -d'/' -f1 | head -1)
+            if [[ -n "$ipv6" ]]; then
+                if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv6" ]]; then
+                    results+="$iface $ipv6"$'\n'
+                    found=true
+                fi
+            fi
+        fi
+    done
 fi
-
-# Get all interfaces
-for iface in $(ip link show | grep "^[0-9]" | awk '{print $2}' | sed 's/:$//' | grep -v "^veth"); do
-    # Skip loopback
-    if [[ "$iface" == "lo" ]]; then
-        continue
-    fi
-
-    # Check if interface is docker-related
-    is_docker=false
-    if [[ "$iface" =~ ^docker ]] || [[ "$iface" =~ ^br- ]]; then
-        is_docker=true
-    fi
-
-    # Check if interface is tailscale-related
-    is_tailscale=false
-    if [[ "$iface" =~ ^tailscale ]]; then
-        is_tailscale=true
-    fi
-
-    # Apply filtering based on flags
-    if [[ "$only_tailscale" == true ]]; then
-        # Only show tailscale interfaces
-        [[ "$is_tailscale" != true ]] && continue
-    elif [[ "$only_docker" == true ]]; then
-        # Only show docker interfaces
-        [[ "$is_docker" != true ]] && continue
-    elif [[ "$no_services" == true ]]; then
-        # Skip both docker and tailscale
-        [[ "$is_docker" == true ]] || [[ "$is_tailscale" == true ]] && continue
-    else
-        # Apply individual skip flags if no "only" flags are set
-        [[ "$no_docker" == true ]] && [[ "$is_docker" == true ]] && continue
-        [[ "$no_tailscale" == true ]] && [[ "$is_tailscale" == true ]] && continue
-    fi
-
-    # Get IPv4 addresses
-    if [[ "$ipv6_only" != true ]]; then
-        ipv4=$(ip addr show "$iface" 2>/dev/null | grep "inet " | awk '{print $2}' | cut -d'/' -f1 | head -1)
-        if [[ -n "$ipv4" ]]; then
-            if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv4" ]]; then
-                results+="$iface $ipv4"$'\n'
-                found=true
-            fi
-        fi
-    fi
-
-    # Get IPv6 addresses
-    if [[ "$ipv4_only" != true ]]; then
-        ipv6=$(ip addr show "$iface" 2>/dev/null | grep "inet6" | grep -v "fe80:" | awk '{print $2}' | cut -d'/' -f1 | head -1)
-        if [[ -n "$ipv6" ]]; then
-            if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv6" ]]; then
-                results+="$iface $ipv6"$'\n'
-                found=true
-            fi
-        fi
-    fi
-done
 
 if [[ "$found" != true ]]; then
     echo "Error: No IP addresses found" >&2
