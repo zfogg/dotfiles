@@ -619,8 +619,11 @@ if [[ "${OSX:-0}" == "${TRUE:-1}" ]]; then
 fi
 # }}}
 
-# for llvm-symbolizer
+# llvm:
+#   llvm-symbolizer
 export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
+#   homebrew llvm
+export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm;$CMAKE_PREFIX_PATH"
 
 
 # Criterion
