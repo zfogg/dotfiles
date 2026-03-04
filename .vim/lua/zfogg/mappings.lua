@@ -83,7 +83,39 @@ map(i, '<Right>', '<Nop>')
 
 -- Yanking and pasting
 map({ 'n', 'x', 'o' }, 'Y', 'y$')
-map({ 'n', 'x', 'o' }, '<Leader>y', '"+y')
+
+-- Helper function to yank to clipboard and strip trailing newline
+local function yank_to_clipboard_clean(motion_keys)
+  return function()
+    vim.cmd('normal! "+' .. motion_keys)
+    vim.schedule(function()
+      local content = vim.fn.getreg('+')
+      if content and content ~= '' and content:sub(-1) == '\n' then
+        vim.fn.setreg('+', content:sub(1, -2))
+      end
+    end)
+  end
+end
+
+-- Yank to system clipboard with any motion: <leader>y<motion>
+-- Common motions have explicit mappings with newline stripping
+-- e.g., <leader>yy (line), <leader>yw (word), <leader>y$ (to EOL), <leader>yip (inner paren)
+map('n', '<Leader>yy', yank_to_clipboard_clean('yy'), { desc = 'Yank line to clipboard' })
+map('n', '<Leader>yw', yank_to_clipboard_clean('yw'), { desc = 'Yank word to clipboard' })
+map('n', '<Leader>yb', yank_to_clipboard_clean('yb'), { desc = 'Yank word back to clipboard' })
+map('n', '<Leader>y$', yank_to_clipboard_clean('y$'), { desc = 'Yank to EOL to clipboard' })
+map('n', '<Leader>y^', yank_to_clipboard_clean('y^'), { desc = 'Yank to SOL to clipboard' })
+map('n', '<Leader>yp', yank_to_clipboard_clean('yp'), { desc = 'Yank paragraph to clipboard' })
+
+-- Generic operator for visual mode and text objects (with operator-pending support)
+map({ 'x', 'o' }, '<Leader>y', '"+y')
+-- For normal mode with text objects like <leader>yi(, <leader>ya", etc.
+-- These need operator-pending mode, so we use the operator mapping
+vim.keymap.set('n', '<Leader>y', function()
+  -- Enter operator-pending mode for text objects
+  vim.cmd('normal! "+y')
+end, { expr = false })
+
 map('n', '<Leader>y%', ':let @*=expand("%")<Bar>echo getreg("*")<CR>')
 map('n', '<Leader>Y%', ':let @*=expand("%:p")<Bar>echo getreg("*")<CR>')
 map({ 'n', 'x', 'o' }, '<Leader>p', '"+p')
