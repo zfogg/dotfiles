@@ -69,6 +69,67 @@ fi
 found=false
 results=""
 
+# ANSI color codes
+if [[ -t 1 ]]; then
+    CYAN=$'\033[36m'
+    GREEN=$'\033[32m'
+    YELLOW=$'\033[33m'
+    RED=$'\033[31m'
+    GRAY=$'\033[90m'
+    RESET=$'\033[0m'
+else
+    CYAN=''
+    GREEN=''
+    YELLOW=''
+    RED=''
+    GRAY=''
+    RESET=''
+fi
+
+# Function to get color for classification
+get_classification_color() {
+    local classification=$1
+    case "$classification" in
+        public) echo "${GREEN}" ;;
+        private) echo "${YELLOW}" ;;
+        link-local) echo "${RED}" ;;
+    esac
+}
+
+# Function to classify IP address
+classify_ip() {
+    local ip=$1
+
+    if [[ "$ip" =~ : ]]; then
+        # IPv6
+        if [[ "$ip" =~ ^fe80: ]]; then
+            echo "link-local"
+        elif [[ "$ip" =~ ^fc[0-9a-f][0-9a-f]: ]] || [[ "$ip" =~ ^fd[0-9a-f][0-9a-f]: ]]; then
+            echo "private"
+        else
+            echo "public"
+        fi
+    else
+        # IPv4
+        local IFS='.'
+        read -r a b c d <<< "$ip"
+
+        if [[ $a -eq 169 && $b -eq 254 ]]; then
+            echo "link-local"
+        elif [[ $a -eq 10 ]]; then
+            echo "private"
+        elif [[ $a -eq 172 && $b -ge 16 && $b -le 31 ]]; then
+            echo "private"
+        elif [[ $a -eq 192 && $b -eq 168 ]]; then
+            echo "private"
+        elif [[ $a -eq 127 ]]; then
+            echo "private"
+        else
+            echo "public"
+        fi
+    fi
+}
+
 if [[ "$OS" == "Darwin" ]]; then
     # macOS implementation using ifconfig
 
@@ -127,7 +188,9 @@ if [[ "$OS" == "Darwin" ]]; then
         if [[ "$ipv6_only" != true ]] && [[ "$line" =~ "inet " ]]; then
             ipv4=$(echo "$line" | grep "inet " | grep -v "inet6" | awk '{print $2}')
             if [[ -n "$ipv4" ]]; then
-                results+="$current_iface $ipv4"$'\n'
+                classification=$(classify_ip "$ipv4")
+                color=$(get_classification_color "$classification")
+                results+="${CYAN}$current_iface${RESET} ${color}$classification${RESET} $ipv4"$'\n'
                 found=true
             fi
         fi
@@ -136,7 +199,14 @@ if [[ "$OS" == "Darwin" ]]; then
         if [[ "$ipv4_only" != true ]] && [[ "$line" =~ "inet6" ]] && [[ ! "$line" =~ "fe80:" ]]; then
             ipv6=$(echo "$line" | grep "inet6" | awk '{print $2}' | cut -d'%' -f1)
             if [[ -n "$ipv6" ]]; then
-                results+="$current_iface $ipv6"$'\n'
+                classification=$(classify_ip "$ipv6")
+                color=$(get_classification_color "$classification")
+                # Check if address is temporary (usually has deprecated or temporary flags)
+                addr_type="(stable)"
+                if [[ "$line" =~ "deprecated" ]] || [[ "$line" =~ "temporary" ]]; then
+                    addr_type="(temporary)"
+                fi
+                results+="${CYAN}$current_iface${RESET} ${color}$classification${RESET} $ipv6 ${GRAY}$addr_type${RESET}"$'\n'
                 found=true
             fi
         fi
@@ -192,7 +262,9 @@ else
             ipv4=$(ip addr show "$iface" 2>/dev/null | grep "inet " | awk '{print $2}' | cut -d'/' -f1 | head -1)
             if [[ -n "$ipv4" ]]; then
                 if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv4" ]]; then
-                    results+="$iface $ipv4"$'\n'
+                    classification=$(classify_ip "$ipv4")
+                    color=$(get_classification_color "$classification")
+                    results+="${CYAN}$iface${RESET} ${color}$classification${RESET} $ipv4"$'\n'
                     found=true
                 fi
             fi
@@ -200,11 +272,21 @@ else
 
         # Get IPv6 addresses
         if [[ "$ipv4_only" != true ]]; then
-            ipv6=$(ip addr show "$iface" 2>/dev/null | grep "inet6" | grep -v "fe80:" | awk '{print $2}' | cut -d'/' -f1 | head -1)
-            if [[ -n "$ipv6" ]]; then
-                if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv6" ]]; then
-                    results+="$iface $ipv6"$'\n'
-                    found=true
+            ipv6_line=$(ip addr show "$iface" 2>/dev/null | grep "inet6" | grep -v "fe80:")
+            if [[ -n "$ipv6_line" ]]; then
+                ipv6=$(echo "$ipv6_line" | awk '{print $2}' | cut -d'/' -f1 | head -1)
+                if [[ -n "$ipv6" ]]; then
+                    if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv6" ]]; then
+                        classification=$(classify_ip "$ipv6")
+                        color=$(get_classification_color "$classification")
+                        # Check if address is temporary (mngtmpaddr flag indicates managed temporary address)
+                        addr_type="(stable)"
+                        if echo "$ipv6_line" | grep -q "mngtmpaddr"; then
+                            addr_type="(temporary)"
+                        fi
+                        results+="${CYAN}$iface${RESET} ${color}$classification${RESET} $ipv6 ${GRAY}$addr_type${RESET}"$'\n'
+                        found=true
+                    fi
                 fi
             fi
         fi
@@ -217,4 +299,10 @@ if [[ "$found" != true ]]; then
 fi
 
 # Output aligned results
-echo -e "$results" | column -t
+if [[ -t 1 ]]; then
+    # For TTY output, echo -e to interpret escape codes, then use column
+    echo -e "$results" | column -t
+else
+    # For non-TTY, just output normally
+    echo "$results"
+fi
