@@ -287,26 +287,26 @@ else
             fi
         fi
 
-        # Get IPv6 addresses
+        # Get IPv6 addresses (all of them, not just first)
         if [[ "$ipv4_only" != true ]]; then
-            ipv6_line=$(ip addr show "$iface" 2>/dev/null | grep "inet6" | grep -v "fe80:")
-            if [[ -n "$ipv6_line" ]]; then
-                ipv6=$(echo "$ipv6_line" | awk '{print $2}' | cut -d'/' -f1 | head -1)
+            while IFS= read -r ipv6_line; do
+                [[ -z "$ipv6_line" ]] && continue
+                ipv6=$(echo "$ipv6_line" | awk '{print $2}' | cut -d'/' -f1)
                 if [[ -n "$ipv6" ]]; then
                     if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv6" ]]; then
                         classification=$(classify_ip "$ipv6")
                         class_color=$(get_classification_color "$classification")
                         ip_color=$(get_ip_type_color "$ipv6")
-                        # Check if address is temporary (mngtmpaddr flag indicates managed temporary address)
+                        # Check if address is temporary (mngtmpaddr flag) or has temporary flag
                         addr_type="(stable)"
-                        if echo "$ipv6_line" | grep -q "mngtmpaddr"; then
+                        if echo "$ipv6_line" | grep -q "temporary\|mngtmpaddr"; then
                             addr_type="(temporary)"
                         fi
                         results+="${CYAN}$iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv6${RESET} ${GRAY}$addr_type${RESET}"$'\n'
                         found=true
                     fi
                 fi
-            fi
+            done < <(ip addr show "$iface" 2>/dev/null | grep "inet6" | grep -v "fe80:")
         fi
     done
 fi
