@@ -2,4 +2,6 @@
 
 set -e
 
+# TODO: use fzf
+
 nvim $(rg "$@" --vimgrep --color=never | cut -d':' -f1-3)
