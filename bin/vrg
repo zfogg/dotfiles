@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+set -e
+
+nvim $(rg "$@" --vimgrep --color=never | cut -d':' -f1-3)
