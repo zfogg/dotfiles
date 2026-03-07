@@ -297,10 +297,12 @@ else
                         classification=$(classify_ip "$ipv6")
                         class_color=$(get_classification_color "$classification")
                         ip_color=$(get_ip_type_color "$ipv6")
-                        # Check if address is temporary (mngtmpaddr flag) or has temporary flag
+                        # Distinguish between rotating temporary and stable managed temporary
                         addr_type="(stable)"
-                        if echo "$ipv6_line" | grep -q "temporary\|mngtmpaddr"; then
-                            addr_type="(temporary)"
+                        if echo "$ipv6_line" | grep -q "temporary" && ! echo "$ipv6_line" | grep -q "mngtmpaddr"; then
+                            addr_type="(rotating)"
+                        elif echo "$ipv6_line" | grep -q "mngtmpaddr"; then
+                            addr_type="(stable)"
                         fi
                         results+="${CYAN}$iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv6${RESET} ${GRAY}$addr_type${RESET}"$'\n'
                         found=true
