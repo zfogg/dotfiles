@@ -76,6 +76,8 @@ if [[ -t 1 ]]; then
     YELLOW=$'\033[33m'
     RED=$'\033[31m'
     GRAY=$'\033[90m'
+    BLUE=$'\033[34m'
+    WHITE=$'\033[37m'
     RESET=$'\033[0m'
 else
     CYAN=''
@@ -83,8 +85,20 @@ else
     YELLOW=''
     RED=''
     GRAY=''
+    BLUE=''
+    WHITE=''
     RESET=''
 fi
+
+# Function to get color for IP address type
+get_ip_type_color() {
+    local ip=$1
+    if [[ "$ip" =~ : ]]; then
+        echo "${BLUE}"
+    else
+        echo "${WHITE}"
+    fi
+}
 
 # Function to get color for classification
 get_classification_color() {
@@ -189,8 +203,9 @@ if [[ "$OS" == "Darwin" ]]; then
             ipv4=$(echo "$line" | grep "inet " | grep -v "inet6" | awk '{print $2}')
             if [[ -n "$ipv4" ]]; then
                 classification=$(classify_ip "$ipv4")
-                color=$(get_classification_color "$classification")
-                results+="${CYAN}$current_iface${RESET} ${color}$classification${RESET} $ipv4"$'\n'
+                class_color=$(get_classification_color "$classification")
+                ip_color=$(get_ip_type_color "$ipv4")
+                results+="${CYAN}$current_iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv4${RESET}"$'\n'
                 found=true
             fi
         fi
@@ -200,13 +215,14 @@ if [[ "$OS" == "Darwin" ]]; then
             ipv6=$(echo "$line" | grep "inet6" | awk '{print $2}' | cut -d'%' -f1)
             if [[ -n "$ipv6" ]]; then
                 classification=$(classify_ip "$ipv6")
-                color=$(get_classification_color "$classification")
+                class_color=$(get_classification_color "$classification")
+                ip_color=$(get_ip_type_color "$ipv6")
                 # Check if address is temporary (usually has deprecated or temporary flags)
                 addr_type="(stable)"
                 if [[ "$line" =~ "deprecated" ]] || [[ "$line" =~ "temporary" ]]; then
                     addr_type="(temporary)"
                 fi
-                results+="${CYAN}$current_iface${RESET} ${color}$classification${RESET} $ipv6 ${GRAY}$addr_type${RESET}"$'\n'
+                results+="${CYAN}$current_iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv6${RESET} ${GRAY}$addr_type${RESET}"$'\n'
                 found=true
             fi
         fi
@@ -263,8 +279,9 @@ else
             if [[ -n "$ipv4" ]]; then
                 if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv4" ]]; then
                     classification=$(classify_ip "$ipv4")
-                    color=$(get_classification_color "$classification")
-                    results+="${CYAN}$iface${RESET} ${color}$classification${RESET} $ipv4"$'\n'
+                    class_color=$(get_classification_color "$classification")
+                    ip_color=$(get_ip_type_color "$ipv4")
+                    results+="${CYAN}$iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv4${RESET}"$'\n'
                     found=true
                 fi
             fi
@@ -278,13 +295,14 @@ else
                 if [[ -n "$ipv6" ]]; then
                     if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv6" ]]; then
                         classification=$(classify_ip "$ipv6")
-                        color=$(get_classification_color "$classification")
+                        class_color=$(get_classification_color "$classification")
+                        ip_color=$(get_ip_type_color "$ipv6")
                         # Check if address is temporary (mngtmpaddr flag indicates managed temporary address)
                         addr_type="(stable)"
                         if echo "$ipv6_line" | grep -q "mngtmpaddr"; then
                             addr_type="(temporary)"
                         fi
-                        results+="${CYAN}$iface${RESET} ${color}$classification${RESET} $ipv6 ${GRAY}$addr_type${RESET}"$'\n'
+                        results+="${CYAN}$iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv6${RESET} ${GRAY}$addr_type${RESET}"$'\n'
                         found=true
                     fi
                 fi
