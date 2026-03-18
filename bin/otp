@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+set -e
+
+
+function usage() {
+  echo "Uses 1password CLI to get OTPs for items by title."
+  echo "Usage: otp <1p_item_title...>"
+}
+
+if [ "$#" -lt 1 ]; then
+  usage
+  exit 1
+fi
+
+
+function get_otp_for_item() {
+  op_json=$(op --format json item get "$1")
+  echo "$op_json" \
+    | jq --raw-output '.title' | xargs echo -n
+  echo -n ": "
+  echo "$op_json" \
+    | jq --raw-output '.fields[] | select(.type=="OTP") | .totp'
+}
+
+for i in "$@"; do
+  get_otp_for_item "$i"
+done
