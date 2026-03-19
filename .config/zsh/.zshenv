@@ -302,30 +302,6 @@ export GO111MODULE='auto' # on | off | auto
   #|| export npm_config_prefix=~/.npm
 #export NVM_AUTO_USE=true  # lukechilds/zsh-nvm
 
-# ~/.node_version_latest
-function() {
-  local asdf_root="${ASDF_DATA_DIR:-$HOME/.local/share/asdf}"
-  local node_root="$asdf_root"/installs/nodejs
-  local node_version_file="$HOME/.node_version_latest"
-
-  # Get all node versions, sort by semver, get the latest
-  if [[ -d "$node_root" ]]; then
-    local node_versions=($(ls -1 "$node_root" 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V))
-
-    if [[ ${#node_versions[@]} -gt 0 ]]; then
-      local latest_version="${node_versions[-1]}"
-      local latest_path="${node_root}/${latest_version}"
-
-      # Write the latest version to the file
-      if [[ -d "$latest_path" ]]; then
-        echo -n "$latest_version" > "$node_version_file"
-        export NODE_VERSION_LATEST="$latest_path"
-      fi
-    fi
-  fi
-}
-# node }}}
-
 
 # ruby {{{
 export RUBY_CONFIGURE_OPTS="--enable-shared"
@@ -468,7 +444,6 @@ fi
 #fi
 export CARGO_INCREMENTAL=1
 export CARGO_BUILD_JOBS="$((${CORES:-2} - 1))"
-#[[ -f $HOME/.local/share/asdf/installs/rust/stable/env ]] && source "$HOME/.local/share/asdf/installs/rust/stable/env"
 # }}}
 
 
@@ -523,38 +498,9 @@ export CURL_HOME="$XDG_CONFIG_HOME/curl"
 # curl }}}
 
 
-# asdf {{{
-if [[ -d $XDG_CONFIG_HOME/asdf ]]; then
-  export ASDF_CONFIG_DIR="$XDG_CONFIG_HOME/asdf"
-  export ASDF_CONFIG_FILE="$ASDF_CONFIG_DIR/asdfrc"
-else
-  export ASDF_CONFIG_DIR="$HOME"
-  export ASDF_CONFIG_FILE="$ASDF_CONFIG_DIR/.asdfrc"
-fi
-export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
-if [[ $LINUX == $TRUE ]]; then
-  export ASDF_DIR="/opt/asdf-vm"
-elif [[ $OSX == $TRUE ]]; then
-  #export ASDF_DIR="$BREW/opt/asdf"
-  export ASDF_DIR="$BREW/opt/asdf/libexec"
-else
-  export ASDF_DIR="$HOME/.asdf"
-fi
-#export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$ASDF_CONFIG_DIR/.tool-versions"
-export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=".tool-versions"
-export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="$HOME/.default-python-packages"
-#export ASDF_NPM_DEFAULT_PACKAGES_FILE="$HOME/.default-npm-packages"
-export ASDF_YARN_DEFAULT_PACKAGES_FILE="$HOME/.default-yarn-packages"
-export ASDF_NPM_DEFAULT_PACKAGES_FILE="$ASDF_YARN_DEFAULT_PACKAGES_FILE"
-export ASDF_CONCURRENCY="${CORES:-4}"
-
-export RUSTUP_INIT_SKIP_PATH_CHECK='yes'
-# asdf }}}
-
-
-# asdf {{{
+# tldr tealdeer {{{
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
-# asdf }}}
+# tldr tealdeer }}}
 
 
 # perl {{{
@@ -629,3 +575,6 @@ export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm;$CMAKE_PREFIX_PATH"
 # Criterion
 export CRITERION_JOBS="$CORES"
 export CRITERION_SHORT_FILENAME=1
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"

@@ -60,26 +60,7 @@ if command_exists direnv; then
   source <(direnv hook zsh)
 fi
 
-#function() {
-#  local asdf_dir=${ASDF_DIR:-/dev/null}
-#  local asdf_sh=${asdf_dir}/asdf.sh
-#  if [[ -d $asdf_dir && -f $asdf_sh ]]; then
-#    source $asdf_sh;
-#    eval "$(asdf exec direnv hook zsh)"
-#  fi
-#  if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc ]]; then
-#    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
-#  fi
-#}
-
-#if command_exists jenv; then
-#  #eval "$(jenv init -)"
-#fi
-
-# INFO: antigen handles this now
-#[[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
-  #&& source "$BREW/etc/profile.d/z.sh"
-
+# rg {{{
 local RG_PRG='rg '
 local RG_ARGS="--column --line-number --no-heading --sortr=modified --ignore --hidden --color=always --smart-case -g'!.git'"
 function() { # grep, rg
@@ -103,7 +84,10 @@ function() { # grep, rg
     && export GREPPRG="${GREPPRG_PRG}${GREPPRG_ARGS}" \
     || export GREPPRG="${GREPPRG:-command -p grep}"
 }
+# rg }}}
 
+
+# fzf {{{
 if command_exists fzf; then
 
   if `command_exists fd`; then
@@ -215,6 +199,7 @@ if command_exists fzf; then
     fi
   }
 fi
+# fzf }}}
 
 
 # node, npm, nvm {{{
@@ -253,12 +238,6 @@ fi
 #function mkenv() {
 #  local _workon_home="$(workon_home)"
 #  mkdir -p "$_workon_home"
-#  `asdf where python "$1"`/bin/virtualenv \
-#    --seeder pip \
-#    --download \
-#    -p $(asdf where python "$1")/bin/python "$_workon_home"/"$2"
-#  #--system-site-packages \
-#  #--symlink-app-data \
 #}
 #
 #function workon() {
@@ -466,3 +445,12 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Re-source path.zsh LAST to fix PATH order after all plugins and PATH manipulations above
 source "$ZDOTDIR/z/path.zsh"
 export PATH="$HOME/.local/bin:$PATH"
+
+# AWS Bedrock (Claude Code)
+export CLAUDE_CODE_USE_BEDROCK=1
+export AWS_REGION=us-east-1
+export ANTHROPIC_MODEL=us.anthropic.claude-opus-4-6-v1
+export ANTHROPIC_SMALL_FAST_MODEL=us.anthropic.claude-haiku-4-5-20251001-v1:0
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"

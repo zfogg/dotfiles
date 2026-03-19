@@ -122,7 +122,6 @@ function() { # {{{ AFTER platform-specifics
     $HOME/.local/bin
     $HOME/gt/mayor/gastown
     $HOME/.{cabal,cargo}/bin
-    $HOME/.local/share/asdf/shims
     #/nix/var/nix/profiles/default/bin
     #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
     #$HOME/.rbenv/shims
@@ -144,22 +143,6 @@ function() { # {{{ AFTER platform-specifics
       $VIRTUAL_ENV/bin
       "$path[@]")
   fi
-
-  #if [[ -d ~/.asdf/completions ]]; then
-    #fpath=(
-      #$HOME/.asdf/completions
-      #"$fpath[@]")
-  #fi
-
-  #if [[ -v ANDROID_HOME ]]; then
-    #path=(
-      #$ANDROID_HOME/emulator
-      #$ANDROID_HOME/tools/bin
-      #$ANDROID_HOME/platform-tools
-      #$ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*(nF/[-1])}
-      #"$path[@]"
-    #)
-  #fi
 
   fpath=(
     $HOME/.zsh/site-functions
