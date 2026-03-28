@@ -446,11 +446,5 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 source "$ZDOTDIR/z/path.zsh"
 export PATH="$HOME/.local/bin:$PATH"
 
-# AWS Bedrock (Claude Code)
-export CLAUDE_CODE_USE_BEDROCK=1
-export AWS_REGION=us-east-1
-export ANTHROPIC_MODEL=us.anthropic.claude-opus-4-6-v1
-export ANTHROPIC_SMALL_FAST_MODEL=us.anthropic.claude-haiku-4-5-20251001-v1:0
-
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"

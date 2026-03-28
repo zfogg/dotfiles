@@ -1,9 +1,11 @@
 #!/usr/bin/env zsh
 
-PREFIX="as-"
+PROJECT="${1:-beanaries}"
+PROJECT_PREFIX="$(echo "$PROJECT" | cut -c1-2)"
+PREFIX="${2:-"$PROJECT_PREFIX"}"
 
 while true; do
-  for polecat in `ls ~/gt/asciichat/polecats`; do
+  for polecat in `ls ~/gt/"$PROJECT"/polecats`; do
 
     #set -x
     tmux_session=$(tmux list-sessions | grep "$polecat" | sed 's/:.*//' | grep -E "^$PREFIX")
