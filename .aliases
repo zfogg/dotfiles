@@ -102,6 +102,10 @@ if command -v grc >/dev/null 2>&1; then
   colourify='grc -es --colour=auto'
   alias colourify="$colourify"
   # du, ls, and ping are handled separately as aliases
+
+  function dush() {
+    du -sh "$@" | sort -h
+  }
 fi
 
 function() { # ls

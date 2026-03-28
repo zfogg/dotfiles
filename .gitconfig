@@ -1,6 +1,6 @@
 [user]
-    email      = me@zfo.gg
-    name       = Zachary Fogg
+	email = noreply@anthropic.com
+	name = Claude
     ;signingkey = 85795255CAC2EEF8F5CE3446F4967DF3989C8111
     signingkey = 7FE90A79F2E80ED3
 
@@ -105,10 +105,6 @@
 
 [init]
     defaultBranch = master
-
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
-
 [credential "https://github.com"]
     helper = 
     helper = !/usr/bin/gh auth git-credential
@@ -174,3 +170,9 @@
 ; }}} delta
 [beads]
 	role = maintainer
+[credential]
+	helper = store
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+[url "https://"]
+	insteadOf = git://

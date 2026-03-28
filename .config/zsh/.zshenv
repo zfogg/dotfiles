@@ -575,6 +575,3 @@ export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm;$CMAKE_PREFIX_PATH"
 # Criterion
 export CRITERION_JOBS="$CORES"
 export CRITERION_SHORT_FILENAME=1
-
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"

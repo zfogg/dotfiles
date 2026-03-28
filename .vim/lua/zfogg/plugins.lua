@@ -120,6 +120,7 @@ require("lazy").setup({
     'knubie/vim-kitty-navigator',
     lazy = false, -- Load immediately for kitty navigation
     enabled = not ((not util.inKitty) or util.inTmux),
+    build = "cp ./*.py ~/.config/kitty/",
   },
 
   {
