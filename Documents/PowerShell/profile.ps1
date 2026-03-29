@@ -148,3 +148,6 @@ function Get-Size {
     "{0:n2}" -f ((gci -path $pth -recurse | measure-object -property length -sum).sum /1mb) + " mb"
 }
 
+
+function clauded { & claude --dangerously-skip-permissions @args }
+

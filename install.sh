@@ -162,6 +162,18 @@ main() {
     fi
     echo
 
+    # Step 4: Symlink Documents subdirectories
+    log_info "Step 4: Symlinking Documents subdirectories"
+    if [[ -d "$DOTFILES_DIR/Documents" ]]; then
+        for doc_item in "$DOTFILES_DIR/Documents"/*; do
+            [[ ! -e "$doc_item" ]] && continue
+            local basename="$(basename "$doc_item")"
+            [[ "$basename" == ".gitignore" ]] && continue
+            create_symlink "$HOME_DIR/.dotfiles/Documents/$basename" "$HOME_DIR/Documents/$basename"
+        done
+    fi
+    echo
+
     log_success "Dotfiles installation complete!"
     echo
     log_info "Next steps:"
