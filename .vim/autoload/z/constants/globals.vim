@@ -89,36 +89,24 @@ func! z#constants#globals#Python()
     let l:py3_prog = 'python.exe'
     let l:py3_root = $USERPROFILE.'/scoop/apps/python/current'
   elseif has('unix')
-    let l:py2_prog = 'python2'
     let l:py3_prog = 'python3'
     if isdirectory(expand('$XDG_DATA_HOME').'/asdf')
-      let l:py2_root = expand('$XDG_DATA_HOME').'/asdf/shims'
       let l:py3_root = expand('$XDG_DATA_HOME').'/asdf/shims'
     elseif isdirectory(expand('$BREW'))
-      let l:py2_root = expand('$BREW').'/bin'
       let l:py3_root = expand('$BREW').'/bin'
     endif
   endif
   try
     let g:python3_host_prog = l:py3_root.'/'.l:py3_prog
-    let g:python2_host_prog = l:py2_root.'/'.l:py2_prog
-    " because they gave it a stupid name
-    let g:python_host_prog  = g:python2_host_prog
   catch /^Vim(\a\+):E121:/
-    echoerr 'Z:NotFound python(2|3) root|prog'
+    echoerr 'Z:NotFound python3 root|prog'
     if !filereadable(g:python3_host_prog)
       echoerr 'Z:NotFound python3-host-prog '.g:python3_host_prog
       unlet g:python3_host_prog
     endif
-    if !filereadable(g:python2_host_prog)
-      echoerr 'Z:NotFound python2-host-prog '.g:python2_host_prog
-      unlet g:python2_host_prog g:python_host_prog
-    endif
   finally
     if has('win32')
       let g:python3_host_prog = fnamemodify(g:python3_host_prog, ':r')
-      let g:python2_host_prog = fnamemodify(g:python2_host_prog, ':r')
-      let g:python_host_prog = g:python2_host_prog
     endif
   endtry
 endfunc
