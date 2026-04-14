@@ -1,0 +1,1308 @@
+#compdef wasm-tools
+
+autoload -U is-at-least
+
+_wasm-tools() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_wasm-tools_commands" \
+"*::: :->wasm-tools" \
+&& ret=0
+    case $state in
+    (wasm-tools)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:wasm-tools-command-$line[1]:"
+        case $line[1] in
+            (parse)
+_arguments "${_arguments_options[@]}" : \
+'(-g)--generate-dwarf=[Optionally generate DWARF debugging information from WebAssembly text files]:lines|full:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'(--generate-dwarf)-g[Shorthand for \`--generate-dwarf full\`]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(validate)
+_arguments "${_arguments_options[@]}" : \
+'(-g)--generate-dwarf=[Optionally generate DWARF debugging information from WebAssembly text files]:lines|full:_default' \
+'*-f+[Comma-separated list of WebAssembly features to enable during validation]:FEATURES:_default' \
+'*--features=[Comma-separated list of WebAssembly features to enable during validation]:FEATURES:_default' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'(--generate-dwarf)-g[Shorthand for \`--generate-dwarf full\`]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(print)
+_arguments "${_arguments_options[@]}" : \
+'(-g)--generate-dwarf=[Optionally generate DWARF debugging information from WebAssembly text files]:lines|full:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'--indent-text=[The string to use when indenting]:INDENT_TEXT:_default' \
+'--indent=[Number of spaces used for indentation, has lower priority than \`--indent-text\`]:INDENT:_default' \
+'(--generate-dwarf)-g[Shorthand for \`--generate-dwarf full\`]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-p[Whether or not to print binary offsets intermingled in the text format as comments for debugging]' \
+'--print-offsets[Whether or not to print binary offsets intermingled in the text format as comments for debugging]' \
+'--skeleton[Indicates that the "skeleton" of a module should be printed]' \
+'--name-unnamed[Ensure all wasm items have \`\$\`-based names, even if they don'\''t have an entry in the \`name\` section]' \
+'-f[Print instructions in the folded format. (See https\://webassembly.github.io/spec/core/text/instructions.html#folded-instructions)]' \
+'--fold-instructions[Print instructions in the folded format. (See https\://webassembly.github.io/spec/core/text/instructions.html#folded-instructions)]' \
+'--print-operand-stack[Print the contents of the operand stack within function bodies]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(smith)
+_arguments "${_arguments_options[@]}" : \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'-f+[The default amount of fuel used with \`--ensure-termination\`]:FUEL:_default' \
+'--fuel=[The default amount of fuel used with \`--ensure-termination\`]:FUEL:_default' \
+'-c+[JSON configuration file with settings to control the wasm output]:CONFIG:_files' \
+'--config=[JSON configuration file with settings to control the wasm output]:CONFIG:_files' \
+'--available-imports=[The imports that may be used when generating the module]:AVAILABLE_IMPORTS:_files' \
+'--exports=[If provided, the generated module will have exports with exactly the same names and types as those in the provided WebAssembly module. The implementation (e.g. function bodies, global initializers) of each export in the generated module will be random and unrelated to the implementation in the provided module]:EXPORTS:_files' \
+'--module-shape=[If provided, the generated module will have imports and exports with exactly the same names and types as those in the provided WebAssembly module]:MODULE_SHAPE:_files' \
+'--allow-start-export=[Determines whether a \`start\` export may be included. Defaults to \`true\`]:ALLOW_START_EXPORT:(true false)' \
+'--allowed-instructions=[The kinds of instructions allowed in the generated wasm programs. Defaults to all]:ALLOWED_INSTRUCTIONS:_default' \
+'--allow-floats=[Determines whether we generate floating point instructions and types]:ALLOW_FLOATS:(true false)' \
+'--bulk-memory-enabled=[Determines whether the bulk memory proposal is enabled for generating instructions]:BULK_MEMORY_ENABLED:(true false)' \
+'--canonicalize-nans=[Returns whether NaN values are canonicalized after all f32/f64 operation. Defaults to false]:CANONICALIZE_NANS:(true false)' \
+'--disallow-traps=[Returns whether we should avoid generating code that will possibly trap]:DISALLOW_TRAPS:(true false)' \
+'--exceptions-enabled=[Determines whether the exception-handling proposal is enabled for generating instructions]:EXCEPTIONS_ENABLED:(true false)' \
+'--export-everything=[Export all WebAssembly objects in the module. Defaults to false]:EXPORT_EVERYTHING:(true false)' \
+'--gc-enabled=[Determines whether the GC proposal is enabled when generating a Wasm module]:GC_ENABLED:(true false)' \
+'--custom-descriptors-enabled=[Determines whether the custom descriptors proposal is enabled when generating a Wasm module]:CUSTOM_DESCRIPTORS_ENABLED:(true false)' \
+'--custom-page-sizes-enabled=[Determines whether the custom-page-sizes proposal is enabled when generating a Wasm module]:CUSTOM_PAGE_SIZES_ENABLED:(true false)' \
+'--generate-custom-sections=[Returns whether we should generate custom sections or not. Defaults to false]:GENERATE_CUSTOM_SECTIONS:(true false)' \
+'--max-aliases=[Returns the maximal size of the \`alias\` section. Defaults to 1000]:MAX_ALIASES:_default' \
+'--max-components=[The maximum number of components to use. Defaults to 10]:MAX_COMPONENTS:_default' \
+'--max-data-segments=[The maximum number of data segments to generate. Defaults to 100]:MAX_DATA_SEGMENTS:_default' \
+'--max-element-segments=[The maximum number of element segments to generate. Defaults to 100]:MAX_ELEMENT_SEGMENTS:_default' \
+'--max-elements=[The maximum number of elements within a segment to generate. Defaults to 100]:MAX_ELEMENTS:_default' \
+'--max-exports=[The maximum number of exports to generate. Defaults to 100]:MAX_EXPORTS:_default' \
+'--max-funcs=[The maximum number of functions to generate. Defaults to 100.  This includes imported functions]:MAX_FUNCS:_default' \
+'--max-globals=[The maximum number of globals to generate. Defaults to 100.  This includes imported globals]:MAX_GLOBALS:_default' \
+'--max-imports=[The maximum number of imports to generate. Defaults to 100]:MAX_IMPORTS:_default' \
+'--max-instances=[The maximum number of instances to use. Defaults to 10]:MAX_INSTANCES:_default' \
+'--max-instructions=[The maximum number of instructions to generate in a function body. Defaults to 100]:MAX_INSTRUCTIONS:_default' \
+'--max-memories=[The maximum number of memories to use. Defaults to 1]:MAX_MEMORIES:_default' \
+'--max-memory32-bytes=[The maximum, in bytes, of any 32-bit memory'\''s initial or maximum size]:MAX_MEMORY32_BYTES:_default' \
+'--max-memory64-bytes=[The maximum, in bytes, of any 64-bit memory'\''s initial or maximum size]:MAX_MEMORY64_BYTES:_default' \
+'--max-modules=[The maximum number of modules to use. Defaults to 10]:MAX_MODULES:_default' \
+'--max-nesting-depth=[Returns the maximal nesting depth of modules with the component model proposal. Defaults to 10]:MAX_NESTING_DEPTH:_default' \
+'--max-table-elements=[The maximum, elements, of any table'\''s initial or maximum size. Defaults to 1 million]:MAX_TABLE_ELEMENTS:_default' \
+'--max-tables=[The maximum number of tables to use. Defaults to 1]:MAX_TABLES:_default' \
+'--max-tags=[The maximum number of tags to generate. Defaults to 100]:MAX_TAGS:_default' \
+'--max-type-size=[Returns the maximal effective size of any type generated by wasm-smith]:MAX_TYPE_SIZE:_default' \
+'--max-types=[The maximum number of types to generate. Defaults to 100]:MAX_TYPES:_default' \
+'--max-values=[The maximum number of values to use. Defaults to 10]:MAX_VALUES:_default' \
+'--memory64-enabled=[Returns whether 64-bit memories are allowed. Defaults to true]:MEMORY64_ENABLED:(true false)' \
+'--memory-max-size-required=[Whether every Wasm memory must have a maximum size specified. Defaults to \`false\`]:MEMORY_MAX_SIZE_REQUIRED:(true false)' \
+'--memory-offset-choices=[Control the probability of generating memory offsets that are in bounds vs. potentially out of bounds]:MEMORY_OFFSET_CHOICES:_default' \
+'--min-data-segments=[The minimum number of data segments to generate. Defaults to 0]:MIN_DATA_SEGMENTS:_default' \
+'--min-element-segments=[The minimum number of element segments to generate. Defaults to 0]:MIN_ELEMENT_SEGMENTS:_default' \
+'--min-elements=[The minimum number of elements within a segment to generate. Defaults to 0]:MIN_ELEMENTS:_default' \
+'--min-exports=[The minimum number of exports to generate. Defaults to 0]:MIN_EXPORTS:_default' \
+'--min-funcs=[The minimum number of functions to generate. Defaults to 0]:MIN_FUNCS:_default' \
+'--min-globals=[The minimum number of globals to generate. Defaults to 0]:MIN_GLOBALS:_default' \
+'--min-imports=[The minimum number of imports to generate. Defaults to 0]:MIN_IMPORTS:_default' \
+'--min-memories=[The minimum number of memories to use. Defaults to 0]:MIN_MEMORIES:_default' \
+'--min-tables=[The minimum number of tables to use. Defaults to 0]:MIN_TABLES:_default' \
+'--min-tags=[The minimum number of tags to generate. Defaults to 0]:MIN_TAGS:_default' \
+'--min-types=[The minimum number of types to generate. Defaults to 0]:MIN_TYPES:_default' \
+'--min-uleb-size=[The minimum size, in bytes, of all leb-encoded integers. Defaults to 1]:MIN_ULEB_SIZE:_default' \
+'--multi-value-enabled=[Determines whether the multi-value results are enabled]:MULTI_VALUE_ENABLED:(true false)' \
+'--reference-types-enabled=[Determines whether the reference types proposal is enabled for generating instructions]:REFERENCE_TYPES_ENABLED:(true false)' \
+'--relaxed-simd-enabled=[Determines whether the Relaxed SIMD proposal is enabled for generating instructions]:RELAXED_SIMD_ENABLED:(true false)' \
+'--saturating-float-to-int-enabled=[Determines whether the non-trapping float-to-int conversions proposal is enabled]:SATURATING_FLOAT_TO_INT_ENABLED:(true false)' \
+'--sign-extension-ops-enabled=[Determines whether the sign-extension-ops proposal is enabled]:SIGN_EXTENSION_OPS_ENABLED:(true false)' \
+'--shared-everything-threads-enabled=[Determines whether the shared-everything-threads proposal is enabled]:SHARED_EVERYTHING_THREADS_ENABLED:(true false)' \
+'--simd-enabled=[Determines whether the SIMD proposal is enabled for generating instructions]:SIMD_ENABLED:(true false)' \
+'--tail-call-enabled=[Determines whether the tail calls proposal is enabled for generating instructions]:TAIL_CALL_ENABLED:(true false)' \
+'--table-max-size-required=[Whether every Wasm table must have a maximum size specified. Defaults to \`false\`]:TABLE_MAX_SIZE_REQUIRED:(true false)' \
+'--threads-enabled=[Determines whether the threads proposal is enabled]:THREADS_ENABLED:(true false)' \
+'--allow-invalid-funcs=[Indicates whether wasm-smith is allowed to generate invalid function bodies]:ALLOW_INVALID_FUNCS:(true false)' \
+'--wide-arithmetic-enabled=[Determines whether the \[wide-arithmetic proposal\] is enabled]:WIDE_ARITHMETIC_ENABLED:(true false)' \
+'--extended-const-enabled=[Determines whether the \[extended-const proposal\] is enabled]:EXTENDED_CONST_ENABLED:(true false)' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'--ensure-termination[Ensure that execution of generated Wasm modules will always terminate]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- The arbitrary input seed:_files' \
+&& ret=0
+;;
+(shrink)
+_arguments "${_arguments_options[@]}" : \
+'-a+[The number of shrink attempts to try before considering a Wasm module as small as it will ever get]:ATTEMPTS:_default' \
+'--attempts=[The number of shrink attempts to try before considering a Wasm module as small as it will ever get]:ATTEMPTS:_default' \
+'-s+[The RNG seed for choosing which size-reducing mutation to attempt next]:SEED:_default' \
+'--seed=[The RNG seed for choosing which size-reducing mutation to attempt next]:SEED:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'--allow-empty[Allow shrinking the input down to an empty Wasm module]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':predicate -- The interestingness predicate script:_files' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(mutate)
+_arguments "${_arguments_options[@]}" : \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'-s+[The RNG seed used to choose which transformation to apply. Given the same input Wasm and same seed, \`wasm-mutate\` will always generate the same output Wasm]:SEED:_default' \
+'--seed=[The RNG seed used to choose which transformation to apply. Given the same input Wasm and same seed, \`wasm-mutate\` will always generate the same output Wasm]:SEED:_default' \
+'-f+[Fuel to control the time of the mutation]:FUEL:_default' \
+'--fuel=[Fuel to control the time of the mutation]:FUEL:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'--preserve-semantics[Only perform semantics-preserving transformations on the Wasm module]' \
+'--reduce[Only perform size-reducing transformations on the Wasm module. This allows \`wasm-mutate\` to be used as a test case reducer]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(dump)
+_arguments "${_arguments_options[@]}" : \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(objdump)
+_arguments "${_arguments_options[@]}" : \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(strip)
+_arguments "${_arguments_options[@]}" : \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*-d+[Remove custom sections matching the specified regex]:REGEX:_default' \
+'*--delete=[Remove custom sections matching the specified regex]:REGEX:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-a[Remove all custom sections, regardless of name]' \
+'--all[Remove all custom sections, regardless of name]' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(compose)
+_arguments "${_arguments_options[@]}" : \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'-c+[The path to the configuration file to use]:CONFIG:_files' \
+'--config=[The path to the configuration file to use]:CONFIG:_files' \
+'*-d+[Definition components whose exports define import dependencies to fulfill from]:DEFS:_files' \
+'*--definitions=[Definition components whose exports define import dependencies to fulfill from]:DEFS:_files' \
+'*-p+[A path to search for imports]:PATH:_files' \
+'*--search-path=[A path to search for imports]:PATH:_files' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--skip-validation[Skip validation of the composed output component]' \
+'--no-imports[Do not allow instance imports in the composed output component]' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':component -- The path to the root component to compose:_files' \
+&& ret=0
+;;
+(demangle)
+_arguments "${_arguments_options[@]}" : \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(component)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_wasm-tools__component_commands" \
+"*::: :->component" \
+&& ret=0
+
+    case $state in
+    (component)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:wasm-tools-component-command-$line[1]:"
+        case $line[1] in
+            (new)
+_arguments "${_arguments_options[@]}" : \
+'*--adapt=[The path to an adapter module to satisfy imports not otherwise bound to WIT interfaces]:[NAME=]MODULE:_default' \
+'*--import-name=[Rename an instance import in the output component]:OLD=NEW:_default' \
+'(-g)--generate-dwarf=[Optionally generate DWARF debugging information from WebAssembly text files]:lines|full:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'--merge-imports-based-on-semver=[Indicates whether imports into the final component are merged based on semver ranges]:<true|false>:(true false)' \
+'(--generate-dwarf)-g[Shorthand for \`--generate-dwarf full\`]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--skip-validation[Skip validation of the output component]' \
+'-t[Print the output in the WebAssembly text format instead of binary]' \
+'--wat[Print the output in the WebAssembly text format instead of binary]' \
+'--realloc-via-memory-grow[Use memory.grow to realloc memory and stack allocation]' \
+'--reject-legacy-names[Reject usage of the "legacy" naming scheme of \`wit-component\` and require the new naming scheme to be used]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(wit)
+_arguments "${_arguments_options[@]}" : \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'(-w --wasm -t --wat -o --output)--out-dir=[Emit the entire WIT resolution graph instead of just the "top level" package to the output directory specified]:OUT_DIR:_files' \
+'--importize-out-world-name=[The name of the world to generate when using \`--importize\` or \`importize-world\`]:IMPORTIZE_OUT_WORLD_NAME:_default' \
+'(--importize --merge-world-imports-based-on-semver --generate-nominal-type-ids)--importize-world=[Generates a WIT world to import a component which corresponds to the selected world]:WORLD:_default' \
+'(--importize --importize-world --generate-nominal-type-ids)--merge-world-imports-based-on-semver=[Updates the world specified to deduplicate all of its imports based on semver versions]:WORLD:_default' \
+'(--importize --importize-world --merge-world-imports-based-on-semver)--generate-nominal-type-ids=[Generates unique type IDs for nominal types in the world provided]:WORLD:_default' \
+'*--features=[Features to enable when parsing the \`wit\` option]:FEATURES:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'(-t --wat --out-dir)-w[Emit a WebAssembly binary representation instead of the WIT text format]' \
+'(-t --wat --out-dir)--wasm[Emit a WebAssembly binary representation instead of the WIT text format]' \
+'(-w --wasm --out-dir)-t[Emit a WebAssembly textual representation instead of the WIT text format]' \
+'(-w --wasm --out-dir)--wat[Emit a WebAssembly textual representation instead of the WIT text format]' \
+'--no-docs[Do not include doc comments when emitting WIT text]' \
+'--skip-validation[Skips the validation performed when using the \`--wasm\` and \`--wat\` options]' \
+'(-w --wasm --out-dir -t --wat)-j[Emit the WIT document as JSON instead of text]' \
+'(-w --wasm --out-dir -t --wat)--json[Emit the WIT document as JSON instead of text]' \
+'(--importize-world --merge-world-imports-based-on-semver --generate-nominal-type-ids)--importize[Generates WIT to import the component specified to this command]' \
+'--all-features[Enable all features when parsing the \`wit\` option]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file or directory to process:_files' \
+&& ret=0
+;;
+(embed)
+_arguments "${_arguments_options[@]}" : \
+'*--features=[Features to enable when parsing the \`wit\` option]:FEATURES:_default' \
+'(-g)--generate-dwarf=[Optionally generate DWARF debugging information from WebAssembly text files]:lines|full:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'--encoding=[The expected string encoding format for the component]:ENCODING:_default' \
+'-w+[The world that the component uses]:WORLD:_default' \
+'--world=[The world that the component uses]:WORLD:_default' \
+'(--dummy)--dummy-names=[Same as \`--dummy\`, but the style of core wasm names is specified]:DUMMY_NAMES:_default' \
+'--all-features[Enable all features when parsing the \`wit\` option]' \
+'(--generate-dwarf)-g[Shorthand for \`--generate-dwarf full\`]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'(--dummy-names)--dummy[Don'\''t read a core wasm module as input, instead generating a "dummy" module as a placeholder]' \
+'(--async-stackful)--async-callback[With \`--dummy-names legacy\`, this will generate a core module such that all the imports are lowered using the async ABI and the exports are lifted using the async-with-callback ABI]' \
+'(--async-callback)--async-stackful[With \`--dummy-names legacy\`, this will generate a core module such that all the imports are lowered using the async ABI and the exports are lifted using the async-without-callback (i.e. stackful) ABI]' \
+'-t[Print the output in the WebAssembly text format instead of binary]' \
+'--wat[Print the output in the WebAssembly text format instead of binary]' \
+'(-t --wat --dummy --dummy-names)--only-custom[Print the wasm custom section only]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':wit -- Path to WIT files to load:_files' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(targets)
+_arguments "${_arguments_options[@]}" : \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*--features=[Features to enable when parsing the \`wit\` option]:FEATURES:_default' \
+'-w+[The world used to test whether a component conforms to its signature. If the \`WIT\` source provided contains multiple packages, this option must be set, and must be of the fully-qualified form (ex\: "wasi\:http/proxy")]:WORLD:_default' \
+'--world=[The world used to test whether a component conforms to its signature. If the \`WIT\` source provided contains multiple packages, this option must be set, and must be of the fully-qualified form (ex\: "wasi\:http/proxy")]:WORLD:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--all-features[Enable all features when parsing the \`wit\` option]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':wit -- Path to WIT files to load:_files' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(link)
+_arguments "${_arguments_options[@]}" : \
+'*--dl-openable=[Input library to link and make available for dynamic resolution via \`dlopen\` (may be repeated)]:[NAME=]MODULE:_default' \
+'*--adapt=[The path to an adapter module to satisfy imports not otherwise bound to WIT interfaces]:[NAME=]MODULE:_default' \
+'--stack-size=[Size of stack (in bytes) to allocate in the synthesized main module]:STACK_SIZE:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'(--skip-validation)--validate=[Whether or not to validate the output component]' \
+'--merge-imports-based-on-semver=[Indicates whether imports into the final component are merged based on semver ranges]' \
+'--debug-names=[Whether or not to add debug names to the generated binary]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'(--validate)--skip-validation[Deprecated, use \`--validate=false\` instead]' \
+'-t[Print the output in the WebAssembly text format instead of binary]' \
+'--wat[Print the output in the WebAssembly text format instead of binary]' \
+'--stub-missing-functions[Generate trapping stubs for any missing functions]' \
+'--use-built-in-libdl[Use built-in implementations of \`dlopen\`/\`dlsym\`]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'*::inputs -- Input libraries to link:_default' \
+&& ret=0
+;;
+(semver-check)
+_arguments "${_arguments_options[@]}" : \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*--features=[Features to enable when parsing the \`wit\` option]:FEATURES:_default' \
+'--prev=[The "previous" world, or older version, of what'\''s being tested]:PREV:_default' \
+'--new=[The "new" world which is the "prev" world but modified]:NEW:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--all-features[Enable all features when parsing the \`wit\` option]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':wit -- Path to WIT files to load:_files' \
+&& ret=0
+;;
+(unbundle)
+_arguments "${_arguments_options[@]}" : \
+'(-g)--generate-dwarf=[Optionally generate DWARF debugging information from WebAssembly text files]:lines|full:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'--module-dir=[Where to place unbundled core wasm modules]:PATH:_files' \
+'--threshold=[The size threshold for core wasm modules to unbundled]:SIZE:_default' \
+'(--generate-dwarf)-g[Shorthand for \`--generate-dwarf full\`]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_wasm-tools__component__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:wasm-tools-component-help-command-$line[1]:"
+        case $line[1] in
+            (new)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(wit)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(embed)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(targets)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(link)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(semver-check)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(unbundle)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(metadata)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_wasm-tools__metadata_commands" \
+"*::: :->metadata" \
+&& ret=0
+
+    case $state in
+    (metadata)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:wasm-tools-metadata-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--json[Output in JSON encoding]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" : \
+'(-g)--generate-dwarf=[Optionally generate DWARF debugging information from WebAssembly text files]:lines|full:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'(--clear-name)--name=[Add a module or component name to the names section]:NAME:_default' \
+'*--language=[Add a programming language to the producers section]:NAME=VERSION:_default' \
+'*--processed-by=[Add a tool and its version to the producers section]:NAME=VERSION:_default' \
+'*--sdk=[Add an SDK and its version to the producers section]:NAME=VERSION:_default' \
+'(--clear-authors)--authors=[Contact details of the people or organization responsible, encoded as a freeform string]:NAME:_default' \
+'(--clear-description)--description=[A human-readable description of the binary]:NAME:_default' \
+'(--clear-licenses)--licenses=[License(s) under which contained software is distributed as an SPDX License Expression]:NAME:_default' \
+'(--clear-source)--source=[URL to get source code for building the image]:NAME:_default' \
+'(--clear-homepage)--homepage=[URL to find more information on the binary]:NAME:_default' \
+'(--clear-revision)--revision=[Source control revision identifier for the packaged software]:NAME:_default' \
+'(--clear-version)--version=[Version of the packaged software]:NAME:_default' \
+'(--generate-dwarf)-g[Shorthand for \`--generate-dwarf full\`]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'(--name)--clear-name[Remove a module or component name from the names section]' \
+'(--authors)--clear-authors[Remove authors from the metadata]' \
+'(--description)--clear-description[Remove description from the metadata]' \
+'(--licenses)--clear-licenses[Remove licenses from the metadata]' \
+'(--source)--clear-source[Remove source from the metadata]' \
+'(--homepage)--clear-homepage[Remove homepage from the metadata]' \
+'(--revision)--clear-revision[Remove revision from the metadata]' \
+'(--version)--clear-version[Remove version from the metadata]' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_wasm-tools__metadata__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:wasm-tools-metadata-help-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(wit-smith)
+_arguments "${_arguments_options[@]}" : \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--max-packages=[]:MAX_PACKAGES:_default' \
+'--max-type-size=[]:MAX_TYPE_SIZE:_default' \
+'--max-interface-items=[]:MAX_INTERFACE_ITEMS:_default' \
+'--max-world-items=[]:MAX_WORLD_ITEMS:_default' \
+'--max-pkg-items=[]:MAX_PKG_ITEMS:_default' \
+'--max-type-parts=[]:MAX_TYPE_PARTS:_default' \
+'--max-files-per-package=[]:MAX_FILES_PER_PACKAGE:_default' \
+'--max-resource-items=[]:MAX_RESOURCE_ITEMS:_default' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'-t[Output the text format of WebAssembly instead of the binary format]' \
+'--wat[Output the text format of WebAssembly instead of the binary format]' \
+'--async[]' \
+'--futures[]' \
+'--streams[]' \
+'--error-context[]' \
+'--fixed-length-lists[]' \
+'--world-include[]' \
+'--arbitrary-config[Indicates that "arbitrary configuration" should be used meaning that the input seed is first used to generate the configuration and then afterwards the rest of the seed is used to generate the document]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- The arbitrary input seed:_files' \
+&& ret=0
+;;
+(wit-dylib)
+_arguments "${_arguments_options[@]}" : \
+'*--features=[Features to enable when parsing the \`wit\` option]:FEATURES:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'--encoding=[The string encoding to use for imports/exports, defaults to utf-8]:ENCODING:_default' \
+'-w+[The WIT world to use, if the WIT input has more than one]:WORLD:_default' \
+'--world=[The WIT world to use, if the WIT input has more than one]:WORLD:_default' \
+'--interpreter=[The interpreter name to insert into the \`WASM_DYLINK_NEEDED\` section encoded as \`dylink.0\`]:INTERPRETER:_default' \
+'*--async=[Determines which functions to lift or lower \`async\`, if any]:FILTER:_default' \
+'--all-features[Enable all features when parsing the \`wit\` option]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--validate[Whether or not to validate the generated dynamic library]' \
+'-t[Print the output in the WebAssembly text format instead of binary]' \
+'--wat[Print the output in the WebAssembly text format instead of binary]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':wit -- Path to WIT files to load:_files' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(addr2line)
+_arguments "${_arguments_options[@]}" : \
+'(-g)--generate-dwarf=[Optionally generate DWARF debugging information from WebAssembly text files]:lines|full:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'(--generate-dwarf)-g[Shorthand for \`--generate-dwarf full\`]' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--code-section-relative[Indicates that addresses are code-section-relative instead of offsets from the beginning of the module]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+'*::addresses -- Addresses to convert to filenames and line numbers:_default' \
+&& ret=0
+;;
+(completion)
+_arguments "${_arguments_options[@]}" : \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':shell -- The shell to generate completions for:(bash elvish fish powershell zsh)' \
+&& ret=0
+;;
+(json-from-wast)
+_arguments "${_arguments_options[@]}" : \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'-o+[Where to place output]:OUTPUT:_files' \
+'--output=[Where to place output]:OUTPUT:_files' \
+'--wasm-dir=[Where to place binary and text WebAssembly files referenced by tests]:WASM_DIR:_files' \
+'--allow-confusing-unicode=[Controls the "allow confusing unicode" option which will reject parsing files that have unusual characters]:true|false:(true false)' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--pretty[Output pretty-printed JSON instead of compact json]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':wast -- Input `*.wast` file that will be parsed and converted to JSON:_default' \
+&& ret=0
+;;
+(wast)
+_arguments "${_arguments_options[@]}" : \
+'--color=[Configuration over whether terminal colors are used in output]:COLOR:_default' \
+'*-f+[Comma-separated list of WebAssembly features to enable during validation]:FEATURES:_default' \
+'*--features=[Comma-separated list of WebAssembly features to enable during validation]:FEATURES:_default' \
+'*-a+[Perform extra internal assertions in \`wasm-tools\` itself over the provided test]:ASSERT:(default pretty-whitespace snapshot-print snapshot-json snapshot-folded test-folded no-test-folded permissive)' \
+'*--assert=[Perform extra internal assertions in \`wasm-tools\` itself over the provided test]:ASSERT:(default pretty-whitespace snapshot-print snapshot-json snapshot-folded test-folded no-test-folded permissive)' \
+'--snapshot=[Directory to place snapshots in with \`--assert snapshot-*\` flags]:SNAPSHOT:_files' \
+'*-v[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'*--verbose[Use verbose output (-v info, -vv debug, -vvv trace)]' \
+'--ignore-error-messages[Whether to ignore the error message expectation in \`(assert_invalid ..)\` directives]' \
+'--allow-confusing-unicode[Whether or not "confusing unicode characters" are allowed to be present in \`*.wast\` files]' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+'::input -- Input file to process:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_wasm-tools__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:wasm-tools-help-command-$line[1]:"
+        case $line[1] in
+            (parse)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(validate)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(smith)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(shrink)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(mutate)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dump)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(objdump)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(strip)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(compose)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(demangle)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(component)
+_arguments "${_arguments_options[@]}" : \
+":: :_wasm-tools__help__component_commands" \
+"*::: :->component" \
+&& ret=0
+
+    case $state in
+    (component)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:wasm-tools-help-component-command-$line[1]:"
+        case $line[1] in
+            (new)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(wit)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(embed)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(targets)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(link)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(semver-check)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(unbundle)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(metadata)
+_arguments "${_arguments_options[@]}" : \
+":: :_wasm-tools__help__metadata_commands" \
+"*::: :->metadata" \
+&& ret=0
+
+    case $state in
+    (metadata)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:wasm-tools-help-metadata-command-$line[1]:"
+        case $line[1] in
+            (show)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(wit-smith)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(wit-dylib)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(addr2line)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(completion)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(json-from-wast)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(wast)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+}
+
+(( $+functions[_wasm-tools_commands] )) ||
+_wasm-tools_commands() {
+    local commands; commands=(
+'parse:Parse the WebAssembly text format' \
+'validate:Validate a WebAssembly binary' \
+'print:Print the textual form of a WebAssembly binary' \
+'smith:A WebAssembly test case generator' \
+'shrink:Shrink a Wasm file while maintaining a property of interest (such as triggering a compiler bug)' \
+'mutate:A WebAssembly test case mutator' \
+'dump:Debugging utility to dump information about a wasm binary' \
+'objdump:Dumps information about sections in a WebAssembly file' \
+'strip:Removes custom sections from an input WebAssembly file' \
+'compose:WebAssembly component composer' \
+'demangle:Demangle Rust and C++ symbol names in the \`name\` section' \
+'component:WebAssembly wit-based component tooling' \
+'metadata:Manipulate metadata (module name, producers) to a WebAssembly file' \
+'wit-smith:A WIT test case generator' \
+'wit-dylib:Generate a wasm dynamic library from the input WIT world' \
+'addr2line:Translate a WebAssembly address to a filename and line number using DWARF debugging information' \
+'completion:Generate shell completion scripts for this CLI' \
+'json-from-wast:Convert a \`*.wast\` WebAssembly spec test into a \`*.json\` file and \`*.wasm\` files' \
+'wast:A subcommand to test \`*.wast\` files short of executing WebAssembly code' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'wasm-tools commands' commands "$@"
+}
+(( $+functions[_wasm-tools__addr2line_commands] )) ||
+_wasm-tools__addr2line_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools addr2line commands' commands "$@"
+}
+(( $+functions[_wasm-tools__completion_commands] )) ||
+_wasm-tools__completion_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools completion commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component_commands] )) ||
+_wasm-tools__component_commands() {
+    local commands; commands=(
+'new:WebAssembly component encoder from an input core wasm binary' \
+'wit:Tool for working with the WIT text format for components' \
+'embed:Embeds metadata for a component inside of a core wasm module' \
+'targets:Tool for verifying whether a component conforms to a world' \
+'link:Link one or more dynamic library modules, producing a component' \
+'semver-check:Tool for verifying whether one world is a semver compatible evolution of another' \
+'unbundle:Unbundled core wasm modules from a component, switching them from being embedded to being imported' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'wasm-tools component commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__embed_commands] )) ||
+_wasm-tools__component__embed_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component embed commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help_commands] )) ||
+_wasm-tools__component__help_commands() {
+    local commands; commands=(
+'new:WebAssembly component encoder from an input core wasm binary' \
+'wit:Tool for working with the WIT text format for components' \
+'embed:Embeds metadata for a component inside of a core wasm module' \
+'targets:Tool for verifying whether a component conforms to a world' \
+'link:Link one or more dynamic library modules, producing a component' \
+'semver-check:Tool for verifying whether one world is a semver compatible evolution of another' \
+'unbundle:Unbundled core wasm modules from a component, switching them from being embedded to being imported' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'wasm-tools component help commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help__embed_commands] )) ||
+_wasm-tools__component__help__embed_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component help embed commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help__help_commands] )) ||
+_wasm-tools__component__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component help help commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help__link_commands] )) ||
+_wasm-tools__component__help__link_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component help link commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help__new_commands] )) ||
+_wasm-tools__component__help__new_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component help new commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help__semver-check_commands] )) ||
+_wasm-tools__component__help__semver-check_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component help semver-check commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help__targets_commands] )) ||
+_wasm-tools__component__help__targets_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component help targets commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help__unbundle_commands] )) ||
+_wasm-tools__component__help__unbundle_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component help unbundle commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__help__wit_commands] )) ||
+_wasm-tools__component__help__wit_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component help wit commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__link_commands] )) ||
+_wasm-tools__component__link_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component link commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__new_commands] )) ||
+_wasm-tools__component__new_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component new commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__semver-check_commands] )) ||
+_wasm-tools__component__semver-check_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component semver-check commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__targets_commands] )) ||
+_wasm-tools__component__targets_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component targets commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__unbundle_commands] )) ||
+_wasm-tools__component__unbundle_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component unbundle commands' commands "$@"
+}
+(( $+functions[_wasm-tools__component__wit_commands] )) ||
+_wasm-tools__component__wit_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools component wit commands' commands "$@"
+}
+(( $+functions[_wasm-tools__compose_commands] )) ||
+_wasm-tools__compose_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools compose commands' commands "$@"
+}
+(( $+functions[_wasm-tools__demangle_commands] )) ||
+_wasm-tools__demangle_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools demangle commands' commands "$@"
+}
+(( $+functions[_wasm-tools__dump_commands] )) ||
+_wasm-tools__dump_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools dump commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help_commands] )) ||
+_wasm-tools__help_commands() {
+    local commands; commands=(
+'parse:Parse the WebAssembly text format' \
+'validate:Validate a WebAssembly binary' \
+'print:Print the textual form of a WebAssembly binary' \
+'smith:A WebAssembly test case generator' \
+'shrink:Shrink a Wasm file while maintaining a property of interest (such as triggering a compiler bug)' \
+'mutate:A WebAssembly test case mutator' \
+'dump:Debugging utility to dump information about a wasm binary' \
+'objdump:Dumps information about sections in a WebAssembly file' \
+'strip:Removes custom sections from an input WebAssembly file' \
+'compose:WebAssembly component composer' \
+'demangle:Demangle Rust and C++ symbol names in the \`name\` section' \
+'component:WebAssembly wit-based component tooling' \
+'metadata:Manipulate metadata (module name, producers) to a WebAssembly file' \
+'wit-smith:A WIT test case generator' \
+'wit-dylib:Generate a wasm dynamic library from the input WIT world' \
+'addr2line:Translate a WebAssembly address to a filename and line number using DWARF debugging information' \
+'completion:Generate shell completion scripts for this CLI' \
+'json-from-wast:Convert a \`*.wast\` WebAssembly spec test into a \`*.json\` file and \`*.wasm\` files' \
+'wast:A subcommand to test \`*.wast\` files short of executing WebAssembly code' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'wasm-tools help commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__addr2line_commands] )) ||
+_wasm-tools__help__addr2line_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help addr2line commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__completion_commands] )) ||
+_wasm-tools__help__completion_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help completion commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__component_commands] )) ||
+_wasm-tools__help__component_commands() {
+    local commands; commands=(
+'new:WebAssembly component encoder from an input core wasm binary' \
+'wit:Tool for working with the WIT text format for components' \
+'embed:Embeds metadata for a component inside of a core wasm module' \
+'targets:Tool for verifying whether a component conforms to a world' \
+'link:Link one or more dynamic library modules, producing a component' \
+'semver-check:Tool for verifying whether one world is a semver compatible evolution of another' \
+'unbundle:Unbundled core wasm modules from a component, switching them from being embedded to being imported' \
+    )
+    _describe -t commands 'wasm-tools help component commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__component__embed_commands] )) ||
+_wasm-tools__help__component__embed_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help component embed commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__component__link_commands] )) ||
+_wasm-tools__help__component__link_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help component link commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__component__new_commands] )) ||
+_wasm-tools__help__component__new_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help component new commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__component__semver-check_commands] )) ||
+_wasm-tools__help__component__semver-check_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help component semver-check commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__component__targets_commands] )) ||
+_wasm-tools__help__component__targets_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help component targets commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__component__unbundle_commands] )) ||
+_wasm-tools__help__component__unbundle_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help component unbundle commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__component__wit_commands] )) ||
+_wasm-tools__help__component__wit_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help component wit commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__compose_commands] )) ||
+_wasm-tools__help__compose_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help compose commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__demangle_commands] )) ||
+_wasm-tools__help__demangle_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help demangle commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__dump_commands] )) ||
+_wasm-tools__help__dump_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help dump commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__help_commands] )) ||
+_wasm-tools__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help help commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__json-from-wast_commands] )) ||
+_wasm-tools__help__json-from-wast_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help json-from-wast commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__metadata_commands] )) ||
+_wasm-tools__help__metadata_commands() {
+    local commands; commands=(
+'show:Read metadata (module name, producers) from a WebAssembly file' \
+'add:Add metadata (module name, producers) to a WebAssembly file' \
+    )
+    _describe -t commands 'wasm-tools help metadata commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__metadata__add_commands] )) ||
+_wasm-tools__help__metadata__add_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help metadata add commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__metadata__show_commands] )) ||
+_wasm-tools__help__metadata__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help metadata show commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__mutate_commands] )) ||
+_wasm-tools__help__mutate_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help mutate commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__objdump_commands] )) ||
+_wasm-tools__help__objdump_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help objdump commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__parse_commands] )) ||
+_wasm-tools__help__parse_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help parse commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__print_commands] )) ||
+_wasm-tools__help__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help print commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__shrink_commands] )) ||
+_wasm-tools__help__shrink_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help shrink commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__smith_commands] )) ||
+_wasm-tools__help__smith_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help smith commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__strip_commands] )) ||
+_wasm-tools__help__strip_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help strip commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__validate_commands] )) ||
+_wasm-tools__help__validate_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help validate commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__wast_commands] )) ||
+_wasm-tools__help__wast_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help wast commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__wit-dylib_commands] )) ||
+_wasm-tools__help__wit-dylib_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help wit-dylib commands' commands "$@"
+}
+(( $+functions[_wasm-tools__help__wit-smith_commands] )) ||
+_wasm-tools__help__wit-smith_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools help wit-smith commands' commands "$@"
+}
+(( $+functions[_wasm-tools__json-from-wast_commands] )) ||
+_wasm-tools__json-from-wast_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools json-from-wast commands' commands "$@"
+}
+(( $+functions[_wasm-tools__metadata_commands] )) ||
+_wasm-tools__metadata_commands() {
+    local commands; commands=(
+'show:Read metadata (module name, producers) from a WebAssembly file' \
+'add:Add metadata (module name, producers) to a WebAssembly file' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'wasm-tools metadata commands' commands "$@"
+}
+(( $+functions[_wasm-tools__metadata__add_commands] )) ||
+_wasm-tools__metadata__add_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools metadata add commands' commands "$@"
+}
+(( $+functions[_wasm-tools__metadata__help_commands] )) ||
+_wasm-tools__metadata__help_commands() {
+    local commands; commands=(
+'show:Read metadata (module name, producers) from a WebAssembly file' \
+'add:Add metadata (module name, producers) to a WebAssembly file' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'wasm-tools metadata help commands' commands "$@"
+}
+(( $+functions[_wasm-tools__metadata__help__add_commands] )) ||
+_wasm-tools__metadata__help__add_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools metadata help add commands' commands "$@"
+}
+(( $+functions[_wasm-tools__metadata__help__help_commands] )) ||
+_wasm-tools__metadata__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools metadata help help commands' commands "$@"
+}
+(( $+functions[_wasm-tools__metadata__help__show_commands] )) ||
+_wasm-tools__metadata__help__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools metadata help show commands' commands "$@"
+}
+(( $+functions[_wasm-tools__metadata__show_commands] )) ||
+_wasm-tools__metadata__show_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools metadata show commands' commands "$@"
+}
+(( $+functions[_wasm-tools__mutate_commands] )) ||
+_wasm-tools__mutate_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools mutate commands' commands "$@"
+}
+(( $+functions[_wasm-tools__objdump_commands] )) ||
+_wasm-tools__objdump_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools objdump commands' commands "$@"
+}
+(( $+functions[_wasm-tools__parse_commands] )) ||
+_wasm-tools__parse_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools parse commands' commands "$@"
+}
+(( $+functions[_wasm-tools__print_commands] )) ||
+_wasm-tools__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools print commands' commands "$@"
+}
+(( $+functions[_wasm-tools__shrink_commands] )) ||
+_wasm-tools__shrink_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools shrink commands' commands "$@"
+}
+(( $+functions[_wasm-tools__smith_commands] )) ||
+_wasm-tools__smith_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools smith commands' commands "$@"
+}
+(( $+functions[_wasm-tools__strip_commands] )) ||
+_wasm-tools__strip_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools strip commands' commands "$@"
+}
+(( $+functions[_wasm-tools__validate_commands] )) ||
+_wasm-tools__validate_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools validate commands' commands "$@"
+}
+(( $+functions[_wasm-tools__wast_commands] )) ||
+_wasm-tools__wast_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools wast commands' commands "$@"
+}
+(( $+functions[_wasm-tools__wit-dylib_commands] )) ||
+_wasm-tools__wit-dylib_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools wit-dylib commands' commands "$@"
+}
+(( $+functions[_wasm-tools__wit-smith_commands] )) ||
+_wasm-tools__wit-smith_commands() {
+    local commands; commands=()
+    _describe -t commands 'wasm-tools wit-smith commands' commands "$@"
+}
+
+if [ "$funcstack[1]" = "_wasm-tools" ]; then
+    _wasm-tools "$@"
+else
+    compdef _wasm-tools wasm-tools
+fi
