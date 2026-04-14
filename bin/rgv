@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+set -e
+
+rg --vimgrep "$@" | fzf --multi=64 --layout=reverse-list --bind 'enter:become:nvim {}'
