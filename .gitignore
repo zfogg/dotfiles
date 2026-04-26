@@ -5,6 +5,3 @@
 !/.cache/
 
 ./
-
-# Large application binaries
-/bin/*.AppImage
