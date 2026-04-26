@@ -174,7 +174,7 @@ if command_exists fzf; then
     bindkey -r '^F'
     bindkey -v '^F' fzf-file-widget
   }
-  function vo() {
+  function vpreview() {
     fzf --preview='fzf-preview.sh {}' --multi --bind 'enter:become(nvim {+})'
   }
   function vf() {
