@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=ExpanDrive
+Comment=Cloud storage client
+Exec=/home/zfogg/Applications/ExpanDrive.AppImage
+Icon=/home/zfogg/.local/share/icons/hicolor/256x256/apps/expandrive.png
+Categories=Utility;System;FileTools;
+Terminal=false
+StartupNotify=true
