@@ -380,4 +380,26 @@ if [[ $OSX == $TRUE ]]; then
     alias tailscale="$BREW/bin/tailscale --socket=/var/run/tailscaled.socket"
 fi
 
+function docker-volume-size() {
+  if [[ "$@" = "" ]]; then
+    echo "no volumes" >&2
+    exit 1
+  fi
+  local docker_volumes=$(docker volume ls | tr -s ' ' | cut -d' ' -f2)
+  local volumes_wanted=()
+  while (($#)); do
+    if echo "$docker_volumes" | grep "$1" >/dev/null 2>&1; then
+      volumes_wanted+=($1)
+    fi
+    shift
+  done
+  for x in $volumes_wanted; do
+    echo "$x: "
+    sudo dust $(docker volume inspect --format "{{ .Mountpoint }}" "$x")
+    if [[ ! "$x" = "${volumes_wanted[${#volumes_wanted[@]}]}" ]]; then
+      echo ""
+    fi
+  done
+}
+
 #set +x INFO: DEBUG
