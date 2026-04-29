@@ -1,6 +1,6 @@
 [user]
-	email = noreply@anthropic.com
-	name = Claude
+    name = Zachary Fogg
+    email = me@zfo.gg
     ;signingkey = 85795255CAC2EEF8F5CE3446F4967DF3989C8111
     signingkey = 7FE90A79F2E80ED3
 
@@ -106,10 +106,8 @@
 [init]
     defaultBranch = master
 [credential "https://github.com"]
-    helper = 
-    helper = !/usr/bin/gh auth git-credential
+    helper = !gh auth git-credential
 [credential "https://gist.github.com"]
-    helper = 
     helper = !/usr/bin/gh auth git-credential
 
 
