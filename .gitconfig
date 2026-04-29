@@ -4,6 +4,7 @@
     ;signingkey = 85795255CAC2EEF8F5CE3446F4967DF3989C8111
     signingkey = 7FE90A79F2E80ED3
 
+
 [core]
     editor       = $EDITOR
     ;pager        = $PAGER
