@@ -37,7 +37,7 @@ zsh-mime-setup
 export ANTIDOTE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/antidote"
 [[ -d $ANTIDOTE_HOME ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git $ANTIDOTE_HOME
 source $ANTIDOTE_HOME/antidote.zsh
-antidote load ${ZDOTDIR:-$HOME/.config/zsh}/.zsh_plugins.txt
+[[ -f $ZDOTDIR/.zsh_plugins.zsh ]] && source $ZDOTDIR/.zsh_plugins.zsh
 # }}}
 
 
