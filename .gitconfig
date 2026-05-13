@@ -1,8 +1,12 @@
+[author]
+    email = me@zfo.gg
+    name = Zachary Fogg
+
 [user]
     name = Zachary Fogg
     email = me@zfo.gg
     ;signingkey = 85795255CAC2EEF8F5CE3446F4967DF3989C8111
-    signingkey = 7FE90A79F2E80ED3
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHff83Fv185QyZs3vxprrvLO8Gm26ruzUMHOlBPdDkEV
 
 
 [core]
@@ -30,7 +34,7 @@
     default = simple
     autoSetupRemote = true
 [pull]
-    ff = only
+	ff = true
     rebase = true
     ;rebase = true
 [diff]
@@ -42,6 +46,7 @@
     lineNumber = true
 [gpg]
     program = gpg
+	format = ssh
 
 [color]
     diff        = auto
@@ -177,3 +182,5 @@
 	insteadOf = git://
 [rebase]
 	autoStash = true
+[gpg "ssh"]
+	program = /opt/1Password/op-ssh-sign

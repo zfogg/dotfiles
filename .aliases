@@ -235,7 +235,7 @@ alias   gst='git status'
 alias    ga='git add'
 # INFO: autoload this
 #alias gco='git checkout'
-alias gcm='git checkout master'
+alias gcm='git checkout "$(git remote show origin | sed -n '"'/HEAD branch/s/.*: //p'"')"'
 
 compdefas git gc gca gd gdd gl gp grv gst ga gco gcm
 

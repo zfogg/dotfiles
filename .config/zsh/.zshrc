@@ -456,3 +456,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"
+
+# OpenClaw Completion
+source "/home/zfogg/.openclaw/completions/openclaw.zsh"

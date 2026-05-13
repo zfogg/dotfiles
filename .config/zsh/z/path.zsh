@@ -119,6 +119,7 @@ function() { # {{{ AFTER platform-specifics
 
   path=(
     $HOME/bin
+    $HOME/.local/share/pnpm
     $HOME/.local/bin
     $HOME/.local/share/pnpm
     $HOME/gt/mayor/gastown

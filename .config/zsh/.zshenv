@@ -575,3 +575,7 @@ export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm;$CMAKE_PREFIX_PATH"
 # Criterion
 export CRITERION_JOBS="$CORES"
 export CRITERION_SHORT_FILENAME=1
+
+# Begin added by argcomplete
+fpath=( /usr/lib/python3.14/site-packages/argcomplete/bash_completion.d "${fpath[@]}" )
+# End added by argcomplete

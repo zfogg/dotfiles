@@ -15,12 +15,13 @@ fi
 
 
 function get_otp_for_item() {
+  set -x
   op_json=$(op --format json item get "$1")
   echo "$op_json" \
-    | jq --raw-output '.title' | xargs echo -n
+    | jq '.title' | xargs echo -n
   echo -n ": "
   echo "$op_json" \
-    | jq --raw-output '.fields[] | select(.type=="OTP") | .totp'
+    | jq '.fields[] | select(.type=="OTP") | .totp'
 }
 
 for i in "$@"; do

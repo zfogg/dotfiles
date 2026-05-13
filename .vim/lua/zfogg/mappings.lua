@@ -216,6 +216,14 @@ else
   map('n', '<Left>', '<C-W><')
 end
 
+-- Open command output in a split
+vim.keymap.set('n', '<Leader>sc', function()
+  local cmd = vim.fn.input('Command: ')
+  if cmd ~= '' then
+    vim.cmd('split | enew | read !' .. cmd)
+  end
+end, { desc = 'Open command output in split' })
+
 -- Miscellaneous
 map('x', 'R', 'r<Space>R')
 
