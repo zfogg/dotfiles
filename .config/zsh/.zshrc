@@ -2,6 +2,14 @@
 # vim: set fdm=marker:
 #   ~/.config/zsh/.zshrc
 
+# TEMP FIX: unset CLAUDECODE to fix aliases loading
+# TODO: Find where CLAUDECODE is being set at session level and remove it there
+unset CLAUDECODE
+unset _CLAUDECODE
+
+
+[[ -f ~/.env ]] && set +a; source ~/.env; set -a
+
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]

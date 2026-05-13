@@ -120,6 +120,7 @@ function() { # {{{ AFTER platform-specifics
   path=(
     $HOME/bin
     $HOME/.local/bin
+    $HOME/.local/share/pnpm
     $HOME/gt/mayor/gastown
     $HOME/.{cabal,cargo}/bin
     #/nix/var/nix/profiles/default/bin
