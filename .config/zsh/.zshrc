@@ -458,4 +458,4 @@ export PATH="$HOME/.local/bin:$PATH"
 . "$HOME/.vite-plus/env"
 
 # OpenClaw Completion
-source "/home/zfogg/.openclaw/completions/openclaw.zsh"
+[ -f ~/.openclaw/completions/openclaw.zsh ] && source ~/.openclaw/completions/openclaw.zsh
