@@ -78,11 +78,6 @@ function () { # {{{ platform-specifics
       export CCACHE_PATH=$BREW/bin
     fi
 
-    # BeaglePlay uses a custom Go toolchain.
-    if [[ "${HOST%%.*}" == (BeaglePlay|beagleplay) && -d "$HOME/.local/lib/go1.26.7/bin" ]]; then
-      path=("$HOME/.local/lib/go1.26.7/bin" "$path[@]")
-    fi
-
     path=(
       $BREW/lib/colorgcc/bin
       $BREW/lib/ccache/bin
@@ -96,6 +91,11 @@ function () { # {{{ platform-specifics
       /bin
       /usr/lib/emscripten
     )
+
+    # BeaglePlay uses a custom Go toolchain.
+    if [[ "${HOST%%.*}" == (BeaglePlay|beagleplay) && -d "$HOME/.local/lib/go1.26.7/bin" ]]; then
+      path=("$HOME/.local/lib/go1.26.7/bin" "$path[@]")
+    fi
 
     fpath=(
       $BREW/share/zsh/site-functions
