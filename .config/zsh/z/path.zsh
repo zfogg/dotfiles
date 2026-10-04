@@ -92,9 +92,11 @@ function () { # {{{ platform-specifics
       /usr/lib/emscripten
     )
 
-    # BeaglePlay uses a custom Go toolchain.
-    if [[ "${HOST%%.*}" == (BeaglePlay|beagleplay) && -d "$HOME/.local/lib/go1.26.7/bin" ]]; then
-      path=("$HOME/.local/lib/go1.26.7/bin" "$path[@]")
+    # BeaglePlay uses custom Go toolchains, newest version first.
+    if [[ "${HOST%%.*}" == (BeaglePlay|beagleplay) ]]; then
+      # N: allow no matches; /: directories; nOn: reverse numeric name order.
+      local go_bins=($HOME/.local/lib/go[0-9]*/bin(N/nOn))
+      path=("${go_bins[@]}" "$path[@]")
     fi
 
     fpath=(
