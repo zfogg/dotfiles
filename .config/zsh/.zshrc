@@ -182,7 +182,7 @@ if command_exists fzf; then
     bindkey -r '^F'
     bindkey -v '^F' fzf-file-widget
   }
-  function vpreview() {
+  function vo() {
     fzf --preview='fzf-preview.sh {}' --multi --bind 'enter:become(nvim {+})'
   }
   function vf() {
@@ -453,12 +453,10 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Re-source path.zsh LAST to fix PATH order after all plugins and PATH manipulations above
 source "$ZDOTDIR/z/path.zsh"
 
+
 # Vite+ bin (https://viteplus.dev)
 if [ -f "$HOME/.vite-plus/env" ]; then
   . "$HOME/.vite-plus/env"
 elif [ -f "$HOME/.config/vite-plus/env" ]; then
   . "$HOME/.config/vite-plus/env"
 fi
-
-# OpenClaw Completion
-[ -f ~/.openclaw/completions/openclaw.zsh ] && source ~/.openclaw/completions/openclaw.zsh
