@@ -487,7 +487,11 @@ if [[ $LINUX == $TRUE ]] && command -v systemctl &>/dev/null; then
     :
   else
     # No forwarded agent, use systemd socket
-    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+    if [[ "${HOST%%.*}" == (BeaglePlay|beagleplay) ]]; then
+      export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/openssh_agent"
+    else
+      export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+    fi
   fi
 fi
 # ssh-agent (systemd) }}}
