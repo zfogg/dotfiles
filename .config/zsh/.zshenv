@@ -579,3 +579,11 @@ export CRITERION_SHORT_FILENAME=1
 # Begin added by argcomplete
 fpath=( /usr/lib/python3.14/site-packages/argcomplete/bash_completion.d "${fpath[@]}" )
 # End added by argcomplete
+
+
+# Vite+ bin (https://viteplus.dev)
+if [ -f "$HOME/.vite-plus/env" ]; then
+  . "$HOME/.vite-plus/env"
+elif [ -f "$HOME/.config/vite-plus/env" ]; then
+  . "$HOME/.config/vite-plus/env"
+fi

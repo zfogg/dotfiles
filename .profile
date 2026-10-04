@@ -41,3 +41,10 @@ fi
 
 export SHELL_NAME=`current_shell`
 if [ -e /Users/zfogg/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/zfogg/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+# Vite+ bin (https://viteplus.dev)
+if [ -f "$HOME/.vite-plus/env" ]; then
+  . "$HOME/.vite-plus/env"
+elif [ -f "$HOME/.config/vite-plus/env" ]; then
+  . "$HOME/.config/vite-plus/env"
+fi

@@ -9,3 +9,10 @@
 export AWS_PROFILE=softmax
 
 [ -f "$HOME/.local/share/bin/env" ] && . "$HOME/.local/share/bin/env"
+
+# Vite+ bin (https://viteplus.dev)
+if [ -f "$HOME/.vite-plus/env" ]; then
+  . "$HOME/.vite-plus/env"
+elif [ -f "$HOME/.config/vite-plus/env" ]; then
+  . "$HOME/.config/vite-plus/env"
+fi
