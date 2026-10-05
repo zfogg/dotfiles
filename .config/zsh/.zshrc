@@ -8,7 +8,11 @@ unset CLAUDECODE
 unset _CLAUDECODE
 
 
-[[ -f ~/.env ]] && set +a; source ~/.env; set -a
+if [[ -f ~/.env ]]; then
+  set +a
+  source ~/.env
+  set -a
+fi
 
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
