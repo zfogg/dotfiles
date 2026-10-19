@@ -78,7 +78,9 @@ export PKG_CONFIG_PATH='/usr/lib/pkgconfig'
 if [[ $OSX == $TRUE ]]; then
   export PKG_CONFIG_PATH="$BREW/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-  export LIBRARY_PATH="/usr/lib:$BREW/lib"
+  # Use the macOS SDK libraries; a global Homebrew search path can shadow
+  # system libraries such as libunwind. Projects can supply -L paths as needed.
+  unset LIBRARY_PATH
   #if [[ ! -v LIBRARY_PATH ]]; then
     #export LIBRARY_PATH="$LIBRARY_PATH:$BREW/lib"
   #else
@@ -580,14 +582,5 @@ export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm;$CMAKE_PREFIX_PATH"
 export CRITERION_JOBS="$CORES"
 export CRITERION_SHORT_FILENAME=1
 
-# Begin added by argcomplete
-fpath=( /usr/lib/python3.14/site-packages/argcomplete/bash_completion.d "${fpath[@]}" )
-# End added by argcomplete
-
-
 # Vite+ bin (https://viteplus.dev)
-if [ -f "$HOME/.vite-plus/env" ]; then
-  . "$HOME/.vite-plus/env"
-elif [ -f "$HOME/.config/vite-plus/env" ]; then
-  . "$HOME/.config/vite-plus/env"
-fi
+. "$HOME/.vite-plus/env"
