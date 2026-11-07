@@ -126,11 +126,9 @@ function() { # {{{ AFTER platform-specifics
 
   path=(
     $HOME/bin
-    $HOME/.local/share/pnpm
+    $HOME/.{cabal,cargo,gem,bun}/bin
+    $HOME/.local/share/pnpm/bin
     $HOME/.local/bin
-    $HOME/.local/share/pnpm
-    $HOME/gt/mayor/gastown
-    $HOME/.{cabal,cargo}/bin
     #/nix/var/nix/profiles/default/bin
     #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
     #$HOME/.rbenv/shims
@@ -138,6 +136,7 @@ function() { # {{{ AFTER platform-specifics
     # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
     #$HOME/.pyenv/{bin,shims}
     $GOPATH/bin
+    $BREW/opt/ruby/bin
     "$path[@]"
   )
 

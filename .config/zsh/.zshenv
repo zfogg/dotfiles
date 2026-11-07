@@ -513,8 +513,7 @@ export PERL_CPANM_OPT="--prompt --reinstall -l $PERL_LOCAL_LIB_ROOT --mirror htt
 
 
 # compilers {{{
-export  CC='clang'
-export CXX='clang++'
+# Compiler settings are loaded from z/compile.zsh below, after SDK setup.
 # }}}
 
 
@@ -572,8 +571,10 @@ fi
 # llvm:
 #   llvm-symbolizer
 export DEBUGINFOD_URLS="https://debuginfod.archlinux.org"
-#   homebrew llvm
-export CMAKE_PREFIX_PATH="/opt/homebrew/opt/llvm;$CMAKE_PREFIX_PATH"
+# Prefer Homebrew compilers and libraries after PATH and SDK initialization.
+if [[ -x "$BREW/opt/llvm/bin/clang" ]]; then
+  source "$ZDOTDIR/z/compile.zsh"
+fi
 
 
 # Criterion

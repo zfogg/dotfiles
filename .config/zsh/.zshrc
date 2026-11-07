@@ -217,6 +217,7 @@ fi
 
 
 # node, npm, nvm {{{
+#[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
 #function nvmRC() {
   #unset -f "$1"
   #unset npm_config_prefix
@@ -425,36 +426,17 @@ fi
   #fi
 #}
 
-# pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="${PNPM_HOME}/bin:$PATH" ;;
-esac
-# pnpm end
-
-export PATH="$BREW/opt/ruby/bin:$PATH"
-export PATH="$HOME/.gem/bin:$PATH"
-
 export HOMEBREW_NO_ENV_HINTS=1
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-export AWS_PROFILE=softmax
-
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export VCPKG_ROOT=$HOME/.local/share/vcpkg
 
-# bun completions
-[ -s "/home/zfogg/.bun/_bun" ] && source "/home/zfogg/.bun/_bun"
-
 # bun
+# bun completions
+command -v bun 2>/dev/null 1>&2 && [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+# bun path
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# --- Gas Town Integration (managed by gt) ---
-[[ -f "$HOME/.config/gastown/shell-hook.sh" ]] && source "$HOME/.config/gastown/shell-hook.sh"
-# --- End Gas Town ---
 
 # Re-source path.zsh LAST to fix PATH order after all plugins and PATH manipulations above
 source "$ZDOTDIR/z/path.zsh"
