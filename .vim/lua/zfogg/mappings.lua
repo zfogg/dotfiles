@@ -83,7 +83,51 @@ map(i, '<Right>', '<Nop>')
 
 -- Yanking and pasting
 map({ 'n', 'x', 'o' }, 'Y', 'y$')
-map({ 'n', 'x', 'o' }, '<Leader>y', '"+y')
+
+-- Helper function to yank/delete to clipboard and strip trailing newline
+local function clipboard_op_clean(op, motion_keys)
+  return function()
+    vim.cmd('normal! "' .. op .. motion_keys)
+    vim.schedule(function()
+      local content = vim.fn.getreg('+')
+      if content and content ~= '' and content:sub(-1) == '\n' then
+        vim.fn.setreg('+', content:sub(1, -2))
+      end
+    end)
+  end
+end
+
+-- Yank to system clipboard with any motion: <leader>y<motion>
+-- Common motions have explicit mappings with newline stripping
+-- e.g., <leader>yy (line), <leader>yw (word), <leader>y$ (to EOL), <leader>yip (inner paren)
+map('n', '<Leader>yy', clipboard_op_clean('+y', 'y'), { desc = 'Yank line to clipboard' })
+map('n', '<Leader>yw', clipboard_op_clean('+y', 'w'), { desc = 'Yank word to clipboard' })
+map('n', '<Leader>yb', clipboard_op_clean('+y', 'b'), { desc = 'Yank word back to clipboard' })
+map('n', '<Leader>y$', clipboard_op_clean('+y', '$'), { desc = 'Yank to EOL to clipboard' })
+map('n', '<Leader>y^', clipboard_op_clean('+y', '^'), { desc = 'Yank to SOL to clipboard' })
+map('n', '<Leader>yp', clipboard_op_clean('+y', 'p'), { desc = 'Yank paragraph to clipboard' })
+
+-- Delete to system clipboard: <leader>d<motion>
+-- Common motions have explicit mappings with newline stripping
+map('n', '<Leader>dd', clipboard_op_clean('+d', 'd'), { desc = 'Delete line to clipboard' })
+map('n', '<Leader>dw', clipboard_op_clean('+d', 'w'), { desc = 'Delete word to clipboard' })
+map('n', '<Leader>db', clipboard_op_clean('+d', 'b'), { desc = 'Delete word back to clipboard' })
+map('n', '<Leader>d$', clipboard_op_clean('+d', '$'), { desc = 'Delete to EOL to clipboard' })
+map('n', '<Leader>d^', clipboard_op_clean('+d', '^'), { desc = 'Delete to SOL to clipboard' })
+map('n', '<Leader>dp', clipboard_op_clean('+d', 'p'), { desc = 'Delete paragraph to clipboard' })
+
+-- Generic operator for visual mode and text objects (with operator-pending support)
+map({ 'x', 'o' }, '<Leader>y', '"+y')
+map({ 'x', 'o' }, '<Leader>d', '"+d')
+-- For normal mode with text objects like <leader>yi(, <leader>da", etc.
+-- These need operator-pending mode, so we use the operator mapping
+vim.keymap.set('n', '<Leader>y', function()
+  vim.cmd('normal! "+y')
+end, { expr = false })
+vim.keymap.set('n', '<Leader>d', function()
+  vim.cmd('normal! "+d')
+end, { expr = false })
+
 map('n', '<Leader>y%', ':let @*=expand("%")<Bar>echo getreg("*")<CR>')
 map('n', '<Leader>Y%', ':let @*=expand("%:p")<Bar>echo getreg("*")<CR>')
 map({ 'n', 'x', 'o' }, '<Leader>p', '"+p')
@@ -171,6 +215,14 @@ else
   map('n', '<Right>', '<C-W>>')
   map('n', '<Left>', '<C-W><')
 end
+
+-- Open command output in a split
+vim.keymap.set('n', '<Leader>sc', function()
+  local cmd = vim.fn.input('Command: ')
+  if cmd ~= '' then
+    vim.cmd('split | enew | read !' .. cmd)
+  end
+end, { desc = 'Open command output in split' })
 
 -- Miscellaneous
 map('x', 'R', 'r<Space>R')

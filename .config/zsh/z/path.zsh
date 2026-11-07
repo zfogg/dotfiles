@@ -11,7 +11,9 @@
   typeset -xUT INFOPATH infopath
 
   # INFO: https://www.reddit.com/r/neovim/comments/ga0s7w/comment/foxs2m8/
-  [[ "$SHLVL" > 1 ]] && return
+  # Allow to run in non-interactive shells (needed for proper PATH ordering)
+  # Only return if deeply nested (SHLVL > 3)
+  [[ "$SHLVL" -gt 3 ]] && return
 # }}}
 
 #print -rl -- "${fpath[@]#/usr/local/share/zsh/site-functions}"
@@ -42,6 +44,7 @@ function () { # {{{ platform-specifics
       $BREW/opt/{make,grep,ed,gawk}/libexec/gnubin
       $BREW/opt/gnu-{sed,tar,which,indent}/libexec/gnubin
       $BREW/opt/{curl,gnu-getopt,file-formula,unzip}/bin
+      $BREW/opt/llvm/bin
       $BREW/{bin,sbin}
       /usr/local/bin
       /Library/Developer/CommandLineTools/usr/bin
@@ -75,27 +78,31 @@ function () { # {{{ platform-specifics
       export CCACHE_PATH=$BREW/bin
     fi
 
-    local latest_ruby=""
-    local ruby_dirs=($HOME/.local/share/gem/ruby/*/bin(NnF/[-1]))
-    (( ${#ruby_dirs} )) && latest_ruby=$ruby_dirs[1]
     path=(
-      $HOME/.local/share/../bin # uv, uvx
-      $latest_ruby
-      #$HOME/.ghcup/bin
       $BREW/lib/colorgcc/bin
       $BREW/lib/ccache/bin
       $BREW/local/{bin,sbin}
       $BREW/{bin,sbin}
-      /usr/lib/emscripten
-      "$path[@]"
-      /bin
+      /usr/local/sbin
+      /usr/local/bin
+      /usr/sbin
+      /usr/bin
       /sbin
+      /bin
+      /usr/lib/emscripten
     )
 
+    # BeaglePlay uses custom Go toolchains, newest version first.
+    if [[ "${HOST%%.*}" == (BeaglePlay|beagleplay) ]]; then
+      # N: allow no matches; /: directories; nOn: reverse numeric name order.
+      local go_bins=($HOME/.local/lib/go[0-9]*/bin(N/nOn))
+      path=("${go_bins[@]}" "$path[@]")
+    fi
+
     fpath=(
-      $BREW/share/zsh/{site-functions,functions}
-      ${(@f)fpath#/usr/local/share/zsh/site-functions}
-      #"$fpath[@]"
+      $BREW/share/zsh/site-functions
+      $HOME/.docker/completions
+      "$fpath[@]"
     )
 
     manpath=(
@@ -119,9 +126,11 @@ function() { # {{{ AFTER platform-specifics
 
   path=(
     $HOME/bin
+    $HOME/.local/share/pnpm
     $HOME/.local/bin
+    $HOME/.local/share/pnpm
+    $HOME/gt/mayor/gastown
     $HOME/.{cabal,cargo}/bin
-    $HOME/.local/share/asdf/shims
     #/nix/var/nix/profiles/default/bin
     #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
     #$HOME/.rbenv/shims
@@ -143,22 +152,6 @@ function() { # {{{ AFTER platform-specifics
       $VIRTUAL_ENV/bin
       "$path[@]")
   fi
-
-  #if [[ -d ~/.asdf/completions ]]; then
-    #fpath=(
-      #$HOME/.asdf/completions
-      #"$fpath[@]")
-  #fi
-
-  #if [[ -v ANDROID_HOME ]]; then
-    #path=(
-      #$ANDROID_HOME/emulator
-      #$ANDROID_HOME/tools/bin
-      #$ANDROID_HOME/platform-tools
-      #$ANDROID_HOME/build-tools/${ANDROID_SDK_VERSION:-*.*.*(nF/[-1])}
-      #"$path[@]"
-    #)
-  #fi
 
   fpath=(
     $HOME/.zsh/site-functions

@@ -33,23 +33,6 @@ else
 fi
 )
 
-if [[ $OSX == "$TRUE" ]]; then
-  if [[ `hostname -s` == "WorkBook-Pro" ]]; then
-    export BREW='/opt/homebrew'
-  else
-    export BREW='/usr/local'
-  fi
-  export HOMEBREW_CLEANUP_MAX_AGE_DAYS='2'
-elif [ "$LINUX" = "$TRUE" ]; then
-  if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
-    export BREW="$(/home/linuxbrew/.linuxbrew/bin/brew --prefix)"
-  else
-    export BREW='/usr/local'
-  fi
-else
-  export BREW='/usr/local'
-fi
-
 if [[ $OSX = "$TRUE" ]]; then
   export SYSCONFDIR="$BREW/etc"
 elif [ "$LINUX" = "$TRUE" ]; then
@@ -58,3 +41,10 @@ fi
 
 export SHELL_NAME=`current_shell`
 if [ -e /Users/zfogg/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/zfogg/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+# Vite+ bin (https://viteplus.dev)
+if [ -f "$HOME/.vite-plus/env" ]; then
+  . "$HOME/.vite-plus/env"
+elif [ -f "$HOME/.config/vite-plus/env" ]; then
+  . "$HOME/.config/vite-plus/env"
+fi

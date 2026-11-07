@@ -2,6 +2,18 @@
 # vim: set fdm=marker:
 #   ~/.config/zsh/.zshrc
 
+# TEMP FIX: unset CLAUDECODE to fix aliases loading
+# TODO: Find where CLAUDECODE is being set at session level and remove it there
+unset CLAUDECODE
+unset _CLAUDECODE
+
+
+if [[ -f ~/.env ]]; then
+  set +a
+  source ~/.env
+  set -a
+fi
+
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -29,14 +41,13 @@ zsh-mime-setup
 export ANTIDOTE_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/antidote"
 [[ -d $ANTIDOTE_HOME ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git $ANTIDOTE_HOME
 source $ANTIDOTE_HOME/antidote.zsh
-antidote load ${ZDOTDIR:-$HOME/.config/zsh}/.zsh_plugins.txt
+mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/antidote"
+antidote load "${ZDOTDIR:-$HOME/.config/zsh}/.zsh_plugins.txt" \
+  "${XDG_CACHE_HOME:-$HOME/.cache}/antidote/plugins.zsh"
 # }}}
 
 
 # $ZDOTDIR/z/ {{{
-# path, manpath, fpath, infopath
-source "$ZDOTDIR/z/path.zsh"
-
 # bindkey, zle
 source "$ZDOTDIR/z/keys.zsh"
 
@@ -48,6 +59,9 @@ source "$ZDOTDIR/z/theme.zsh"
 
 # completions, complist, compinit, compdef
 source "$ZDOTDIR/z/complete.zsh"
+
+# path, manpath, fpath, infopath (last so it can override plugin PATH changes)
+source "$ZDOTDIR/z/path.zsh"
 # $ZDOTDIR/z/ }}}
 
 
@@ -60,26 +74,7 @@ if command_exists direnv; then
   source <(direnv hook zsh)
 fi
 
-#function() {
-#  local asdf_dir=${ASDF_DIR:-/dev/null}
-#  local asdf_sh=${asdf_dir}/asdf.sh
-#  if [[ -d $asdf_dir && -f $asdf_sh ]]; then
-#    source $asdf_sh;
-#    eval "$(asdf exec direnv hook zsh)"
-#  fi
-#  if [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc ]]; then
-#    source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
-#  fi
-#}
-
-#if command_exists jenv; then
-#  #eval "$(jenv init -)"
-#fi
-
-# INFO: antigen handles this now
-#[[ -f $BREW/etc/profile.d/z.sh ]] && command_exists z \
-  #&& source "$BREW/etc/profile.d/z.sh"
-
+# rg {{{
 local RG_PRG='rg '
 local RG_ARGS="--column --line-number --no-heading --sortr=modified --ignore --hidden --color=always --smart-case -g'!.git'"
 function() { # grep, rg
@@ -103,7 +98,10 @@ function() { # grep, rg
     && export GREPPRG="${GREPPRG_PRG}${GREPPRG_ARGS}" \
     || export GREPPRG="${GREPPRG:-command -p grep}"
 }
+# rg }}}
 
+
+# fzf {{{
 if command_exists fzf; then
 
   if `command_exists fd`; then
@@ -215,6 +213,7 @@ if command_exists fzf; then
     fi
   }
 fi
+# fzf }}}
 
 
 # node, npm, nvm {{{
@@ -253,12 +252,6 @@ fi
 #function mkenv() {
 #  local _workon_home="$(workon_home)"
 #  mkdir -p "$_workon_home"
-#  `asdf where python "$1"`/bin/virtualenv \
-#    --seeder pip \
-#    --download \
-#    -p $(asdf where python "$1")/bin/python "$_workon_home"/"$2"
-#  #--system-site-packages \
-#  #--symlink-app-data \
 #}
 #
 #function workon() {
@@ -452,11 +445,24 @@ export AWS_PROFILE=softmax
 
 export VCPKG_ROOT=$HOME/.local/share/vcpkg
 
-[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
-
 # bun completions
 [ -s "/home/zfogg/.bun/_bun" ] && source "/home/zfogg/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# --- Gas Town Integration (managed by gt) ---
+[[ -f "$HOME/.config/gastown/shell-hook.sh" ]] && source "$HOME/.config/gastown/shell-hook.sh"
+# --- End Gas Town ---
+
+# Re-source path.zsh LAST to fix PATH order after all plugins and PATH manipulations above
+source "$ZDOTDIR/z/path.zsh"
+
+
+# Vite+ bin (https://viteplus.dev)
+if [ -f "$HOME/.vite-plus/env" ]; then
+  . "$HOME/.vite-plus/env"
+elif [ -f "$HOME/.config/vite-plus/env" ]; then
+  . "$HOME/.config/vite-plus/env"
+fi

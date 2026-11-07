@@ -1,0 +1,328 @@
+#!/bin/bash
+
+ipv4_only=false
+ipv6_only=false
+no_docker=false
+only_docker=false
+no_tailscale=false
+only_tailscale=false
+no_services=false
+default_route=false
+
+# Detect OS
+OS=$(uname -s)
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            cat << 'EOF'
+Usage: ip-address-local [OPTIONS]
+
+Print local network interface IP addresses
+
+Options:
+  -4               IPv4 only
+  -6               IPv6 only
+  --docker         Only docker interfaces
+  --no-docker      Exclude docker interfaces
+  --tailscale      Only tailscale interfaces
+  --no-tailscale   Exclude tailscale interfaces
+  --no-services    Exclude docker and tailscale
+  --default-route  Only interface(s) with system default route
+  -h, --help       Show this help
+EOF
+            exit 0
+            ;;
+        -4) ipv4_only=true; shift ;;
+        -6) ipv6_only=true; shift ;;
+        --no-docker) no_docker=true; shift ;;
+        --docker) only_docker=true; shift ;;
+        --no-tailscale) no_tailscale=true; shift ;;
+        --tailscale) only_tailscale=true; shift ;;
+        --no-services) no_services=true; shift ;;
+        --default-route) default_route=true; shift ;;
+        *) echo "Error: Unknown flag: $1" >&2; exit 1 ;;
+    esac
+done
+
+# Validate conflicting flags
+if [[ "$only_docker" == true ]] && [[ "$no_docker" == true ]]; then
+    echo "Error: --docker and --no-docker are mutually exclusive" >&2
+    exit 1
+fi
+
+if [[ "$only_tailscale" == true ]] && [[ "$no_tailscale" == true ]]; then
+    echo "Error: --tailscale and --no-tailscale are mutually exclusive" >&2
+    exit 1
+fi
+
+if [[ "$only_docker" == true ]] && [[ "$no_services" == true ]]; then
+    echo "Error: --docker and --no-services are mutually exclusive" >&2
+    exit 1
+fi
+
+if [[ "$only_tailscale" == true ]] && [[ "$no_services" == true ]]; then
+    echo "Error: --tailscale and --no-services are mutually exclusive" >&2
+    exit 1
+fi
+
+found=false
+results=""
+
+# ANSI color codes
+if [[ -t 1 ]]; then
+    CYAN=$'\033[36m'
+    GREEN=$'\033[32m'
+    YELLOW=$'\033[33m'
+    RED=$'\033[31m'
+    GRAY=$'\033[90m'
+    BLUE=$'\033[34m'
+    WHITE=$'\033[37m'
+    RESET=$'\033[0m'
+else
+    CYAN=''
+    GREEN=''
+    YELLOW=''
+    RED=''
+    GRAY=''
+    BLUE=''
+    WHITE=''
+    RESET=''
+fi
+
+# Function to get color for IP address type
+get_ip_type_color() {
+    local ip=$1
+    if [[ "$ip" =~ : ]]; then
+        echo "${BLUE}"
+    else
+        echo "${WHITE}"
+    fi
+}
+
+# Function to get color for classification
+get_classification_color() {
+    local classification=$1
+    case "$classification" in
+        public) echo "${GREEN}" ;;
+        private) echo "${YELLOW}" ;;
+        link-local) echo "${RED}" ;;
+    esac
+}
+
+# Function to classify IP address
+classify_ip() {
+    local ip=$1
+
+    if [[ "$ip" =~ : ]]; then
+        # IPv6
+        if [[ "$ip" =~ ^fe80: ]]; then
+            echo "link-local"
+        elif [[ "$ip" =~ ^fc[0-9a-f][0-9a-f]: ]] || [[ "$ip" =~ ^fd[0-9a-f][0-9a-f]: ]]; then
+            echo "private"
+        else
+            echo "public"
+        fi
+    else
+        # IPv4
+        local IFS='.'
+        read -r a b c d <<< "$ip"
+
+        if [[ $a -eq 169 && $b -eq 254 ]]; then
+            echo "link-local"
+        elif [[ $a -eq 10 ]]; then
+            echo "private"
+        elif [[ $a -eq 172 && $b -ge 16 && $b -le 31 ]]; then
+            echo "private"
+        elif [[ $a -eq 192 && $b -eq 168 ]]; then
+            echo "private"
+        elif [[ $a -eq 127 ]]; then
+            echo "private"
+        else
+            echo "public"
+        fi
+    fi
+}
+
+if [[ "$OS" == "Darwin" ]]; then
+    # macOS implementation using ifconfig
+
+    # Get default route interface if --default-route is set
+    default_route_iface=""
+    if [[ "$default_route" == true ]]; then
+        default_route_iface=$(route -n get default 2>/dev/null | grep "interface" | awk '{print $2}')
+    fi
+
+    # Parse ifconfig output to get interfaces and IPs
+    current_iface=""
+    while IFS= read -r line; do
+        # Check if this is a new interface line (starts with alphanumeric)
+        if [[ "$line" =~ ^[a-zA-Z0-9]+ ]] && [[ "$line" =~ : ]]; then
+            current_iface=$(echo "$line" | awk -F: '{print $1}')
+            continue
+        fi
+
+        [[ -z "$current_iface" ]] && continue
+
+        # Skip loopback
+        if [[ "$current_iface" == "lo0" ]]; then
+            continue
+        fi
+
+        # Check if interface is docker-related (less common on macOS)
+        is_docker=false
+        if [[ "$current_iface" =~ ^docker ]] || [[ "$current_iface" =~ ^br- ]]; then
+            is_docker=true
+        fi
+
+        # Check if interface is tailscale-related
+        is_tailscale=false
+        if [[ "$current_iface" =~ ^utun ]]; then
+            is_tailscale=true
+        fi
+
+        # Apply filtering based on flags
+        if [[ "$only_tailscale" == true ]]; then
+            [[ "$is_tailscale" != true ]] && continue
+        elif [[ "$only_docker" == true ]]; then
+            [[ "$is_docker" != true ]] && continue
+        elif [[ "$no_services" == true ]]; then
+            [[ "$is_docker" == true ]] || [[ "$is_tailscale" == true ]] && continue
+        else
+            [[ "$no_docker" == true ]] && [[ "$is_docker" == true ]] && continue
+            [[ "$no_tailscale" == true ]] && [[ "$is_tailscale" == true ]] && continue
+        fi
+
+        # Check default route if flag is set
+        if [[ "$default_route" == true ]] && [[ "$current_iface" != "$default_route_iface" ]]; then
+            continue
+        fi
+
+        # Get IPv4 address
+        if [[ "$ipv6_only" != true ]] && [[ "$line" =~ "inet " ]]; then
+            ipv4=$(echo "$line" | grep "inet " | grep -v "inet6" | awk '{print $2}')
+            if [[ -n "$ipv4" ]]; then
+                classification=$(classify_ip "$ipv4")
+                class_color=$(get_classification_color "$classification")
+                ip_color=$(get_ip_type_color "$ipv4")
+                results+="${CYAN}$current_iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv4${RESET}"$'\n'
+                found=true
+            fi
+        fi
+
+        # Get IPv6 address (link-local excluded)
+        if [[ "$ipv4_only" != true ]] && [[ "$line" =~ "inet6" ]] && [[ ! "$line" =~ "fe80:" ]]; then
+            ipv6=$(echo "$line" | grep "inet6" | awk '{print $2}' | cut -d'%' -f1)
+            if [[ -n "$ipv6" ]]; then
+                classification=$(classify_ip "$ipv6")
+                class_color=$(get_classification_color "$classification")
+                ip_color=$(get_ip_type_color "$ipv6")
+                # Check if address is temporary (usually has deprecated or temporary flags)
+                addr_type="(stable)"
+                if [[ "$line" =~ "deprecated" ]] || [[ "$line" =~ "temporary" ]]; then
+                    addr_type="(temporary)"
+                fi
+                results+="${CYAN}$current_iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv6${RESET} ${GRAY}$addr_type${RESET}"$'\n'
+                found=true
+            fi
+        fi
+    done < <(ifconfig -a)
+else
+    # Linux implementation using ip command
+
+    # Get default route interfaces if --default-route is set
+    default_route_ipv4=""
+    default_route_ipv6=""
+    if [[ "$default_route" == true ]]; then
+        default_route_ipv4=$(ip route show | grep "^default" | grep -oP 'dev \K\S+' | head -1)
+        default_route_ipv6=$(ip -6 route show | grep "^default" | grep -oP 'dev \K\S+' | head -1)
+    fi
+
+    # Get all interfaces
+    for iface in $(ip link show | grep "^[0-9]" | awk '{print $2}' | sed 's/:$//' | grep -v "^veth"); do
+        # Skip loopback
+        if [[ "$iface" == "lo" ]]; then
+            continue
+        fi
+
+        # Check if interface is docker-related
+        is_docker=false
+        if [[ "$iface" =~ ^docker ]] || [[ "$iface" =~ ^br- ]]; then
+            is_docker=true
+        fi
+
+        # Check if interface is tailscale-related
+        is_tailscale=false
+        if [[ "$iface" =~ ^tailscale ]]; then
+            is_tailscale=true
+        fi
+
+        # Apply filtering based on flags
+        if [[ "$only_tailscale" == true ]]; then
+            # Only show tailscale interfaces
+            [[ "$is_tailscale" != true ]] && continue
+        elif [[ "$only_docker" == true ]]; then
+            # Only show docker interfaces
+            [[ "$is_docker" != true ]] && continue
+        elif [[ "$no_services" == true ]]; then
+            # Skip both docker and tailscale
+            [[ "$is_docker" == true ]] || [[ "$is_tailscale" == true ]] && continue
+        else
+            # Apply individual skip flags if no "only" flags are set
+            [[ "$no_docker" == true ]] && [[ "$is_docker" == true ]] && continue
+            [[ "$no_tailscale" == true ]] && [[ "$is_tailscale" == true ]] && continue
+        fi
+
+        # Get IPv4 addresses
+        if [[ "$ipv6_only" != true ]]; then
+            ipv4=$(ip addr show "$iface" 2>/dev/null | grep "inet " | awk '{print $2}' | cut -d'/' -f1 | head -1)
+            if [[ -n "$ipv4" ]]; then
+                if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv4" ]]; then
+                    classification=$(classify_ip "$ipv4")
+                    class_color=$(get_classification_color "$classification")
+                    ip_color=$(get_ip_type_color "$ipv4")
+                    results+="${CYAN}$iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv4${RESET}"$'\n'
+                    found=true
+                fi
+            fi
+        fi
+
+        # Get IPv6 addresses (all of them, not just first)
+        if [[ "$ipv4_only" != true ]]; then
+            while IFS= read -r ipv6_line; do
+                [[ -z "$ipv6_line" ]] && continue
+                ipv6=$(echo "$ipv6_line" | awk '{print $2}' | cut -d'/' -f1)
+                if [[ -n "$ipv6" ]]; then
+                    if [[ "$default_route" == false ]] || [[ "$iface" == "$default_route_ipv6" ]]; then
+                        classification=$(classify_ip "$ipv6")
+                        class_color=$(get_classification_color "$classification")
+                        ip_color=$(get_ip_type_color "$ipv6")
+                        # Distinguish between rotating temporary and stable managed temporary
+                        addr_type="(stable)"
+                        if echo "$ipv6_line" | grep -q "temporary" && ! echo "$ipv6_line" | grep -q "mngtmpaddr"; then
+                            addr_type="(rotating)"
+                        elif echo "$ipv6_line" | grep -q "mngtmpaddr"; then
+                            addr_type="(stable)"
+                        fi
+                        results+="${CYAN}$iface${RESET} ${class_color}$classification${RESET} ${ip_color}$ipv6${RESET} ${GRAY}$addr_type${RESET}"$'\n'
+                        found=true
+                    fi
+                fi
+            done < <(ip addr show "$iface" 2>/dev/null | grep "inet6" | grep -v "fe80:")
+        fi
+    done
+fi
+
+if [[ "$found" != true ]]; then
+    echo "Error: No IP addresses found" >&2
+    exit 1
+fi
+
+# Output aligned results
+if [[ -t 1 ]]; then
+    # For TTY output, echo -e to interpret escape codes, then use column
+    echo -e "$results" | column -t
+else
+    # For non-TTY, just output normally
+    echo "$results"
+fi

@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+
+(git diff-index --quiet HEAD -- && git pull --rebase \
+ || (git stash && git pull --rebase && git stash pop) \
+) \
+ && git push origin -u "$(git rev-parse --abbrev-ref HEAD)"

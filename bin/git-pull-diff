@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+
+set -euo pipefail
+
+script_name="${0##*/}"
+
+source ~/.aliases
+
+tmp_dir=$(mktemp -d "$script_name".XXXXX)
+tmp_file=$(mktemp -p "$tmp_dir" "gpul_output".XXXXX)
+
+gpul | tee "$tmp_file"
+gpul_success=$?
+
+commit_range=$(grep -E 'Updating.*\.\.' "$tmp_file"| cut -d ' ' -f 2)
+
+if [ "$gpul_success" -eq 0 ] [ ! -z "$commit_range" ]; then
+  git diff "$commit_range"
+fi
+
+rm "$tmp_file"

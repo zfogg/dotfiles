@@ -162,6 +162,29 @@ main() {
     fi
     echo
 
+    # Step 4: Symlink Documents subdirectories
+    log_info "Step 4: Symlinking Documents subdirectories"
+    if [[ -d "$DOTFILES_DIR/Documents" ]]; then
+        for doc_item in "$DOTFILES_DIR/Documents"/*; do
+            [[ ! -e "$doc_item" ]] && continue
+            local basename="$(basename "$doc_item")"
+            [[ "$basename" == ".gitignore" ]] && continue
+            create_symlink "$HOME_DIR/.dotfiles/Documents/$basename" "$HOME_DIR/Documents/$basename"
+        done
+    fi
+    echo
+
+    # Step 5: Symlink .local/share subdirectories (applications, icons, etc.)
+    log_info "Step 5: Symlinking .local/share subdirectories"
+    if [[ -d "$DOTFILES_DIR/.local/share" ]]; then
+        for local_item in "$DOTFILES_DIR/.local/share"/*; do
+            [[ ! -e "$local_item" ]] && continue
+            local basename="$(basename "$local_item")"
+            create_symlink "$HOME_DIR/.dotfiles/.local/share/$basename" "$HOME_DIR/.local/share/$basename"
+        done
+    fi
+    echo
+
     log_success "Dotfiles installation complete!"
     echo
     log_info "Next steps:"

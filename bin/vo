@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+set -e
+
+rg "$@" --vimgrep --color=never \
+  | cut -d':' -f1-3 \
+  | fzf \
+    --preview='fzf-preview.sh {}' \
+    --multi \
+    --bind 'enter:become(nvim {+})'
+

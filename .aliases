@@ -6,7 +6,7 @@
 
 # custom functions from $FPATH (prolly ~/.zsh/site-functions)
 
-if [[ -v CLAUDECODE ]]; then
+if [[ -v _CLAUDECODE ]]; then
     return 0
 fi
 
@@ -77,7 +77,13 @@ alias ql='quick-look'
 # grc
 if command -v grc >/dev/null 2>&1; then
   # Get list of commands from grc config files
-  local grc_dir="${BREW}/share/grc"
+  if [ -d '/usr/share/grc' ]; then
+    local grc_dir="/usr/share/grc"
+  elif [ -d '/usr/local/share/grc' ]; then
+    local grc_dir="/usr/share/grc"
+  else
+    local grc_dir="${BREW}/share/grc"
+  fi
   if [[ -d "$grc_dir" ]]; then
     # Extract command names from conf.* files
     for conf_file in "$grc_dir"/conf.*; do
@@ -96,15 +102,19 @@ if command -v grc >/dev/null 2>&1; then
   colourify='grc -es --colour=auto'
   alias colourify="$colourify"
   # du, ls, and ping are handled separately as aliases
+
+  function dush() {
+    du -sh "$@" | sort -h
+  }
 fi
 
 function() { # ls
   alias ls >/dev/null && unalias ls
-  alias ls='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header'
-  alias  l='ls --oneline'
-  alias ll='ls --oneline --long'
-  alias la='ls --oneline --long -A --no-user --no-permissions --total-size'
-  alias lt='la --tree --level=6'
+  alias ls='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --long'
+  alias ll='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --oneline --long'
+  alias la='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --long'
+  alias  l='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header'
+  alias lt='eza --icons=auto --classify auto --colour=auto --show-symlinks --time=changed --header --oneline --long --tree --level=6'
   compdefas exa l ll la lt
 }
 
@@ -210,20 +220,22 @@ alias nowrap='nowrap '
 
 # git
 
-alias  gc='git commit'
-alias gca='git commit -a'
-alias  gd='git diff 2>/dev/null'
-alias gdd='git diff --color-words 2>/dev/null'
-alias  gl='git log --stat'
-alias  gp='git push'
-alias  gpu='git pull --rebase'
-alias gpul='(git diff-index --quiet HEAD -- && git pull --rebase || (git stash && git pull --rebase && git stash pop)) && git push origin "`git mybranch`"'
-alias grv='git remote -v'
-alias gst='git status'
-alias  ga='git add'
+alias    g='git'
+alias   gc='git commit'
+alias  gca='git commit -a'
+alias   gd='git diff 2>/dev/null'
+alias  gdd='git diff --color-words 2>/dev/null'
+alias   gl='git log --stat'
+alias   gp='git push'
+alias   gpu='git pull --rebase'
+alias  gpul='git-stash-pull-unstash-push'
+alias gpull='gpul'
+alias   grv='git remote -v'
+alias   gst='git status'
+alias    ga='git add'
 # INFO: autoload this
 #alias gco='git checkout'
-alias gcm='git checkout master'
+alias gcm='git checkout "$(git remote show origin | sed -n '"'/HEAD branch/s/.*: //p'"')"'
 
 compdefas git gc gca gd gdd gl gp grv gst ga gco gcm
 
@@ -350,9 +362,9 @@ function claude() {
     unalias mv 2>/dev/null || true
     unalias tree 2>/dev/null || true
 
-    export CLAUDECODE=1
-    $_claude
-    unset CLAUDECODE
+    export _CLAUDECODE=1
+    $_claude "$@"
+    unset _CLAUDECODE
 
     alias_file_handling
     alias_tree
@@ -368,5 +380,27 @@ alias clauded="claude --dangerously-skip-permissions"
 if [[ $OSX == $TRUE ]]; then
     alias tailscale="$BREW/bin/tailscale --socket=/var/run/tailscaled.socket"
 fi
+
+function docker-volume-size() {
+  if [[ "$@" = "" ]]; then
+    echo "no volumes" >&2
+    exit 1
+  fi
+  local docker_volumes=$(docker volume ls | tr -s ' ' | cut -d' ' -f2)
+  local volumes_wanted=()
+  while (($#)); do
+    if echo "$docker_volumes" | grep "$1" >/dev/null 2>&1; then
+      volumes_wanted+=($1)
+    fi
+    shift
+  done
+  for x in $volumes_wanted; do
+    echo "$x: "
+    sudo dust $(docker volume inspect --format "{{ .Mountpoint }}" "$x")
+    if [[ ! "$x" = "${volumes_wanted[${#volumes_wanted[@]}]}" ]]; then
+      echo ""
+    fi
+  done
+}
 
 #set +x INFO: DEBUG
