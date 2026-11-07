@@ -188,12 +188,6 @@ TRAPWINCH() {
       export COLUMNS=${size[2]}
     fi
   fi
-  # Refresh ZLE prompt if in line editor (suppress errors if not in ZLE)
-  # SSH sends an initial window-size update after starting the shell. Redrawing
-  # the line editor there duplicates the first prompt on remote logins.
-  if [[ -z "$SSH_CONNECTION" ]]; then
-    zle reset-prompt 2>/dev/null || true
-  fi
 }
 # terminal size }}}
 

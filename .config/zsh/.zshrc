@@ -2,6 +2,9 @@
 # vim: set fdm=marker:
 #   ~/.config/zsh/.zshrc
 
+# Prevent accidental Ctrl-S terminal freezes.
+stty -ixon
+
 # TEMP FIX: unset CLAUDECODE to fix aliases loading
 # TODO: Find where CLAUDECODE is being set at session level and remove it there
 unset CLAUDECODE
