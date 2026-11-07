@@ -252,13 +252,12 @@ require("lazy").setup({
 
   {
     'junegunn/fzf',
-    build = './install --all',
+    build = vim.fn.has('win32') == 0 and './install --all' or false,
     cmd = 'FZF',
     lazy = true,
     dependencies = {
       {
         'junegunn/fzf.vim',
-        build = ':call fzf#install()',
         cmd = { 'Files', 'Buffers', 'Rg', 'Lines', 'History', 'Commands', 'Marks', 'Windows', 'Commits', 'BLines', 'BTags', 'Tags' },
         lazy = true,
       },
@@ -717,7 +716,7 @@ require("lazy").setup({
       'thinca/vim-textobj-between',
       'glts/vim-textobj-comment',
       'saaguero/vim-textobj-pastedtext',
-      'paulhybryant/vim-textobj-path',
+      -- paulhybryant/vim-textobj-path is no longer available on GitHub.
       'beloglazov/vim-textobj-quotes',
       'saihoooooooo/vim-textobj-space',
       'jceb/vim-textobj-uri',

@@ -24,8 +24,9 @@ vim.opt.updatetime = 220
 vim.g.netrw_dirhistmax = 0
 
 -- Ruby host for neovim
-if vim.fn.has('nvim') == 1 then
-  vim.g.ruby_host_prog = vim.fn.expand('~/.gem/bin/neovim-ruby-host')
+local ruby_host = vim.fn.expand('~/.gem/bin/neovim-ruby-host')
+if vim.fn.executable(ruby_host) == 1 then
+  vim.g.ruby_host_prog = ruby_host
 end
 
 -- Session and view options
