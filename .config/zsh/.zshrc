@@ -9,6 +9,8 @@ stty -ixon
 # TODO: Find where CLAUDECODE is being set at session level and remove it there
 unset CLAUDECODE
 unset _CLAUDECODE
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=off
 
 
 if [[ -f ~/.env ]]; then
@@ -17,13 +19,15 @@ if [[ -f ~/.env ]]; then
   set -a
 fi
 
+# SSH sends an initial window-size signal; prevent plugin redraws from
+# printing the interactive prompt a second time.
+TRAPWINCH() { :; }
+
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# Instant prompt redraws the first SSH prompt when the remote TTY is resized.
 
 
 # init: zsh modules {{{
@@ -450,4 +454,10 @@ if [ -f "$HOME/.vite-plus/env" ]; then
   . "$HOME/.vite-plus/env"
 elif [ -f "$HOME/.config/vite-plus/env" ]; then
   . "$HOME/.config/vite-plus/env"
+fi
+
+# Do not redraw the prompt for SSH's initial window-size notification.
+if [[ -n "$SSH_CONNECTION" ]]; then
+  TRAPWINCH() { :; }
+  _p9k_reset_prompt() { :; }
 fi
