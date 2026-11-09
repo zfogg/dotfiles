@@ -1,6 +1,7 @@
 /Brewfile.lock.json
 /.antigen-hs
 /.keychain
+/bin/*.exe
 
 !/.cache/
 
