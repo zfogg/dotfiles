@@ -1,1 +1,1 @@
-& "$HOME\OneDrive\Documents\PowerShell\profile.ps1"
+& ..\PowerShell\profile.ps1
