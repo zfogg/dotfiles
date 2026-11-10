@@ -133,7 +133,6 @@ function() { # {{{ AFTER platform-specifics
     #$HOME/.nvm/versions/node/v*.*.*/bin(nF/[-1])
     #$HOME/.rbenv/shims
     #$HOME/.gem/ruby/*.*.*/bin(nF/[-1])
-    # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
     #$HOME/.pyenv/{bin,shims}
     $GOPATH/bin
     $BREW/opt/ruby/bin

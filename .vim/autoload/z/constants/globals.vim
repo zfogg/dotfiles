@@ -90,11 +90,7 @@ func! z#constants#globals#Python()
     let l:py3_root = $USERPROFILE.'/scoop/apps/python/current'
   elseif has('unix')
     let l:py3_prog = 'python3'
-    if isdirectory(expand('$XDG_DATA_HOME').'/asdf')
-      let l:py3_root = expand('$XDG_DATA_HOME').'/asdf/shims'
-    elseif isdirectory(expand('$BREW'))
-      let l:py3_root = expand('$BREW').'/bin'
-    endif
+    let l:py3_root = "/usr/bin"
   endif
   try
     let g:python3_host_prog = l:py3_root.'/'.l:py3_prog
@@ -144,10 +140,7 @@ endfunc
 
 func! z#constants#globals#Ruby()
   try
-    if exists('$XDG_DATA_HOME') && isdirectory(expand($XDG_DATA_HOME)) && isdirectory($XDG_DATA_HOME.'/asdf')
-      let l:ruby_host = 'neovim-ruby-host'
-      let l:host_path = expand($HOME).'/.gem/bin'
-    elseif has('unix')
+    if has('unix')
       let l:ruby_host = 'neovim-ruby-host'
       let l:which_prog = systemlist('which '.l:ruby_host)[0]
       if v:shell_error != 0 | echom 'Z:NotFound '.l:ruby_host | endif

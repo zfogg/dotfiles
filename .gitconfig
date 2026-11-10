@@ -104,10 +104,6 @@
 
 [init]
     defaultBranch = master
-
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
-
 [credential "https://github.com"]
     helper = 
     helper = !/usr/local/bin/gh auth git-credential
@@ -171,3 +167,5 @@
     line-numbers-left-style   = cyan
     line-numbers-right-style  = cyan
 ; }}} delta
+[url "https://github.com/"]
+	insteadOf = git@github.com:

@@ -413,7 +413,6 @@ fi
 
 # INFO: https://github.com/b4b4r07/emoji-cli
 #export EMOJI_CLI_FILTER='fzf-tmux -d 15%:fzf:peco:percol'
-#EMOJI_CLI_PATH="$HOME/.antigen-hs/repos/https-COLON--SLASH--SLASH-github.com-SLASH-b4b4r07-SLASH-emoji-cli/emoji-cli.plugin.zsh"
 #if [[ -f $EMOJI_CLI_PATH ]]; then
   #export EMOJI_CLI_FILTER='fzf:peco:percol'
   #export EMOJI_CLI_KEYBIND='^s'

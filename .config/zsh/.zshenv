@@ -320,7 +320,6 @@ export WORKON_HOME=~/.virtualenvs
 export PROJECT_HOME="${GHQ_ROOT:-~/src}"
 
 # pyenv {{{
-  # NOTE: PYENV_ROOT+PATH are set by pyenv-lazy via antigen
   #export PYENV_SHELL="$SHELL_NAME"
   #export PYENV_ROOT="$HOME/.pyenv"
   #export PYENV_VIRTUALENV_DISABLE_PROMPT='0'
