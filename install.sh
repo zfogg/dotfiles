@@ -64,6 +64,23 @@ log_error() {
     echo -e "${RED}✗${NC} $1"
 }
 
+install_neovim_plugins() {
+    if ! command -v nvim >/dev/null 2>&1; then
+        log_warning "Neovim not found; skipping plugin installation"
+        return 0
+    fi
+
+    local lazy_path="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/lazy/lazy.nvim"
+    if [[ -d "$lazy_path" ]]; then
+        log_success "Neovim dependencies already cloned"
+        return 0
+    fi
+
+    log_info "Installing Neovim dependencies with lazy.nvim"
+    nvim --headless "+Lazy! sync" +qa
+    log_success "Neovim dependencies installed"
+}
+
 should_skip() {
     local file="$1"
     for skip in "${SKIP_FILES[@]}"; do
@@ -185,11 +202,16 @@ main() {
     fi
     echo
 
+    # Step 6: Bootstrap Neovim's lazy.nvim dependencies only when absent.
+    log_info "Step 6: Checking Neovim dependencies"
+    install_neovim_plugins
+    echo
+
     log_success "Dotfiles installation complete!"
     echo
     log_info "Next steps:"
     echo "  • Restart your shell or run: exec \$SHELL"
-    echo "  • Install vim plugins: nvim +PlugInstall +qall"
+    echo "  • Update Neovim plugins: nvim --headless '+Lazy! sync' +qa"
     echo "  • Review any .backup.* files created in $HOME"
 }
 
