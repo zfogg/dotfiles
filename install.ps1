@@ -88,6 +88,21 @@ function Ensure-FileLink([string]$Link, [string]$Target) {
     Write-Ok "$Link -> $Target"
 }
 
+function Ensure-ManagedFileLink([string]$Link, [string]$Target) {
+    if (Test-Path -LiteralPath $Link) {
+        $item = Get-Item -LiteralPath $Link -Force
+        if (($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -and $item.Target -eq $Target) {
+            Write-Ok "$Link already links to $Target"
+            return
+        }
+        Backup-Item $Link
+    }
+    New-Item -ItemType Directory -Path (Split-Path $Link -Parent) -Force | Out-Null
+    cmd.exe /d /c "mklink `"$Link`" `"$Target`"" | Out-Host
+    if (-not (Test-Path -LiteralPath $Link)) { throw "Failed to create file link $Link" }
+    Write-Ok "$Link -> $Target"
+}
+
 function Ensure-UserPathEntry([string]$Entry) {
     $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
     $entries = @($userPath -split ';' | Where-Object { $_ })
@@ -98,6 +113,28 @@ function Ensure-UserPathEntry([string]$Entry) {
     } else {
         Write-Ok "$Entry already on user PATH"
     }
+}
+
+function Ensure-NeovimPlugins {
+    if (-not (Test-Command nvim)) {
+        Write-Warn 'Neovim not found; skipping plugin installation'
+        return
+    }
+
+    $lazyRoot = if ($env:XDG_DATA_HOME) {
+        Join-Path $env:XDG_DATA_HOME 'nvim'
+    } else {
+        Join-Path $env:LOCALAPPDATA 'nvim-data'
+    }
+    $lazyPath = Join-Path $lazyRoot 'lazy\lazy.nvim'
+    if (Test-Path -LiteralPath $lazyPath -PathType Container) {
+        Write-Ok 'Neovim dependencies already cloned'
+        return
+    }
+
+    Write-Info 'Installing Neovim dependencies with lazy.nvim'
+    nvim --headless '+Lazy! sync' +qa | Out-Host
+    Write-Ok 'Neovim dependencies installed'
 }
 
 Write-Info "Installing Windows dotfiles from $DotfilesDir"
@@ -125,6 +162,7 @@ $Packages = @(
     'wget', 'windirstat', 'xz', 'zip'
 )
 foreach ($package in $Packages) { Ensure-App $package }
+Ensure-NeovimPlugins
 
 $RepoBin = Join-Path $DotfilesDir 'bin'
 New-Item -ItemType Directory -Path $RepoBin -Force | Out-Null
@@ -154,6 +192,9 @@ $PwshProfile = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'PowerShe
 $WindowsPowerShellProfile = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'WindowsPowerShell\Microsoft.PowerShell_profile.ps1'
 Ensure-FileLink $PwshProfile (Join-Path $DotfilesDir 'Documents\PowerShell\Microsoft.PowerShell_profile.ps1')
 Ensure-FileLink $WindowsPowerShellProfile (Join-Path $DotfilesDir 'Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1')
+
+$HyperConfig = Join-Path $HomeDir 'AppData\Roaming\Hyper\.hyper.js'
+Ensure-ManagedFileLink $HyperConfig (Join-Path $DotfilesDir '.hyper.js')
 
 Write-Ok 'Windows dotfiles installation complete'
 if (Test-Path -LiteralPath $BackupRoot) { Write-Warn "Backups are in $BackupRoot" }
