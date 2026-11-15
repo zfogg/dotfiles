@@ -52,6 +52,7 @@ function M.setup()
   let ts_linters = ['cspell', 'deno', 'tslint', 'tsserver', 'typecheck']
 
   let g:ale_linters={
+  \ 'c': [], 'cpp': [], 'objc': [], 'objcpp': [], 'cuda': [],
   \ 'python': 'all',
   \ 'typescript': ts_linters, 'typescriptreact': ts_linters,
   \ 'lua': [],
