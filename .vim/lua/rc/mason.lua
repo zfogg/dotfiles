@@ -40,7 +40,7 @@ local servers = {
     --  '.git'
     --)
   },
-  clangd = {},
+  clangd = { cmd = { 'clangd' } },
   rust_analyzer = {},
   arduino_language_server = {},
   bashls = {},
@@ -193,12 +193,6 @@ function M.config()
   end
 
   -- Use only the new vim.lsp.config API
-
-  -- Configure clangd with custom capabilities
-  vim.lsp.config('clangd', {
-    capabilities = capabilities,
-  })
-  vim.lsp.enable('clangd')
 
   -- Configure other servers
   for server_name, server_config in pairs(servers) do
