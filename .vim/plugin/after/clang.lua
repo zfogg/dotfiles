@@ -1,0 +1,2 @@
+-- Compatibility placeholder for the libclang-vim after plugin.
+-- The old project-index setting launched a second clangd client.
