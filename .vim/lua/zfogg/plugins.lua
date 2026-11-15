@@ -800,46 +800,6 @@ require("lazy").setup({
     lazy = true,
   },
 
-  {
-    "monkoose/neocodeium",
-    lazy = true,
-    event = "InsertEnter",
-    priority = 1000, -- Load before other InsertEnter plugins
-    config = function()
-      local neocodeium = require("neocodeium")
-      neocodeium.setup({
-        enabled = true,
-        show_label = true,
-        debounce = true,
-        silent = true,
-        filetypes = {
-          help = false,
-          gitcommit = false,
-          gitrebase = false,
-          ["."] = false,
-        },
-      })
-
-      -- Disable Neovim's default snippet Tab mappings
-      pcall(vim.keymap.del, 'i', '<Tab>')
-      pcall(vim.keymap.del, 'i', '<S-Tab>')
-
-      vim.keymap.set("i", "<Tab>", function()
-        if neocodeium.visible() then
-          return neocodeium.accept()
-        else
-          return vim.api.nvim_replace_termcodes("<Tab>", true, true, true)
-        end
-      end, { expr = true, silent = true })
-      vim.keymap.set("i", "<C-S-n>", function()
-        require("neocodeium").cycle_or_complete()
-      end, { silent = true })
-      vim.keymap.set("i", "<C-S-p>", function()
-        require("neocodeium").cycle_or_complete(-1)
-      end, { silent = true })
-    end,
-  },
-
   -- }}}
 }, {
   ui = {
