@@ -31,6 +31,8 @@
 [pull]
     ff = only
     rebase = true
+[rebase]
+    autoStash = true
 [diff]
     tool = vimdiff3
     wordRegex = [[:alnum:]_]+|[^[:alnum:]_[:space:]]+
