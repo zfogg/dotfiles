@@ -488,11 +488,18 @@ if [[ $LINUX == $TRUE ]] && command -v systemctl &>/dev/null; then
       export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/openssh_agent"
     else
       export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+      if [[ ! -S "/run/user/1000/ssh-agent.socket" ]]; then
+        export SSH_AUTH_SOCK="/home/zfogg/.ssh/agent.sock"
+        mkdir -p "/home/zfogg/.ssh"
+        if [[ ! -S "/home/zfogg/.ssh/agent.sock" ]]; then
+          (umask 077; ssh-agent -a "/home/zfogg/.ssh/agent.sock" >/dev/null)
+        fi
+      fi
+
     fi
   fi
 fi
 # ssh-agent (systemd) }}}
-
 
 # curl {{{
 export CURL_HOME="$XDG_CONFIG_HOME/curl"
